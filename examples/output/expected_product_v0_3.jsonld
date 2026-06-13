@@ -1,0 +1,98 @@
+{
+  "@context": [
+    "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
+    {
+      "schema": "https://schema.org/"
+    }
+  ],
+  "@type": "gs1:Product",
+  "@id": "https://id.gs1.org/01/08712345678906",
+  "gs1:gtin": "08712345678906",
+  "gs1:productName": [
+    {
+      "@value": "Organic Apple Juice 500 ml",
+      "@language": "en"
+    },
+    {
+      "@value": "Biologisch Appelsap 500 ml",
+      "@language": "nl"
+    }
+  ],
+  "gs1:productDescription": [
+    {
+      "@value": "Organic apple juice made from concentrated apple juice.",
+      "@language": "en"
+    },
+    {
+      "@value": "Biologisch appelsap gemaakt uit geconcentreerd appelsap.",
+      "@language": "nl"
+    }
+  ],
+  "gs1:brandName": "Example Brand",
+  "gs1:gpcCategoryCode": "10000234",
+  "gs1:productImage": [
+    "https://example.com/images/08712345678906-front.jpg",
+    "https://example.com/images/08712345678906-back.jpg"
+  ],
+  "schema:url": "https://example.com/products/08712345678906",
+  "gs1:ingredientStatement": [
+    {
+      "@value": "Apple juice from concentrate.",
+      "@language": "en"
+    },
+    {
+      "@value": "Appelsap uit concentraat.",
+      "@language": "nl"
+    }
+  ],
+  "gs1:netContent": {
+    "value": 500,
+    "unitCode": "MLT"
+  },
+  "gs1:hasAllergen": [
+    {
+      "@type": "gs1:AllergenDetails",
+      "gs1:allergenType": "AM",
+      "gs1:levelOfContainment": "FREE_FROM"
+    }
+  ],
+  "gs1:nutrientDetail": [
+    {
+      "gs1:preparationStateCode": "UNPREPARED",
+      "gs1:nutrientTypeCode": "ENER-",
+      "gs1:quantityContained": {
+        "value": 190,
+        "unitCode": "KJO"
+      }
+    }
+  ],
+  "gs1:certification": [
+    {
+      "@type": "gs1:CertificationDetails",
+      "gs1:certificationStandard": "EU Organic",
+      "schema:identifier": "CERT-08712345678906-ORG",
+      "gs1:certificationValue": "Certified organic product",
+      "schema:dateIssued": "2026-01-15T00:00:00Z",
+      "gs1:certificationAuditDate": "2026-01-10",
+      "gs1:certificationStartDate": "2026-01-15",
+      "gs1:certificationEndDate": "2027-01-15",
+      "gs1:certificationAgency": "8712345999999"
+    }
+  ],
+  "gs1:referencedDocument": [
+    {
+      "@type": "schema:DigitalDocument",
+      "schema:name": "dpp-document.pdf",
+      "schema:encodingFormat": "PDF",
+      "schema:additionalType": "DPP_DOCUMENT",
+      "schema:url": "https://example.com/documents/08712345678906-dpp.pdf"
+    },
+    {
+      "@type": "schema:DigitalDocument",
+      "schema:name": "organic-certificate.pdf",
+      "schema:encodingFormat": "PDF",
+      "schema:additionalType": "CERTIFICATION_DOCUMENT",
+      "schema:url": "https://example.com/documents/08712345678906-organic-certificate.pdf"
+    }
+  ]
+}

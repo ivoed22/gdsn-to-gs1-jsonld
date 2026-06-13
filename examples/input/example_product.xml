@@ -59,6 +59,13 @@
                         <gdsn:referencedFileTypeCode>PRODUCT_IMAGE</gdsn:referencedFileTypeCode>
                         <gdsn:uniformResourceIdentifier>https://example.com/images/08712345678906-back.jpg</gdsn:uniformResourceIdentifier>
                     </gdsn:referencedFileInformation>
+
+                    <gdsn:referencedFileInformation>
+                        <gdsn:fileName>dpp-document.pdf</gdsn:fileName>
+                        <gdsn:fileFormatName>PDF</gdsn:fileFormatName>
+                        <gdsn:referencedFileTypeCode>DPP_DOCUMENT</gdsn:referencedFileTypeCode>
+                        <gdsn:uniformResourceIdentifier>https://example.com/documents/08712345678906-dpp.pdf</gdsn:uniformResourceIdentifier>
+                    </gdsn:referencedFileInformation>
                 </gdsn:tradeItemInformation>
 
                 <!-- Out-of-scope for MVP, included intentionally so the unmapped-fields report can be tested. -->
@@ -84,6 +91,25 @@
                         </gdsn:quantityContained>
                     </gdsn:nutrientDetail>
                 </gdsn:nutrientHeader>
+
+                <gdsn:certificationInformation>
+                    <gdsn:certificationStandard>EU Organic</gdsn:certificationStandard>
+                    <gdsn:certificationOrganisationIdentifier>8712345999999</gdsn:certificationOrganisationIdentifier>
+                    <gdsn:certification>
+                        <gdsn:certificationIdentification>CERT-08712345678906-ORG</gdsn:certificationIdentification>
+                        <gdsn:certificationValue>Certified organic product</gdsn:certificationValue>
+                        <gdsn:certificateIssuanceDateTime>2026-01-15T00:00:00Z</gdsn:certificateIssuanceDateTime>
+                        <gdsn:certificationAssessmentDateTime>2026-01-10T00:00:00Z</gdsn:certificationAssessmentDateTime>
+                        <gdsn:certificationEffectiveStartDateTime>2026-01-15T00:00:00Z</gdsn:certificationEffectiveStartDateTime>
+                        <gdsn:certificationEffectiveEndDateTime>2027-01-15T00:00:00Z</gdsn:certificationEffectiveEndDateTime>
+                        <gdsn:referencedFileInformation>
+                            <gdsn:fileName>organic-certificate.pdf</gdsn:fileName>
+                            <gdsn:fileFormatName>PDF</gdsn:fileFormatName>
+                            <gdsn:referencedFileTypeCode>CERTIFICATION_DOCUMENT</gdsn:referencedFileTypeCode>
+                            <gdsn:uniformResourceIdentifier>https://example.com/documents/08712345678906-organic-certificate.pdf</gdsn:uniformResourceIdentifier>
+                        </gdsn:referencedFileInformation>
+                    </gdsn:certification>
+                </gdsn:certificationInformation>
             </gdsn:tradeItem>
         </gdsn:catalogueItem>
     </gdsn:transaction>

@@ -90,3 +90,39 @@ def test_v0_2_unmapped_fields_exclude_food_mappings(
         "measurementUnitCode",
     }.isdisjoint(names)
     assert {"gln", "partyName", "fileName", "fileFormatName"} <= names
+
+
+def test_v0_3_unmapped_fields_exclude_certification_and_documents(
+    example_xml_path,
+    mapping_v0_3_path,
+):
+    result = convert_xml_to_jsonld(example_xml_path, mapping_v0_3_path)
+    items = result.unmapped_fields["unmapped_elements"]
+    mapped_names = {
+        "certificationInformation",
+        "certification",
+        "certificationStandard",
+        "certificationIdentification",
+        "certificationValue",
+        "certificateIssuanceDateTime",
+        "certificationAssessmentDateTime",
+        "certificationEffectiveStartDateTime",
+        "certificationEffectiveEndDateTime",
+        "certificationOrganisationIdentifier",
+    }
+    assert mapped_names.isdisjoint({item["element"] for item in items})
+    assert not any("/certificationInformation/" in item["path"] for item in items)
+    remaining_document_metadata = {
+        item["element"]: item["count"]
+        for item in items
+        if item["element"]
+        in {"fileName", "fileFormatName", "referencedFileTypeCode"}
+    }
+    assert remaining_document_metadata == {
+        "fileName": 2,
+        "fileFormatName": 2,
+        "referencedFileTypeCode": 2,
+    }
+    assert not any(
+        item["element"] == "uniformResourceIdentifier" for item in items
+    )

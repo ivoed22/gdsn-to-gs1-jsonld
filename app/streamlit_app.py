@@ -35,7 +35,6 @@ st.set_page_config(
     layout="wide",
 )
 st.title("GDSN to GS1 JSON-LD Converter")
-st.caption("v0.2.0-dev")
 st.write(
     "Convert a GDSN-like product XML file into GS1 Web Vocabulary JSON-LD "
     "using a configurable mapping profile."
@@ -44,7 +43,25 @@ st.info(
     "Privacy: uploaded XML files are processed in memory and are not "
     "intentionally stored permanently."
 )
-st.markdown(
+
+uploaded_file = st.file_uploader("Upload a GDSN product XML file", type=["xml"])
+mapping_profiles = {
+    "Certifications & Documents v0.3.0": (
+        REPOSITORY_ROOT / "mapping" / "mapping_v0_3.yaml"
+    ),
+    "Food v0.2.0 mapping": REPOSITORY_ROOT / "mapping" / "mapping_v0_2.yaml",
+    "MVP v0.1.0 mapping": REPOSITORY_ROOT / "mapping" / "mapping_mvp.yaml",
+}
+selected_profile = st.sidebar.selectbox(
+    "Mapping profile",
+    list(mapping_profiles),
+    on_change=clear_results,
+)
+mapping_path = mapping_profiles[selected_profile]
+st.sidebar.caption("App version: v0.3.0-dev")
+st.sidebar.markdown("**Active mapping file**")
+st.sidebar.code(mapping_path.relative_to(REPOSITORY_ROOT).as_posix())
+st.sidebar.markdown(
     """
 **Supported field groups**
 
@@ -56,21 +73,15 @@ st.markdown(
 - Ingredients
 - Allergens
 - Nutrients
+- Certifications
+- DPP/document links
 """
 )
-
-uploaded_file = st.file_uploader("Upload a GDSN product XML file", type=["xml"])
-mapping_profiles = {
-    "Food v0.2.0 mapping": REPOSITORY_ROOT / "mapping" / "mapping_v0_2.yaml",
-    "MVP v0.1.0 mapping": REPOSITORY_ROOT / "mapping" / "mapping_mvp.yaml",
-}
-selected_profile = st.selectbox("Mapping profile", list(mapping_profiles))
 
 if uploaded_file is None:
     st.info("Upload one XML file to begin.")
 elif st.button("Convert to JSON-LD", type="primary"):
     clear_results()
-    mapping_path = mapping_profiles[selected_profile]
     try:
         result = convert_xml_to_jsonld(
             uploaded_file.getvalue(),

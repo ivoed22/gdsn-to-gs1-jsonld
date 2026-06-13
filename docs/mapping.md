@@ -10,6 +10,11 @@ ordered transforms.
 - a language-string field for ingredient statements
 - `object_mappings` for allergens and nutrients
 
+`mapping/mapping_v0_3.yaml` preserves v0.2.0 and adds catalog-governed object
+mappings for certifications and referenced documents. See
+[`mapping-catalog.md`](mapping-catalog.md) for traceability and
+[`v0.3.0-design.md`](v0.3.0-design.md) for experimental decisions.
+
 An object mapping declares `parent_xpath`, `canonical_field`,
 `jsonld_property`, optional `object_type`, cardinality, and relative child
 fields. Child mappings can use dotted canonical and JSON-LD paths such as
@@ -21,6 +26,6 @@ language strings, select the XML element rather than `text()` in the main
 XPath, then read text with `value_xpath` and language with `language_xpath`.
 
 Supported transforms are `trim`, `normalize_whitespace`, `uppercase`,
-`to_decimal`, `validate_gtin`, and `validate_url`.
+`to_decimal`, `to_date`, `validate_gtin`, and `validate_url`.
 
-The v0.1.0 profile remains available for output compatibility.
+The v0.1.0 and v0.2.0 profiles remain available for output compatibility.

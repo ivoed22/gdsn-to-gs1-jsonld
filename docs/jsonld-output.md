@@ -38,3 +38,28 @@ The Food v0.2.0 profile additionally emits:
 ```
 
 See `examples/output/expected_product_v0_2.jsonld` for the complete example.
+
+The v0.3.0 profile adds `gs1:certification` objects and experimental referenced
+documents:
+
+```json
+{
+  "gs1:certification": [
+    {
+      "@type": "gs1:CertificationDetails",
+      "gs1:certificationStandard": "EU Organic",
+      "gs1:certificationValue": "Certified organic product"
+    }
+  ],
+  "gs1:referencedDocument": [
+    {
+      "@type": "schema:DigitalDocument",
+      "schema:additionalType": "DPP_DOCUMENT",
+      "schema:url": "https://example.com/documents/08712345678906-dpp.pdf"
+    }
+  ]
+}
+```
+
+`gs1:referencedDocument` is an experimental project mapping, not a term found
+in the locally validated GS1 Web Vocabulary.

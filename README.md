@@ -3,16 +3,17 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
-Version 0.2.0 keeps the v0.1.0 product identity output stable and adds an
-experimental food profile for multilingual ingredients, allergen details, and
-basic nutrient quantities. It is deliberately a structured product converter,
-not a generic XML-to-JSON utility.
+Version 0.3.0 keeps the v0.1.0 and v0.2.0 outputs stable and adds experimental
+BMS/XPath-aligned certification and document mapping. It is deliberately a
+structured product converter, not a generic XML-to-JSON utility.
 
 ## Mapping profiles
 
 - `mapping/mapping_mvp.yaml`: v0.1.0 product identity and presentation fields
 - `mapping/mapping_v0_2.yaml`: v0.1.0 fields plus ingredients, allergens, and
   nutrients
+- `mapping/mapping_v0_3.yaml`: v0.2.0 fields plus certifications and
+  DPP/certification document links
 
 ## MVP outputs
 
@@ -41,16 +42,16 @@ dependencies and the app adds `src/` to its import path.
 
 ```bash
 gdsn-to-gs1-jsonld convert examples/input/example_product.xml \
-  --mapping mapping/mapping_v0_2.yaml \
-  --output output_v0_2/
+  --mapping mapping/mapping_v0_3.yaml \
+  --output output_v0_3/
 ```
 
 You can also run the module directly:
 
 ```bash
 python -m gdsn_to_gs1_jsonld.cli convert examples/input/example_product.xml \
-  --mapping mapping/mapping_v0_2.yaml \
-  --output output_v0_2/
+  --mapping mapping/mapping_v0_3.yaml \
+  --output output_v0_3/
 ```
 
 ## Streamlit
@@ -59,16 +60,15 @@ python -m gdsn_to_gs1_jsonld.cli convert examples/input/example_product.xml \
 streamlit run app/streamlit_app.py
 ```
 
-The app defaults to the Food v0.2.0 profile and can switch back to the MVP
-v0.1.0 profile. It processes uploaded XML in memory, displays the JSON-LD and
-validation status, previews the mapping report, and provides four downloads.
+The app defaults to Certifications & Documents v0.3.0 and can switch to the
+Food v0.2.0 or MVP v0.1.0 profiles.
 
 ## Mapping
 
-Mapping YAML is the source of truth for XML XPath expressions, canonical field
-targets, transforms, requirements, and JSON-LD property names. Version 0.2.0
-adds `object_mappings` for configurable allergen and nutrient objects. XPath
-expressions select elements so language attributes remain available.
+Mapping YAML is the executable converter configuration. The catalog under
+`mapping_catalog/` is the BMS/XPath and vocabulary traceability layer. Version
+0.3.0 uses GDSN 3.1.36 catalog rows and locally validated Web Vocabulary terms
+as design inputs.
 
 ## Development
 
@@ -81,12 +81,12 @@ notes.
 
 ## Roadmap
 
-Later releases may add broader food coverage, certifications, serving
-information, validation profiles, batch conversion, and service interfaces.
+Later releases may resolve experimental document semantics, add broader food
+coverage, certification verification, validation profiles, and batch
+conversion.
 
 ## Disclaimer
 
-This is an experimental converter. The v0.2.0 food mapping does not provide
-full GDSN coverage, full nutrition or allergen semantics, full GDSN XSD
-validation, or a guarantee that generated data satisfies every consuming
-system's GS1 implementation profile.
+This is an experimental converter. Generic DPP/document links require
+standards review. No certificate verification, URL dereferencing, full GDSN
+coverage, or full GDSN XSD validation is provided.

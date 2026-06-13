@@ -1,0 +1,340 @@
+metadata:
+  name: GDSN to GS1 JSON-LD Certifications and Documents
+  version: 0.3.0
+  description: BMS/XPath-aligned certification and experimental document mapping.
+
+settings:
+  namespace_strategy: local-name
+  default_language: en
+  jsonld_context:
+    - https://ref.gs1.org/voc/data/gs1Voc.jsonld
+    - schema: https://schema.org/
+
+fields:
+  - id: gtin
+    description: Global Trade Item Number
+    xpath: ".//*[local-name()='gtin']"
+    value_xpath: "text()"
+    canonical_field: gtin
+    jsonld_property: "gs1:gtin"
+    required: true
+    datatype: string
+    multiple: false
+    transform: [trim, validate_gtin]
+
+  - id: product_name
+    description: Multilingual product name
+    xpath: ".//*[local-name()='tradeItemDescription']"
+    value_xpath: "text()"
+    language_xpath: "./@languageCode"
+    canonical_field: product_name
+    jsonld_property: "gs1:productName"
+    required: true
+    datatype: language_string
+    multiple: true
+    fallback_language: en
+    transform: [trim, normalize_whitespace]
+
+  - id: product_description
+    description: Multilingual short product description
+    xpath: ".//*[local-name()='descriptionShort']"
+    value_xpath: "text()"
+    language_xpath: "./@languageCode"
+    canonical_field: product_description
+    jsonld_property: "gs1:productDescription"
+    required: false
+    datatype: language_string
+    multiple: true
+    fallback_language: en
+    transform: [trim, normalize_whitespace]
+
+  - id: brand_name
+    description: Product brand name
+    xpath: ".//*[local-name()='brandName']"
+    value_xpath: "text()"
+    canonical_field: brand_name
+    jsonld_property: "gs1:brandName"
+    required: false
+    datatype: string
+    multiple: false
+    transform: [trim]
+
+  - id: gpc_category_code
+    description: GS1 Global Product Classification category code
+    xpath: ".//*[local-name()='gpcCategoryCode']"
+    value_xpath: "text()"
+    canonical_field: gpc_category_code
+    jsonld_property: "gs1:gpcCategoryCode"
+    required: false
+    datatype: string
+    multiple: false
+    transform: [trim]
+
+  - id: net_content_value
+    description: Numeric net content value
+    xpath: ".//*[local-name()='netContent']/*[local-name()='measurementValue']"
+    value_xpath: "text()"
+    canonical_field: net_content_value
+    jsonld_property: "gs1:netContent"
+    required: false
+    datatype: decimal
+    multiple: false
+    transform: [trim, to_decimal]
+
+  - id: net_content_unit
+    description: Net content measurement unit code
+    xpath: ".//*[local-name()='netContent']/*[local-name()='measurementUnitCode']"
+    value_xpath: "text()"
+    canonical_field: net_content_unit
+    jsonld_property: "gs1:netContent"
+    required: false
+    datatype: string
+    multiple: false
+    transform: [trim, uppercase]
+
+  - id: product_image_url
+    description: Product image URL
+    xpath: ".//*[local-name()='referencedFileInformation'][.//*[local-name()='referencedFileTypeCode' and normalize-space(text())='PRODUCT_IMAGE']]/*[local-name()='uniformResourceIdentifier']"
+    value_xpath: "text()"
+    canonical_field: product_image_url
+    jsonld_property: "gs1:productImage"
+    required: false
+    datatype: url
+    multiple: true
+    transform: [trim, validate_url]
+
+  - id: product_page_url
+    description: Product marketing page URL
+    xpath: ".//*[local-name()='marketingInformation']/*[local-name()='uniformResourceIdentifier']"
+    value_xpath: "text()"
+    canonical_field: product_page_url
+    jsonld_property: "schema:url"
+    required: false
+    datatype: url
+    multiple: false
+    transform: [trim, validate_url]
+
+  - id: ingredient_statement
+    description: Multilingual ingredient statement
+    xpath: ".//*[local-name()='ingredientStatement'][@languageCode]"
+    value_xpath: "text()"
+    language_xpath: "./@languageCode"
+    canonical_field: ingredient_statement
+    jsonld_property: "gs1:ingredientStatement"
+    required: false
+    datatype: language_string
+    multiple: true
+    fallback_language: en
+    transform: [trim, normalize_whitespace]
+
+object_mappings:
+  - id: allergens
+    description: Allergen details
+    parent_xpath: ".//*[local-name()='allergenRelatedInformation']/*[local-name()='allergen']"
+    canonical_field: allergens
+    jsonld_property: "gs1:hasAllergen"
+    object_type: "gs1:AllergenDetails"
+    multiple: true
+    fields:
+      - id: allergen_type
+        xpath: "./*[local-name()='allergenTypeCode']"
+        value_xpath: "text()"
+        canonical_field: allergen_type
+        jsonld_property: "gs1:allergenType"
+        datatype: string
+        required: true
+        multiple: false
+        transform: [trim, uppercase]
+      - id: level_of_containment
+        xpath: "./*[local-name()='levelOfContainmentCode']"
+        value_xpath: "text()"
+        canonical_field: level_of_containment
+        jsonld_property: "gs1:levelOfContainment"
+        datatype: string
+        required: true
+        multiple: false
+        transform: [trim, uppercase]
+
+  - id: nutrients
+    description: Basic nutrient details
+    parent_xpath: ".//*[local-name()='nutrientHeader']/*[local-name()='nutrientDetail']"
+    canonical_field: nutrients
+    jsonld_property: "gs1:nutrientDetail"
+    multiple: true
+    fields:
+      - id: preparation_state_code
+        xpath: "ancestor::*[local-name()='nutrientHeader'][1]/*[local-name()='preparationStateCode']"
+        value_xpath: "text()"
+        canonical_field: preparation_state_code
+        jsonld_property: "gs1:preparationStateCode"
+        datatype: string
+        required: false
+        multiple: false
+        transform: [trim, uppercase]
+      - id: nutrient_type_code
+        xpath: "./*[local-name()='nutrientTypeCode']"
+        value_xpath: "text()"
+        canonical_field: nutrient_type_code
+        jsonld_property: "gs1:nutrientTypeCode"
+        datatype: string
+        required: true
+        multiple: false
+        transform: [trim, uppercase]
+      - id: quantity_value
+        xpath: "./*[local-name()='quantityContained']/*[local-name()='measurementValue']"
+        value_xpath: "text()"
+        canonical_field: quantity_contained.value
+        jsonld_property: "gs1:quantityContained.value"
+        datatype: decimal
+        required: true
+        multiple: false
+        transform: [trim, to_decimal]
+      - id: quantity_unit
+        xpath: "./*[local-name()='quantityContained']/*[local-name()='measurementUnitCode']"
+        value_xpath: "text()"
+        canonical_field: quantity_contained.unit_code
+        jsonld_property: "gs1:quantityContained.unitCode"
+        datatype: string
+        required: true
+        multiple: false
+        transform: [trim, uppercase]
+
+  # Certification terms below are validated against the local GS1 Web
+  # Vocabulary catalog. Identification, issuance date, and agency identifier
+  # use explicitly experimental semantic alignments documented in
+  # docs/v0.3.0-design.md.
+  - id: certifications
+    description: BMS-aligned certification details
+    parent_xpath: ".//*[local-name()='certificationInformation']/*[local-name()='certification']"
+    canonical_field: certifications
+    jsonld_property: "gs1:certification"
+    object_type: "gs1:CertificationDetails"
+    multiple: true
+    fields:
+      - id: certification_standard
+        xpath: "ancestor::*[local-name()='certificationInformation'][1]/*[local-name()='certificationStandard']"
+        value_xpath: "text()"
+        canonical_field: certification_standard
+        jsonld_property: "gs1:certificationStandard"
+        datatype: string
+        required: false
+        multiple: false
+        transform: [trim, normalize_whitespace]
+      - id: certification_identification
+        xpath: "./*[local-name()='certificationIdentification']"
+        value_xpath: "text()"
+        canonical_field: certification_identification
+        # Experimental: the catalog requires semantic review between
+        # certificationURI and certificationValue. This non-URI identifier is
+        # retained with schema:identifier rather than inventing a GS1 term.
+        jsonld_property: "schema:identifier"
+        datatype: string
+        required: false
+        multiple: false
+        transform: [trim]
+      - id: certification_value
+        xpath: "./*[local-name()='certificationValue']"
+        value_xpath: "text()"
+        canonical_field: certification_value
+        jsonld_property: "gs1:certificationValue"
+        datatype: string
+        required: true
+        multiple: false
+        transform: [trim, normalize_whitespace]
+      - id: certificate_issuance_date_time
+        xpath: "./*[local-name()='certificateIssuanceDateTime']"
+        value_xpath: "text()"
+        canonical_field: certificate_issuance_date_time
+        # Experimental: certificateIssuanceDateTime is not represented in the
+        # current catalog. schema:dateIssued preserves the source value.
+        jsonld_property: "schema:dateIssued"
+        datatype: string
+        required: false
+        multiple: false
+        transform: [trim]
+      - id: certification_assessment_date_time
+        xpath: "./*[local-name()='certificationAssessmentDateTime']"
+        value_xpath: "text()"
+        canonical_field: assessment_date
+        jsonld_property: "gs1:certificationAuditDate"
+        datatype: string
+        required: false
+        multiple: false
+        transform: [trim, to_date]
+      - id: certification_effective_start_date_time
+        xpath: "./*[local-name()='certificationEffectiveStartDateTime']"
+        value_xpath: "text()"
+        canonical_field: effective_start
+        jsonld_property: "gs1:certificationStartDate"
+        datatype: string
+        required: false
+        multiple: false
+        transform: [trim, to_date]
+      - id: certification_effective_end_date_time
+        xpath: "./*[local-name()='certificationEffectiveEndDateTime']"
+        value_xpath: "text()"
+        canonical_field: effective_end
+        jsonld_property: "gs1:certificationEndDate"
+        datatype: string
+        required: false
+        multiple: false
+        transform: [trim, to_date]
+      - id: certification_organisation_identifier
+        xpath: "ancestor::*[local-name()='certificationInformation'][1]/*[local-name()='certificationOrganisationIdentifier']"
+        value_xpath: "text()"
+        canonical_field: certification_organisation_identifier
+        # Experimental semantic alignment: the BMS value is an organisation
+        # GLN, while gs1:certificationAgency is defined as agency text.
+        jsonld_property: "gs1:certificationAgency"
+        datatype: string
+        required: false
+        multiple: false
+        transform: [trim]
+
+  # Experimental parent relationship: gs1:referencedDocument is not present
+  # in the validated Web Vocabulary. Child metadata uses schema.org terms,
+  # including schema:additionalType as recommended by the review catalog.
+  - id: referenced_documents
+    description: DPP-like and certification document references
+    parent_xpath: ".//*[local-name()='referencedFileInformation'][./*[local-name()='referencedFileTypeCode'][normalize-space(text())='DPP_DOCUMENT' or normalize-space(text())='CERTIFICATION_DOCUMENT']]"
+    canonical_field: referenced_documents
+    jsonld_property: "gs1:referencedDocument"
+    object_type: "schema:DigitalDocument"
+    multiple: true
+    fields:
+      - id: document_file_name
+        xpath: "./*[local-name()='fileName']"
+        value_xpath: "text()"
+        canonical_field: file_name
+        jsonld_property: "schema:name"
+        datatype: string
+        required: false
+        multiple: false
+        transform: [trim]
+      - id: document_file_format
+        xpath: "./*[local-name()='fileFormatName']"
+        value_xpath: "text()"
+        canonical_field: file_format
+        jsonld_property: "schema:encodingFormat"
+        datatype: string
+        required: false
+        multiple: false
+        transform: [trim, uppercase]
+      - id: document_file_type
+        xpath: "./*[local-name()='referencedFileTypeCode']"
+        value_xpath: "text()"
+        canonical_field: referenced_file_type
+        jsonld_property: "schema:additionalType"
+        datatype: string
+        required: true
+        multiple: false
+        transform: [trim, uppercase]
+      - id: document_url
+        xpath: "./*[local-name()='uniformResourceIdentifier']"
+        value_xpath: "text()"
+        canonical_field: document_url
+        jsonld_property: "schema:url"
+        datatype: url
+        required: true
+        multiple: false
+        transform: [trim, validate_url]

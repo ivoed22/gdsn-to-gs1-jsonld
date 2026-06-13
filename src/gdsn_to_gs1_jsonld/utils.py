@@ -1,6 +1,7 @@
 """Small transformation and validation utilities."""
 
 import re
+from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
 from urllib.parse import urlparse
 
@@ -38,6 +39,16 @@ def apply_transform(value: str, transform: str) -> str | Decimal:
             return Decimal(value)
         except InvalidOperation as exc:
             raise ValueError(f"'{value}' is not a decimal") from exc
+    if transform == "to_date":
+        try:
+            return date.fromisoformat(value).isoformat()
+        except ValueError:
+            try:
+                return datetime.fromisoformat(
+                    value.replace("Z", "+00:00")
+                ).date().isoformat()
+            except ValueError as exc:
+                raise ValueError(f"'{value}' is not an ISO date or datetime") from exc
     if transform == "validate_gtin":
         if not is_valid_gtin(value):
             raise ValueError(f"'{value}' is not a valid GTIN")
