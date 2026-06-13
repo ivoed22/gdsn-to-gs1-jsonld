@@ -1,0 +1,42 @@
+{
+  "@context": [
+    "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
+    {
+      "schema": "https://schema.org/"
+    }
+  ],
+  "@type": "gs1:Product",
+  "@id": "https://id.gs1.org/01/08712345678906",
+  "gs1:gtin": "08712345678906",
+  "gs1:productName": [
+    {
+      "@value": "Organic Apple Juice 500 ml",
+      "@language": "en"
+    },
+    {
+      "@value": "Biologisch Appelsap 500 ml",
+      "@language": "nl"
+    }
+  ],
+  "gs1:productDescription": [
+    {
+      "@value": "Organic apple juice made from concentrated apple juice.",
+      "@language": "en"
+    },
+    {
+      "@value": "Biologisch appelsap gemaakt uit geconcentreerd appelsap.",
+      "@language": "nl"
+    }
+  ],
+  "gs1:brandName": "Example Brand",
+  "gs1:gpcCategoryCode": "10000234",
+  "gs1:productImage": [
+    "https://example.com/images/08712345678906-front.jpg",
+    "https://example.com/images/08712345678906-back.jpg"
+  ],
+  "schema:url": "https://example.com/products/08712345678906",
+  "gs1:netContent": {
+    "value": 500,
+    "unitCode": "MLT"
+  }
+}
