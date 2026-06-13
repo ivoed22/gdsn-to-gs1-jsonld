@@ -1,0 +1,23 @@
+metadata:
+  name: Custom GDSN mapping
+  version: 0.1.0
+  description: Copy this file and add fields supported by the canonical product model.
+
+settings:
+  namespace_strategy: local-name
+  default_language: en
+  jsonld_context:
+    - https://ref.gs1.org/voc/data/gs1Voc.jsonld
+    - schema: https://schema.org/
+
+fields:
+  - id: gtin
+    description: Global Trade Item Number
+    xpath: ".//*[local-name()='gtin']"
+    value_xpath: "text()"
+    canonical_field: gtin
+    jsonld_property: "gs1:gtin"
+    required: true
+    datatype: string
+    multiple: false
+    transform: [trim, validate_gtin]

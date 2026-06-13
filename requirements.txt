@@ -1,6 +1,6 @@
 streamlit
 lxml
-pydantic
+pydantic>=2
 pyyaml
 pandas
 openpyxl

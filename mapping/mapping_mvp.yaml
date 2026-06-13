@@ -1,0 +1,115 @@
+metadata:
+  name: GDSN to GS1 JSON-LD MVP
+  version: 0.1.0
+  description: MVP mappings for core product identity, descriptions, measurements, and URLs.
+
+settings:
+  namespace_strategy: local-name
+  default_language: en
+  jsonld_context:
+    - https://ref.gs1.org/voc/data/gs1Voc.jsonld
+    - schema: https://schema.org/
+
+fields:
+  - id: gtin
+    description: Global Trade Item Number
+    xpath: ".//*[local-name()='gtin']"
+    value_xpath: "text()"
+    canonical_field: gtin
+    jsonld_property: "gs1:gtin"
+    required: true
+    datatype: string
+    multiple: false
+    transform: [trim, validate_gtin]
+
+  - id: product_name
+    description: Multilingual product name
+    xpath: ".//*[local-name()='tradeItemDescription']"
+    value_xpath: "text()"
+    language_xpath: "./@languageCode"
+    canonical_field: product_name
+    jsonld_property: "gs1:productName"
+    required: true
+    datatype: language_string
+    multiple: true
+    fallback_language: en
+    transform: [trim, normalize_whitespace]
+
+  - id: product_description
+    description: Multilingual short product description
+    xpath: ".//*[local-name()='descriptionShort']"
+    value_xpath: "text()"
+    language_xpath: "./@languageCode"
+    canonical_field: product_description
+    jsonld_property: "gs1:productDescription"
+    required: false
+    datatype: language_string
+    multiple: true
+    fallback_language: en
+    transform: [trim, normalize_whitespace]
+
+  - id: brand_name
+    description: Product brand name
+    xpath: ".//*[local-name()='brandName']"
+    value_xpath: "text()"
+    canonical_field: brand_name
+    jsonld_property: "gs1:brandName"
+    required: false
+    datatype: string
+    multiple: false
+    transform: [trim]
+
+  - id: gpc_category_code
+    description: GS1 Global Product Classification category code
+    xpath: ".//*[local-name()='gpcCategoryCode']"
+    value_xpath: "text()"
+    canonical_field: gpc_category_code
+    jsonld_property: "gs1:gpcCategoryCode"
+    required: false
+    datatype: string
+    multiple: false
+    transform: [trim]
+
+  - id: net_content_value
+    description: Numeric net content value
+    xpath: ".//*[local-name()='netContent']/*[local-name()='measurementValue']"
+    value_xpath: "text()"
+    canonical_field: net_content_value
+    jsonld_property: "gs1:netContent"
+    required: false
+    datatype: decimal
+    multiple: false
+    transform: [trim, to_decimal]
+
+  - id: net_content_unit
+    description: Net content measurement unit code
+    xpath: ".//*[local-name()='netContent']/*[local-name()='measurementUnitCode']"
+    value_xpath: "text()"
+    canonical_field: net_content_unit
+    jsonld_property: "gs1:netContent"
+    required: false
+    datatype: string
+    multiple: false
+    transform: [trim, uppercase]
+
+  - id: product_image_url
+    description: Product image URL
+    xpath: ".//*[local-name()='referencedFileInformation'][.//*[local-name()='referencedFileTypeCode' and normalize-space(text())='PRODUCT_IMAGE']]/*[local-name()='uniformResourceIdentifier']"
+    value_xpath: "text()"
+    canonical_field: product_image_url
+    jsonld_property: "gs1:productImage"
+    required: false
+    datatype: url
+    multiple: true
+    transform: [trim, validate_url]
+
+  - id: product_page_url
+    description: Product marketing page URL
+    xpath: ".//*[local-name()='marketingInformation']/*[local-name()='uniformResourceIdentifier']"
+    value_xpath: "text()"
+    canonical_field: product_page_url
+    jsonld_property: "schema:url"
+    required: false
+    datatype: url
+    multiple: false
+    transform: [trim, validate_url]
