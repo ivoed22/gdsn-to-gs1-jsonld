@@ -76,3 +76,45 @@ def test_cli_converts_with_v0_3_mapping(
     )
     assert "gs1:certification" in output
     assert "gs1:referencedDocument" in output
+
+
+def test_cli_check_catalog_passes_current_catalog():
+    result = runner.invoke(
+        app,
+        [
+            "check-catalog",
+            "--catalog",
+            (
+                "mapping_catalog/"
+                "gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv"
+            ),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "0 error(s)" in result.output
+
+
+def test_cli_check_mapping_creates_quality_reports(
+    mapping_v0_3_path,
+    tmp_path,
+):
+    result = runner.invoke(
+        app,
+        [
+            "check-mapping",
+            "--mapping",
+            str(mapping_v0_3_path),
+            "--catalog",
+            (
+                "mapping_catalog/"
+                "gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv"
+            ),
+            "--output",
+            str(tmp_path),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert (tmp_path / "mapping_quality_report.json").is_file()
+    assert (tmp_path / "mapping_quality_report.xlsx").is_file()

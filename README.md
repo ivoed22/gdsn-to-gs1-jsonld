@@ -3,9 +3,9 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
-Version 0.3.0 keeps the v0.1.0 and v0.2.0 outputs stable and adds experimental
-BMS/XPath-aligned certification and document mapping. It is deliberately a
-structured product converter, not a generic XML-to-JSON utility.
+Version 0.4.0 adds mapping catalog quality checks while keeping the v0.1.0,
+v0.2.0, and v0.3.0 converter outputs stable. It is deliberately a structured
+product converter, not a generic XML-to-JSON utility.
 
 ## Mapping profiles
 
@@ -54,6 +54,25 @@ python -m gdsn_to_gs1_jsonld.cli convert examples/input/example_product.xml \
   --output output_v0_3/
 ```
 
+Validate the mapping catalog:
+
+```bash
+gdsn-to-gs1-jsonld check-catalog \
+  --catalog mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv
+```
+
+Compare an executable YAML profile with the catalog and create reports:
+
+```bash
+gdsn-to-gs1-jsonld check-mapping \
+  --mapping mapping/mapping_v0_3.yaml \
+  --catalog mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv \
+  --output mapping_quality_report/
+```
+
+Warnings are non-failing by default. Add `--strict` to either quality command
+to make warnings produce exit code 1.
+
 ## Streamlit
 
 ```bash
@@ -68,12 +87,13 @@ Food v0.2.0 or MVP v0.1.0 profiles.
 Mapping YAML is the executable converter configuration. The catalog under
 `mapping_catalog/` is the BMS/XPath and vocabulary traceability layer. Version
 0.3.0 uses GDSN 3.1.36 catalog rows and locally validated Web Vocabulary terms
-as design inputs.
+as design inputs. Version 0.4.0 checks catalog governance and YAML/catalog
+alignment without generating YAML or changing converter output.
 
 ## Development
 
 ```bash
-pytest
+python -m pytest
 ```
 
 See [`docs/`](docs/index.md) for architecture, mapping, output, app, and roadmap
@@ -81,9 +101,9 @@ notes.
 
 ## Roadmap
 
-Later releases may resolve experimental document semantics, add broader food
-coverage, certification verification, validation profiles, and batch
-conversion.
+Later releases may resolve catalog findings and experimental document
+semantics, add broader food coverage, certification verification, validation
+profiles, and batch conversion.
 
 ## Disclaimer
 

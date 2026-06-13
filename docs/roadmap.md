@@ -1,10 +1,11 @@
 # Roadmap
 
-Version 0.3.0 adds BMS/XPath-aligned certification mapping and experimental
-DPP/document links while preserving the v0.1.0 and v0.2.0 profiles.
+Version 0.4.0 adds catalog-driven quality checks while preserving the v0.1.0,
+v0.2.0, and v0.3.0 converter profiles and output.
 
-Potential work after v0.3.0:
+Potential work after v0.4.0:
 
+- resolve catalog warnings through standards and project review
 - broader GDSN modules and mapping profiles
 - richer ingredients, allergens, serving sizes, and nutrition
 - standards review for generic document-link relationships
