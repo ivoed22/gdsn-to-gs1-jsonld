@@ -1,0 +1,40 @@
+﻿term,namespace,found_in_uploaded_gs1Voc,type,label,range,domain,comment
+gs1:gtin,gs1,yes,owl:DatatypeProperty; owl:FunctionalProperty; rdf:Property,GTIN,xsd:string,gs1:Product; schema:Product,A Global Trade Item Number (GTIN) is the 14 digit GS1 Identification Key used to identify products. The key comprises a GS1 Company Prefix followed by an Item Reference Number and a Check Digit. See https://www.gs1.org/gtin  for more details.
+gs1:productName,gs1,yes,rdf:Property; owl:DatatypeProperty,Product Name,rdf:langString,gs1:Product,Consumer friendly short description of the product suitable for compact presentation.
+gs1:productDescription,gs1,yes,rdf:Property; owl:DatatypeProperty,Product Description,rdf:langString,gs1:Product,"An understandable and useable description of a product using brand and other descriptors. This attribute is filled with as little abbreviation as possible, while keeping to a reasonable length.  This should be a meaningful description of the product with full spelling to facilitate message processing. Retailers can use this description as the base to fully understand the brand, flavour, scent etc. of the specific product, in order to accurately create a product description as needed for their internal systems. Examples: XYZ Brand Base Invisible Solid Deodorant AP Stick Spring Breeze."
+gs1:brandName,gs1,yes,rdf:Property; owl:DatatypeProperty,Brand Name,rdf:langString,gs1:Brand,The brand name of the product that appears on the consumer package.
+gs1:gpcCategoryCode,gs1,yes,owl:DatatypeProperty; owl:FunctionalProperty; rdf:Property,GPC Category Code,xsd:string,gs1:Product,8-digit code (GPC Brick Value) specifying a product category according to the GS1 Global Product Classification (GPC) standard. For more information see https://www.gs1.org/gpc
+gs1:netContent,gs1,yes,rdf:Property; owl:ObjectProperty; owl:FunctionalProperty,Net content,gs1:QuantitativeValue,gs1:Product,"The quantity of the product contained by a package, usually as claimed on the label. Indicates the net content of the total product. For fixed value products use the value claimed on the package, to avoid variable fill rate issue that arises with some product which are sold by volume or weight, and whose actual content may vary slightly from batch to batch."
+gs1:productImage,gs1,no,,,,,
+schema:image,schema.org,external,,,,,External schema.org term; not validated against GS1 Web Vocabulary file.
+schema:url,schema.org,external,,,,,External schema.org term; not validated against GS1 Web Vocabulary file.
+gs1:ingredientStatement,gs1,yes,owl:DatatypeProperty; rdf:Property,Ingredient Statement,rdf:langString,gs1:FoodBeverageTobaccoProduct,Information on the constituent ingredient make up of the product specified as one string.
+gs1:hasAllergen,gs1,yes,rdf:Property; owl:ObjectProperty,Has Allergen,gs1:AllergenDetails,gs1:FoodBeverageTobaccoProduct,Relates to details about allergens
+gs1:allergenType,gs1,yes,rdf:Property; owl:ObjectProperty,Allergen Type Code,gs1:AllergenTypeCode,gs1:AllergenDetails,Code specifying the type of allergen.
+gs1:AllergenDetails,gs1,yes,owl:Class; rdfs:Class,Allergen Details,,,Details of an allergen for a product.
+gs1:levelOfContainment,gs1,no,,,,,
+gs1:allergenLevelOfContainmentCode,gs1,yes,owl:ObjectProperty; rdf:Property,Allergen Level Of Containment,gs1:LevelOfContainmentCode,gs1:AllergenDetails,Code specifying the level of presence of the allergen.
+gs1:nutrientDetail,gs1,no,,,,,
+gs1:preparationStateCode,gs1,no,,,,,
+gs1:preparationCode,gs1,yes,owl:ObjectProperty; rdf:Property,Preparation Type Code,gs1:PreparationTypeCode,gs1:FoodAndBeveragePreparationInformation,"Code specifying the preparation state of the product for which the nutrient information is valid. PREPARED, UNPREPARED."
+gs1:nutrientTypeCode,gs1,no,,,,,
+gs1:energyPerNutrientBasis,gs1,yes,rdf:Property; owl:ObjectProperty,Energy Per Nutrient Basis Quantity,gs1:NutritionMeasurementType,gs1:FoodBeverageTobaccoProduct,Energy Per specified nutrient basis quantity.
+gs1:NutritionMeasurementType,gs1,yes,rdfs:Class; owl:Class,Nutrition Measurement Type,,,A class providing nutritional value and intake percent.
+gs1:quantityContained,gs1,no,,,,,
+gs1:certification,gs1,yes,rdf:Property; owl:ObjectProperty,Has Certification,gs1:CertificationDetails,_:u4,"Certification information about a product, organisation or location."
+gs1:CertificationDetails,gs1,yes,owl:Class; rdfs:Class,Certification,,,"Certification issued by a certifying body to a certification subject (Organization, Place, Product)."
+gs1:certificationStandard,gs1,yes,owl:DatatypeProperty; rdf:Property,Certification Standard,rdf:langString,gs1:CertificationDetails,Name of the certification standard. Free text. Example: 'Egg classification' .
+gs1:certificationURI,gs1,yes,owl:DatatypeProperty; rdf:Property,Certification URI,xsd:anyURI,gs1:CertificationDetails,"If gs1:certificationURI is present, it should point to data about this individual certificate within a repository maintained by the certification agency."
+gs1:certificationValue,gs1,yes,owl:DatatypeProperty; rdf:Property,Certification Value,rdf:langString,gs1:CertificationDetails,The certification's standard value. Example: '4'.
+gs1:certificationAgency,gs1,yes,rdf:Property; owl:DatatypeProperty,Certification Agency,rdf:langString,gs1:CertificationDetails,Name of the organisation issuing the certification standard or other requirement being met .
+gs1:certificationAgencyURL,gs1,yes,rdf:Property; owl:ObjectProperty,Certification Agency URL,gs1:Organization,gs1:CertificationDetails,"URL of the organisation issuing the certification standard or other requirement being met. e.g. https://www.msc.org , https://www.fsc.org"
+gs1:certificationAuditDate,gs1,yes,owl:DatatypeProperty; rdf:Property,Certification Audit Date,xsd:date,gs1:CertificationDetails,Date of completion of the auditing needed for certification
+gs1:certificationEndDate,gs1,yes,owl:DatatypeProperty; rdf:Property,Certification End Date,xsd:date,gs1:CertificationDetails,Last date of validity for the certification. (After this date the certification lapses and would need to be renewed/replaced)
+gs1:certificationStartDate,gs1,yes,owl:DatatypeProperty; rdf:Property,Certification Start Date,xsd:date,gs1:CertificationDetails,First date of validity for the certification
+gs1:certificationEffectiveStartDate,gs1,no,,,,,
+schema:name,schema.org,external,,,,,External schema.org term; not validated against GS1 Web Vocabulary file.
+schema:DigitalDocument,schema.org,external,,,,,External schema.org term; not validated against GS1 Web Vocabulary file.
+gs1:referencedFileTypeCode,gs1,no,,,,,
+schema:additionalType,schema.org,external,,,,,External schema.org term; not validated against GS1 Web Vocabulary file.
+gs1:certificationInfo,gs1,yes,rdf:Property; owl:ObjectProperty,Certification Information,xsd:anyURI,owl:Thing,A link to certification information.
+schema:encodingFormat,schema.org,external,,,,,External schema.org term; not validated against GS1 Web Vocabulary file.
