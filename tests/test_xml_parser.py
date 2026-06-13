@@ -44,6 +44,24 @@ def test_unmapped_fields_include_out_of_scope_elements(
     } <= names
     assert {
         "netContent",
+    }.isdisjoint(names)
+
+    nutrient_measurements = [
+        item
+        for item in result.unmapped_fields["unmapped_elements"]
+        if item["element"] in {"measurementValue", "measurementUnitCode"}
+    ]
+    assert {item["element"] for item in nutrient_measurements} == {
         "measurementValue",
         "measurementUnitCode",
-    }.isdisjoint(names)
+    }
+    assert all(item["parent"] == "quantityContained" for item in nutrient_measurements)
+    assert all(
+        "/nutrientHeader/nutrientDetail/quantityContained/" in item["path"]
+        for item in nutrient_measurements
+    )
+
+    assert all(
+        {"element", "parent", "path", "count"} <= item.keys()
+        for item in result.unmapped_fields["unmapped_elements"]
+    )

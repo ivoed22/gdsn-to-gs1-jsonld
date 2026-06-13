@@ -155,9 +155,8 @@ def _extract_field(
 def _find_unmapped(
     root: etree._Element,
     selected_paths: set[str],
-    mapped_element_names: set[str],
 ) -> dict[str, list[dict[str, Any]]]:
-    counts: Counter[str] = Counter()
+    counts: Counter[tuple[str, str | None, str]] = Counter()
     tree = root.getroottree()
     for element in root.iter():
         if not isinstance(element.tag, str):
@@ -165,14 +164,35 @@ def _find_unmapped(
         if tree.getpath(element) in selected_paths:
             continue
         local_name = etree.QName(element).localname
-        if local_name in UNMAPPED_IGNORE or local_name in mapped_element_names:
+        if local_name in UNMAPPED_IGNORE:
             continue
         if "".join(element.itertext()).strip():
-            counts[local_name] += 1
+            parent = element.getparent()
+            parent_name = (
+                etree.QName(parent).localname
+                if parent is not None and isinstance(parent.tag, str)
+                else None
+            )
+            ancestor_names = [
+                etree.QName(ancestor).localname
+                for ancestor in element.iterancestors()
+                if isinstance(ancestor.tag, str)
+            ]
+            path = "/" + "/".join(reversed(ancestor_names))
+            path = f"{path}/{local_name}"
+            counts[(local_name, parent_name, path)] += 1
     return {
         "unmapped_elements": [
-            {"element": name, "count": count}
-            for name, count in sorted(counts.items())
+            {
+                "element": element,
+                "parent": parent,
+                "path": path,
+                "count": count,
+            }
+            for (element, parent, path), count in sorted(
+                counts.items(),
+                key=lambda item: (item[0][0], item[0][2]),
+            )
         ]
     }
 
@@ -222,7 +242,6 @@ def convert_xml_to_jsonld(
         str,
         dict[str, list[etree._Element]],
     ] = {}
-    mapped_element_names: set[str] = set()
 
     for mapping_field in mapping.fields:
         value, row, field_selected_paths, field_elements = _extract_field(
@@ -238,9 +257,6 @@ def convert_xml_to_jsonld(
                 mapping_field.jsonld_property,
                 {},
             )[mapping_field.id] = field_elements
-            mapped_element_names.update(
-                etree.QName(element).localname for element in field_elements
-            )
 
     selected_paths.update(
         _supporting_paths_for_combined_properties(
@@ -255,7 +271,6 @@ def convert_xml_to_jsonld(
     unmapped_fields = _find_unmapped(
         root,
         selected_paths,
-        mapped_element_names,
     )
     result = ConversionResult(
         jsonld_data=jsonld_data,
