@@ -272,7 +272,9 @@ def _find_unmapped(
     root: etree._Element,
     selected_paths: set[str],
 ) -> dict[str, list[dict[str, Any]]]:
-    counts: Counter[tuple[str, str | None, str]] = Counter()
+    counts: Counter[
+        tuple[str, str | None, str, tuple[tuple[str, str], ...]]
+    ] = Counter()
     tree = root.getroottree()
     for element in root.iter():
         if not isinstance(element.tag, str):
@@ -296,7 +298,24 @@ def _find_unmapped(
             ]
             path = "/" + "/".join(reversed(ancestor_names))
             path = f"{path}/{local_name}"
-            counts[(local_name, parent_name, path)] += 1
+            context: dict[str, str] = {}
+            if parent_name == "referencedFileInformation" and parent is not None:
+                context_fields = {
+                    "referencedFileTypeCode",
+                    "uniformResourceIdentifier",
+                    "fileName",
+                    "fileFormatName",
+                }
+                for sibling in parent:
+                    if not isinstance(sibling.tag, str):
+                        continue
+                    sibling_name = etree.QName(sibling).localname
+                    if sibling_name in context_fields:
+                        sibling_value = "".join(sibling.itertext()).strip()
+                        if sibling_value:
+                            context[sibling_name] = sibling_value
+            context_items = tuple(sorted(context.items()))
+            counts[(local_name, parent_name, path, context_items)] += 1
     return {
         "unmapped_elements": [
             {
@@ -304,10 +323,11 @@ def _find_unmapped(
                 "parent": parent,
                 "path": path,
                 "count": count,
+                **({"context": dict(context_items)} if context_items else {}),
             }
-            for (element, parent, path), count in sorted(
+            for (element, parent, path, context_items), count in sorted(
                 counts.items(),
-                key=lambda item: (item[0][0], item[0][2]),
+                key=lambda item: (item[0][0], item[0][2], item[0][3]),
             )
         ]
     }

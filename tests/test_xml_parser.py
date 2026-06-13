@@ -112,17 +112,32 @@ def test_v0_3_unmapped_fields_exclude_certification_and_documents(
     }
     assert mapped_names.isdisjoint({item["element"] for item in items})
     assert not any("/certificationInformation/" in item["path"] for item in items)
-    remaining_document_metadata = {
-        item["element"]: item["count"]
+    referenced_file_items = [
+        item
         for item in items
         if item["element"]
         in {"fileName", "fileFormatName", "referencedFileTypeCode"}
-    }
-    assert remaining_document_metadata == {
-        "fileName": 2,
-        "fileFormatName": 2,
-        "referencedFileTypeCode": 2,
-    }
+    ]
+    assert len(referenced_file_items) == 6
+    assert all(item["count"] == 1 for item in referenced_file_items)
+    assert {
+        item["context"]["referencedFileTypeCode"]
+        for item in referenced_file_items
+    } == {"PRODUCT_IMAGE"}
+    assert {
+        item["context"]["fileName"] for item in referenced_file_items
+    } == {"front-packshot.jpg", "back-label.jpg"}
+    assert all(
+        item["context"]["uniformResourceIdentifier"].startswith(
+            "https://example.com/images/"
+        )
+        for item in referenced_file_items
+    )
+    assert not any(
+        item.get("context", {}).get("referencedFileTypeCode")
+        in {"DPP_DOCUMENT", "CERTIFICATION_DOCUMENT"}
+        for item in items
+    )
     assert not any(
         item["element"] == "uniformResourceIdentifier" for item in items
     )
