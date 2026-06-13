@@ -67,13 +67,15 @@ def _extract_field(
     root: etree._Element,
     field: MappingField,
     default_language: str,
-) -> tuple[Any, dict[str, Any], set[str]]:
+) -> tuple[Any, dict[str, Any], set[str], list[etree._Element]]:
     elements = root.xpath(field.xpath)
+    selected_elements = [
+        element for element in elements if isinstance(element, etree._Element)
+    ]
     tree = root.getroottree()
     selected_paths = {
         tree.getpath(element)
-        for element in elements
-        if isinstance(element, etree._Element)
+        for element in selected_elements
     }
     extracted: list[Any] = []
     errors: list[str] = []
@@ -147,12 +149,13 @@ def _extract_field(
         "status": status,
         "message": message,
     }
-    return value, row, selected_paths
+    return value, row, selected_paths, selected_elements
 
 
 def _find_unmapped(
     root: etree._Element,
     selected_paths: set[str],
+    mapped_element_names: set[str],
 ) -> dict[str, list[dict[str, Any]]]:
     counts: Counter[str] = Counter()
     tree = root.getroottree()
@@ -162,7 +165,7 @@ def _find_unmapped(
         if tree.getpath(element) in selected_paths:
             continue
         local_name = etree.QName(element).localname
-        if local_name in UNMAPPED_IGNORE:
+        if local_name in UNMAPPED_IGNORE or local_name in mapped_element_names:
             continue
         if "".join(element.itertext()).strip():
             counts[local_name] += 1
@@ -172,6 +175,36 @@ def _find_unmapped(
             for name, count in sorted(counts.items())
         ]
     }
+
+
+def _supporting_paths_for_combined_properties(
+    root: etree._Element,
+    selected_elements_by_property: dict[
+        str,
+        dict[str, list[etree._Element]],
+    ],
+) -> set[str]:
+    tree = root.getroottree()
+    supporting_paths: set[str] = set()
+
+    for elements_by_field in selected_elements_by_property.values():
+        if len(elements_by_field) < 2:
+            continue
+        fields_by_parent: dict[str, set[str]] = {}
+        for field_id, selected_elements in elements_by_field.items():
+            for element in selected_elements:
+                parent = element.getparent()
+                if parent is None:
+                    continue
+                parent_path = tree.getpath(parent)
+                fields_by_parent.setdefault(parent_path, set()).add(field_id)
+        supporting_paths.update(
+            parent_path
+            for parent_path, field_ids in fields_by_parent.items()
+            if len(field_ids) >= 2
+        )
+
+    return supporting_paths
 
 
 def convert_xml_to_jsonld(
@@ -185,9 +218,14 @@ def convert_xml_to_jsonld(
     product_values: dict[str, Any] = {}
     mapping_rows: list[dict[str, Any]] = []
     selected_paths: set[str] = set()
+    selected_elements_by_property: dict[
+        str,
+        dict[str, list[etree._Element]],
+    ] = {}
+    mapped_element_names: set[str] = set()
 
     for mapping_field in mapping.fields:
-        value, row, field_selected_paths = _extract_field(
+        value, row, field_selected_paths, field_elements = _extract_field(
             root,
             mapping_field,
             mapping.settings.default_language,
@@ -195,11 +233,30 @@ def convert_xml_to_jsonld(
         product_values[mapping_field.canonical_field] = value
         mapping_rows.append(row)
         selected_paths.update(field_selected_paths)
+        if row["found"]:
+            selected_elements_by_property.setdefault(
+                mapping_field.jsonld_property,
+                {},
+            )[mapping_field.id] = field_elements
+            mapped_element_names.update(
+                etree.QName(element).localname for element in field_elements
+            )
+
+    selected_paths.update(
+        _supporting_paths_for_combined_properties(
+            root,
+            selected_elements_by_property,
+        )
+    )
 
     product = CanonicalProduct.model_validate(product_values)
     validation_report = validate_product(product, mapping, mapping_rows)
     jsonld_data = build_jsonld(product, mapping)
-    unmapped_fields = _find_unmapped(root, selected_paths)
+    unmapped_fields = _find_unmapped(
+        root,
+        selected_paths,
+        mapped_element_names,
+    )
     result = ConversionResult(
         jsonld_data=jsonld_data,
         canonical_product=product,

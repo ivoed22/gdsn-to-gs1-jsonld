@@ -33,4 +33,17 @@ def test_unmapped_fields_include_out_of_scope_elements(
     names = {
         item["element"] for item in result.unmapped_fields["unmapped_elements"]
     }
-    assert {"ingredientStatement", "allergenRelatedInformation", "nutrientHeader"} <= names
+    assert {
+        "ingredientStatement",
+        "allergenRelatedInformation",
+        "allergenTypeCode",
+        "levelOfContainmentCode",
+        "nutrientHeader",
+        "nutrientTypeCode",
+        "preparationStateCode",
+    } <= names
+    assert {
+        "netContent",
+        "measurementValue",
+        "measurementUnitCode",
+    }.isdisjoint(names)
