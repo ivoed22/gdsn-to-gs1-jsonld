@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gdsn:catalogueItemNotificationMessage
+    xmlns:gdsn="urn:gs1:gdsn:catalogue_item_notification:xsd:3"
+    xmlns:sh="urn:gs1:shared:shared_common:xsd:3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <gdsn:transaction>
+        <gdsn:transactionIdentification>
+            <sh:entityIdentification>TEST-TRANSACTION-0001</sh:entityIdentification>
+            <sh:contentOwner>
+                <sh:gln>8712345000005</sh:gln>
+            </sh:contentOwner>
+        </gdsn:transactionIdentification>
+
+        <gdsn:catalogueItem>
+            <gdsn:tradeItem>
+                <gdsn:gtin>08712345678906</gdsn:gtin>
+
+                <gdsn:informationProviderOfTradeItem>
+                    <sh:gln>8712345000012</sh:gln>
+                    <sh:partyName>Example Information Provider BV</sh:partyName>
+                </gdsn:informationProviderOfTradeItem>
+
+                <gdsn:brandNameInformation>
+                    <gdsn:brandName>Example Brand</gdsn:brandName>
+                </gdsn:brandNameInformation>
+
+                <gdsn:gpcCategoryCode>10000234</gdsn:gpcCategoryCode>
+
+                <gdsn:tradeItemDescriptionInformation>
+                    <gdsn:tradeItemDescription languageCode="en">Organic Apple Juice 500 ml</gdsn:tradeItemDescription>
+                    <gdsn:tradeItemDescription languageCode="nl">Biologisch Appelsap 500 ml</gdsn:tradeItemDescription>
+                    <gdsn:descriptionShort languageCode="en">Organic apple juice made from concentrated apple juice.</gdsn:descriptionShort>
+                    <gdsn:descriptionShort languageCode="nl">Biologisch appelsap gemaakt uit geconcentreerd appelsap.</gdsn:descriptionShort>
+                </gdsn:tradeItemDescriptionInformation>
+
+                <gdsn:tradeItemMeasurements>
+                    <gdsn:netContent>
+                        <sh:measurementValue>500</sh:measurementValue>
+                        <sh:measurementUnitCode>MLT</sh:measurementUnitCode>
+                    </gdsn:netContent>
+                </gdsn:tradeItemMeasurements>
+
+                <gdsn:tradeItemInformation>
+                    <gdsn:marketingInformation>
+                        <gdsn:uniformResourceIdentifier>https://example.com/products/08712345678906</gdsn:uniformResourceIdentifier>
+                    </gdsn:marketingInformation>
+
+                    <gdsn:referencedFileInformation>
+                        <gdsn:fileName>front-packshot.jpg</gdsn:fileName>
+                        <gdsn:fileFormatName>JPEG</gdsn:fileFormatName>
+                        <gdsn:referencedFileTypeCode>PRODUCT_IMAGE</gdsn:referencedFileTypeCode>
+                        <gdsn:uniformResourceIdentifier>https://example.com/images/08712345678906-front.jpg</gdsn:uniformResourceIdentifier>
+                    </gdsn:referencedFileInformation>
+
+                    <gdsn:referencedFileInformation>
+                        <gdsn:fileName>back-label.jpg</gdsn:fileName>
+                        <gdsn:fileFormatName>JPEG</gdsn:fileFormatName>
+                        <gdsn:referencedFileTypeCode>PRODUCT_IMAGE</gdsn:referencedFileTypeCode>
+                        <gdsn:uniformResourceIdentifier>https://example.com/images/08712345678906-back.jpg</gdsn:uniformResourceIdentifier>
+                    </gdsn:referencedFileInformation>
+                </gdsn:tradeItemInformation>
+
+                <!-- Out-of-scope for MVP, included intentionally so the unmapped-fields report can be tested. -->
+                <gdsn:ingredientStatement>
+                    <gdsn:ingredientStatement languageCode="en">Apple juice from concentrate.</gdsn:ingredientStatement>
+                    <gdsn:ingredientStatement languageCode="nl">Appelsap uit concentraat.</gdsn:ingredientStatement>
+                </gdsn:ingredientStatement>
+
+                <gdsn:allergenRelatedInformation>
+                    <gdsn:allergen>
+                        <gdsn:allergenTypeCode>AM</gdsn:allergenTypeCode>
+                        <gdsn:levelOfContainmentCode>FREE_FROM</gdsn:levelOfContainmentCode>
+                    </gdsn:allergen>
+                </gdsn:allergenRelatedInformation>
+
+                <gdsn:nutrientHeader>
+                    <gdsn:preparationStateCode>UNPREPARED</gdsn:preparationStateCode>
+                    <gdsn:nutrientDetail>
+                        <gdsn:nutrientTypeCode>ENER-</gdsn:nutrientTypeCode>
+                        <gdsn:quantityContained>
+                            <sh:measurementValue>190</sh:measurementValue>
+                            <sh:measurementUnitCode>KJO</sh:measurementUnitCode>
+                        </gdsn:quantityContained>
+                    </gdsn:nutrientDetail>
+                </gdsn:nutrientHeader>
+            </gdsn:tradeItem>
+        </gdsn:catalogueItem>
+    </gdsn:transaction>
+</gdsn:catalogueItemNotificationMessage>
