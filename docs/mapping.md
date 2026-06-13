@@ -29,3 +29,19 @@ Supported transforms are `trim`, `normalize_whitespace`, `uppercase`,
 `to_decimal`, `to_date`, `validate_gtin`, and `validate_url`.
 
 The v0.1.0 and v0.2.0 profiles remain available for output compatibility.
+
+## Catalog alignment
+
+Version 0.4.0 can flatten simple fields, object mappings, and object child
+fields from any profile for comparison with the mapping catalog:
+
+```bash
+gdsn-to-gs1-jsonld check-mapping \
+  --mapping mapping/mapping_v0_3.yaml \
+  --catalog mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv \
+  --output mapping_quality_report/
+```
+
+The check reports missing canonical fields, property differences,
+high-confidence catalog coverage, experimental mappings, and review items. It
+does not modify the mapping file or converter output.

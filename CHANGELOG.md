@@ -1,5 +1,30 @@
 # Changelog
 
+## v0.4.0 — Mapping Catalog Driven Quality Checks
+
+### Added
+
+- Reusable catalog and YAML mapping quality checks.
+- `check-catalog` and `check-mapping` CLI commands.
+- Structured errors, warnings, and informational findings.
+- JSON and multi-sheet Excel quality reports.
+- Coverage, experimental mapping, review, and Web Vocabulary diagnostics.
+- Tests and documentation for mapping governance workflows.
+
+### Preserved
+
+- v0.1.0, v0.2.0, and v0.3.0 converter output compatibility.
+- Existing executable mapping YAML profiles.
+- Shared converter package for CLI and Streamlit.
+
+### Notes / limitations
+
+This release checks existing governance data; it does not add business
+mappings, generate YAML, verify certificates, dereference URLs, call resolvers,
+implement Verifiable Credentials, add DCAT/DPROD, or provide full GDSN XSD
+validation. Unknown catalog statuses and confidence values are warnings by
+default and fail only in strict mode.
+
 ## v0.3.0 — BMS/XPath-aligned Certification & Document Mapping
 
 ### Added
