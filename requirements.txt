@@ -1,0 +1,8 @@
+streamlit
+lxml
+pydantic
+pyyaml
+pandas
+openpyxl
+typer
+pyld
