@@ -35,6 +35,7 @@ st.set_page_config(
     layout="wide",
 )
 st.title("GDSN to GS1 JSON-LD Converter")
+st.caption("v0.2.0-dev")
 st.write(
     "Convert a GDSN-like product XML file into GS1 Web Vocabulary JSON-LD "
     "using a configurable mapping profile."
@@ -43,15 +44,33 @@ st.info(
     "Privacy: uploaded XML files are processed in memory and are not "
     "intentionally stored permanently."
 )
+st.markdown(
+    """
+**Supported field groups**
+
+- Basic product identity
+- Descriptions
+- Brand/category
+- Net content
+- Images/links
+- Ingredients
+- Allergens
+- Nutrients
+"""
+)
 
 uploaded_file = st.file_uploader("Upload a GDSN product XML file", type=["xml"])
-st.selectbox("Mapping profile", ["MVP mapping"])
+mapping_profiles = {
+    "Food v0.2.0 mapping": REPOSITORY_ROOT / "mapping" / "mapping_v0_2.yaml",
+    "MVP v0.1.0 mapping": REPOSITORY_ROOT / "mapping" / "mapping_mvp.yaml",
+}
+selected_profile = st.selectbox("Mapping profile", list(mapping_profiles))
 
 if uploaded_file is None:
     st.info("Upload one XML file to begin.")
 elif st.button("Convert to JSON-LD", type="primary"):
     clear_results()
-    mapping_path = REPOSITORY_ROOT / "mapping" / "mapping_mvp.yaml"
+    mapping_path = mapping_profiles[selected_profile]
     try:
         result = convert_xml_to_jsonld(
             uploaded_file.getvalue(),

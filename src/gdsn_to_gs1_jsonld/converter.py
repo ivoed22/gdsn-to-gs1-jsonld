@@ -10,7 +10,13 @@ from lxml import etree
 
 from .canonical_model import CanonicalProduct, LanguageValue
 from .jsonld_builder import build_jsonld
-from .mapping_loader import MappingConfig, MappingField, load_mapping
+from .mapping_loader import (
+    MappingConfig,
+    MappingField,
+    ObjectMapping,
+    ObjectMappingField,
+    load_mapping,
+)
 from .reporter import write_reports
 from .utils import apply_transform, serializable_value
 from .validator import validate_product
@@ -56,11 +62,121 @@ def _xpath_scalar(element: etree._Element, xpath: str) -> str | None:
     return str(value)
 
 
-def _transform_value(raw_value: str, field: MappingField) -> str | Decimal:
+def _transform_value(
+    raw_value: str,
+    field: MappingField | ObjectMappingField,
+) -> str | Decimal:
     value: str | Decimal = raw_value
     for transform in field.transform:
         value = apply_transform(str(value), transform)
     return value
+
+
+def _set_nested_value(target: dict[str, Any], path: str, value: Any) -> None:
+    parts = path.split(".")
+    current = target
+    for part in parts[:-1]:
+        current = current.setdefault(part, {})
+    current[parts[-1]] = value
+
+
+def _extract_object_mapping(
+    root: etree._Element,
+    object_mapping: ObjectMapping,
+    default_language: str,
+) -> tuple[list[dict[str, Any]], dict[str, Any], set[str]]:
+    parents = [
+        element
+        for element in root.xpath(object_mapping.parent_xpath)
+        if isinstance(element, etree._Element)
+    ]
+    tree = root.getroottree()
+    selected_paths: set[str] = set()
+    objects: list[dict[str, Any]] = []
+    messages: list[str] = []
+
+    for parent in parents:
+        selected_paths.add(tree.getpath(parent))
+        if parent.getparent() is not None:
+            selected_paths.add(tree.getpath(parent.getparent()))
+        object_data: dict[str, Any] = {}
+        for field in object_mapping.fields:
+            field_elements = [
+                element
+                for element in parent.xpath(field.xpath)
+                if isinstance(element, etree._Element)
+            ]
+            values: list[Any] = []
+            for element in field_elements:
+                selected_paths.add(tree.getpath(element))
+                ancestor = element.getparent()
+                while ancestor is not None and ancestor is not parent:
+                    selected_paths.add(tree.getpath(ancestor))
+                    ancestor = ancestor.getparent()
+                raw_value = _xpath_scalar(element, field.value_xpath)
+                if raw_value is None or not raw_value.strip():
+                    continue
+                try:
+                    transformed = _transform_value(raw_value, field)
+                except ValueError as exc:
+                    messages.append(f"{field.id}: {exc}")
+                    continue
+                if field.datatype == "language_string":
+                    language = (
+                        _xpath_scalar(element, field.language_xpath)
+                        if field.language_xpath
+                        else None
+                    )
+                    values.append(
+                        LanguageValue(
+                            value=str(transformed),
+                            language=language
+                            or field.fallback_language
+                            or default_language,
+                        )
+                    )
+                else:
+                    values.append(transformed)
+            if field.required and not values:
+                messages.append(f"{field.id}: required value was not found")
+            if field.canonical_field and values:
+                _set_nested_value(
+                    object_data,
+                    field.canonical_field,
+                    values if field.multiple else values[0],
+                )
+        if object_data:
+            objects.append(object_data)
+
+    found = bool(objects)
+    if messages:
+        status = "validation_error"
+        message = "; ".join(messages)
+    elif found:
+        status = "mapped"
+        message = f"Mapped {len(objects)} object(s)."
+    else:
+        status = "missing_optional"
+        message = "Optional object mapping was not found."
+    row = {
+        "id": object_mapping.id,
+        "description": object_mapping.description,
+        "xpath": object_mapping.parent_xpath,
+        "canonical_field": object_mapping.canonical_field,
+        "jsonld_property": object_mapping.jsonld_property,
+        "required": any(field.required for field in object_mapping.fields),
+        "found": found,
+        "value": [
+            {
+                key: serializable_value(value)
+                for key, value in object_data.items()
+            }
+            for object_data in objects
+        ],
+        "status": status,
+        "message": message,
+    }
+    return objects, row, selected_paths
 
 
 def _extract_field(
@@ -253,10 +369,30 @@ def convert_xml_to_jsonld(
         mapping_rows.append(row)
         selected_paths.update(field_selected_paths)
         if row["found"]:
+            tree = root.getroottree()
+            for element in field_elements:
+                parent = element.getparent()
+                if (
+                    parent is not None
+                    and isinstance(parent.tag, str)
+                    and etree.QName(parent).localname
+                    == etree.QName(element).localname
+                ):
+                    selected_paths.add(tree.getpath(parent))
             selected_elements_by_property.setdefault(
                 mapping_field.jsonld_property,
                 {},
             )[mapping_field.id] = field_elements
+
+    for object_mapping in mapping.object_mappings:
+        objects, row, object_selected_paths = _extract_object_mapping(
+            root,
+            object_mapping,
+            mapping.settings.default_language,
+        )
+        product_values[object_mapping.canonical_field] = objects
+        mapping_rows.append(row)
+        selected_paths.update(object_selected_paths)
 
     selected_paths.update(
         _supporting_paths_for_combined_properties(

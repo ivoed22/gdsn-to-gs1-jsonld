@@ -65,3 +65,28 @@ def test_unmapped_fields_include_out_of_scope_elements(
         {"element", "parent", "path", "count"} <= item.keys()
         for item in result.unmapped_fields["unmapped_elements"]
     )
+
+
+def test_v0_2_unmapped_fields_exclude_food_mappings(
+    example_xml_path,
+    mapping_v0_2_path,
+):
+    result = convert_xml_to_jsonld(example_xml_path, mapping_v0_2_path)
+    names = {
+        item["element"] for item in result.unmapped_fields["unmapped_elements"]
+    }
+    assert {
+        "ingredientStatement",
+        "allergenRelatedInformation",
+        "allergen",
+        "allergenTypeCode",
+        "levelOfContainmentCode",
+        "nutrientHeader",
+        "nutrientDetail",
+        "nutrientTypeCode",
+        "preparationStateCode",
+        "quantityContained",
+        "measurementValue",
+        "measurementUnitCode",
+    }.isdisjoint(names)
+    assert {"gln", "partyName", "fileName", "fileFormatName"} <= names

@@ -39,3 +39,14 @@ def test_streamlit_clear_results_removes_persisted_result(example_xml_path):
 
     assert "conversion_result" not in app.session_state
     assert len(app.get("download_button")) == 0
+
+
+def test_streamlit_mapping_selector_defaults_to_v0_2():
+    app = AppTest.from_file("app/streamlit_app.py").run()
+    selector = app.selectbox[0]
+    assert selector.options == [
+        "Food v0.2.0 mapping",
+        "MVP v0.1.0 mapping",
+    ]
+    assert selector.value == "Food v0.2.0 mapping"
+    assert any("v0.2.0-dev" in caption.value for caption in app.caption)

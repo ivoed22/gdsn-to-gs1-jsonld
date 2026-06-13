@@ -22,6 +22,31 @@ class MappingField(BaseModel):
     transform: list[str] = Field(default_factory=list)
 
 
+class ObjectMappingField(BaseModel):
+    id: str
+    xpath: str
+    value_xpath: str = "text()"
+    language_xpath: str | None = None
+    canonical_field: str | None = None
+    jsonld_property: str
+    datatype: str = "string"
+    required: bool = False
+    multiple: bool = False
+    fallback_language: str | None = None
+    transform: list[str] = Field(default_factory=list)
+
+
+class ObjectMapping(BaseModel):
+    id: str
+    description: str
+    parent_xpath: str
+    canonical_field: str
+    jsonld_property: str
+    object_type: str | None = None
+    multiple: bool = True
+    fields: list[ObjectMappingField]
+
+
 class MappingSettings(BaseModel):
     namespace_strategy: str = "local-name"
     default_language: str = "en"
@@ -32,6 +57,7 @@ class MappingConfig(BaseModel):
     metadata: dict[str, Any] = Field(default_factory=dict)
     settings: MappingSettings
     fields: list[MappingField]
+    object_mappings: list[ObjectMapping] = Field(default_factory=list)
 
 
 def load_mapping(mapping_path: str | Path) -> MappingConfig:
