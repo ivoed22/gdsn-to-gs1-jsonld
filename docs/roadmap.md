@@ -16,3 +16,29 @@ Potential work after v0.5.0:
 - API and data-platform integrations
 
 The current release is still not full GDSN coverage.
+
+## Strategic tracks after v0.5.0
+
+### Positioning and demo
+
+Use the implemented pipeline and synthetic sample corpus to explain how GDSN,
+BMS/XPath traceability, GTIN, and GS1 Web Vocabulary can connect product-data
+exchange to machine-readable structured data for AI and digital ecosystems.
+
+### Web Vocabulary conformance hardening
+
+Resolve current vocabulary warnings, clarify nutrient and certification
+semantics, decide the generic document/DPP link pattern, and establish
+terminology and evidence for aligned versus conformant output.
+
+### Real-world input diagnostics
+
+Continue testing sanitized real-world GDSN variants, improve failure
+classification, and aggregate recurring unmapped structures without treating
+every source element as new mapping scope.
+
+### Catalog-to-YAML generation
+
+Consider generating executable YAML from an authoritative mapping catalog as a
+later option. This should follow decisions on mapping authority, status
+vocabulary, versioning, and review workflow rather than precede them.

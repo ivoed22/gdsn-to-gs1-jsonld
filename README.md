@@ -116,6 +116,17 @@ The converter does not perform full GDSN XSD validation. Unmapped fields show
 which populated XML elements were outside the selected profile; they do not
 prove that the source XML is invalid.
 
+## Strategic relevance
+
+This project demonstrates a practical bridge from GS1 product data exchange to
+machine-readable structured data using GDSN, BMS/XPath, and GS1 Web
+Vocabulary.
+
+- [Internal positioning](docs/internal-positioning.md)
+- [Open governance questions](docs/open-governance-questions.md)
+- [Web Vocabulary conformance review](docs/web-vocabulary-conformance-review.md)
+- [Strategic next steps](docs/strategic-next-steps.md)
+
 ## Development
 
 ```bash
