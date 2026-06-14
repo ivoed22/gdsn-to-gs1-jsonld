@@ -1,5 +1,40 @@
 # Changelog
 
+## v0.5.1 — Streamlit UI Polish
+
+### Added
+
+- Strategic positioning, governance, conformance, stakeholder, demo, and AI
+  relevance documentation.
+- A compact UI design direction, design-system reference, implementation plan,
+  and UI change log.
+- A premium Streamlit dashboard composition with a compact hero, conversion
+  pipeline, workflow tiles, grouped sidebar, coverage badges, styled uploader,
+  and polished empty state.
+- A post-conversion review dashboard with output summary cards, validation and
+  product identity cards, clearer previews, a 2x2 export grid, and review
+  guidance.
+
+### Changed
+
+- Improved visual hierarchy, spacing, grouping, upload flow, result review, and
+  export presentation.
+- Preserved Streamlit session-state behavior and all existing download
+  filenames, MIME types, and byte content.
+
+### Preserved
+
+- Converter, mapping, validation, and CLI behavior.
+- Mapping YAML files, generated JSON-LD, generated reports, and dependencies.
+
+### Validation
+
+- pytest: 50 passed.
+- compileall `app src`: passed.
+- `git diff --check`: passed.
+- Streamlit HTTP check: 200.
+- GitHub Actions: success.
+
 ## v0.5.0 — Real-world GDSN Sample Robustness
 
 ### Added
