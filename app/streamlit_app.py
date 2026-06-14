@@ -20,9 +20,13 @@ from ui import (
     APP_VERSION,
     apply_page_styles,
     render_download_intro,
+    render_empty_upload_state,
+    render_identity_card,
     render_page_header,
+    render_preview_heading,
     render_section_header,
     render_status_card,
+    render_workflow_overview,
 )
 
 RESULT_STATE_KEYS = (
@@ -47,6 +51,7 @@ st.set_page_config(
 )
 apply_page_styles()
 render_page_header()
+render_workflow_overview()
 
 mapping_profiles = {
     "Certifications & Documents v0.3.0": (
@@ -81,22 +86,24 @@ with st.sidebar:
         st.markdown("**Active mapping file**")
         st.code(mapping_path.relative_to(REPOSITORY_ROOT).as_posix())
 
-    with st.expander("Supported field groups", expanded=True):
+    with st.expander("Profile coverage", expanded=True):
         st.markdown(
             """
-**Supported field groups**
-
-- Basic product identity
-- Descriptions
-- Brand/category
-- Net content
-- Images/links
-- Ingredients
-- Allergens
-- Nutrients
-- Certifications
-- DPP/document links
-"""
+<p class="sidebar-label">Supported groups</p>
+<div class="coverage-badges">
+  <span class="coverage-badge">Identity</span>
+  <span class="coverage-badge">Descriptions</span>
+  <span class="coverage-badge">Brand &amp; GPC</span>
+  <span class="coverage-badge">Net content</span>
+  <span class="coverage-badge">Images &amp; links</span>
+  <span class="coverage-badge">Ingredients</span>
+  <span class="coverage-badge">Allergens</span>
+  <span class="coverage-badge">Nutrients</span>
+  <span class="coverage-badge">Certifications</span>
+  <span class="coverage-badge">Documents</span>
+</div>
+""",
+            unsafe_allow_html=True,
         )
 
 with st.container(border=True):
@@ -109,13 +116,13 @@ with st.container(border=True):
     uploaded_file = st.file_uploader(
         "GDSN product XML",
         type=["xml"],
-        help="Accepted format: one XML file.",
+        help="Accepted format: one XML file. The file is processed in memory.",
     )
 
     if uploaded_file is None:
-        st.info("Upload one XML file to enable conversion.")
+        render_empty_upload_state()
     elif st.button(
-        "Convert to JSON-LD",
+        "Convert product to JSON-LD",
         type="primary",
         use_container_width=True,
     ):
@@ -178,18 +185,20 @@ if result is not None:
 
         product_id = result.jsonld_data.get("@id")
         if product_id:
-            st.subheader("Product identity")
-            st.caption("GS1 Digital Link-style product @id")
-            st.code(product_id)
+            render_identity_card(product_id)
 
-        st.subheader("Generated JSON-LD")
-        st.caption("GS1 Web Vocabulary-aligned structured product data")
+        render_preview_heading(
+            "Generated JSON-LD",
+            "GS1 Web Vocabulary-aligned structured product data",
+            "JSON-LD",
+        )
         formatted_jsonld = json.dumps(
             result.jsonld_data,
             indent=2,
             ensure_ascii=False,
         )
-        st.code(formatted_jsonld, language="json")
+        with st.expander("Open structured data preview", expanded=True):
+            st.code(formatted_jsonld, language="json")
 
     with st.container(border=True):
         render_section_header(
@@ -198,12 +207,16 @@ if result is not None:
             "Review the applied mappings and download the generated data and "
             "diagnostic reports.",
         )
-        st.subheader("Mapping report preview")
-        st.caption("Source fields, canonical fields, and generated properties")
-        st.dataframe(
-            pd.DataFrame(result.mapping_report_rows),
-            use_container_width=True,
+        render_preview_heading(
+            "Mapping report preview",
+            "Source fields, canonical fields, and generated properties",
+            f"{len(result.mapping_report_rows)} rows",
         )
+        with st.expander("Open mapping trace preview", expanded=True):
+            st.dataframe(
+                pd.DataFrame(result.mapping_report_rows),
+                use_container_width=True,
+            )
 
         output_name_base = st.session_state["output_name_base"]
         st.subheader("Downloads")

@@ -1,3 +1,5 @@
+from html import escape
+
 import streamlit as st
 
 APP_VERSION = "v0.5.0"
@@ -332,10 +334,263 @@ def apply_page_styles() -> None:
             outline-offset: 2px;
         }
 
+        /* Premium dashboard composition primitives. */
+        .app-hero {
+            padding: 1.55rem 1.7rem;
+        }
+
+        .hero-grid {
+            align-items: center;
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: minmax(0, 1.55fr) minmax(17rem, 0.7fr);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-copy {
+            min-width: 0;
+        }
+
+        .app-hero h1 {
+            font-size: clamp(1.85rem, 4vw, 2.75rem);
+        }
+
+        .pipeline-panel {
+            backdrop-filter: blur(8px);
+            background: rgba(5, 35, 62, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+        }
+
+        .pipeline-label {
+            color: #bfe2f8;
+            font-size: 0.68rem;
+            font-weight: 750;
+            letter-spacing: 0.08em;
+            margin: 0 0 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .pipeline-flow {
+            align-items: center;
+            display: flex;
+            gap: 0.45rem;
+            justify-content: space-between;
+        }
+
+        .pipeline-node {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pipeline-node strong,
+        .pipeline-node span {
+            display: block;
+        }
+
+        .pipeline-node strong {
+            color: #ffffff;
+            font-size: 0.82rem;
+        }
+
+        .pipeline-node span {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.7rem;
+            margin-top: 0.12rem;
+        }
+
+        .pipeline-arrow {
+            color: #8fd2f4;
+            flex: 0 0 auto;
+            font-weight: 750;
+        }
+
+        .workflow-grid {
+            display: grid;
+            gap: 0.85rem;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .workflow-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            box-shadow: 0 0.35rem 1rem rgba(21, 34, 56, 0.045);
+            min-height: 7.2rem;
+            padding: 1rem;
+        }
+
+        .workflow-index {
+            align-items: center;
+            background: var(--surface-accent);
+            border: 1px solid #cfe0f3;
+            border-radius: var(--radius-sm);
+            color: var(--accent-strong);
+            display: inline-flex;
+            font-size: 0.72rem;
+            font-weight: 750;
+            height: 1.75rem;
+            justify-content: center;
+            margin-bottom: 0.7rem;
+            width: 1.75rem;
+        }
+
+        .workflow-card strong {
+            color: var(--text-primary);
+            display: block;
+            font-size: 0.92rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .workflow-card p {
+            color: var(--text-secondary);
+            font-size: 0.79rem;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .coverage-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .coverage-badge {
+            background: var(--surface-muted);
+            border: 1px solid var(--border-default);
+            border-radius: 999px;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            line-height: 1;
+            padding: 0.42rem 0.58rem;
+        }
+
+        /* Streamlit-specific hook for the native uploader dropzone. */
+        [data-testid="stFileUploaderDropzone"] {
+            background: linear-gradient(135deg, #eef5ff, #ffffff);
+            border: 1.5px dashed #8bb7d8;
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+        }
+
+        [data-testid="stFileUploaderDropzone"]:focus-within {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 0.2rem rgba(23, 105, 170, 0.16);
+        }
+
+        .empty-state {
+            align-items: center;
+            background: #f8fbfe;
+            border: 1px solid #d8e7f2;
+            border-radius: var(--radius-md);
+            display: flex;
+            gap: 0.85rem;
+            margin-top: 0.6rem;
+            padding: 0.9rem 1rem;
+        }
+
+        .empty-state-mark {
+            align-items: center;
+            background: var(--surface-accent);
+            border-radius: var(--radius-sm);
+            color: var(--accent-strong);
+            display: inline-flex;
+            flex: 0 0 2.3rem;
+            font-size: 0.72rem;
+            font-weight: 800;
+            height: 2.3rem;
+            justify-content: center;
+        }
+
+        .empty-state strong,
+        .empty-state span {
+            display: block;
+        }
+
+        .empty-state strong {
+            color: var(--text-primary);
+            font-size: 0.88rem;
+        }
+
+        .empty-state span {
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            margin-top: 0.15rem;
+        }
+
+        .identity-card {
+            background: linear-gradient(135deg, #f7fbff, #ffffff);
+            border: 1px solid #cfe0f3;
+            border-radius: var(--radius-md);
+            margin: 0.4rem 0 1rem;
+            padding: 1rem 1.1rem;
+        }
+
+        .identity-label {
+            color: var(--accent-primary);
+            font-size: 0.68rem;
+            font-weight: 750;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.35rem;
+            text-transform: uppercase;
+        }
+
+        .identity-value {
+            color: var(--text-primary);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.86rem;
+            overflow-wrap: anywhere;
+        }
+
+        .preview-heading {
+            align-items: flex-end;
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+            margin-top: 0.3rem;
+        }
+
+        .preview-heading strong,
+        .preview-heading span {
+            display: block;
+        }
+
+        .preview-heading strong {
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .preview-heading span {
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            margin-top: 0.15rem;
+        }
+
+        .preview-heading .preview-badge {
+            background: var(--surface-accent);
+            border: 1px solid #cfe0f3;
+            border-radius: 999px;
+            color: var(--accent-strong);
+            flex: 0 0 auto;
+            font-size: 0.68rem;
+            font-weight: 750;
+            margin: 0;
+            padding: 0.35rem 0.55rem;
+        }
+
         @media (hover: hover) {
             .stButton > button:hover,
             .stDownloadButton > button:hover {
                 transform: translateY(-1px);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero-grid,
+            .workflow-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -379,16 +634,38 @@ def render_page_header() -> None:
     st.markdown(
         f"""
         <section class="app-hero">
-          <p class="app-eyebrow">Standards-traceable conversion workspace</p>
-          <h1>GDSN to GS1 JSON-LD Converter</h1>
-          <p class="app-summary">
-            Transform GDSN-like product XML into machine-readable GS1 Web
-            Vocabulary JSON-LD with versioned mappings and reviewable reports.
-          </p>
-          <div class="app-meta" aria-label="Application characteristics">
-            <span class="app-chip">Converter {APP_VERSION}</span>
-            <span class="app-chip">In-memory processing</span>
-            <span class="app-chip">BMS/XPath traceability</span>
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="app-eyebrow">Standards-traceable conversion workspace</p>
+              <h1>GDSN to GS1 JSON-LD Converter</h1>
+              <p class="app-summary">
+                Turn product XML into machine-readable, reviewable linked data.
+              </p>
+              <div class="app-meta" aria-label="Application characteristics">
+                <span class="app-chip">Converter {APP_VERSION}</span>
+                <span class="app-chip">In-memory</span>
+                <span class="app-chip">BMS/XPath traceable</span>
+              </div>
+            </div>
+            <div class="pipeline-panel" aria-label="Conversion pipeline">
+              <p class="pipeline-label">Conversion pipeline</p>
+              <div class="pipeline-flow">
+                <div class="pipeline-node">
+                  <strong>GDSN XML</strong>
+                  <span>Product data</span>
+                </div>
+                <span class="pipeline-arrow" aria-hidden="true">&rarr;</span>
+                <div class="pipeline-node">
+                  <strong>Mapping</strong>
+                  <span>Canonical model</span>
+                </div>
+                <span class="pipeline-arrow" aria-hidden="true">&rarr;</span>
+                <div class="pipeline-node">
+                  <strong>JSON-LD</strong>
+                  <span>GS1 vocabulary</span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
         <div class="privacy-note">
@@ -398,6 +675,31 @@ def render_page_header() -> None:
             Uploaded XML is processed in memory and is not intentionally stored
             permanently.
           </span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_workflow_overview() -> None:
+    st.markdown(
+        """
+        <div class="workflow-grid" aria-label="Conversion workflow">
+          <div class="workflow-card">
+            <span class="workflow-index">01</span>
+            <strong>Upload XML</strong>
+            <p>Select one GDSN-like message for in-memory processing.</p>
+          </div>
+          <div class="workflow-card">
+            <span class="workflow-index">02</span>
+            <strong>Apply mapping profile</strong>
+            <p>Convert through a versioned, traceable canonical mapping.</p>
+          </div>
+          <div class="workflow-card">
+            <span class="workflow-index">03</span>
+            <strong>Review and export</strong>
+            <p>Inspect JSON-LD, validation, traceability, and unmapped fields.</p>
+          </div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -420,6 +722,21 @@ def render_section_header(step: int, title: str, summary: str) -> None:
     )
 
 
+def render_empty_upload_state() -> None:
+    st.markdown(
+        """
+        <div class="empty-state">
+          <span class="empty-state-mark" aria-hidden="true">XML</span>
+          <div>
+            <strong>Ready for one product message</strong>
+            <span>Accepted format: .xml. Processing starts after Convert.</span>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_status_card(
     tone: str,
     title: str,
@@ -430,6 +747,38 @@ def render_status_card(
         <div class="status-card status-{tone}" role="status">
           <strong>{title}</strong>
           <span>{detail}</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_identity_card(product_id: str) -> None:
+    safe_product_id = escape(product_id)
+    st.markdown(
+        f"""
+        <div class="identity-card">
+          <div class="identity-label">GS1 Digital Link-style product @id</div>
+          <div class="identity-value">{safe_product_id}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_preview_heading(
+    title: str,
+    summary: str,
+    badge: str,
+) -> None:
+    st.markdown(
+        f"""
+        <div class="preview-heading">
+          <div>
+            <strong>{title}</strong>
+            <span>{summary}</span>
+          </div>
+          <span class="preview-badge">{badge}</span>
         </div>
         """,
         unsafe_allow_html=True,

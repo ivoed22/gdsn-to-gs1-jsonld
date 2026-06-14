@@ -13,8 +13,8 @@ def test_streamlit_result_survives_rerun(example_xml_path):
     assert app.session_state["output_name_base"] == "08712345678906"
     assert len(app.get("download_button")) == 4
     assert any(
-        code.value == "https://id.gs1.org/01/08712345678906"
-        for code in app.code
+        "https://id.gs1.org/01/08712345678906" in markdown.value
+        for markdown in app.markdown
     )
 
     app.run(timeout=20)
@@ -22,8 +22,8 @@ def test_streamlit_result_survives_rerun(example_xml_path):
     assert "conversion_result" in app.session_state
     assert len(app.get("download_button")) == 4
     assert any(
-        code.value == "https://id.gs1.org/01/08712345678906"
-        for code in app.code
+        "https://id.gs1.org/01/08712345678906" in markdown.value
+        for markdown in app.markdown
     )
 
 

@@ -22,6 +22,14 @@ checkout, and hard-refresh the browser if it still has an older app session.
 
 ## What changed visually
 
+- Added a premium dashboard composition pass:
+  - the hero is shorter and now includes a compact conversion pipeline panel;
+  - three workflow overview cards explain upload, mapping, and review before
+    the user reaches Step 1;
+  - the upload control has a clearer dropzone and a purpose-built empty state;
+  - profile coverage is shown as compact badges instead of a long bullet list;
+  - product identity is presented as a dedicated dashboard card;
+  - JSON-LD and mapping previews use labelled expandable report areas.
 - Added a clearly visible blue gradient hero with a large product title,
   version chip, privacy context, and traceability cues.
 - Introduced shared spacing, radius, color, surface, and interaction tokens.
@@ -52,26 +60,29 @@ checkout, and hard-refresh the browser if it still has an older app session.
 
 ## Manual review checklist
 
-- [ ] Blue header/hero is immediately visible at the top of the app.
+- [ ] Compact blue hero and right-side conversion pipeline are visible.
+- [ ] Three workflow overview cards appear above Step 1.
 - [ ] Version shows `v0.5.0` in both the hero and sidebar.
-- [ ] Step 1 appears as a white card with a blue top edge and numbered badge.
+- [ ] Step 1 has a styled upload dropzone and polished empty state.
 - [ ] Sidebar version, conversion settings, and supported groups are visibly
-  separated.
+  separated and coverage appears as compact badges.
 - [ ] Keyboard focus is visible on convert, download, and reset actions.
 - [ ] Success or validation status appears in a distinct status card.
-- [ ] JSON-LD and mapping previews are comfortable to scan.
+- [ ] Product identity is shown as a dedicated card.
+- [ ] JSON-LD and mapping previews are labelled and expandable.
 - [ ] Four downloads appear as labelled cards in a two-column grid after
   conversion.
-- [ ] Hero, cards, and download grid remain usable at a mobile/narrow width.
+- [ ] Hero, workflow cards, and download grid stack cleanly at a narrow width.
 - [ ] Results remain visible after reruns and download interactions.
 - [ ] Changing the mapping profile clears stale results.
 
 ## Manual screenshot
 
 No screenshot tooling is required. With the app open, capture one desktop image
-after conversion that includes the hero, Step 2 status, and Step 3 download
-grid. Capture a second image with the browser narrowed to approximately 390 CSS
-pixels to confirm that columns stack and controls remain usable.
+after conversion that includes the compact hero and pipeline, workflow row,
+Step 2 status, and Step 3 download grid. Capture a second image with the browser
+narrowed to approximately 390 CSS pixels to confirm that the hero, workflow
+cards, and columns stack while controls remain usable.
 
 ## Known limitations
 
