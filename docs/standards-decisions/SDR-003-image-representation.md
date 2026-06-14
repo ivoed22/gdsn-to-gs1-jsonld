@@ -4,6 +4,8 @@
 
 Open
 
+GitHub issue: [#5](https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/5)
+
 ## Summary
 
 `gs1:productImage` is not found in the local Web Vocabulary snapshot, while

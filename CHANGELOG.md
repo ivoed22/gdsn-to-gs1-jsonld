@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.7.1 — GitHub Standards Review Issues
+
+### Added
+
+- GitHub Issue tracking for all six open standards decision records.
+- Issue numbers and URLs in the Markdown decision register and
+  machine-readable JSON/CSV backlogs.
+- Repository tests that keep SDR documents and issue metadata aligned.
+
+### Preserved
+
+- Converter output, mapping YAML files, and catalog data remain unchanged.
+- No unresolved warning is suppressed or marked conformant.
+- No new dependencies were added.
+
 ## v0.7.0 — Standards Review Backlog
 
 ### Added

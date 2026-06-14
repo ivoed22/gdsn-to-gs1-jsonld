@@ -38,6 +38,8 @@ BACKLOG: tuple[dict[str, Any], ...] = (
         "recommended_owner": "GS1 Web Vocabulary owner and sector experts",
         "target_release": "v0.8.0 or standards-approved mapping release",
         "decision_file": "SDR-001-nutrient-modelling.md",
+        "issue_number": 4,
+        "issue_url": "https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/4",
     },
     {
         "id": "SDR-002",
@@ -60,6 +62,8 @@ BACKLOG: tuple[dict[str, Any], ...] = (
         "recommended_owner": "GS1 Architecture and DPP/data spaces workstream",
         "target_release": "v0.8.0 or deferred",
         "decision_file": "SDR-002-document-dpp-modelling.md",
+        "issue_number": 2,
+        "issue_url": "https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/2",
     },
     {
         "id": "SDR-003",
@@ -74,6 +78,8 @@ BACKLOG: tuple[dict[str, Any], ...] = (
         "recommended_owner": "GS1 Web Vocabulary owner",
         "target_release": "v0.8.0",
         "decision_file": "SDR-003-image-representation.md",
+        "issue_number": 5,
+        "issue_url": "https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/5",
     },
     {
         "id": "SDR-004",
@@ -91,6 +97,8 @@ BACKLOG: tuple[dict[str, Any], ...] = (
         "recommended_owner": "GS1 Web Vocabulary owner and food sector experts",
         "target_release": "v0.8.0",
         "decision_file": "SDR-004-allergen-containment.md",
+        "issue_number": 7,
+        "issue_url": "https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/7",
     },
     {
         "id": "SDR-005",
@@ -115,6 +123,8 @@ BACKLOG: tuple[dict[str, Any], ...] = (
         "recommended_owner": "GS1 Web Vocabulary owner and GDSN/GSMP group",
         "target_release": "v0.8.0",
         "decision_file": "SDR-005-certification-semantics.md",
+        "issue_number": 8,
+        "issue_url": "https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/8",
     },
     {
         "id": "SDR-006",
@@ -136,6 +146,8 @@ BACKLOG: tuple[dict[str, Any], ...] = (
         "recommended_owner": "Internal project owner and mapping governance group",
         "target_release": "v0.8.0 or governance decision",
         "decision_file": "SDR-006-yaml-catalog-governance.md",
+        "issue_number": 9,
+        "issue_url": "https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/9",
     },
 )
 
@@ -150,6 +162,8 @@ CSV_COLUMNS = (
     "recommended_owner",
     "target_release",
     "decision_file",
+    "issue_number",
+    "issue_url",
 )
 
 

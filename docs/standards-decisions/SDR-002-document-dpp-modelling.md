@@ -4,6 +4,8 @@
 
 Open
 
+GitHub issue: [#2](https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/2)
+
 ## Summary
 
 The converter can emit document metadata, but the governed relationship from a

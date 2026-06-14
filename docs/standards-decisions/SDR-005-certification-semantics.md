@@ -4,6 +4,8 @@
 
 Open
 
+GitHub issue: [#8](https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/8)
+
 ## Summary
 
 Certification extraction is traceable, but identifier, issuance-date, and

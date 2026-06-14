@@ -4,6 +4,8 @@
 
 Open
 
+GitHub issue: [#4](https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/4)
+
 ## Summary
 
 The current profile extracts nutrient data reliably, but its generic target

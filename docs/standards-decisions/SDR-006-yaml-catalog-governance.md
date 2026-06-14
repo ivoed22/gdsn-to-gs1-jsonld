@@ -4,6 +4,8 @@
 
 Open
 
+GitHub issue: [#9](https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/9)
+
 ## Summary
 
 The catalog defines `certification_documents[]`, while executable YAML uses a

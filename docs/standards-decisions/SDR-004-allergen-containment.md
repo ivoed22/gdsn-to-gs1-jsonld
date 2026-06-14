@@ -4,6 +4,8 @@
 
 Open
 
+GitHub issue: [#7](https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/7)
+
 ## Summary
 
 The source containment code is mapped, but `gs1:levelOfContainment` is not

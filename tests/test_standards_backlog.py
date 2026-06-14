@@ -29,9 +29,13 @@ def test_committed_standards_backlog_is_valid():
     assert all(item["status"] in VALID_DECISION_STATUSES for item in backlog)
     assert all(item["blocks_release"] is False for item in backlog)
     assert all(item["standards_review_required"] is True for item in backlog)
+    assert len({item["issue_number"] for item in backlog}) == len(backlog)
     assert all((DECISIONS / item["decision_file"]).is_file() for item in backlog)
     for item in backlog:
+        assert item["issue_number"] > 0
+        assert item["issue_url"].endswith(f"/issues/{item['issue_number']}")
         decision = (DECISIONS / item["decision_file"]).read_text(encoding="utf-8")
+        assert f"GitHub issue: [#{item['issue_number']}]" in decision
         for heading in (
             "## Status",
             "## Summary",
