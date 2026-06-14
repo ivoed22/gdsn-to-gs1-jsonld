@@ -127,6 +127,16 @@ Vocabulary.
 - [Web Vocabulary conformance review](docs/web-vocabulary-conformance-review.md)
 - [Strategic next steps](docs/strategic-next-steps.md)
 
+## For GS1 stakeholders
+
+These concise documents explain the demonstration, its practical output, and
+its relevance to standards, AI, and machine-readable product data:
+
+- [Stakeholder one-pager](docs/stakeholder-one-pager.md)
+- [Five-minute demo story and speaker notes](docs/demo-story.md)
+- [Before and after example](docs/before-after-example.md)
+- [Why this matters for AI](docs/ai-relevance.md)
+
 ## Development
 
 ```bash
