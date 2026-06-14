@@ -3,8 +3,9 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
-Version 0.4.0 adds mapping catalog quality checks while keeping the v0.1.0,
-v0.2.0, and v0.3.0 converter outputs stable. It is deliberately a structured
+Version 0.5.0 adds a realistic synthetic sample corpus, batch sample
+conversion, and richer unmapped-field context while keeping the v0.1.0,
+v0.2.0, and v0.3.0 mapping outputs stable. It is deliberately a structured
 product converter, not a generic XML-to-JSON utility.
 
 ## Mapping profiles
@@ -54,6 +55,19 @@ python -m gdsn_to_gs1_jsonld.cli convert examples/input/example_product.xml \
   --output output_v0_3/
 ```
 
+Convert all XML files in the synthetic sample corpus:
+
+```bash
+gdsn-to-gs1-jsonld convert-samples \
+  --input-dir examples/input/samples \
+  --mapping mapping/mapping_v0_3.yaml \
+  --output-dir examples/output/samples
+```
+
+The command creates per-product conversion reports plus
+`sample_conversion_summary.json` and `sample_conversion_summary.xlsx`.
+Failures identify the sample, processing stage, and exception message.
+
 Validate the mapping catalog:
 
 ```bash
@@ -90,6 +104,18 @@ Mapping YAML is the executable converter configuration. The catalog under
 as design inputs. Version 0.4.0 checks catalog governance and YAML/catalog
 alignment without generating YAML or changing converter output.
 
+## Sample testing
+
+The files under `examples/input/samples/` are synthetic and contain no real
+company data. Place private real-world GDSN XML files in a separate local
+directory and point `convert-samples` at that directory. Review the validation
+and unmapped reports before sharing outputs because source XML may contain
+confidential data.
+
+The converter does not perform full GDSN XSD validation. Unmapped fields show
+which populated XML elements were outside the selected profile; they do not
+prove that the source XML is invalid.
+
 ## Development
 
 ```bash
@@ -103,7 +129,7 @@ notes.
 
 Later releases may resolve catalog findings and experimental document
 semantics, add broader food coverage, certification verification, validation
-profiles, and batch conversion.
+profiles, and production batch workflows.
 
 ## Disclaimer
 

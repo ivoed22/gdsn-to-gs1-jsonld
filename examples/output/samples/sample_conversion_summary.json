@@ -1,0 +1,69 @@
+{
+  "summary": {
+    "sample_count": 4,
+    "successful_count": 4,
+    "failed_count": 0
+  },
+  "samples": [
+    {
+      "sample_file": "certified_product_with_documents.xml",
+      "detected_gtin": "95012345678767",
+      "conversion_success": true,
+      "jsonld_output_file": "examples\\output\\samples\\product_95012345678767.jsonld",
+      "validation_valid": true,
+      "validation_error_count": 0,
+      "validation_warning_count": 2,
+      "unmapped_element_count": 0,
+      "unmapped_unique_element_count": 0,
+      "mapped_field_count": 10,
+      "failure_stage": "",
+      "exception_message": "",
+      "notes": "Converted successfully with 2 validation warning(s)."
+    },
+    {
+      "sample_file": "food_product_full.xml",
+      "detected_gtin": "95012345678835",
+      "conversion_success": true,
+      "jsonld_output_file": "examples\\output\\samples\\product_95012345678835.jsonld",
+      "validation_valid": true,
+      "validation_error_count": 0,
+      "validation_warning_count": 2,
+      "unmapped_element_count": 0,
+      "unmapped_unique_element_count": 0,
+      "mapped_field_count": 10,
+      "failure_stage": "",
+      "exception_message": "",
+      "notes": "Converted successfully with 2 validation warning(s)."
+    },
+    {
+      "sample_file": "minimal_product.xml",
+      "detected_gtin": "95012345678903",
+      "conversion_success": true,
+      "jsonld_output_file": "examples\\output\\samples\\product_95012345678903.jsonld",
+      "validation_valid": true,
+      "validation_error_count": 0,
+      "validation_warning_count": 5,
+      "unmapped_element_count": 0,
+      "unmapped_unique_element_count": 0,
+      "mapped_field_count": 5,
+      "failure_stage": "",
+      "exception_message": "",
+      "notes": "Converted successfully with 5 validation warning(s)."
+    },
+    {
+      "sample_file": "partially_mapped_product.xml",
+      "detected_gtin": "95012345678699",
+      "conversion_success": true,
+      "jsonld_output_file": "examples\\output\\samples\\product_95012345678699.jsonld",
+      "validation_valid": true,
+      "validation_error_count": 0,
+      "validation_warning_count": 5,
+      "unmapped_element_count": 12,
+      "unmapped_unique_element_count": 12,
+      "mapped_field_count": 8,
+      "failure_stage": "",
+      "exception_message": "",
+      "notes": "Converted successfully with 5 validation warning(s)."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "valid": true,
+  "errors": [],
+  "warnings": [
+    "Optional field 'product_image_url' was not found.",
+    "Optional field 'product_page_url' was not found."
+  ]
+}

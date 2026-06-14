@@ -1,0 +1,47 @@
+{
+  "@context": [
+    "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
+    {
+      "schema": "https://schema.org/"
+    }
+  ],
+  "@type": "gs1:Product",
+  "@id": "https://id.gs1.org/01/95012345678699",
+  "gs1:gtin": "95012345678699",
+  "gs1:productName": [
+    {
+      "@value": "Partially Mapped Test Product",
+      "@language": "en"
+    }
+  ],
+  "gs1:brandName": "Example Partial",
+  "gs1:netContent": {
+    "value": 250,
+    "unitCode": "GRM"
+  },
+  "gs1:hasAllergen": [
+    {
+      "@type": "gs1:AllergenDetails",
+      "gs1:allergenType": "AM",
+      "gs1:levelOfContainment": "CONTAINS"
+    }
+  ],
+  "gs1:nutrientDetail": [
+    {
+      "gs1:preparationStateCode": "UNPREPARED",
+      "gs1:nutrientTypeCode": "PRO-",
+      "gs1:quantityContained": {
+        "value": 8,
+        "unitCode": "GRM"
+      }
+    }
+  ],
+  "gs1:certification": [
+    {
+      "@type": "gs1:CertificationDetails",
+      "gs1:certificationStandard": "Example Internal Standard",
+      "schema:identifier": "EXAMPLE-PARTIAL-CERT",
+      "gs1:certificationValue": "Internal test status"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "@context": [
+    "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
+    {
+      "schema": "https://schema.org/"
+    }
+  ],
+  "@type": "gs1:Product",
+  "@id": "https://id.gs1.org/01/95012345678835",
+  "gs1:gtin": "95012345678835",
+  "gs1:productName": [
+    {
+      "@value": "Tomato Soup 500 ml",
+      "@language": "en"
+    },
+    {
+      "@value": "Tomatensoep 500 ml",
+      "@language": "nl"
+    }
+  ],
+  "gs1:productDescription": [
+    {
+      "@value": "Synthetic food sample for converter testing.",
+      "@language": "en"
+    },
+    {
+      "@value": "Synthetisch voedingsvoorbeeld voor conversietests.",
+      "@language": "nl"
+    }
+  ],
+  "gs1:brandName": "Example Foods",
+  "gs1:gpcCategoryCode": "10000123",
+  "gs1:ingredientStatement": [
+    {
+      "@value": "Water, tomato, onion, salt.",
+      "@language": "en"
+    },
+    {
+      "@value": "Water, tomaat, ui, zout.",
+      "@language": "nl"
+    }
+  ],
+  "gs1:netContent": {
+    "value": 500,
+    "unitCode": "MLT"
+  },
+  "gs1:hasAllergen": [
+    {
+      "@type": "gs1:AllergenDetails",
+      "gs1:allergenType": "AN",
+      "gs1:levelOfContainment": "MAY_CONTAIN"
+    }
+  ],
+  "gs1:nutrientDetail": [
+    {
+      "gs1:preparationStateCode": "UNPREPARED",
+      "gs1:nutrientTypeCode": "ENER-",
+      "gs1:quantityContained": {
+        "value": 180,
+        "unitCode": "KJO"
+      }
+    },
+    {
+      "gs1:preparationStateCode": "UNPREPARED",
+      "gs1:nutrientTypeCode": "FAT",
+      "gs1:quantityContained": {
+        "value": 1.2,
+        "unitCode": "GRM"
+      }
+    }
+  ]
+}

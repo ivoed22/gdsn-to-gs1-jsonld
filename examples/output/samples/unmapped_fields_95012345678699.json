@@ -1,0 +1,112 @@
+{
+  "unmapped_elements": [
+    {
+      "element": "additionalTradeItemMetadata",
+      "parent": "tradeItem",
+      "path": "/catalogueItemNotificationMessage/transaction/catalogueItem/tradeItem/additionalTradeItemMetadata",
+      "count": 1
+    },
+    {
+      "element": "allergenStatement",
+      "parent": "allergen",
+      "path": "/catalogueItemNotificationMessage/transaction/catalogueItem/tradeItem/allergenRelatedInformation/allergen/allergenStatement",
+      "count": 1,
+      "context": {
+        "allergenTypeCode": "AM"
+      }
+    },
+    {
+      "element": "certificationStatusCode",
+      "parent": "certification",
+      "path": "/catalogueItemNotificationMessage/transaction/catalogueItem/tradeItem/certificationInformation/certification/certificationStatusCode",
+      "count": 1,
+      "context": {
+        "certificationIdentification": "EXAMPLE-PARTIAL-CERT"
+      }
+    },
+    {
+      "element": "consumerStorageInstructions",
+      "parent": "tradeItemDescriptionInformation",
+      "path": "/catalogueItemNotificationMessage/transaction/catalogueItem/tradeItem/tradeItemDescriptionInformation/consumerStorageInstructions",
+      "count": 1,
+      "context": {
+        "languageCode": "en"
+      }
+    },
+    {
+      "element": "entityIdentification",
+      "parent": "transactionIdentification",
+      "path": "/catalogueItemNotificationMessage/transaction/transactionIdentification/entityIdentification",
+      "count": 1
+    },
+    {
+      "element": "fileFormatName",
+      "parent": "referencedFileInformation",
+      "path": "/catalogueItemNotificationMessage/transaction/catalogueItem/tradeItem/referencedFileInformation/fileFormatName",
+      "count": 1,
+      "context": {
+        "fileFormatName": "PDF",
+        "fileName": "technical-sheet.pdf",
+        "referencedFileTypeCode": "TECHNICAL_DATA_SHEET",
+        "uniformResourceIdentifier": "https://example.com/documents/95012345678699-technical.pdf"
+      }
+    },
+    {
+      "element": "fileName",
+      "parent": "referencedFileInformation",
+      "path": "/catalogueItemNotificationMessage/transaction/catalogueItem/tradeItem/referencedFileInformation/fileName",
+      "count": 1,
+      "context": {
+        "fileFormatName": "PDF",
+        "fileName": "technical-sheet.pdf",
+        "referencedFileTypeCode": "TECHNICAL_DATA_SHEET",
+        "uniformResourceIdentifier": "https://example.com/documents/95012345678699-technical.pdf"
+      }
+    },
+    {
+      "element": "internalLifecycleStatus",
+      "parent": "additionalTradeItemMetadata",
+      "path": "/catalogueItemNotificationMessage/transaction/catalogueItem/tradeItem/additionalTradeItemMetadata/internalLifecycleStatus",
+      "count": 1
+    },
+    {
+      "element": "nutrientSourceCode",
+      "parent": "nutrientDetail",
+      "path": "/catalogueItemNotificationMessage/transaction/catalogueItem/tradeItem/nutrientHeader/nutrientDetail/nutrientSourceCode",
+      "count": 1,
+      "context": {
+        "nutrientTypeCode": "PRO-"
+      }
+    },
+    {
+      "element": "referencedFileTypeCode",
+      "parent": "referencedFileInformation",
+      "path": "/catalogueItemNotificationMessage/transaction/catalogueItem/tradeItem/referencedFileInformation/referencedFileTypeCode",
+      "count": 1,
+      "context": {
+        "fileFormatName": "PDF",
+        "fileName": "technical-sheet.pdf",
+        "referencedFileTypeCode": "TECHNICAL_DATA_SHEET",
+        "uniformResourceIdentifier": "https://example.com/documents/95012345678699-technical.pdf"
+      }
+    },
+    {
+      "element": "sourceSystemIdentifier",
+      "parent": "additionalTradeItemMetadata",
+      "path": "/catalogueItemNotificationMessage/transaction/catalogueItem/tradeItem/additionalTradeItemMetadata/sourceSystemIdentifier",
+      "count": 1
+    },
+    {
+      "element": "uniformResourceIdentifier",
+      "parent": "referencedFileInformation",
+      "path": "/catalogueItemNotificationMessage/transaction/catalogueItem/tradeItem/referencedFileInformation/uniformResourceIdentifier",
+      "count": 1,
+      "context": {
+        "fileFormatName": "PDF",
+        "fileName": "technical-sheet.pdf",
+        "referencedFileTypeCode": "TECHNICAL_DATA_SHEET",
+        "uniformResourceIdentifier": "https://example.com/documents/95012345678699-technical.pdf"
+      }
+    }
+  ]
+}

@@ -63,3 +63,20 @@ documents:
 
 `gs1:referencedDocument` is an experimental project mapping, not a term found
 in the locally validated GS1 Web Vocabulary.
+
+## Sample corpus output
+
+`convert-samples` writes the same product JSON-LD and reports as single-file
+conversion for each XML file. It also writes a JSON and Excel summary with the
+detected GTIN, validation counts, mapped-field count, unmapped counts, and
+failure diagnostics.
+
+The v0.5.0 sample corpus demonstrates that optional food and certification
+objects are omitted for a minimal product and included only when source values
+are present. It does not change the JSON-LD structure emitted by the existing
+mapping profiles.
+
+Unmapped reports include XML parent/path information and, where available,
+language, nutrient type, allergen type, certification identification, and
+referenced-file type context. These reports are diagnostic inventories, not
+proof that the source XML or generated JSON-LD is invalid.

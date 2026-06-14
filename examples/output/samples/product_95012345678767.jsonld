@@ -1,0 +1,59 @@
+{
+  "@context": [
+    "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
+    {
+      "schema": "https://schema.org/"
+    }
+  ],
+  "@type": "gs1:Product",
+  "@id": "https://id.gs1.org/01/95012345678767",
+  "gs1:gtin": "95012345678767",
+  "gs1:productName": [
+    {
+      "@value": "Certified Example Product",
+      "@language": "en"
+    }
+  ],
+  "gs1:productDescription": [
+    {
+      "@value": "Synthetic certification and document sample.",
+      "@language": "en"
+    }
+  ],
+  "gs1:brandName": "Example Certified",
+  "gs1:gpcCategoryCode": "10000999",
+  "schema:url": "https://example.com/products/95012345678767",
+  "gs1:netContent": {
+    "value": 750,
+    "unitCode": "MLT"
+  },
+  "gs1:certification": [
+    {
+      "@type": "gs1:CertificationDetails",
+      "gs1:certificationStandard": "Example Standard 1",
+      "schema:identifier": "EXAMPLE-CERT-001",
+      "gs1:certificationValue": "Conforms to synthetic test criteria",
+      "schema:dateIssued": "2026-02-01T00:00:00Z",
+      "gs1:certificationAuditDate": "2026-01-20",
+      "gs1:certificationStartDate": "2026-02-01",
+      "gs1:certificationEndDate": "2027-02-01",
+      "gs1:certificationAgency": "9501234000007"
+    }
+  ],
+  "gs1:referencedDocument": [
+    {
+      "@type": "schema:DigitalDocument",
+      "schema:name": "example-dpp.pdf",
+      "schema:encodingFormat": "PDF",
+      "schema:additionalType": "DPP_DOCUMENT",
+      "schema:url": "https://example.com/documents/95012345678767-dpp.pdf"
+    },
+    {
+      "@type": "schema:DigitalDocument",
+      "schema:name": "example-certificate.pdf",
+      "schema:encodingFormat": "PDF",
+      "schema:additionalType": "CERTIFICATION_DOCUMENT",
+      "schema:url": "https://example.com/documents/95012345678767-certificate.pdf"
+    }
+  ]
+}

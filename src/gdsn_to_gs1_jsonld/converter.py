@@ -299,6 +299,11 @@ def _find_unmapped(
             path = "/" + "/".join(reversed(ancestor_names))
             path = f"{path}/{local_name}"
             context: dict[str, str] = {}
+            language_codes = element.xpath(
+                "ancestor-or-self::*[@languageCode][1]/@languageCode"
+            )
+            if language_codes:
+                context["languageCode"] = str(language_codes[0])
             if parent_name == "referencedFileInformation" and parent is not None:
                 context_fields = {
                     "referencedFileTypeCode",
@@ -314,6 +319,27 @@ def _find_unmapped(
                         sibling_value = "".join(sibling.itertext()).strip()
                         if sibling_value:
                             context[sibling_name] = sibling_value
+            discriminator_containers = {
+                "nutrientDetail": "nutrientTypeCode",
+                "allergen": "allergenTypeCode",
+                "certification": "certificationIdentification",
+            }
+            for (
+                container_name,
+                discriminator_name,
+            ) in discriminator_containers.items():
+                containers = element.xpath(
+                    f"ancestor-or-self::*[local-name()='{container_name}'][1]"
+                )
+                if not containers:
+                    continue
+                discriminator_values = containers[0].xpath(
+                    f"./*[local-name()='{discriminator_name}']/text()"
+                )
+                if discriminator_values:
+                    discriminator_value = str(discriminator_values[0]).strip()
+                    if discriminator_value:
+                        context[discriminator_name] = discriminator_value
             context_items = tuple(sorted(context.items()))
             counts[(local_name, parent_name, path, context_items)] += 1
     return {

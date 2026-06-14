@@ -118,3 +118,27 @@ def test_cli_check_mapping_creates_quality_reports(
     assert result.exit_code == 0, result.output
     assert (tmp_path / "mapping_quality_report.json").is_file()
     assert (tmp_path / "mapping_quality_report.xlsx").is_file()
+
+
+def test_cli_convert_samples_creates_summary(
+    sample_dir,
+    mapping_v0_3_path,
+    tmp_path,
+):
+    result = runner.invoke(
+        app,
+        [
+            "convert-samples",
+            "--input-dir",
+            str(sample_dir),
+            "--mapping",
+            str(mapping_v0_3_path),
+            "--output-dir",
+            str(tmp_path),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Sample conversion: 4/4 successful" in result.output
+    assert (tmp_path / "sample_conversion_summary.json").is_file()
+    assert (tmp_path / "sample_conversion_summary.xlsx").is_file()

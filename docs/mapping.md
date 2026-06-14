@@ -45,3 +45,19 @@ gdsn-to-gs1-jsonld check-mapping \
 The check reports missing canonical fields, property differences,
 high-confidence catalog coverage, experimental mappings, and review items. It
 does not modify the mapping file or converter output.
+
+## Testing profiles against samples
+
+Version 0.5.0 adds `convert-samples` for applying an existing mapping profile
+to every XML file in a directory:
+
+```bash
+gdsn-to-gs1-jsonld convert-samples \
+  --input-dir examples/input/samples \
+  --mapping mapping/mapping_v0_3.yaml \
+  --output-dir examples/output/samples
+```
+
+This workflow tests extraction robustness and diagnostics; it does not infer
+new mappings from sample XML. Elements in an unmapped report remain candidates
+for review rather than automatically becoming mapping requirements.

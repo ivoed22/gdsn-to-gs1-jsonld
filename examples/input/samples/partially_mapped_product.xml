@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cin:catalogueItemNotificationMessage
+    xmlns:cin="urn:gs1:gdsn:catalogue_item_notification:xsd:3"
+    xmlns:sh="urn:gs1:shared:shared_common:xsd:3">
+  <cin:transaction>
+    <cin:transactionIdentification>
+      <sh:entityIdentification>EXAMPLE-PARTIAL-001</sh:entityIdentification>
+    </cin:transactionIdentification>
+    <cin:catalogueItem>
+      <cin:tradeItem>
+        <cin:gtin>95012345678699</cin:gtin>
+        <cin:brandNameInformation>
+          <cin:brandName>Example Partial</cin:brandName>
+        </cin:brandNameInformation>
+        <cin:tradeItemDescriptionInformation>
+          <cin:tradeItemDescription languageCode="en">Partially Mapped Test Product</cin:tradeItemDescription>
+          <cin:consumerStorageInstructions languageCode="en">Store in a cool dry place.</cin:consumerStorageInstructions>
+        </cin:tradeItemDescriptionInformation>
+        <cin:tradeItemMeasurements>
+          <cin:netContent>
+            <sh:measurementValue>250</sh:measurementValue>
+            <sh:measurementUnitCode>GRM</sh:measurementUnitCode>
+          </cin:netContent>
+        </cin:tradeItemMeasurements>
+        <cin:allergenRelatedInformation>
+          <cin:allergen>
+            <cin:allergenTypeCode>AM</cin:allergenTypeCode>
+            <cin:levelOfContainmentCode>CONTAINS</cin:levelOfContainmentCode>
+            <cin:allergenStatement>Contains synthetic milk allergen metadata.</cin:allergenStatement>
+          </cin:allergen>
+        </cin:allergenRelatedInformation>
+        <cin:nutrientHeader>
+          <cin:preparationStateCode>UNPREPARED</cin:preparationStateCode>
+          <cin:nutrientDetail>
+            <cin:nutrientTypeCode>PRO-</cin:nutrientTypeCode>
+            <cin:nutrientSourceCode>CALCULATED</cin:nutrientSourceCode>
+            <cin:quantityContained>
+              <sh:measurementValue>8</sh:measurementValue>
+              <sh:measurementUnitCode>GRM</sh:measurementUnitCode>
+            </cin:quantityContained>
+          </cin:nutrientDetail>
+        </cin:nutrientHeader>
+        <cin:certificationInformation>
+          <cin:certificationStandard>Example Internal Standard</cin:certificationStandard>
+          <cin:certification>
+            <cin:certificationIdentification>EXAMPLE-PARTIAL-CERT</cin:certificationIdentification>
+            <cin:certificationValue>Internal test status</cin:certificationValue>
+            <cin:certificationStatusCode>PENDING_REVIEW</cin:certificationStatusCode>
+          </cin:certification>
+        </cin:certificationInformation>
+        <cin:referencedFileInformation>
+          <cin:fileName>technical-sheet.pdf</cin:fileName>
+          <cin:fileFormatName>PDF</cin:fileFormatName>
+          <cin:referencedFileTypeCode>TECHNICAL_DATA_SHEET</cin:referencedFileTypeCode>
+          <cin:uniformResourceIdentifier>https://example.com/documents/95012345678699-technical.pdf</cin:uniformResourceIdentifier>
+        </cin:referencedFileInformation>
+        <cin:additionalTradeItemMetadata>
+          <cin:internalLifecycleStatus>TEST_ONLY</cin:internalLifecycleStatus>
+          <cin:sourceSystemIdentifier>EXAMPLE-SYSTEM</cin:sourceSystemIdentifier>
+        </cin:additionalTradeItemMetadata>
+      </cin:tradeItem>
+    </cin:catalogueItem>
+  </cin:transaction>
+</cin:catalogueItemNotificationMessage>

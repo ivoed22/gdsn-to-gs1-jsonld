@@ -1,5 +1,32 @@
 # Changelog
 
+## v0.5.0 — Real-world GDSN Sample Robustness
+
+### Added
+
+- Four synthetic GDSN-like sample variants covering minimal, food,
+  certification/document, and partially mapped products.
+- `convert-samples` CLI command.
+- JSON and Excel sample conversion summaries.
+- Per-sample failure-stage and exception diagnostics.
+- Unmapped-field context for language, nutrient, allergen, certification, and
+  referenced-file discriminators.
+- Sample corpus regression tests and sample-testing documentation.
+
+### Preserved
+
+- v0.1.0, v0.2.0, and v0.3.0 JSON-LD output compatibility.
+- Existing mapping profiles and business mapping scope.
+- Mapping catalog quality checks from v0.4.0.
+
+### Notes / limitations
+
+The sample files are synthetic and use fake identifiers and `example.com`
+URLs. This release improves robustness and diagnostics; it does not add new
+business mappings, full GDSN XSD validation, DPP expansion, Verifiable
+Credentials, DCAT/DPROD, resolver calls, or certificate verification. An
+unmapped-field finding is diagnostic and does not prove that XML is invalid.
+
 ## v0.4.0 — Mapping Catalog Driven Quality Checks
 
 ### Added

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cin:catalogueItemNotificationMessage
+    xmlns:cin="urn:gs1:gdsn:catalogue_item_notification:xsd:3"
+    xmlns:sh="urn:gs1:shared:shared_common:xsd:3">
+  <cin:transaction>
+    <cin:catalogueItem>
+      <cin:tradeItem>
+        <cin:gtin>95012345678767</cin:gtin>
+        <cin:brandNameInformation>
+          <cin:brandName>Example Certified</cin:brandName>
+        </cin:brandNameInformation>
+        <cin:gpcCategoryCode>10000999</cin:gpcCategoryCode>
+        <cin:tradeItemDescriptionInformation>
+          <cin:tradeItemDescription languageCode="en">Certified Example Product</cin:tradeItemDescription>
+          <cin:descriptionShort languageCode="en">Synthetic certification and document sample.</cin:descriptionShort>
+        </cin:tradeItemDescriptionInformation>
+        <cin:tradeItemMeasurements>
+          <cin:netContent>
+            <sh:measurementValue>750</sh:measurementValue>
+            <sh:measurementUnitCode>MLT</sh:measurementUnitCode>
+          </cin:netContent>
+        </cin:tradeItemMeasurements>
+        <cin:tradeItemInformation>
+          <cin:marketingInformation>
+            <cin:uniformResourceIdentifier>https://example.com/products/95012345678767</cin:uniformResourceIdentifier>
+          </cin:marketingInformation>
+          <cin:referencedFileInformation>
+            <cin:fileName>example-dpp.pdf</cin:fileName>
+            <cin:fileFormatName>PDF</cin:fileFormatName>
+            <cin:referencedFileTypeCode>DPP_DOCUMENT</cin:referencedFileTypeCode>
+            <cin:uniformResourceIdentifier>https://example.com/documents/95012345678767-dpp.pdf</cin:uniformResourceIdentifier>
+          </cin:referencedFileInformation>
+        </cin:tradeItemInformation>
+        <cin:certificationInformation>
+          <cin:certificationStandard>Example Standard 1</cin:certificationStandard>
+          <cin:certificationOrganisationIdentifier>9501234000007</cin:certificationOrganisationIdentifier>
+          <cin:certification>
+            <cin:certificationIdentification>EXAMPLE-CERT-001</cin:certificationIdentification>
+            <cin:certificationValue>Conforms to synthetic test criteria</cin:certificationValue>
+            <cin:certificateIssuanceDateTime>2026-02-01T00:00:00Z</cin:certificateIssuanceDateTime>
+            <cin:certificationAssessmentDateTime>2026-01-20T00:00:00Z</cin:certificationAssessmentDateTime>
+            <cin:certificationEffectiveStartDateTime>2026-02-01T00:00:00Z</cin:certificationEffectiveStartDateTime>
+            <cin:certificationEffectiveEndDateTime>2027-02-01T00:00:00Z</cin:certificationEffectiveEndDateTime>
+            <cin:referencedFileInformation>
+              <cin:fileName>example-certificate.pdf</cin:fileName>
+              <cin:fileFormatName>PDF</cin:fileFormatName>
+              <cin:referencedFileTypeCode>CERTIFICATION_DOCUMENT</cin:referencedFileTypeCode>
+              <cin:uniformResourceIdentifier>https://example.com/documents/95012345678767-certificate.pdf</cin:uniformResourceIdentifier>
+            </cin:referencedFileInformation>
+          </cin:certification>
+        </cin:certificationInformation>
+      </cin:tradeItem>
+    </cin:catalogueItem>
+  </cin:transaction>
+</cin:catalogueItemNotificationMessage>

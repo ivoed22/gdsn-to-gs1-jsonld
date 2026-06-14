@@ -6,6 +6,7 @@ import typer
 
 from .catalog_quality import check_catalog, check_mapping, write_quality_reports
 from .converter import convert_xml_to_jsonld
+from .sample_runner import convert_sample_corpus
 from .xml_parser import XMLParseError
 
 app = typer.Typer(
@@ -68,6 +69,63 @@ def convert(
     if not result.validation_report["valid"]:
         for error in result.validation_report["errors"]:
             typer.echo(f"Error: {error}", err=True)
+        raise typer.Exit(code=1)
+
+
+@app.command("convert-samples")
+def convert_samples(
+    input_dir: Path = typer.Option(
+        ...,
+        "--input-dir",
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        help="Directory containing XML sample files.",
+    ),
+    mapping: Path = typer.Option(
+        ...,
+        "--mapping",
+        "-m",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="YAML mapping profile.",
+    ),
+    output_dir: Path = typer.Option(
+        ...,
+        "--output-dir",
+        "-o",
+        help="Directory for sample outputs and summary reports.",
+    ),
+) -> None:
+    """Convert an XML sample corpus and write JSON and Excel summaries."""
+    try:
+        report = convert_sample_corpus(input_dir, mapping, output_dir)
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        typer.echo(f"Sample conversion failed: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    for row in report.rows:
+        if row["conversion_success"]:
+            typer.echo(
+                f"Converted {row['sample_file']}: {row['detected_gtin']}"
+            )
+        else:
+            typer.echo(
+                f"Failed {row['sample_file']} during "
+                f"{row['failure_stage']}: {row['exception_message']}",
+                err=True,
+            )
+    typer.echo(
+        f"Sample conversion: "
+        f"{sum(row['conversion_success'] for row in report.rows)}/"
+        f"{len(report.rows)} successful"
+    )
+    for path in report.output_paths.values():
+        typer.echo(f"  - {path}")
+    if not report.successful:
         raise typer.Exit(code=1)
 
 

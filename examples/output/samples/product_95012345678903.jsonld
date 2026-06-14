@@ -1,0 +1,22 @@
+{
+  "@context": [
+    "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
+    {
+      "schema": "https://schema.org/"
+    }
+  ],
+  "@type": "gs1:Product",
+  "@id": "https://id.gs1.org/01/95012345678903",
+  "gs1:gtin": "95012345678903",
+  "gs1:productName": [
+    {
+      "@value": "Minimal Test Product",
+      "@language": "en"
+    }
+  ],
+  "gs1:brandName": "Example Minimal",
+  "gs1:netContent": {
+    "value": 1,
+    "unitCode": "KGM"
+  }
+}
