@@ -13,10 +13,14 @@ This review summarizes the current mapping profile using:
 - the local Web Vocabulary 1.17 JSON-LD and Turtle snapshots
 - the official GS1 linktypes snapshot
 
-Version 0.6.0 can regenerate current warning counts and revalidate the catalog
+Version 0.6.1 can regenerate current warning counts and revalidate the catalog
 against committed snapshots. The warnings are governance and
 conformance-hardening work, not evidence that the converter cannot produce
 usable JSON-LD.
+
+The v0.6.1 [warning cleanup review](warning-cleanup-v0.6.1.md) records all 15
+v0.6.0 mapping warnings. Three structural parent-object false positives are now
+informational findings; 12 non-blocking warnings remain for standards review.
 
 ## Strong / high-confidence areas
 
@@ -143,3 +147,7 @@ separately.
 7. Define a conformance wording policy and the evidence required for each
    claim.
 8. Use the v0.6 update monitor to record and compare Web Vocabulary revisions.
+
+The four remaining YAML/catalog warnings are intentionally retained because
+they concern certification semantics and document-model governance, not simple
+name normalization.

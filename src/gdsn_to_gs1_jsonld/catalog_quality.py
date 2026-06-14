@@ -88,6 +88,7 @@ class QualityMessage:
     reason: str
     recommended_action: str
     blocks_release: bool
+    standards_review_required: bool
     canonical_field: str = ""
     mapping_status: str = ""
     source: str = ""
@@ -112,7 +113,7 @@ def _message(
         "errors": "error",
         "warnings": "warning",
     }.get(severity, severity)
-    category, recommended_action = _classify_warning(
+    category, recommended_action, standards_review_required = _classify_warning(
         code,
         canonical_field,
         mapping_status,
@@ -127,6 +128,7 @@ def _message(
             reason=message,
             recommended_action=recommended_action,
             blocks_release=normalized_severity == "error",
+            standards_review_required=standards_review_required,
             canonical_field=canonical_field,
             mapping_status=mapping_status,
             source=source,
@@ -138,7 +140,7 @@ def _classify_warning(
     code: str,
     canonical_field: str,
     mapping_status: str,
-) -> tuple[str, str]:
+) -> tuple[str, str, bool]:
     field = canonical_field.lower()
     if code in {
         "yaml_field_missing_from_catalog",
@@ -147,12 +149,21 @@ def _classify_warning(
     }:
         return (
             "yaml_catalog_mismatch",
-            "Align YAML and catalog explicitly or document why they differ.",
+            "Review and document the YAML/catalog distinction before changing "
+            "either representation.",
+            True,
+        )
+    if code == "structural_parent_covered":
+        return (
+            "false_positive_tooling_issue",
+            "No action required; child mappings provide the catalog coverage.",
+            False,
         )
     if code == "experimental_mapping_documented":
         return (
             "experimental_mapping",
             "Keep the mapping experimental until standards review is complete.",
+            True,
         )
     if code == "webvoc_review_required":
         if "nutrient" in field:
@@ -165,22 +176,42 @@ def _classify_warning(
             category = "webvoc_term_missing"
         return (
             category,
-            "Review the latest local Web Vocabulary snapshot before changing "
-            "the semantic mapping.",
+            {
+                "nutrient_modelling": (
+                    "Review the nutrient target model against validated GS1 "
+                    "nutrition properties before changing the mapping."
+                ),
+                "image_modelling": (
+                    "Select a validated image property or link relation through "
+                    "standards review."
+                ),
+                "document_dpp_modelling": (
+                    "Decide the governed document/DPP relationship and file-type "
+                    "representation before changing the mapping."
+                ),
+            }.get(
+                category,
+                "Review the validated replacement term before changing the "
+                "semantic mapping.",
+            ),
+            True,
         )
     if code == "missing_official_bms_id" or "bms" in mapping_status.lower():
         return (
             "needs_bms_review",
             "Confirm the official BMS identifier and XPath evidence.",
+            True,
         )
     if code == "schema_org_fallback":
         return (
             "schema_org_fallback",
             "Keep the external namespace documented and review GS1 alternatives.",
+            True,
         )
     return (
         "governance_review",
         "Review and document the governance decision; do not auto-fix semantics.",
+        False,
     )
 
 
@@ -367,7 +398,8 @@ def _validate_catalog_rows(
                 report,
                 "warnings",
                 "webvoc_review_required",
-                "Web Vocabulary validation requires review.",
+                "Web Vocabulary review required: "
+                f"{row['webvoc_property_validation'] or row['notes']}",
                 canonical_field=canonical,
                 mapping_status=row["mapping_status"],
                 source=source,
@@ -515,6 +547,25 @@ def _matching_catalog_rows(
     ]
 
 
+def _structural_parent_covered(
+    yaml_mapping: dict[str, Any],
+    yaml_mappings: list[dict[str, Any]],
+    catalog_rows: list[dict[str, str]],
+) -> bool:
+    if yaml_mapping["kind"] != "object":
+        return False
+    prefix = f"{yaml_mapping['canonical_field']}."
+    children = [
+        item
+        for item in yaml_mappings
+        if item["kind"] == "object_field"
+        and item["canonical_field"].startswith(prefix)
+    ]
+    return bool(children) and all(
+        _matching_catalog_rows(child, catalog_rows) for child in children
+    )
+
+
 def _is_experimental(row: dict[str, str]) -> bool:
     text = _review_text(row)
     return (
@@ -571,7 +622,23 @@ def check_mapping(
         }
         report["yaml_coverage"].append(coverage)
 
-        if not matches:
+        structural_parent_covered = _structural_parent_covered(
+            yaml_mapping,
+            yaml_mappings,
+            catalog_rows,
+        )
+        if not matches and structural_parent_covered:
+            coverage["property_aligned"] = True
+            _add(
+                report,
+                "info",
+                "structural_parent_covered",
+                "YAML object parent is structurally covered by catalogued child "
+                "mappings.",
+                canonical_field=yaml_mapping["canonical_field"],
+                source=yaml_mapping["mapping_file"],
+            )
+        elif not matches:
             report["missing_from_catalog"].append(yaml_mapping)
             _add(
                 report,

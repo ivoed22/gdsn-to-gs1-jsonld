@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.6.1 — Warning Cleanup and Conformance Notes
+
+### Changed
+
+- Reviewed all 15 v0.6.0 mapping warnings.
+- Reclassified three structural parent-object false positives as informational
+  findings, reducing `check-mapping` warnings from 15 to 12.
+- Added `standards_review_required` and clearer evidence/actions to quality
+  messages.
+- Added explicit conformance notes for the 12 intentionally retained warnings.
+
+### Preserved
+
+- Converter output and mapping YAML semantics remain unchanged.
+- `check-catalog` continues to report 0 errors and 8 non-blocking warnings.
+- No new dependencies were added.
+
 ## v0.6.0 — Web Vocabulary Update Monitor & Conformance Hardening
 
 ### Added

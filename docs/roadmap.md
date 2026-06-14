@@ -17,6 +17,10 @@ Potential work after v0.5.0:
 
 The current release is still not full GDSN coverage.
 
+Version 0.6.1 separates tooling false positives from 12 genuine conformance
+and governance warnings. Future v0.7.0 work should seek standards decisions for
+those warnings rather than changing semantic mappings solely to reduce counts.
+
 ## Strategic tracks after v0.5.0
 
 ### Positioning and demo

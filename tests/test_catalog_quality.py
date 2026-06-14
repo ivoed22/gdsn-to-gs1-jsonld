@@ -9,6 +9,7 @@ from gdsn_to_gs1_jsonld.catalog_quality import (
     REQUIRED_CATALOG_COLUMNS,
     check_catalog,
     check_mapping,
+    load_catalog,
     write_quality_reports,
 )
 
@@ -61,6 +62,7 @@ def test_check_catalog_passes_current_v0_3_catalog():
             "reason",
             "recommended_action",
             "blocks_release",
+            "standards_review_required",
         }
         <= set(item)
         for item in report["warnings"]
@@ -130,6 +132,29 @@ def test_check_mapping_works_with_v0_3_and_reports_experimental(
         item["jsonld_property"] == "gs1:referencedDocument"
         for item in report["experimental_mappings"]
     )
+    assert report["summary"]["warnings"] == 12
+    assert all(
+        item["recommended_action"]
+        and item["blocks_release"] is False
+        and item["standards_review_required"] is True
+        for item in report["warnings"]
+    )
+    structural_parents = {
+        item["affected_field_property"]
+        for item in report["info"]
+        if item["code"] == "structural_parent_covered"
+    }
+    assert structural_parents == {
+        "allergens[]",
+        "nutrients[]",
+        "referenced_documents[]",
+    }
+    assert all(
+        item["category"] == "false_positive_tooling_issue"
+        and item["standards_review_required"] is False
+        for item in report["info"]
+        if item["code"] == "structural_parent_covered"
+    )
 
 
 def test_check_mapping_reports_yaml_field_missing_from_catalog(
@@ -154,6 +179,31 @@ def test_check_mapping_reports_yaml_field_missing_from_catalog(
     assert any(
         item["canonical_field"] == "uncatalogued"
         for item in report["missing_from_catalog"]
+    )
+
+
+def test_object_parent_requires_all_children_to_be_catalogued(
+    mapping_v0_3_path,
+    tmp_path,
+):
+    rows, columns = load_catalog(CATALOG)
+    rows = [
+        row
+        for row in rows
+        if row["canonical_field"] != "referenced_documents[].document_url"
+    ]
+    catalog = tmp_path / "partial_catalog.csv"
+    with catalog.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=columns)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    report = check_mapping(mapping_v0_3_path, catalog)
+
+    assert any(
+        item["affected_field_property"] == "referenced_documents[]"
+        and item["code"] == "yaml_field_missing_from_catalog"
+        for item in report["warnings"]
     )
 
 

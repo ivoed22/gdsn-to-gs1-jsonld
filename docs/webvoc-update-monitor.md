@@ -86,4 +86,10 @@ The tools do not automatically:
 
 Warnings remain when they represent genuine modelling or governance choices.
 Each quality warning includes a category, affected field/property, reason,
-recommended action, severity, and release-blocking flag.
+recommended action, severity, release-blocking flag, and
+`standards_review_required`.
+
+Version 0.6.1 also distinguishes structural parent coverage from a true
+YAML/catalog mismatch. An object parent with catalogued child mappings is
+reported as informational evidence instead of a warning. See the
+[v0.6.1 warning cleanup review](warning-cleanup-v0.6.1.md).

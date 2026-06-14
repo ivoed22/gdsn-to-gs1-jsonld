@@ -87,6 +87,11 @@ Version 0.6.0 provides the monitoring and revalidation foundation for this
 track. Its reports should inform standards review; they must not be used to
 silently rewrite semantic mappings.
 
+Version 0.6.1 removes three reporting false positives and leaves 12 explicit,
+non-blocking review items. Those items form a practical standards-review
+backlog rather than a reason to weaken report severity or change mappings
+automatically.
+
 ## Combined outcome
 
 Track A creates understanding and stakeholder momentum. Track D turns project
