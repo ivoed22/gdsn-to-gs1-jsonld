@@ -28,6 +28,7 @@ from ui import (
     render_review_guidance,
     render_section_header,
     render_status_card,
+    render_vocabulary_status,
     render_workflow_overview,
 )
 
@@ -107,6 +108,20 @@ with st.sidebar:
 """,
             unsafe_allow_html=True,
         )
+
+    webvoc_metadata_path = REPOSITORY_ROOT / "webvoc" / "current" / "metadata.json"
+    webvoc_metadata = {}
+    if webvoc_metadata_path.is_file():
+        try:
+            webvoc_metadata = json.loads(
+                webvoc_metadata_path.read_text(encoding="utf-8")
+            )
+        except (OSError, json.JSONDecodeError):
+            webvoc_metadata = {}
+    render_vocabulary_status(
+        webvoc_metadata.get("detected_version"),
+        webvoc_metadata.get("detected_last_modified"),
+    )
 
 with st.container(border=True):
     render_section_header(

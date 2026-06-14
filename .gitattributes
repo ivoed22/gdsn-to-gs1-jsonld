@@ -1,0 +1,5 @@
+.gitattributes text eol=lf
+webvoc/current/gs1Voc.jsonld -text
+webvoc/current/gs1Voc.ttl -text
+webvoc/current/linktypes.json -text
+webvoc/current/metadata.json text eol=lf

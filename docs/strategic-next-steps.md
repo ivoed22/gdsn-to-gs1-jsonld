@@ -45,6 +45,8 @@ Reduce uncertainty around Web Vocabulary terms and document/DPP modelling.
 
 ### Suggested outputs
 
+- routine Web Vocabulary and linktype snapshot monitoring
+- repeatable mapping-catalog revalidation reports
 - a resolved warning list with decisions, owners, and evidence
 - a proposed Web Vocabulary term review for missing or replacement properties
 - a document-link modelling decision
@@ -80,6 +82,10 @@ architectural layers before the semantic relationship between product,
 certification, and document resources is governed. First establish the mapping
 and conformance foundation; then extend into verification, discovery, and DPP
 ecosystems.
+
+Version 0.6.0 provides the monitoring and revalidation foundation for this
+track. Its reports should inform standards review; they must not be used to
+silently rewrite semantic mappings.
 
 ## Combined outcome
 

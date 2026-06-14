@@ -10,11 +10,13 @@ This review summarizes the current mapping profile using:
 - the Web Vocabulary-validated mapping catalog
 - the catalog's GS1 Web Vocabulary term inventory
 - the mapping review-issues CSV
+- the local Web Vocabulary 1.17 JSON-LD and Turtle snapshots
+- the official GS1 linktypes snapshot
 
-The latest mapping quality report is valid in non-strict mode with 0 errors,
-30 warnings, 32 informational findings, and 5 documented experimental
-mappings. The warnings are governance and conformance-hardening work, not
-evidence that the converter cannot produce usable JSON-LD.
+Version 0.6.0 can regenerate current warning counts and revalidate the catalog
+against committed snapshots. The warnings are governance and
+conformance-hardening work, not evidence that the converter cannot produce
+usable JSON-LD.
 
 ## Strong / high-confidence areas
 
@@ -87,6 +89,10 @@ The project needs a decision between embedded Schema.org document objects,
 `gs1:certificationInfo`, GS1 Digital Link link relations, or another governed
 document/DPP pattern.
 
+The current official linktypes snapshot confirms that `dpp` and
+`certificationInfo` are stable linktypes. This is useful review evidence, but
+does not by itself justify rewriting embedded JSON-LD document mappings.
+
 ### schema.org fallback usage
 
 The project uses schema.org for URLs, document names, formats, identifiers, and
@@ -136,4 +142,4 @@ separately.
    future documentation and catalogs.
 7. Define a conformance wording policy and the evidence required for each
    claim.
-8. Record the Web Vocabulary version or source revision used for validation.
+8. Use the v0.6 update monitor to record and compare Web Vocabulary revisions.

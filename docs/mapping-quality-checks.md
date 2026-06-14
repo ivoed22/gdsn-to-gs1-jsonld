@@ -55,3 +55,16 @@ Review, and WebVoc Issues tabs.
 
 Reports are diagnostic inputs for human review. A warning does not by itself
 mean the current converter output is invalid.
+
+From v0.6.0, each warning also includes:
+
+- `category`
+- `affected_field_property`
+- `reason`
+- `recommended_action`
+- `blocks_release`
+
+Categories distinguish vocabulary gaps, available linktypes, experimental
+mappings, BMS review, YAML/catalog mismatches, document/DPP modelling,
+nutrient modelling, image modelling, schema.org fallback, and governance
+review.

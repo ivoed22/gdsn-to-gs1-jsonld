@@ -54,6 +54,24 @@ def test_check_catalog_passes_current_v0_3_catalog():
     assert report["summary"]["valid"] is True
     assert report["summary"]["errors"] == 0
     assert report["summary"]["catalog_rows"] > 0
+    assert all(
+        {
+            "category",
+            "affected_field_property",
+            "reason",
+            "recommended_action",
+            "blocks_release",
+        }
+        <= set(item)
+        for item in report["warnings"]
+    )
+    categories = {item["category"] for item in report["warnings"]}
+    assert {
+        "document_dpp_modelling",
+        "image_modelling",
+        "nutrient_modelling",
+        "webvoc_term_missing",
+    } <= categories
 
 
 def test_check_catalog_reports_missing_required_columns(tmp_path):
@@ -96,6 +114,7 @@ def test_check_catalog_strict_mode_fails_on_warnings(tmp_path):
 
     assert report["summary"]["errors"] == 0
     assert report["summary"]["warnings"] == 1
+    assert report["warnings"][0]["severity"] == "warning"
     assert report["summary"]["valid"] is False
 
 

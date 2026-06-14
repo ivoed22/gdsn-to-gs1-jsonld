@@ -5,8 +5,20 @@ from pathlib import Path
 import typer
 
 from .catalog_quality import check_catalog, check_mapping, write_quality_reports
+from .catalog_revalidation import (
+    revalidate_mapping_catalog,
+    write_catalog_revalidation_outputs,
+    write_versioned_revalidated_catalog,
+)
 from .converter import convert_xml_to_jsonld
 from .sample_runner import convert_sample_corpus
+from .webvoc_monitor import (
+    DEFAULT_JSONLD_URL,
+    DEFAULT_LINKTYPES_URL,
+    DEFAULT_TTL_URL,
+    check_webvoc_updates,
+    write_webvoc_update_reports,
+)
 from .xml_parser import XMLParseError
 
 app = typer.Typer(
@@ -206,6 +218,124 @@ def check_mapping_command(
     _print_quality_summary(report, output_paths)
     if not report["summary"]["valid"]:
         raise typer.Exit(code=1)
+
+
+@app.command("check-webvoc-updates")
+def check_webvoc_updates_command(
+    snapshot_dir: Path = typer.Option(
+        Path("webvoc/current"),
+        "--snapshot-dir",
+        help="Directory containing the local Web Vocabulary snapshot.",
+    ),
+    output: Path = typer.Option(
+        Path("webvoc_update_report"),
+        "--output",
+        "-o",
+        help="Directory for JSON and Excel update reports.",
+    ),
+    jsonld_url: str = typer.Option(
+        DEFAULT_JSONLD_URL,
+        "--jsonld-url",
+        help="Official GS1 Web Vocabulary JSON-LD URL.",
+    ),
+    ttl_url: str = typer.Option(
+        DEFAULT_TTL_URL,
+        "--ttl-url",
+        help="Official GS1 Web Vocabulary Turtle URL.",
+    ),
+    linktypes_url: str = typer.Option(
+        DEFAULT_LINKTYPES_URL,
+        "--linktypes-url",
+        help="Official GS1 link types JSON URL.",
+    ),
+    no_network: bool = typer.Option(
+        False,
+        "--no-network",
+        help="Validate only the local snapshot without network access.",
+    ),
+    update_snapshot: bool = typer.Option(
+        False,
+        "--update-snapshot",
+        help="Replace local snapshots after reporting remote differences.",
+    ),
+) -> None:
+    """Compare official Web Vocabulary resources with a local snapshot."""
+    try:
+        report = check_webvoc_updates(
+            snapshot_dir,
+            jsonld_url=jsonld_url,
+            ttl_url=ttl_url,
+            linktypes_url=linktypes_url,
+            no_network=no_network,
+            update_snapshot=update_snapshot,
+        )
+        paths = write_webvoc_update_reports(report, output)
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        typer.echo(f"Web Vocabulary update check failed: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    typer.echo(
+        "Web Vocabulary update check: "
+        f"{len(report['summary']['changed_sources'])} changed source(s)"
+    )
+    for path in paths.values():
+        typer.echo(f"  - {path}")
+
+
+@app.command("revalidate-mapping-catalog")
+def revalidate_mapping_catalog_command(
+    catalog: Path = typer.Option(
+        ...,
+        "--catalog",
+        help="Mapping catalog CSV.",
+    ),
+    webvoc_dir: Path = typer.Option(
+        Path("webvoc/current"),
+        "--webvoc-dir",
+        help="Local Web Vocabulary snapshot directory.",
+    ),
+    output: Path = typer.Option(
+        Path("mapping_catalog_revalidation"),
+        "--output",
+        "-o",
+        help="Directory for revalidation outputs.",
+    ),
+    write_updated_catalog: bool = typer.Option(
+        False,
+        "--write-updated-catalog",
+        help="Write a new v0.6 revalidated catalog beside the source catalog.",
+    ),
+) -> None:
+    """Revalidate catalog vocabulary terms against local WebVoc snapshots."""
+    try:
+        report, rows, columns = revalidate_mapping_catalog(
+            catalog,
+            webvoc_dir,
+        )
+        paths = write_catalog_revalidation_outputs(
+            report,
+            rows,
+            columns,
+            output,
+        )
+        if write_updated_catalog:
+            paths["versioned_catalog"] = write_versioned_revalidated_catalog(
+                catalog,
+                rows,
+                columns,
+            )
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        typer.echo(f"Catalog revalidation failed: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    summary = report["summary"]
+    typer.echo(
+        "Catalog revalidation: "
+        f"{summary['rows_with_missing_terms']} row(s) with missing terms; "
+        f"{summary['rows_with_available_linktypes']} row(s) with linktypes"
+    )
+    for path in paths.values():
+        typer.echo(f"  - {path}")
 
 
 if __name__ == "__main__":

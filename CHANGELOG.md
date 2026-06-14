@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.6.0 — Web Vocabulary Update Monitor & Conformance Hardening
+
+### Added
+
+- Controlled local snapshots of GS1 Web Vocabulary JSON-LD, Turtle, linktypes,
+  and source metadata.
+- `check-webvoc-updates` with online comparison, offline validation, JSON/Excel
+  reporting, and explicit snapshot refresh.
+- `revalidate-mapping-catalog` with JSON, Excel, and revalidated CSV outputs.
+- Stable linktype recognition and structured warning classification.
+- Compact local vocabulary status in Streamlit.
+
+### Preserved
+
+- Existing converter output, mapping YAML files, validation behavior, and CLI
+  conversion behavior.
+- Offline normal conversion with no external vocabulary fetch.
+- Reviewable governance warnings where semantic decisions remain unresolved.
+
 ## v0.5.1 — Streamlit UI Polish
 
 ### Added

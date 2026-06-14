@@ -1,0 +1,11 @@
+{
+  "source_url_jsonld": "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
+  "source_url_ttl": "https://ref.gs1.org/voc/data/gs1Voc.ttl",
+  "source_url_linktypes": "https://ref.gs1.org/voc/data/linktypes",
+  "fetched_at_utc": "2026-06-14T13:32:35Z",
+  "jsonld_sha256": "cf48c79d5891195a30f873b333983b21ffacb518adc80568cf1141961a3889b9",
+  "ttl_sha256": "18244b56183587102561343e94d705eace181350c771876ed59183fa71776e98",
+  "linktypes_sha256": "7c25020aa499eb4e300c530481c377899941a5656c67b72ef705b54dacb522d6",
+  "detected_version": "1.17",
+  "detected_last_modified": "2025-11-18"
+}

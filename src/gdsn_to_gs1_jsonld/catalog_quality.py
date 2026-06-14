@@ -46,8 +46,12 @@ ALLOWED_MAPPING_STATUSES = {
     "mapped_official_bms_xpath",
     "mapped_needs_bms_review",
     "candidate",
+    "candidate_needs_code_filter_review",
+    "candidate_official_bms_xpath",
     "candidate_needs_webvoc_review",
     "needs_bms_review",
+    "needs_semantic_review",
+    "needs_web_vocab_review",
     "needs_webvoc_review",
     "unsupported",
     "out_of_scope",
@@ -79,6 +83,11 @@ class QualityMessage:
     severity: str
     code: str
     message: str
+    category: str
+    affected_field_property: str
+    reason: str
+    recommended_action: str
+    blocks_release: bool
     canonical_field: str = ""
     mapping_status: str = ""
     source: str = ""
@@ -98,16 +107,80 @@ def _message(
     canonical_field: str = "",
     mapping_status: str = "",
     source: str = "",
-) -> dict[str, str]:
+) -> dict[str, Any]:
+    normalized_severity = {
+        "errors": "error",
+        "warnings": "warning",
+    }.get(severity, severity)
+    category, recommended_action = _classify_warning(
+        code,
+        canonical_field,
+        mapping_status,
+    )
     return asdict(
         QualityMessage(
-            severity=severity,
+            severity=normalized_severity,
             code=code,
             message=message,
+            category=category,
+            affected_field_property=canonical_field,
+            reason=message,
+            recommended_action=recommended_action,
+            blocks_release=normalized_severity == "error",
             canonical_field=canonical_field,
             mapping_status=mapping_status,
             source=source,
         )
+    )
+
+
+def _classify_warning(
+    code: str,
+    canonical_field: str,
+    mapping_status: str,
+) -> tuple[str, str]:
+    field = canonical_field.lower()
+    if code in {
+        "yaml_field_missing_from_catalog",
+        "yaml_property_not_aligned",
+        "catalog_field_missing_from_yaml",
+    }:
+        return (
+            "yaml_catalog_mismatch",
+            "Align YAML and catalog explicitly or document why they differ.",
+        )
+    if code == "experimental_mapping_documented":
+        return (
+            "experimental_mapping",
+            "Keep the mapping experimental until standards review is complete.",
+        )
+    if code == "webvoc_review_required":
+        if "nutrient" in field:
+            category = "nutrient_modelling"
+        elif "image" in field:
+            category = "image_modelling"
+        elif "document" in field or "referenced_file" in field:
+            category = "document_dpp_modelling"
+        else:
+            category = "webvoc_term_missing"
+        return (
+            category,
+            "Review the latest local Web Vocabulary snapshot before changing "
+            "the semantic mapping.",
+        )
+    if code == "missing_official_bms_id" or "bms" in mapping_status.lower():
+        return (
+            "needs_bms_review",
+            "Confirm the official BMS identifier and XPath evidence.",
+        )
+    if code == "schema_org_fallback":
+        return (
+            "schema_org_fallback",
+            "Keep the external namespace documented and review GS1 alternatives.",
+        )
+    return (
+        "governance_review",
+        "Review and document the governance decision; do not auto-fix semantics.",
     )
 
 

@@ -2,7 +2,7 @@ from html import escape
 
 import streamlit as st
 
-APP_VERSION = "v0.5.0"
+APP_VERSION = "v0.6.0"
 
 
 def apply_page_styles() -> None:
@@ -486,6 +486,24 @@ def apply_page_styles() -> None:
             padding: 0.42rem 0.58rem;
         }
 
+        .vocabulary-status {
+            background: #f8fbfe;
+            border: 1px solid #d8e7f2;
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            line-height: 1.5;
+            margin-top: 0.8rem;
+            padding: 0.75rem 0.85rem;
+        }
+
+        .vocabulary-status strong {
+            color: var(--text-primary);
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 0.2rem;
+        }
+
         /* Streamlit-specific hook for the native uploader dropzone. */
         [data-testid="stFileUploaderDropzone"] {
             background: linear-gradient(135deg, #eef5ff, #ffffff);
@@ -846,6 +864,25 @@ def render_empty_upload_state() -> None:
             <strong>Ready for one product message</strong>
             <span>Accepted format: .xml. Processing starts after Convert.</span>
           </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_vocabulary_status(
+    version: str | None,
+    last_modified: str | None,
+) -> None:
+    safe_version = escape(version or "metadata unavailable")
+    safe_modified = escape(last_modified or "unknown")
+    st.markdown(
+        f"""
+        <div class="vocabulary-status">
+          <strong>Vocabulary status</strong>
+          Local snapshot: {safe_version}<br>
+          Last modified: {safe_modified}<br>
+          Update guidance: <code>docs/webvoc-update-monitor.md</code>
         </div>
         """,
         unsafe_allow_html=True,

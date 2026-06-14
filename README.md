@@ -3,10 +3,10 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
-Version 0.5.0 adds a realistic synthetic sample corpus, batch sample
-conversion, and richer unmapped-field context while keeping the v0.1.0,
-v0.2.0, and v0.3.0 mapping outputs stable. It is deliberately a structured
-product converter, not a generic XML-to-JSON utility.
+Version 0.6.0 adds controlled GS1 Web Vocabulary snapshot monitoring and
+mapping-catalog revalidation while keeping the v0.1.0, v0.2.0, and v0.3.0
+mapping outputs stable. It is deliberately a structured product converter, not
+a generic XML-to-JSON utility.
 
 ## Mapping profiles
 
@@ -86,6 +86,28 @@ gdsn-to-gs1-jsonld check-mapping \
 
 Warnings are non-failing by default. Add `--strict` to either quality command
 to make warnings produce exit code 1.
+
+Check the committed Web Vocabulary snapshot without network access:
+
+```bash
+gdsn-to-gs1-jsonld check-webvoc-updates \
+  --snapshot-dir webvoc/current \
+  --output webvoc_update_report/ \
+  --no-network
+```
+
+Revalidate the mapping catalog against that snapshot:
+
+```bash
+gdsn-to-gs1-jsonld revalidate-mapping-catalog \
+  --catalog mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv \
+  --webvoc-dir webvoc/current \
+  --output mapping_catalog_revalidation/
+```
+
+Normal conversion never fetches external vocabulary resources. See the
+[Web Vocabulary update monitor](docs/webvoc-update-monitor.md) for controlled
+online comparison and snapshot refresh.
 
 ## Streamlit
 
