@@ -256,7 +256,7 @@ def apply_page_styles() -> None:
             border: 1px solid;
             border-left-width: 0.35rem;
             border-radius: var(--radius-md);
-            margin-bottom: var(--spacing-md);
+            height: 100%;
             padding: 1rem 1.1rem;
         }
 
@@ -289,6 +289,25 @@ def apply_page_styles() -> None:
             font-size: 0.95rem;
             font-weight: 700;
             margin: 0;
+        }
+
+        .download-card-header {
+            align-items: center;
+            display: flex;
+            gap: 0.75rem;
+            justify-content: space-between;
+        }
+
+        .file-type-badge {
+            background: var(--surface-accent);
+            border: 1px solid #cfe0f3;
+            border-radius: 999px;
+            color: var(--accent-strong);
+            flex: 0 0 auto;
+            font-size: 0.66rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            padding: 0.3rem 0.5rem;
         }
 
         .download-card-copy {
@@ -580,6 +599,93 @@ def apply_page_styles() -> None:
             padding: 0.35rem 0.55rem;
         }
 
+        .result-summary-grid {
+            display: grid;
+            gap: 0.75rem;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            margin-bottom: 1rem;
+        }
+
+        .result-summary-card {
+            background: linear-gradient(145deg, #f8fbff, #ffffff);
+            border: 1px solid #d6e3ef;
+            border-radius: var(--radius-md);
+            min-height: 6.2rem;
+            padding: 0.9rem;
+        }
+
+        .result-summary-label {
+            color: var(--text-secondary);
+            font-size: 0.68rem;
+            font-weight: 750;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .result-summary-value {
+            color: var(--text-primary);
+            display: block;
+            font-size: 1.05rem;
+            font-weight: 750;
+            margin: 0.55rem 0 0.18rem;
+        }
+
+        .result-summary-detail {
+            color: var(--text-secondary);
+            display: block;
+            font-size: 0.74rem;
+            line-height: 1.35;
+        }
+
+        .review-guide {
+            background: linear-gradient(135deg, #eef5ff, #f9fcff);
+            border: 1px solid #c9ddef;
+            border-radius: var(--radius-md);
+            margin-top: 1rem;
+            padding: 1rem 1.1rem;
+        }
+
+        .review-guide-title {
+            color: var(--accent-strong);
+            font-size: 0.9rem;
+            font-weight: 750;
+            margin-bottom: 0.75rem;
+        }
+
+        .review-guide ol {
+            display: grid;
+            gap: 0.5rem 1.2rem;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .review-guide li {
+            color: var(--text-secondary);
+            font-size: 0.74rem;
+            line-height: 1.4;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .review-guide li::before {
+            align-items: center;
+            background: var(--accent-primary);
+            border-radius: 999px;
+            color: #ffffff;
+            content: attr(data-step);
+            display: inline-flex;
+            font-size: 0.62rem;
+            font-weight: 800;
+            height: 1.1rem;
+            justify-content: center;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 1.1rem;
+        }
+
         @media (hover: hover) {
             .stButton > button:hover,
             .stDownloadButton > button:hover {
@@ -589,8 +695,13 @@ def apply_page_styles() -> None:
 
         @media (max-width: 900px) {
             .hero-grid,
-            .workflow-grid {
+            .workflow-grid,
+            .result-summary-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .review-guide ol {
+                grid-template-columns: 1fr 1fr;
             }
         }
 
@@ -615,6 +726,10 @@ def apply_page_styles() -> None:
 
             .download-card-copy {
                 min-height: auto;
+            }
+
+            .review-guide ol {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -753,6 +868,43 @@ def render_status_card(
     )
 
 
+def render_result_summary(
+    validation_value: str,
+    validation_detail: str,
+    mapped_rows: int,
+    unmapped_rows: int,
+) -> None:
+    safe_validation_value = escape(validation_value)
+    safe_validation_detail = escape(validation_detail)
+    st.markdown(
+        f"""
+        <div class="result-summary-grid" aria-label="Generated output summary">
+          <div class="result-summary-card">
+            <span class="result-summary-label">JSON-LD generated</span>
+            <span class="result-summary-value">Ready</span>
+            <span class="result-summary-detail">Full structured product output</span>
+          </div>
+          <div class="result-summary-card">
+            <span class="result-summary-label">Validation result</span>
+            <span class="result-summary-value">{safe_validation_value}</span>
+            <span class="result-summary-detail">{safe_validation_detail}</span>
+          </div>
+          <div class="result-summary-card">
+            <span class="result-summary-label">Mapping report</span>
+            <span class="result-summary-value">{mapped_rows} mapped</span>
+            <span class="result-summary-detail">Traceable mapping rows found</span>
+          </div>
+          <div class="result-summary-card">
+            <span class="result-summary-label">Unmapped fields report</span>
+            <span class="result-summary-value">{unmapped_rows} entries</span>
+            <span class="result-summary-detail">Source elements for review</span>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_identity_card(product_id: str) -> None:
     safe_product_id = escape(product_id)
     st.markdown(
@@ -785,11 +937,32 @@ def render_preview_heading(
     )
 
 
-def render_download_intro(title: str, summary: str) -> None:
+def render_download_intro(title: str, summary: str, file_type: str) -> None:
     st.markdown(
         f"""
-        <p class="download-card-title">{title}</p>
+        <div class="download-card-header">
+          <p class="download-card-title">{title}</p>
+          <span class="file-type-badge">{file_type}</span>
+        </div>
         <p class="download-card-copy">{summary}</p>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_review_guidance() -> None:
+    st.markdown(
+        """
+        <div class="review-guide">
+          <div class="review-guide-title">What to review next</div>
+          <ol>
+            <li data-step="1">Check validation status</li>
+            <li data-step="2">Confirm product identity</li>
+            <li data-step="3">Review mapping report</li>
+            <li data-step="4">Check unmapped fields</li>
+            <li data-step="5">Download export package</li>
+          </ol>
+        </div>
         """,
         unsafe_allow_html=True,
     )

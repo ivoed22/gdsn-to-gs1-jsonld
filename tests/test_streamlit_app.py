@@ -16,6 +16,11 @@ def test_streamlit_result_survives_rerun(example_xml_path):
         "https://id.gs1.org/01/08712345678906" in markdown.value
         for markdown in app.markdown
     )
+    rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
+    assert "JSON-LD generated" in rendered_markdown
+    assert "Mapping report" in rendered_markdown
+    assert "Unmapped fields report" in rendered_markdown
+    assert "What to review next" in rendered_markdown
 
     app.run(timeout=20)
 

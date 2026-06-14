@@ -30,6 +30,16 @@ checkout, and hard-refresh the browser if it still has an older app session.
   - profile coverage is shown as compact badges instead of a long bullet list;
   - product identity is presented as a dedicated dashboard card;
   - JSON-LD and mapping previews use labelled expandable report areas.
+- Added a dedicated post-conversion review dashboard:
+  - four compact summary cards confirm JSON-LD generation, validation status,
+    mapped-row coverage, and unmapped-field entries;
+  - validation and product identity are presented together as the first review
+    checkpoint;
+  - full JSON-LD remains copyable inside a calmer, collapsed preview;
+  - the mapping preview states mapped versus total rows before the dataframe;
+  - downloads form a labelled 2x2 export package with JSON-LD, XLSX, and JSON
+    file-type badges;
+  - a final "What to review next" card gives a five-step review sequence.
 - Added a clearly visible blue gradient hero with a large product title,
   version chip, privacy context, and traceability cues.
 - Introduced shared spacing, radius, color, surface, and interaction tokens.
@@ -69,9 +79,13 @@ checkout, and hard-refresh the browser if it still has an older app session.
 - [ ] Keyboard focus is visible on convert, download, and reset actions.
 - [ ] Success or validation status appears in a distinct status card.
 - [ ] Product identity is shown as a dedicated card.
-- [ ] JSON-LD and mapping previews are labelled and expandable.
+- [ ] Four output summary cards appear at the top of Step 2.
+- [ ] JSON-LD preview is clearly labelled, expandable, and fully copyable.
+- [ ] Mapping preview shows mapped-row coverage before the dataframe.
 - [ ] Four downloads appear as labelled cards in a two-column grid after
-  conversion.
+  conversion, each with a file-type badge.
+- [ ] "What to review next" guidance appears below the export package.
+- [ ] JSON-LD and report data match the existing generated outputs.
 - [ ] Hero, workflow cards, and download grid stack cleanly at a narrow width.
 - [ ] Results remain visible after reruns and download interactions.
 - [ ] Changing the mapping profile clears stale results.

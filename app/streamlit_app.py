@@ -24,6 +24,8 @@ from ui import (
     render_identity_card,
     render_page_header,
     render_preview_heading,
+    render_result_summary,
+    render_review_guidance,
     render_section_header,
     render_status_card,
     render_workflow_overview,
@@ -163,33 +165,56 @@ if result is not None:
 
         validation = result.validation_report
         if validation["valid"] and not validation["warnings"]:
-            render_status_card(
-                "success",
-                "Conversion complete",
-                "Validation passed with no warnings.",
-            )
+            validation_tone = "success"
+            validation_title = "Conversion complete"
+            validation_detail = "Validation passed with no warnings."
+            validation_value = "Passed"
         elif validation["valid"]:
-            render_status_card(
-                "warning",
-                "Conversion complete with review points",
+            validation_tone = "warning"
+            validation_title = "Conversion complete with review points"
+            validation_detail = (
                 f"Validation passed with {len(validation['warnings'])} "
-                "warning(s).",
+                "warning(s)."
             )
+            validation_value = "Passed with warnings"
         else:
-            render_status_card(
-                "error",
-                "Conversion complete with validation errors",
+            validation_tone = "error"
+            validation_title = "Conversion complete with validation errors"
+            validation_detail = (
                 f"Review {len(validation['errors'])} validation error(s) "
-                "before using the output.",
+                "before using the output."
+            )
+            validation_value = "Review required"
+
+        mapped_rows = sum(
+            1 for row in result.mapping_report_rows if row.get("found")
+        )
+        unmapped_rows = len(
+            result.unmapped_fields.get("unmapped_elements", [])
+        )
+        render_result_summary(
+            validation_value,
+            validation_detail,
+            mapped_rows,
+            unmapped_rows,
+        )
+
+        status_column, identity_column = st.columns([1, 1.2])
+        with status_column:
+            render_status_card(
+                validation_tone,
+                validation_title,
+                validation_detail,
             )
 
         product_id = result.jsonld_data.get("@id")
-        if product_id:
-            render_identity_card(product_id)
+        with identity_column:
+            if product_id:
+                render_identity_card(product_id)
 
         render_preview_heading(
             "Generated JSON-LD",
-            "GS1 Web Vocabulary-aligned structured product data",
+            "Open the complete, copyable GS1 Web Vocabulary-aligned output.",
             "JSON-LD",
         )
         formatted_jsonld = json.dumps(
@@ -197,7 +222,7 @@ if result is not None:
             indent=2,
             ensure_ascii=False,
         )
-        with st.expander("Open structured data preview", expanded=True):
+        with st.expander("Open structured data preview"):
             st.code(formatted_jsonld, language="json")
 
     with st.container(border=True):
@@ -209,23 +234,28 @@ if result is not None:
         )
         render_preview_heading(
             "Mapping report preview",
-            "Source fields, canonical fields, and generated properties",
-            f"{len(result.mapping_report_rows)} rows",
+            "Compare source fields, canonical fields, and generated properties.",
+            f"{mapped_rows}/{len(result.mapping_report_rows)} mapped",
         )
-        with st.expander("Open mapping trace preview", expanded=True):
+        with st.expander("Open mapping trace preview"):
             st.dataframe(
                 pd.DataFrame(result.mapping_report_rows),
                 use_container_width=True,
             )
 
         output_name_base = st.session_state["output_name_base"]
-        st.subheader("Downloads")
+        render_preview_heading(
+            "Export package",
+            "Download the product output and all supporting review reports.",
+            "4 files",
+        )
         download_top_left, download_top_right = st.columns(2)
         with download_top_left:
             with st.container(border=True):
                 render_download_intro(
-                    "JSON-LD product",
+                    "Product JSON-LD",
                     "Machine-readable GS1 Web Vocabulary product data.",
+                    "JSON-LD",
                 )
                 st.download_button(
                     "Download JSON-LD",
@@ -237,8 +267,9 @@ if result is not None:
         with download_top_right:
             with st.container(border=True):
                 render_download_intro(
-                    "Mapping report",
+                    "Mapping report XLSX",
                     "Excel trace of source fields and generated properties.",
+                    "XLSX",
                 )
                 st.download_button(
                     "Download mapping report XLSX",
@@ -255,8 +286,9 @@ if result is not None:
         with download_bottom_left:
             with st.container(border=True):
                 render_download_intro(
-                    "Validation report",
+                    "Validation report JSON",
                     "JSON summary of errors, warnings, and validation status.",
+                    "JSON",
                 )
                 st.download_button(
                     "Download validation report JSON",
@@ -268,8 +300,9 @@ if result is not None:
         with download_bottom_right:
             with st.container(border=True):
                 render_download_intro(
-                    "Unmapped fields",
+                    "Unmapped fields JSON",
                     "JSON inventory of populated XML outside the profile.",
+                    "JSON",
                 )
                 st.download_button(
                     "Download unmapped fields report JSON",
@@ -279,6 +312,7 @@ if result is not None:
                     use_container_width=True,
                 )
 
+        render_review_guidance()
         st.button(
             "Clear results",
             on_click=clear_results,
