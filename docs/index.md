@@ -7,6 +7,10 @@ Web Vocabulary JSON-LD.
 
 - [Getting started](getting-started.md)
 - [Architecture](architecture.md)
+- [UI design direction](design-direction.md)
+- [UI implementation plan](UI_IMPLEMENTATION_PLAN.md)
+- [UI change log](UI_CHANGES.md)
+- [Design system](../DESIGN.md)
 - [Mapping profiles](mapping.md)
 - [Mapping catalog](mapping-catalog.md)
 - [Mapping quality checks](mapping-quality-checks.md)
