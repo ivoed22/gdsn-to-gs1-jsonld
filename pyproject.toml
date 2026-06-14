@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gdsn-to-gs1-jsonld"
-version = "0.6.1"
+version = "0.7.0"
 description = "Convert GDSN product XML into GS1 Web Vocabulary JSON-LD using configurable mappings."
 readme = "README.md"
 requires-python = ">=3.11"

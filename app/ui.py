@@ -2,7 +2,7 @@ from html import escape
 
 import streamlit as st
 
-APP_VERSION = "v0.6.1"
+APP_VERSION = "v0.7.0"
 
 
 def apply_page_styles() -> None:
@@ -504,6 +504,24 @@ def apply_page_styles() -> None:
             margin-bottom: 0.2rem;
         }
 
+        .standards-backlog-status {
+            background: #fffaf0;
+            border: 1px solid #ead9b8;
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            line-height: 1.5;
+            margin-top: 0.65rem;
+            padding: 0.75rem 0.85rem;
+        }
+
+        .standards-backlog-status strong {
+            color: var(--text-primary);
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 0.2rem;
+        }
+
         /* Streamlit-specific hook for the native uploader dropzone. */
         [data-testid="stFileUploaderDropzone"] {
             background: linear-gradient(135deg, #eef5ff, #ffffff);
@@ -883,6 +901,25 @@ def render_vocabulary_status(
           Local snapshot: {safe_version}<br>
           Last modified: {safe_modified}<br>
           Update guidance: <code>docs/webvoc-update-monitor.md</code>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_standards_backlog_status(
+    open_topics: int,
+    categories: list[str],
+) -> None:
+    safe_categories = escape(", ".join(categories) or "metadata unavailable")
+    st.markdown(
+        f"""
+        <div class="standards-backlog-status">
+          <strong>Standards review backlog</strong>
+          Open topics: {open_topics}<br>
+          Categories: {safe_categories}<br>
+          Register: <code>docs/standards-decisions/index.md</code><br>
+          These are standards/governance decisions, not runtime converter failures.
         </div>
         """,
         unsafe_allow_html=True,

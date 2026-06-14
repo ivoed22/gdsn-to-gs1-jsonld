@@ -1,0 +1,130 @@
+[
+  {
+    "id": "SDR-001",
+    "title": "Nutrient modelling",
+    "status": "open",
+    "category": "nutrient_modelling",
+    "affected_fields": [
+      "nutrients[].preparation_state",
+      "nutrients[].nutrient_type",
+      "nutrients[].quantity_contained"
+    ],
+    "affected_properties": [
+      "gs1:nutrientDetail",
+      "gs1:preparationStateCode",
+      "gs1:nutrientTypeCode",
+      "gs1:quantityContained"
+    ],
+    "warning_count": 3,
+    "blocks_release": false,
+    "standards_review_required": true,
+    "recommended_owner": "GS1 Web Vocabulary owner and sector experts",
+    "target_release": "v0.8.0 or standards-approved mapping release",
+    "decision_file": "SDR-001-nutrient-modelling.md"
+  },
+  {
+    "id": "SDR-002",
+    "title": "Document and DPP modelling",
+    "status": "open",
+    "category": "document_dpp_modelling",
+    "affected_fields": [
+      "certification_documents[].referenced_file_type",
+      "referenced_documents[].referenced_file_type"
+    ],
+    "affected_properties": [
+      "gs1:referencedFileTypeCode",
+      "schema:additionalType",
+      "gs1:dpp",
+      "gs1:certificationInfo"
+    ],
+    "warning_count": 2,
+    "blocks_release": false,
+    "standards_review_required": true,
+    "recommended_owner": "GS1 Architecture and DPP/data spaces workstream",
+    "target_release": "v0.8.0 or deferred",
+    "decision_file": "SDR-002-document-dpp-modelling.md"
+  },
+  {
+    "id": "SDR-003",
+    "title": "Image representation",
+    "status": "open",
+    "category": "image_modelling",
+    "affected_fields": [
+      "product_image_url"
+    ],
+    "affected_properties": [
+      "gs1:productImage",
+      "schema:image"
+    ],
+    "warning_count": 1,
+    "blocks_release": false,
+    "standards_review_required": true,
+    "recommended_owner": "GS1 Web Vocabulary owner",
+    "target_release": "v0.8.0",
+    "decision_file": "SDR-003-image-representation.md"
+  },
+  {
+    "id": "SDR-004",
+    "title": "Allergen containment",
+    "status": "open",
+    "category": "webvoc_term_missing",
+    "affected_fields": [
+      "allergens[].level_of_containment"
+    ],
+    "affected_properties": [
+      "gs1:levelOfContainment",
+      "gs1:allergenLevelOfContainmentCode"
+    ],
+    "warning_count": 1,
+    "blocks_release": false,
+    "standards_review_required": true,
+    "recommended_owner": "GS1 Web Vocabulary owner and food sector experts",
+    "target_release": "v0.8.0",
+    "decision_file": "SDR-004-allergen-containment.md"
+  },
+  {
+    "id": "SDR-005",
+    "title": "Certification semantics",
+    "status": "open",
+    "category": "certification_semantics",
+    "affected_fields": [
+      "certifications[].certification_identification",
+      "certifications[].certificate_issuance_date_time",
+      "certifications[].effective_start"
+    ],
+    "affected_properties": [
+      "schema:identifier",
+      "schema:dateIssued",
+      "gs1:certificationURI",
+      "gs1:certificationValue",
+      "gs1:certificationStartDate"
+    ],
+    "warning_count": 3,
+    "blocks_release": false,
+    "standards_review_required": true,
+    "recommended_owner": "GS1 Web Vocabulary owner and GDSN/GSMP group",
+    "target_release": "v0.8.0",
+    "decision_file": "SDR-005-certification-semantics.md"
+  },
+  {
+    "id": "SDR-006",
+    "title": "YAML and catalog governance",
+    "status": "open",
+    "category": "yaml_catalog_mismatch",
+    "affected_fields": [
+      "certification_documents[].file_name",
+      "certification_documents[].document_url"
+    ],
+    "affected_properties": [
+      "schema:name",
+      "schema:url",
+      "gs1:certificationInfo"
+    ],
+    "warning_count": 2,
+    "blocks_release": false,
+    "standards_review_required": true,
+    "recommended_owner": "Internal project owner and mapping governance group",
+    "target_release": "v0.8.0 or governance decision",
+    "decision_file": "SDR-006-yaml-catalog-governance.md"
+  }
+]

@@ -3,10 +3,9 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
-Version 0.6.0 adds controlled GS1 Web Vocabulary snapshot monitoring and
-mapping-catalog revalidation while keeping the v0.1.0, v0.2.0, and v0.3.0
-mapping outputs stable. It is deliberately a structured product converter, not
-a generic XML-to-JSON utility.
+Version 0.7.0 converts the remaining conformance warnings into a structured
+standards decision register while keeping all mapping outputs stable. It is
+deliberately a structured product converter, not a generic XML-to-JSON utility.
 
 ## Mapping profiles
 
@@ -109,6 +108,19 @@ Normal conversion never fetches external vocabulary resources. See the
 [Web Vocabulary update monitor](docs/webvoc-update-monitor.md) for controlled
 online comparison and snapshot refresh.
 
+Export the maintained standards-review backlog without network access:
+
+```bash
+gdsn-to-gs1-jsonld export-standards-backlog \
+  --warning-review docs/warning-cleanup-v0.6.1.md \
+  --output docs/standards-decisions/ \
+  --format all
+```
+
+The command refreshes JSON and CSV backlog files. Detailed
+[standards decision records](docs/standards-decisions/index.md) remain
+human-maintained review documents.
+
 ## Streamlit
 
 ```bash
@@ -147,6 +159,7 @@ Vocabulary.
 - [Internal positioning](docs/internal-positioning.md)
 - [Open governance questions](docs/open-governance-questions.md)
 - [Web Vocabulary conformance review](docs/web-vocabulary-conformance-review.md)
+- [Standards decision register](docs/standards-decisions/index.md)
 - [Strategic next steps](docs/strategic-next-steps.md)
 
 ## For GS1 stakeholders
@@ -170,9 +183,9 @@ notes.
 
 ## Roadmap
 
-Later releases may resolve catalog findings and experimental document
-semantics, add broader food coverage, certification verification, validation
-profiles, and production batch workflows.
+Later releases may accept or defer registered standards decisions, add broader
+food coverage, certification verification, validation profiles, and production
+batch workflows.
 
 ## Disclaimer
 

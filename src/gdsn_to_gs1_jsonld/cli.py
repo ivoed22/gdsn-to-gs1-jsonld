@@ -12,6 +12,7 @@ from .catalog_revalidation import (
 )
 from .converter import convert_xml_to_jsonld
 from .sample_runner import convert_sample_corpus
+from .standards_backlog import BACKLOG, export_standards_backlog
 from .webvoc_monitor import (
     DEFAULT_JSONLD_URL,
     DEFAULT_LINKTYPES_URL,
@@ -334,6 +335,54 @@ def revalidate_mapping_catalog_command(
         f"{summary['rows_with_missing_terms']} row(s) with missing terms; "
         f"{summary['rows_with_available_linktypes']} row(s) with linktypes"
     )
+    for path in paths.values():
+        typer.echo(f"  - {path}")
+
+
+@app.command("export-standards-backlog")
+def export_standards_backlog_command(
+    warning_review: Path = typer.Option(
+        Path("docs/warning-cleanup-v0.6.1.md"),
+        "--warning-review",
+        help="Existing warning review used as the human-readable source context.",
+    ),
+    output: Path = typer.Option(
+        Path("docs/standards-decisions"),
+        "--output",
+        "-o",
+        help="Directory for machine-readable backlog files.",
+    ),
+    output_format: str = typer.Option(
+        "all",
+        "--format",
+        help="Output format: all, json, or csv.",
+    ),
+    overwrite: bool = typer.Option(
+        False,
+        "--overwrite",
+        help="Reserved for explicit SDR regeneration; detailed SDR files are maintained.",
+    ),
+) -> None:
+    """Export the maintained standards-review backlog without network access."""
+    try:
+        paths = export_standards_backlog(
+            output,
+            output_format=output_format.lower(),
+            warning_review=warning_review,
+        )
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        typer.echo(f"Standards backlog export failed: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    typer.echo(
+        f"Standards backlog: {len(BACKLOG)} open topic(s), "
+        f"{sum(item['warning_count'] for item in BACKLOG)} warning(s)"
+    )
+    if overwrite:
+        typer.echo(
+            "Detailed SDR Markdown remains manually maintained; "
+            "--overwrite does not replace review records."
+        )
     for path in paths.values():
         typer.echo(f"  - {path}")
 

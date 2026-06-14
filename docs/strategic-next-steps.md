@@ -92,6 +92,11 @@ non-blocking review items. Those items form a practical standards-review
 backlog rather than a reason to weaken report severity or change mappings
 automatically.
 
+Version 0.7.0 formalizes that backlog as six open standards decision records
+with owners, options, impact analysis, and machine-readable JSON/CSV exports.
+The next step is stakeholder review and explicit status changes from Open to
+Proposed, Accepted, Rejected, or Deferred.
+
 ## Combined outcome
 
 Track A creates understanding and stakeholder momentum. Track D turns project

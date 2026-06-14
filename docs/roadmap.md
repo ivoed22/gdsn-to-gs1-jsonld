@@ -18,8 +18,16 @@ Potential work after v0.5.0:
 The current release is still not full GDSN coverage.
 
 Version 0.6.1 separates tooling false positives from 12 genuine conformance
-and governance warnings. Future v0.7.0 work should seek standards decisions for
-those warnings rather than changing semantic mappings solely to reduce counts.
+and governance warnings. Version 0.7.0 organizes those warnings into six open
+standards decisions rather than changing semantic mappings solely to reduce
+counts.
+
+Potential work after v0.7.0:
+
+- assign named reviewers and decision dates
+- move reviewed records to Proposed, Accepted, Rejected, or Deferred
+- create versioned mapping changes only for accepted decisions
+- retain compatibility tests and migration notes for any accepted output change
 
 ## Strategic tracks after v0.5.0
 

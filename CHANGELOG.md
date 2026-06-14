@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.7.0 — Standards Review Backlog
+
+### Added
+
+- Six open standards decision records covering all 12 remaining warnings.
+- Machine-readable JSON and CSV standards-review backlogs.
+- Offline `export-standards-backlog` CLI command.
+- Compact read-only standards backlog status in Streamlit.
+- Tests for decision IDs, statuses, files, exports, and release-blocking flags.
+
+### Preserved
+
+- Converter output, mapping YAML files, and catalog data remain unchanged.
+- No unresolved warning is suppressed or marked conformant.
+- No new dependencies were added.
+
 ## v0.6.1 — Warning Cleanup and Conformance Notes
 
 ### Changed

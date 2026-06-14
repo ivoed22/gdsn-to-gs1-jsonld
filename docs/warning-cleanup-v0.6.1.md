@@ -77,3 +77,8 @@ than an automatic code cleanup. Priority decisions are nutrient modelling,
 document/DPP relationships, image representation, allergen containment, and
 certification semantics. Stronger conformance claims should wait for those
 decisions, but the warnings do not block v0.6.1.
+
+Version 0.7.0 implements that recommendation as six open
+[standards decision records](standards-decisions/index.md). The records assign
+owners, options, impacts, and follow-up actions without suppressing any warning
+or changing a semantic mapping.

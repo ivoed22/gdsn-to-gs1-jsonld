@@ -1,0 +1,7 @@
+id,title,status,category,warning_count,blocks_release,standards_review_required,recommended_owner,target_release,decision_file
+SDR-001,Nutrient modelling,open,nutrient_modelling,3,False,True,GS1 Web Vocabulary owner and sector experts,v0.8.0 or standards-approved mapping release,SDR-001-nutrient-modelling.md
+SDR-002,Document and DPP modelling,open,document_dpp_modelling,2,False,True,GS1 Architecture and DPP/data spaces workstream,v0.8.0 or deferred,SDR-002-document-dpp-modelling.md
+SDR-003,Image representation,open,image_modelling,1,False,True,GS1 Web Vocabulary owner,v0.8.0,SDR-003-image-representation.md
+SDR-004,Allergen containment,open,webvoc_term_missing,1,False,True,GS1 Web Vocabulary owner and food sector experts,v0.8.0,SDR-004-allergen-containment.md
+SDR-005,Certification semantics,open,certification_semantics,3,False,True,GS1 Web Vocabulary owner and GDSN/GSMP group,v0.8.0,SDR-005-certification-semantics.md
+SDR-006,YAML and catalog governance,open,yaml_catalog_mismatch,2,False,True,Internal project owner and mapping governance group,v0.8.0 or governance decision,SDR-006-yaml-catalog-governance.md

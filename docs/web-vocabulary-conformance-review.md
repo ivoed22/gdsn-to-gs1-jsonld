@@ -151,3 +151,8 @@ separately.
 The four remaining YAML/catalog warnings are intentionally retained because
 they concern certification semantics and document-model governance, not simple
 name normalization.
+
+Version 0.7.0 groups all 12 warnings into the
+[standards decision register](standards-decisions/index.md). A decision record
+is review evidence, not an accepted standards conclusion. All records remain
+Open until the named owners or governance groups make an explicit decision.

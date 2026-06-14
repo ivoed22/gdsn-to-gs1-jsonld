@@ -16,6 +16,7 @@ Web Vocabulary JSON-LD.
 - [Mapping quality checks](mapping-quality-checks.md)
 - [Web Vocabulary update monitor](webvoc-update-monitor.md)
 - [v0.6.1 warning cleanup review](warning-cleanup-v0.6.1.md)
+- [Standards decision register](standards-decisions/index.md)
 - [Sample testing](sample-testing.md)
 - [Stakeholder one-pager](stakeholder-one-pager.md)
 - [Demo story and five-minute script](demo-story.md)
@@ -33,6 +34,7 @@ Web Vocabulary JSON-LD.
 - [v0.5.0 release notes](releases/v0.5.0.md)
 - [v0.6.0 release notes](releases/v0.6.0.md)
 - [v0.6.1 release notes](releases/v0.6.1.md)
+- [v0.7.0 release notes](releases/v0.7.0.md)
 
 The MVP is experimental and does not implement full GDSN XSD validation or
 complete GDSN coverage.

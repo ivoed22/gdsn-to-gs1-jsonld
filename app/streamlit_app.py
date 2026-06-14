@@ -28,6 +28,7 @@ from ui import (
     render_review_guidance,
     render_section_header,
     render_status_card,
+    render_standards_backlog_status,
     render_vocabulary_status,
     render_workflow_overview,
 )
@@ -121,6 +122,35 @@ with st.sidebar:
     render_vocabulary_status(
         webvoc_metadata.get("detected_version"),
         webvoc_metadata.get("detected_last_modified"),
+    )
+
+    backlog_path = (
+        REPOSITORY_ROOT
+        / "docs"
+        / "standards-decisions"
+        / "standards_review_backlog.json"
+    )
+    backlog = []
+    if backlog_path.is_file():
+        try:
+            loaded_backlog = json.loads(backlog_path.read_text(encoding="utf-8"))
+            if isinstance(loaded_backlog, list):
+                backlog = [
+                    item
+                    for item in loaded_backlog
+                    if isinstance(item, dict) and item.get("status") == "open"
+                ]
+        except (OSError, json.JSONDecodeError):
+            backlog = []
+    render_standards_backlog_status(
+        len(backlog),
+        sorted(
+            {
+                str(item["category"]).replace("_", " ")
+                for item in backlog
+                if item.get("category")
+            }
+        ),
     )
 
 with st.container(border=True):
