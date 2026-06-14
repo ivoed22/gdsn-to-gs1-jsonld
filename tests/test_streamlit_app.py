@@ -50,7 +50,10 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
         "MVP v0.1.0 mapping",
     ]
     assert selector.value == "Certifications & Documents v0.3.0"
-    assert any("v0.3.0-dev" in caption.value for caption in app.caption)
+    assert any(
+        "App version: v0.5.0" in markdown.value
+        for markdown in app.markdown
+    )
     assert any("mapping/mapping_v0_3.yaml" in code.value for code in app.code)
 
 

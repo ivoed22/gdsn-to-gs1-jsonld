@@ -16,7 +16,14 @@ if str(SRC_DIRECTORY) not in sys.path:
 from gdsn_to_gs1_jsonld.converter import convert_xml_to_jsonld
 from gdsn_to_gs1_jsonld.reporter import json_bytes, mapping_report_xlsx_bytes
 from gdsn_to_gs1_jsonld.xml_parser import XMLParseError
-from ui import apply_page_styles, render_page_header, render_section_header
+from ui import (
+    APP_VERSION,
+    apply_page_styles,
+    render_download_intro,
+    render_page_header,
+    render_section_header,
+    render_status_card,
+)
 
 RESULT_STATE_KEYS = (
     "conversion_result",
@@ -40,10 +47,6 @@ st.set_page_config(
 )
 apply_page_styles()
 render_page_header()
-st.info(
-    "Privacy: uploaded XML files are processed in memory and are not "
-    "intentionally stored permanently."
-)
 
 mapping_profiles = {
     "Certifications & Documents v0.3.0": (
@@ -54,22 +57,33 @@ mapping_profiles = {
 }
 
 with st.sidebar:
-    st.caption("CONVERSION SETTINGS")
-    st.header("Mapping profile")
-    selected_profile = st.selectbox(
-        "Select a versioned profile",
-        list(mapping_profiles),
-        on_change=clear_results,
-        help="Changing the profile clears the current conversion result.",
-    )
-    mapping_path = mapping_profiles[selected_profile]
-    st.caption("App version: v0.3.0-dev")
-    st.markdown("**Active mapping file**")
-    st.code(mapping_path.relative_to(REPOSITORY_ROOT).as_posix())
-    st.divider()
-    st.caption("PROFILE COVERAGE")
     st.markdown(
-        """
+        f"""
+        <div class="sidebar-brand">
+          <strong>Conversion workspace</strong>
+          <span>App version: {APP_VERSION}</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    with st.container(border=True):
+        st.markdown(
+            '<p class="sidebar-label">Conversion settings</p>',
+            unsafe_allow_html=True,
+        )
+        selected_profile = st.selectbox(
+            "Mapping profile",
+            list(mapping_profiles),
+            on_change=clear_results,
+            help="Changing the profile clears the current conversion result.",
+        )
+        mapping_path = mapping_profiles[selected_profile]
+        st.markdown("**Active mapping file**")
+        st.code(mapping_path.relative_to(REPOSITORY_ROOT).as_posix())
+
+    with st.expander("Supported field groups", expanded=True):
+        st.markdown(
+            """
 **Supported field groups**
 
 - Basic product identity
@@ -83,11 +97,11 @@ with st.sidebar:
 - Certifications
 - DPP/document links
 """
-    )
+        )
 
 with st.container(border=True):
     render_section_header(
-        "Step 1",
+        1,
         "Upload product data",
         "Choose one XML product message. The source remains in memory and is "
         "not written to the repository.",
@@ -134,7 +148,7 @@ result = st.session_state.get("conversion_result")
 if result is not None:
     with st.container(border=True):
         render_section_header(
-            "Step 2",
+            2,
             "Review conversion result",
             "Check validation first, then inspect the product identity and "
             "generated structured data.",
@@ -142,16 +156,24 @@ if result is not None:
 
         validation = result.validation_report
         if validation["valid"] and not validation["warnings"]:
-            st.success("Conversion completed and validation passed.")
+            render_status_card(
+                "success",
+                "Conversion complete",
+                "Validation passed with no warnings.",
+            )
         elif validation["valid"]:
-            st.warning(
-                "Conversion completed with "
-                f"{len(validation['warnings'])} warning(s)."
+            render_status_card(
+                "warning",
+                "Conversion complete with review points",
+                f"Validation passed with {len(validation['warnings'])} "
+                "warning(s).",
             )
         else:
-            st.error(
-                "Conversion completed with "
-                f"{len(validation['errors'])} validation error(s)."
+            render_status_card(
+                "error",
+                "Conversion complete with validation errors",
+                f"Review {len(validation['errors'])} validation error(s) "
+                "before using the output.",
             )
 
         product_id = result.jsonld_data.get("@id")
@@ -171,7 +193,7 @@ if result is not None:
 
     with st.container(border=True):
         render_section_header(
-            "Step 3",
+            3,
             "Inspect traceability and export",
             "Review the applied mappings and download the generated data and "
             "diagnostic reports.",
@@ -185,40 +207,64 @@ if result is not None:
 
         output_name_base = st.session_state["output_name_base"]
         st.subheader("Downloads")
-        download_left, download_right = st.columns(2)
-        with download_left:
-            st.download_button(
-                "Download JSON-LD",
-                data=st.session_state["jsonld_bytes"],
-                file_name=f"product_{output_name_base}.jsonld",
-                mime="application/ld+json",
-                use_container_width=True,
-            )
-            st.download_button(
-                "Download validation report JSON",
-                data=st.session_state["validation_report_bytes"],
-                file_name=f"validation_report_{output_name_base}.json",
-                mime="application/json",
-                use_container_width=True,
-            )
-        with download_right:
-            st.download_button(
-                "Download mapping report XLSX",
-                data=st.session_state["mapping_report_bytes"],
-                file_name=f"mapping_report_{output_name_base}.xlsx",
-                mime=(
-                    "application/vnd.openxmlformats-officedocument."
-                    "spreadsheetml.sheet"
-                ),
-                use_container_width=True,
-            )
-            st.download_button(
-                "Download unmapped fields report JSON",
-                data=st.session_state["unmapped_fields_bytes"],
-                file_name=f"unmapped_fields_{output_name_base}.json",
-                mime="application/json",
-                use_container_width=True,
-            )
+        download_top_left, download_top_right = st.columns(2)
+        with download_top_left:
+            with st.container(border=True):
+                render_download_intro(
+                    "JSON-LD product",
+                    "Machine-readable GS1 Web Vocabulary product data.",
+                )
+                st.download_button(
+                    "Download JSON-LD",
+                    data=st.session_state["jsonld_bytes"],
+                    file_name=f"product_{output_name_base}.jsonld",
+                    mime="application/ld+json",
+                    use_container_width=True,
+                )
+        with download_top_right:
+            with st.container(border=True):
+                render_download_intro(
+                    "Mapping report",
+                    "Excel trace of source fields and generated properties.",
+                )
+                st.download_button(
+                    "Download mapping report XLSX",
+                    data=st.session_state["mapping_report_bytes"],
+                    file_name=f"mapping_report_{output_name_base}.xlsx",
+                    mime=(
+                        "application/vnd.openxmlformats-officedocument."
+                        "spreadsheetml.sheet"
+                    ),
+                    use_container_width=True,
+                )
+
+        download_bottom_left, download_bottom_right = st.columns(2)
+        with download_bottom_left:
+            with st.container(border=True):
+                render_download_intro(
+                    "Validation report",
+                    "JSON summary of errors, warnings, and validation status.",
+                )
+                st.download_button(
+                    "Download validation report JSON",
+                    data=st.session_state["validation_report_bytes"],
+                    file_name=f"validation_report_{output_name_base}.json",
+                    mime="application/json",
+                    use_container_width=True,
+                )
+        with download_bottom_right:
+            with st.container(border=True):
+                render_download_intro(
+                    "Unmapped fields",
+                    "JSON inventory of populated XML outside the profile.",
+                )
+                st.download_button(
+                    "Download unmapped fields report JSON",
+                    data=st.session_state["unmapped_fields_bytes"],
+                    file_name=f"unmapped_fields_{output_name_base}.json",
+                    mime="application/json",
+                    use_container_width=True,
+                )
 
         st.button(
             "Clear results",
