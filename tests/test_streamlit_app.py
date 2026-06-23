@@ -1,4 +1,36 @@
+import importlib
+import sys
+from pathlib import Path
+
 from streamlit.testing.v1 import AppTest
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
+    sys.modules.pop("app.ui", None)
+
+    ui = importlib.import_module("app.ui")
+
+    assert ui.APP_VERSION == "v0.7.1"
+    assert callable(ui.render_page_header)
+
+
+def test_streamlit_app_imports_package_ui_from_non_repo_cwd(
+    monkeypatch,
+    tmp_path,
+):
+    monkeypatch.chdir(tmp_path)
+    sys.modules.pop("ui", None)
+    sys.modules.pop("app.streamlit_app", None)
+
+    streamlit_app = importlib.import_module("app.streamlit_app")
+
+    assert streamlit_app.REPOSITORY_ROOT == ROOT
+    assert streamlit_app.SRC_DIRECTORY == ROOT / "src"
+    assert callable(streamlit_app.main)
+    assert "ui" not in sys.modules
 
 
 def test_streamlit_result_survives_rerun(example_xml_path):
