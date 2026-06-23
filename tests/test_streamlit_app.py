@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
+    monkeypatch.syspath_prepend(str(ROOT))
     sys.modules.pop("app.ui", None)
 
     ui = importlib.import_module("app.ui")
@@ -22,6 +23,7 @@ def test_streamlit_app_imports_package_ui_from_non_repo_cwd(
     tmp_path,
 ):
     monkeypatch.chdir(tmp_path)
+    monkeypatch.syspath_prepend(str(ROOT))
     sys.modules.pop("ui", None)
     sys.modules.pop("app.streamlit_app", None)
 
