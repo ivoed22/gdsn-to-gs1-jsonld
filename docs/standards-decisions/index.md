@@ -26,19 +26,19 @@ mappings are conformant.
 ## Allergen containment
 
 | ID | Title | Current mapping status | Affected fields/properties | Warning category | Recommended owner/reviewer | Status | Target release | Record | Issue |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | SDR-004 | Allergen containment | BMS/XPath mapped; target term needs replacement review | `allergens[].level_of_containment`; `gs1:levelOfContainment`, `gs1:allergenLevelOfContainmentCode` | `webvoc_term_missing` | GS1 Web Vocabulary owner and food sector experts | Open | v0.8.0 | [SDR-004](SDR-004-allergen-containment.md) | [#7](https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/7) |
 
 ## Certification semantics
 
 | ID | Title | Current mapping status | Affected fields/properties | Warning category | Recommended owner/reviewer | Status | Target release | Record | Issue |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | SDR-005 | Certification semantics | Mixed validated, fallback, and semantic-review targets | Certification identification, issuance date, effective start | `certification_semantics` | GS1 Web Vocabulary owner and GDSN/GSMP group | Open | v0.8.0 | [SDR-005](SDR-005-certification-semantics.md) | [#8](https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/8) |
 
 ## YAML/catalog governance
 
 | ID | Title | Current mapping status | Affected fields/properties | Warning category | Recommended owner/reviewer | Status | Target release | Record | Issue |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | SDR-006 | YAML and catalog governance | Catalog and YAML use different certification-document object boundaries | `certification_documents[].file_name`, `document_url`; generic `referenced_documents[]` | `yaml_catalog_mismatch` | Internal project owner and mapping governance group | Open | v0.8.0 or governance decision | [SDR-006](SDR-006-yaml-catalog-governance.md) | [#9](https://github.com/ivoed22/gdsn-to-gs1-jsonld/issues/9) |
 
 ## Machine-readable backlog
