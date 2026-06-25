@@ -1,19 +1,30 @@
 # Changelog
 
-## v0.7.1 — GitHub Standards Review Issues
+## v0.7.1 — Streamlit Cloud Import Fix
 
-### Added
+### Fixed
 
-- GitHub Issue tracking for all six open standards decision records.
-- Issue numbers and URLs in the Markdown decision register and
-  machine-readable JSON/CSV backlogs.
-- Repository tests that keep SDR documents and issue metadata aligned.
+- Made `app/streamlit_app.py` import-safe with package-qualified `app.ui`
+  imports.
+- Added a `main()` guard for safer Streamlit startup.
+- Added `app/__init__.py`.
+- Added regression tests for Streamlit UI imports.
+- Fixed CI-only import path handling in the regression tests.
 
 ### Preserved
 
 - Converter output, mapping YAML files, and catalog data remain unchanged.
 - No unresolved warning is suppressed or marked conformant.
+- No semantic mappings were changed.
 - No new dependencies were added.
+
+### Validation
+
+- pytest: 65 passed.
+- compileall `app src`: passed.
+- Streamlit startup probe: HTTP 200.
+- `git diff --check`: passed with only Windows LF/CRLF warnings.
+- GitHub Actions: success.
 
 ## v0.7.0 — Standards Review Backlog
 
