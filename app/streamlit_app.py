@@ -21,6 +21,11 @@ def _ensure_import_paths() -> None:
 
 _ensure_import_paths()
 
+from gdsn_to_gs1_jsonld.batch_converter import (
+    BatchConversionError,
+    BatchConversionLimits,
+    convert_batch_zip,
+)
 from gdsn_to_gs1_jsonld.converter import convert_xml_to_jsonld
 from gdsn_to_gs1_jsonld.reporter import json_bytes, mapping_report_xlsx_bytes
 from gdsn_to_gs1_jsonld.xml_parser import XMLParseError
@@ -49,6 +54,10 @@ RESULT_STATE_KEYS = (
     "unmapped_fields_bytes",
     "output_name_base",
 )
+BATCH_RESULT_STATE_KEYS = (
+    "batch_conversion_report",
+    "batch_export_zip_bytes",
+)
 
 
 def clear_results() -> None:
@@ -56,112 +65,59 @@ def clear_results() -> None:
         st.session_state.pop(key, None)
 
 
-def main() -> None:
-    st.set_page_config(
-        page_title="GDSN to GS1 JSON-LD Converter",
-        page_icon="G",
-        layout="wide",
+def clear_batch_results() -> None:
+    for key in BATCH_RESULT_STATE_KEYS:
+        st.session_state.pop(key, None)
+
+
+def clear_all_results() -> None:
+    clear_results()
+    clear_batch_results()
+
+
+def _load_webvoc_metadata() -> dict:
+    webvoc_metadata_path = REPOSITORY_ROOT / "webvoc" / "current" / "metadata.json"
+    if not webvoc_metadata_path.is_file():
+        return {}
+    try:
+        return json.loads(webvoc_metadata_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def _load_open_standards_backlog() -> list[dict]:
+    backlog_path = (
+        REPOSITORY_ROOT
+        / "docs"
+        / "standards-decisions"
+        / "standards_review_backlog.json"
     )
-    apply_page_styles()
-    render_page_header()
-    render_workflow_overview()
+    if not backlog_path.is_file():
+        return []
+    try:
+        loaded_backlog = json.loads(backlog_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+    if not isinstance(loaded_backlog, list):
+        return []
+    return [
+        item
+        for item in loaded_backlog
+        if isinstance(item, dict) and item.get("status") == "open"
+    ]
 
-    mapping_profiles = {
-        "Certifications & Documents v0.3.0": (
-            REPOSITORY_ROOT / "mapping" / "mapping_v0_3.yaml"
-        ),
-        "Food v0.2.0 mapping": REPOSITORY_ROOT / "mapping" / "mapping_v0_2.yaml",
-        "MVP v0.1.0 mapping": REPOSITORY_ROOT / "mapping" / "mapping_mvp.yaml",
-    }
 
-    with st.sidebar:
-        st.markdown(
-            f"""
-            <div class="sidebar-brand">
-              <strong>Conversion workspace</strong>
-              <span>App version: {APP_VERSION}</span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        with st.container(border=True):
-            st.markdown(
-                '<p class="sidebar-label">Conversion settings</p>',
-                unsafe_allow_html=True,
-            )
-            selected_profile = st.selectbox(
-                "Mapping profile",
-                list(mapping_profiles),
-                on_change=clear_results,
-                help="Changing the profile clears the current conversion result.",
-            )
-            mapping_path = mapping_profiles[selected_profile]
-            st.markdown("**Active mapping file**")
-            st.code(mapping_path.relative_to(REPOSITORY_ROOT).as_posix())
+def _backlog_categories(backlog: list[dict]) -> list[str]:
+    return sorted(
+        {
+            str(item["category"]).replace("_", " ")
+            for item in backlog
+            if item.get("category")
+        }
+    )
 
-        with st.expander("Profile coverage", expanded=True):
-            st.markdown(
-                """
-    <p class="sidebar-label">Supported groups</p>
-    <div class="coverage-badges">
-      <span class="coverage-badge">Identity</span>
-      <span class="coverage-badge">Descriptions</span>
-      <span class="coverage-badge">Brand &amp; GPC</span>
-      <span class="coverage-badge">Net content</span>
-      <span class="coverage-badge">Images &amp; links</span>
-      <span class="coverage-badge">Ingredients</span>
-      <span class="coverage-badge">Allergens</span>
-      <span class="coverage-badge">Nutrients</span>
-      <span class="coverage-badge">Certifications</span>
-      <span class="coverage-badge">Documents</span>
-    </div>
-    """,
-                unsafe_allow_html=True,
-            )
 
-        webvoc_metadata_path = REPOSITORY_ROOT / "webvoc" / "current" / "metadata.json"
-        webvoc_metadata = {}
-        if webvoc_metadata_path.is_file():
-            try:
-                webvoc_metadata = json.loads(
-                    webvoc_metadata_path.read_text(encoding="utf-8")
-                )
-            except (OSError, json.JSONDecodeError):
-                webvoc_metadata = {}
-        render_vocabulary_status(
-            webvoc_metadata.get("detected_version"),
-            webvoc_metadata.get("detected_last_modified"),
-        )
-
-        backlog_path = (
-            REPOSITORY_ROOT
-            / "docs"
-            / "standards-decisions"
-            / "standards_review_backlog.json"
-        )
-        backlog = []
-        if backlog_path.is_file():
-            try:
-                loaded_backlog = json.loads(backlog_path.read_text(encoding="utf-8"))
-                if isinstance(loaded_backlog, list):
-                    backlog = [
-                        item
-                        for item in loaded_backlog
-                        if isinstance(item, dict) and item.get("status") == "open"
-                    ]
-            except (OSError, json.JSONDecodeError):
-                backlog = []
-        render_standards_backlog_status(
-            len(backlog),
-            sorted(
-                {
-                    str(item["category"]).replace("_", " ")
-                    for item in backlog
-                    if item.get("category")
-                }
-            ),
-        )
-
+def _render_single_xml_workflow(mapping_path: Path) -> None:
     with st.container(border=True):
         render_section_header(
             1,
@@ -372,6 +328,211 @@ def main() -> None:
                 on_click=clear_results,
                 use_container_width=True,
             )
+
+
+def _render_bulk_zip_workflow(mapping_path: Path) -> None:
+    with st.container(border=True):
+        render_section_header(
+            1,
+            "Upload batch ZIP",
+            "Upload a ZIP containing one or more GDSN XML product messages.",
+        )
+        st.info(
+            "Only XML files in the ZIP are processed. Files are handled in memory "
+            "where possible."
+        )
+        uploaded_zip = st.file_uploader(
+            "GDSN XML batch ZIP",
+            type=["zip"],
+            key="bulk_zip_uploader",
+            help="Non-XML files are ignored. XML files are converted independently.",
+        )
+        if uploaded_zip is not None and st.button(
+            "Convert ZIP batch",
+            type="primary",
+            use_container_width=True,
+        ):
+            clear_batch_results()
+            try:
+                with st.spinner("Converting XML files from ZIP..."):
+                    report = convert_batch_zip(
+                        uploaded_zip.getvalue(),
+                        mapping_path,
+                        limits=BatchConversionLimits(),
+                    )
+            except BatchConversionError as exc:
+                st.error(f"Batch conversion failed: {exc}")
+            else:
+                st.session_state["batch_conversion_report"] = report
+                st.session_state["batch_export_zip_bytes"] = report.export_zip_bytes
+
+    report = st.session_state.get("batch_conversion_report")
+    if report is not None:
+        summary = report.summary["summary"]
+        with st.container(border=True):
+            render_section_header(
+                2,
+                "Review batch results",
+                "Check per-file status before downloading the complete batch package.",
+            )
+            first, second, third, fourth, fifth = st.columns(5)
+            first.metric("XML files found", summary["xml_files_found"])
+            second.metric("Successful conversions", summary["successful_conversions"])
+            third.metric("Failed conversions", summary["failed_conversions"])
+            fourth.metric("Total unmapped fields", summary["total_unmapped_fields"])
+            fifth.metric(
+                "Validation issues/warnings",
+                summary["validation_error_count"]
+                + summary["validation_warning_count"],
+            )
+            st.dataframe(
+                pd.DataFrame(report.preview_rows),
+                use_container_width=True,
+                hide_index=True,
+            )
+            st.download_button(
+                "Download batch export ZIP",
+                data=st.session_state["batch_export_zip_bytes"],
+                file_name="gdsn_batch_export.zip",
+                mime="application/zip",
+                use_container_width=True,
+            )
+
+
+def _render_explore_placeholder() -> None:
+    with st.container(border=True):
+        render_section_header(
+            1,
+            "Explore GS1 Web Vocabulary",
+            "Preview of a future vocabulary and mapping coverage explorer.",
+        )
+        st.info(
+            "This mode will let users browse the local GS1 Web Vocabulary snapshot, "
+            "inspect classes/properties, compare properties with GDSN mapping "
+            "coverage, and optionally prototype manual JSON-LD. It is planned as "
+            "a separate Explorer release."
+        )
+
+
+def _render_standards_review_mode(backlog: list[dict]) -> None:
+    categories = _backlog_categories(backlog)
+    with st.container(border=True):
+        render_section_header(
+            1,
+            "Standards Review",
+            "Read-only status for open standards and governance decisions.",
+        )
+        count_column, category_column = st.columns([1, 2])
+        count_column.metric("Open SDRs", len(backlog))
+        category_column.markdown(
+            "**Categories**\n\n"
+            + (", ".join(categories) if categories else "metadata unavailable")
+        )
+        st.markdown("**Register**")
+        st.code("docs/standards-decisions/index.md")
+        st.info(
+            "These are standards/governance decisions, not runtime converter failures."
+        )
+
+
+def main() -> None:
+    st.set_page_config(
+        page_title="GDSN to GS1 JSON-LD Converter",
+        page_icon="G",
+        layout="wide",
+    )
+    apply_page_styles()
+    render_page_header()
+    render_workflow_overview()
+
+    mapping_profiles = {
+        "Certifications & Documents v0.3.0": (
+            REPOSITORY_ROOT / "mapping" / "mapping_v0_3.yaml"
+        ),
+        "Food v0.2.0 mapping": REPOSITORY_ROOT / "mapping" / "mapping_v0_2.yaml",
+        "MVP v0.1.0 mapping": REPOSITORY_ROOT / "mapping" / "mapping_mvp.yaml",
+    }
+
+    with st.sidebar:
+        st.markdown(
+            f"""
+            <div class="sidebar-brand">
+              <strong>Conversion workspace</strong>
+              <span>App version: {APP_VERSION}</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        with st.container(border=True):
+            st.markdown(
+                '<p class="sidebar-label">Conversion settings</p>',
+                unsafe_allow_html=True,
+            )
+            selected_profile = st.selectbox(
+                "Mapping profile",
+                list(mapping_profiles),
+                on_change=clear_all_results,
+                help="Changing the profile clears current conversion results.",
+            )
+            mapping_path = mapping_profiles[selected_profile]
+            st.markdown("**Active mapping file**")
+            st.code(mapping_path.relative_to(REPOSITORY_ROOT).as_posix())
+
+        with st.expander("Profile coverage", expanded=True):
+            st.markdown(
+                """
+    <p class="sidebar-label">Supported groups</p>
+    <div class="coverage-badges">
+      <span class="coverage-badge">Identity</span>
+      <span class="coverage-badge">Descriptions</span>
+      <span class="coverage-badge">Brand &amp; GPC</span>
+      <span class="coverage-badge">Net content</span>
+      <span class="coverage-badge">Images &amp; links</span>
+      <span class="coverage-badge">Ingredients</span>
+      <span class="coverage-badge">Allergens</span>
+      <span class="coverage-badge">Nutrients</span>
+      <span class="coverage-badge">Certifications</span>
+      <span class="coverage-badge">Documents</span>
+    </div>
+    """,
+                unsafe_allow_html=True,
+            )
+
+        webvoc_metadata = _load_webvoc_metadata()
+        render_vocabulary_status(
+            webvoc_metadata.get("detected_version"),
+            webvoc_metadata.get("detected_last_modified"),
+        )
+
+        backlog = _load_open_standards_backlog()
+        render_standards_backlog_status(
+            len(backlog),
+            _backlog_categories(backlog),
+        )
+
+    with st.container(border=True):
+        st.markdown("### Workflow mode")
+        workflow_mode = st.radio(
+            "Choose a workflow",
+            (
+                "Convert GDSN XML",
+                "Explore GS1 Web Vocabulary",
+                "Standards Review",
+            ),
+            horizontal=True,
+            label_visibility="collapsed",
+        )
+
+    if workflow_mode == "Convert GDSN XML":
+        single_tab, bulk_tab = st.tabs(["Single XML", "Bulk ZIP"])
+        with single_tab:
+            _render_single_xml_workflow(mapping_path)
+        with bulk_tab:
+            _render_bulk_zip_workflow(mapping_path)
+    elif workflow_mode == "Explore GS1 Web Vocabulary":
+        _render_explore_placeholder()
+    else:
+        _render_standards_review_mode(backlog)
 
 
 if __name__ == "__main__":

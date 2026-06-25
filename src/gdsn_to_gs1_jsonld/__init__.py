@@ -3,4 +3,4 @@
 from .converter import ConversionResult, convert_xml_to_jsonld
 
 __all__ = ["ConversionResult", "convert_xml_to_jsonld"]
-__version__ = "0.7.1"
+__version__ = "0.8.0"

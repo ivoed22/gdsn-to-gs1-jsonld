@@ -1,5 +1,29 @@
 # Changelog
 
+## v0.8.0 — Workflow Modes and Bulk XML Upload
+
+### Added
+
+- Added Streamlit workflow modes for `Convert GDSN XML`, `Explore GS1 Web
+  Vocabulary`, and `Standards Review`.
+- Moved the existing single-file conversion workflow into a `Single XML` tab.
+- Added a `Bulk ZIP` tab for safe multi-file XML conversion from uploaded ZIPs.
+- Added reusable batch conversion backend logic with XML discovery, non-XML
+  ignoring, zip-slip protection, configurable limits, per-file continuation,
+  summary JSON/XLSX, and downloadable batch export ZIPs.
+- Added `gdsn-to-gs1-jsonld convert-batch`.
+- Added a Web Vocabulary Explorer placeholder and compact read-only Standards
+  Review mode.
+- Added batch converter, CLI, and Streamlit workflow regression tests.
+
+### Preserved
+
+- Single-file converter output remains unchanged.
+- Mapping YAML files, catalog data, and Web Vocabulary snapshots remain
+  unchanged.
+- No warnings were suppressed.
+- No semantic mappings were changed.
+
 ## v0.7.1 — Streamlit Cloud Import Fix
 
 ### Fixed

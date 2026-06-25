@@ -1,5 +1,7 @@
 import importlib
 import sys
+import zipfile
+from io import BytesIO
 from pathlib import Path
 
 from streamlit.testing.v1 import AppTest
@@ -14,7 +16,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.7.1"
+    assert ui.APP_VERSION == "v0.8.0"
     assert callable(ui.render_page_header)
 
 
@@ -90,7 +92,7 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
     ]
     assert selector.value == "Certifications & Documents v0.3.0"
     assert any(
-        "App version: v0.7.1" in markdown.value
+        "App version: v0.8.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -104,6 +106,67 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
         for markdown in app.markdown
     )
     assert any("mapping/mapping_v0_3.yaml" in code.value for code in app.code)
+
+
+def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+
+    assert app.radio[0].options == [
+        "Convert GDSN XML",
+        "Explore GS1 Web Vocabulary",
+        "Standards Review",
+    ]
+    assert app.radio[0].value == "Convert GDSN XML"
+    assert app.get("file_uploader")[0].label == "GDSN product XML"
+    assert app.get("file_uploader")[1].label == "GDSN XML batch ZIP"
+    assert any(
+        "Only XML files in the ZIP are processed. Files are handled in memory"
+        in info.value
+        for info in app.info
+    )
+
+    app.radio[0].set_value("Explore GS1 Web Vocabulary").run(timeout=20)
+
+    assert any(
+        "This mode will let users browse the local GS1 Web Vocabulary snapshot"
+        in info.value
+        for info in app.info
+    )
+
+    app.radio[0].set_value("Standards Review").run(timeout=20)
+
+    assert any(metric.label == "Open SDRs" and metric.value == "6" for metric in app.metric)
+    assert any("docs/standards-decisions/index.md" in code.value for code in app.code)
+
+
+def test_streamlit_bulk_zip_conversion_produces_batch_result(sample_dir):
+    buffer = BytesIO()
+    with zipfile.ZipFile(buffer, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr(
+            "minimal_product.xml",
+            (sample_dir / "minimal_product.xml").read_bytes(),
+        )
+        archive.writestr("notes.txt", "ignored")
+
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    app.get("file_uploader")[1].set_value(
+        ("sample_batch.zip", buffer.getvalue(), "application/zip")
+    )
+    app.run(timeout=20)
+    convert_button = next(
+        index for index, button in enumerate(app.button)
+        if button.label == "Convert ZIP batch"
+    )
+    app.button[convert_button].click().run(timeout=20)
+
+    assert "batch_conversion_report" in app.session_state
+    report = app.session_state["batch_conversion_report"]
+    assert report.xml_files_found == 1
+    assert report.success_count == 1
+    assert any(
+        download.label == "Download batch export ZIP"
+        for download in app.get("download_button")
+    )
 
 
 def test_streamlit_profile_change_clears_results(example_xml_path):

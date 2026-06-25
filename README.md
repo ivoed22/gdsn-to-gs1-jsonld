@@ -3,8 +3,8 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
-Version 0.7.0 converts the remaining conformance warnings into a structured
-standards decision register while keeping all mapping outputs stable. It is
+Version 0.8.0 adds Streamlit workflow modes and safe bulk ZIP conversion while
+keeping single-file converter output and mapping semantics stable. It is
 deliberately a structured product converter, not a generic XML-to-JSON utility.
 
 ## Mapping profiles
@@ -67,6 +67,23 @@ The command creates per-product conversion reports plus
 `sample_conversion_summary.json` and `sample_conversion_summary.xlsx`.
 Failures identify the sample, processing stage, and exception message.
 
+Convert XML files from a ZIP batch:
+
+```bash
+gdsn-to-gs1-jsonld convert-batch \
+  --input-zip path/to/input.zip \
+  --mapping mapping/mapping_v0_3.yaml \
+  --output-dir batch_output/ \
+  --max-files 100 \
+  --max-file-size-mb 10 \
+  --max-total-size-mb 100
+```
+
+The command ignores non-XML files, rejects unsafe ZIP paths, converts XML files
+independently, and writes `batch_summary.json`, `batch_summary.xlsx`, and
+`batch_export.zip`. See
+[bulk XML batch conversion](docs/bulk-xml-batch-conversion.md).
+
 Validate the mapping catalog:
 
 ```bash
@@ -128,7 +145,11 @@ streamlit run app/streamlit_app.py
 ```
 
 The app defaults to Certifications & Documents v0.3.0 and can switch to the
-Food v0.2.0 or MVP v0.1.0 profiles.
+Food v0.2.0 or MVP v0.1.0 profiles. It now starts with workflow modes:
+
+- `Convert GDSN XML`, with `Single XML` and `Bulk ZIP` tabs
+- `Explore GS1 Web Vocabulary`, a placeholder for a later Explorer release
+- `Standards Review`, a compact read-only view of open SDR/backlog status
 
 ## Mapping
 
@@ -185,7 +206,7 @@ notes.
 
 Later releases may accept or defer registered standards decisions, add broader
 food coverage, certification verification, validation profiles, and production
-batch workflows.
+batch operations beyond the current ZIP upload workflow.
 
 ## Disclaimer
 

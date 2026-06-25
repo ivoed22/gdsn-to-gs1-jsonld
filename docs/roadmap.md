@@ -1,10 +1,10 @@
 # Roadmap
 
-Version 0.5.0 adds realistic synthetic sample coverage, sample-level
-diagnostics, and richer unmapped context while preserving the v0.1.0, v0.2.0,
-and v0.3.0 converter profiles and output.
+Version 0.8.0 adds Streamlit workflow modes and a safe bulk ZIP conversion
+workflow while preserving the v0.1.0, v0.2.0, and v0.3.0 converter profiles
+and single-file output.
 
-Potential work after v0.5.0:
+Potential work after v0.8.0:
 
 - resolve catalog warnings through standards and project review
 - broader GDSN modules and mapping profiles
@@ -12,7 +12,7 @@ Potential work after v0.5.0:
 - standards review for generic document-link relationships
 - certificate verification and richer certification agency modeling
 - optional GDSN XSD validation
-- production-oriented batch processing and diagnostic aggregation
+- production-oriented batch processing beyond ZIP upload and diagnostic aggregation
 - API and data-platform integrations
 
 The current release is still not full GDSN coverage.
@@ -22,6 +22,10 @@ and governance warnings. Version 0.7.0 organizes those warnings into six open
 standards decisions rather than changing semantic mappings solely to reduce
 counts.
 
+Version 0.8.0 introduces workflow modes in Streamlit, keeps the single XML path
+unchanged, adds a Bulk ZIP tab, and adds a `convert-batch` CLI command. It is
+an operational workflow release, not a mapping semantics release.
+
 Potential work after v0.7.0:
 
 - assign named reviewers and decision dates
@@ -29,7 +33,7 @@ Potential work after v0.7.0:
 - create versioned mapping changes only for accepted decisions
 - retain compatibility tests and migration notes for any accepted output change
 
-## Strategic tracks after v0.5.0
+## Strategic tracks after v0.8.0
 
 ### Positioning and demo
 

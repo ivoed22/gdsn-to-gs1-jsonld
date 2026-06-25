@@ -1,4 +1,6 @@
 import json
+import zipfile
+from io import BytesIO
 
 from typer.testing import CliRunner
 
@@ -142,3 +144,42 @@ def test_cli_convert_samples_creates_summary(
     assert "Sample conversion: 4/4 successful" in result.output
     assert (tmp_path / "sample_conversion_summary.json").is_file()
     assert (tmp_path / "sample_conversion_summary.xlsx").is_file()
+
+
+def test_cli_convert_batch_creates_summary_and_export(
+    sample_dir,
+    mapping_v0_3_path,
+    tmp_path,
+):
+    input_zip = tmp_path / "samples.zip"
+    buffer = BytesIO()
+    with zipfile.ZipFile(buffer, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr(
+            "minimal_product.xml",
+            (sample_dir / "minimal_product.xml").read_bytes(),
+        )
+        archive.writestr(
+            "food_product_full.xml",
+            (sample_dir / "food_product_full.xml").read_bytes(),
+        )
+    input_zip.write_bytes(buffer.getvalue())
+    output_dir = tmp_path / "batch_output"
+
+    result = runner.invoke(
+        app,
+        [
+            "convert-batch",
+            "--input-zip",
+            str(input_zip),
+            "--mapping",
+            str(mapping_v0_3_path),
+            "--output-dir",
+            str(output_dir),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Batch conversion: 2/2 XML file(s) successful" in result.output
+    assert (output_dir / "batch_summary.json").is_file()
+    assert (output_dir / "batch_summary.xlsx").is_file()
+    assert (output_dir / "batch_export.zip").is_file()

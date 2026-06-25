@@ -97,6 +97,11 @@ with owners, options, impact analysis, and machine-readable JSON/CSV exports.
 The next step is stakeholder review and explicit status changes from Open to
 Proposed, Accepted, Rejected, or Deferred.
 
+Version 0.8.0 improves the demonstration workflow by separating Streamlit into
+conversion, Web Vocabulary exploration, and standards-review modes. Bulk ZIP
+upload makes sample-set review easier, but it remains a wrapper around the
+existing converter and does not change mapping semantics or warning policy.
+
 ## Combined outcome
 
 Track A creates understanding and stakeholder momentum. Track D turns project

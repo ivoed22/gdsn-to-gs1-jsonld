@@ -4,6 +4,11 @@ from pathlib import Path
 
 import typer
 
+from .batch_converter import (
+    BatchConversionError,
+    BatchConversionLimits,
+    convert_batch_zip,
+)
 from .catalog_quality import check_catalog, check_mapping, write_quality_reports
 from .catalog_revalidation import (
     revalidate_mapping_catalog,
@@ -139,6 +144,96 @@ def convert_samples(
     for path in report.output_paths.values():
         typer.echo(f"  - {path}")
     if not report.successful:
+        raise typer.Exit(code=1)
+
+
+@app.command("convert-batch")
+def convert_batch(
+    input_zip: Path = typer.Option(
+        ...,
+        "--input-zip",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="ZIP file containing one or more XML product files.",
+    ),
+    mapping: Path = typer.Option(
+        ...,
+        "--mapping",
+        "-m",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="YAML mapping profile.",
+    ),
+    output_dir: Path = typer.Option(
+        Path("batch_output"),
+        "--output-dir",
+        "-o",
+        help="Directory for batch summary files and export ZIP.",
+    ),
+    max_files: int = typer.Option(
+        100,
+        "--max-files",
+        min=1,
+        help="Maximum number of XML files to process from the ZIP.",
+    ),
+    max_file_size_mb: int = typer.Option(
+        10,
+        "--max-file-size-mb",
+        min=1,
+        help="Maximum uncompressed size per XML file in MB.",
+    ),
+    max_total_size_mb: int = typer.Option(
+        100,
+        "--max-total-size-mb",
+        min=1,
+        help="Maximum total uncompressed XML payload size in MB.",
+    ),
+) -> None:
+    """Convert all XML files in a ZIP and write a batch export package."""
+    limits = BatchConversionLimits(
+        max_files=max_files,
+        max_uncompressed_file_size=max_file_size_mb * 1024 * 1024,
+        max_total_uncompressed_size=max_total_size_mb * 1024 * 1024,
+    )
+    try:
+        report = convert_batch_zip(
+            input_zip,
+            mapping,
+            limits=limits,
+            output_dir=output_dir,
+        )
+    except BatchConversionError as exc:
+        typer.echo(f"Batch conversion failed: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    typer.echo(
+        "Batch conversion: "
+        f"{report.success_count}/{report.xml_files_found} XML file(s) successful"
+    )
+    typer.echo(
+        "Validation issues: "
+        f"{report.summary['summary']['validation_error_count']} error(s), "
+        f"{report.summary['summary']['validation_warning_count']} warning(s)"
+    )
+    for path in report.output_paths.values():
+        typer.echo(f"  - {path}")
+    for row in report.summary["files"]:
+        if row["status"] == "success":
+            typer.echo(
+                f"Converted {row['filename']}: "
+                f"{row['gtin'] or row['output_name']}"
+            )
+        else:
+            typer.echo(
+                f"Failed {row['filename']}: "
+                f"{row['error_type']} - {row['error_message']}",
+                err=True,
+            )
+    if report.success_count == 0:
         raise typer.Exit(code=1)
 
 
