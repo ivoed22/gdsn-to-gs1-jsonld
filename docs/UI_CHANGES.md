@@ -1,5 +1,21 @@
 # UI Changes
 
+## v0.8.0 workflow mode quality checklist
+
+- [x] Workflow selector is visible and asks "What do you want to do?"
+- [x] Workflow cards show title, explanation, practical outcome, and active
+  state.
+- [x] Single XML workflow still works from the `Convert GDSN XML` mode.
+- [x] Bulk ZIP workflow is visible and has clear safety copy.
+- [x] Batch result dashboard is readable, with counts, validation
+  issues/warnings, table preview, and export ZIP download.
+- [x] Standards Review mode is readable and clearly read-only.
+- [x] Explorer placeholder is visible and framed as planned functionality.
+- [x] Responsive layout is checked through Streamlit regression tests and a
+  live HTTP startup probe.
+- [x] The UI uses GS1/product-data traceability language rather than generic
+  template cards or decorative AI-style visuals.
+
 ## Run locally
 
 From the repository root:
@@ -24,8 +40,10 @@ checkout, and hard-refresh the browser if it still has an older app session.
 
 - Added a premium dashboard composition pass:
   - the hero is shorter and now includes a compact conversion pipeline panel;
-  - three workflow overview cards explain upload, mapping, and review before
-    the user reaches Step 1;
+  - a traceability rail explains source XML, mapping evidence, JSON-LD output,
+    and standards governance context;
+  - workflow mode cards ask "What do you want to do?" before the user chooses
+    conversion, vocabulary exploration, or standards review;
   - the upload control has a clearer dropzone and a purpose-built empty state;
   - profile coverage is shown as compact badges instead of a long bullet list;
   - product identity is presented as a dedicated dashboard card;
@@ -40,8 +58,8 @@ checkout, and hard-refresh the browser if it still has an older app session.
   - downloads form a labelled 2x2 export package with JSON-LD, XLSX, and JSON
     file-type badges;
   - a final "What to review next" card gives a five-step review sequence.
-- Added a clearly visible blue gradient hero with a large product title,
-  version chip, privacy context, and traceability cues.
+- Added a restrained standards-oriented hero with a product title, version
+  chip, privacy context, and traceability cues.
 - Introduced shared spacing, radius, color, surface, and interaction tokens.
 - Added a muted page background with high-contrast white panels, blue top
   accents, stronger borders, and visible depth.
@@ -57,7 +75,8 @@ checkout, and hard-refresh the browser if it still has an older app session.
 - Strengthened primary and download button styling while retaining visible
   focus, reduced-motion support, and narrow-screen padding.
 - Added a native spinner during conversion.
-- Updated the visible app version from `v0.3.0-dev` to `v0.5.0`.
+- Updated the visible app version from `v0.3.0-dev` to the current release
+  version.
 
 ## What was intentionally not changed
 
@@ -70,9 +89,10 @@ checkout, and hard-refresh the browser if it still has an older app session.
 
 ## Manual review checklist
 
-- [ ] Compact blue hero and right-side conversion pipeline are visible.
-- [ ] Three workflow overview cards appear above Step 1.
-- [ ] Version shows `v0.5.0` in both the hero and sidebar.
+- [ ] Compact hero and right-side conversion pipeline are visible.
+- [ ] Traceability rail appears below the hero.
+- [ ] Workflow cards ask "What do you want to do?" and show the active mode.
+- [ ] Version shows `v0.8.0` in both the hero and sidebar.
 - [ ] Step 1 has a styled upload dropzone and polished empty state.
 - [ ] Sidebar version, conversion settings, and supported groups are visibly
   separated and coverage appears as compact badges.
@@ -86,7 +106,8 @@ checkout, and hard-refresh the browser if it still has an older app session.
   conversion, each with a file-type badge.
 - [ ] "What to review next" guidance appears below the export package.
 - [ ] JSON-LD and report data match the existing generated outputs.
-- [ ] Hero, workflow cards, and download grid stack cleanly at a narrow width.
+- [ ] Hero, workflow cards, traceability rail, and download grid stack cleanly
+  at a narrow width.
 - [ ] Results remain visible after reruns and download interactions.
 - [ ] Changing the mapping profile clears stale results.
 
@@ -96,7 +117,7 @@ No screenshot tooling is required. With the app open, capture one desktop image
 after conversion that includes the compact hero and pipeline, workflow row,
 Step 2 status, and Step 3 download grid. Capture a second image with the browser
 narrowed to approximately 390 CSS pixels to confirm that the hero, workflow
-cards, and columns stack while controls remain usable.
+cards, traceability rail, and columns stack while controls remain usable.
 
 ## Known limitations
 

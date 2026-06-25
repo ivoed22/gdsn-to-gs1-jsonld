@@ -15,31 +15,27 @@ def apply_page_styles() -> None:
             --spacing-sm: 0.75rem;
             --spacing-md: 1.25rem;
             --spacing-lg: 2rem;
-            --radius-sm: 0.45rem;
-            --radius-md: 0.75rem;
-            --radius-lg: 1rem;
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.65rem;
             --surface-default: #ffffff;
             --surface-muted: #f5f7fb;
             --surface-accent: #eef5ff;
+            --surface-active: #f1f8ff;
             --border-default: #dbe3ee;
             --text-primary: #152238;
             --text-secondary: #53647a;
             --accent-primary: #1769aa;
             --accent-strong: #0f4f86;
             --accent-bright: #4aa3df;
+            --accent-rail: #70b7df;
             --state-success: #16794b;
             --state-warning: #9a6700;
             --state-error: #b42318;
         }
 
         .stApp {
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(23, 105, 170, 0.07),
-                    transparent 28rem
-                ),
-                var(--surface-muted);
+            background: var(--surface-muted);
             color: var(--text-primary);
         }
 
@@ -65,15 +61,10 @@ def apply_page_styles() -> None:
         }
 
         .app-hero {
-            background:
-                linear-gradient(
-                    125deg,
-                    rgba(15, 79, 134, 0.98),
-                    rgba(23, 105, 170, 0.94)
-                );
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: #102b46;
+            border: 1px solid #234967;
             border-radius: var(--radius-lg);
-            box-shadow: 0 1rem 2.5rem rgba(15, 79, 134, 0.2);
+            box-shadow: 0 1rem 2.5rem rgba(16, 43, 70, 0.18);
             color: #ffffff;
             overflow: hidden;
             padding: 2.2rem 2.4rem;
@@ -81,20 +72,31 @@ def apply_page_styles() -> None:
         }
 
         .app-hero::after {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 999px;
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(191, 226, 248, 0.18) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    180deg,
+                    rgba(191, 226, 248, 0.14) 1px,
+                    transparent 1px
+                );
+            background-size: 2rem 2rem;
             content: "";
-            height: 15rem;
+            height: 100%;
+            opacity: 0.6;
             position: absolute;
-            right: -5rem;
-            top: -7rem;
-            width: 15rem;
+            right: 0;
+            top: 0;
+            width: 38%;
         }
 
         .app-hero h1 {
             color: #ffffff;
-            font-size: clamp(2rem, 5vw, 3.35rem);
-            letter-spacing: -0.035em;
+            font-size: 2.55rem;
+            letter-spacing: 0;
             line-height: 1.05;
             margin: 0 0 var(--spacing-sm);
             max-width: 48rem;
@@ -143,7 +145,7 @@ def apply_page_styles() -> None:
         }
 
         .sidebar-brand {
-            background: linear-gradient(145deg, #eef5ff, #ffffff);
+            background: #f8fbfe;
             border: 1px solid #cfe0f3;
             border-radius: var(--radius-md);
             margin-bottom: var(--spacing-md);
@@ -331,11 +333,7 @@ def apply_page_styles() -> None:
         }
 
         .stButton > button[kind="primary"] {
-            background: linear-gradient(
-                135deg,
-                var(--accent-primary),
-                var(--accent-strong)
-            );
+            background: var(--accent-primary);
             border-color: var(--accent-strong);
             box-shadow: 0 0.4rem 1rem rgba(23, 105, 170, 0.2);
         }
@@ -372,7 +370,7 @@ def apply_page_styles() -> None:
         }
 
         .app-hero h1 {
-            font-size: clamp(1.85rem, 4vw, 2.75rem);
+            font-size: 2.35rem;
         }
 
         .pipeline-panel {
@@ -426,48 +424,159 @@ def apply_page_styles() -> None:
             font-weight: 750;
         }
 
-        .workflow-grid {
-            display: grid;
-            gap: 0.85rem;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .workflow-card {
-            background: rgba(255, 255, 255, 0.9);
+        .traceability-strip {
+            background: var(--surface-default);
             border: 1px solid var(--border-default);
             border-radius: var(--radius-md);
-            box-shadow: 0 0.35rem 1rem rgba(21, 34, 56, 0.045);
-            min-height: 7.2rem;
+            display: grid;
+            gap: 0;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            overflow: hidden;
+        }
+
+        .trace-node {
+            border-right: 1px solid var(--border-default);
+            min-height: 6.1rem;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .trace-node:last-child {
+            border-right: 0;
+        }
+
+        .trace-node::before {
+            background: var(--accent-rail);
+            content: "";
+            height: 0.18rem;
+            left: 1rem;
+            position: absolute;
+            right: 1rem;
+            top: 0.75rem;
+        }
+
+        .trace-label {
+            color: var(--accent-strong);
+            display: block;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.7rem;
+            font-weight: 800;
+            margin: 0.65rem 0 0.55rem;
+        }
+
+        .trace-node strong {
+            color: var(--text-primary);
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .trace-node p {
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .workflow-entry {
+            margin-bottom: 0.95rem;
+        }
+
+        .workflow-entry h2 {
+            color: var(--text-primary);
+            font-size: 1.55rem;
+            letter-spacing: 0;
+            line-height: 1.2;
+            margin: 0 0 0.35rem;
+        }
+
+        .workflow-entry p {
+            color: var(--text-secondary);
+            line-height: 1.55;
+            margin: 0;
+            max-width: 58rem;
+        }
+
+        .workflow-mode-card {
+            background: var(--surface-default);
+            border: 1px solid var(--border-default);
+            border-left: 0.35rem solid #b7c8da;
+            border-radius: var(--radius-md);
+            min-height: 13.5rem;
             padding: 1rem;
         }
 
-        .workflow-index {
+        .workflow-mode-card.is-active {
+            background: var(--surface-active);
+            border-color: #8bb7d8;
+            border-left-color: var(--accent-primary);
+            box-shadow: inset 0 0 0 1px rgba(23, 105, 170, 0.12);
+        }
+
+        .workflow-mode-card-header {
+            align-items: center;
+            display: flex;
+            gap: 0.65rem;
+            justify-content: space-between;
+            margin-bottom: 0.85rem;
+        }
+
+        .workflow-mode-mark {
             align-items: center;
             background: var(--surface-accent);
             border: 1px solid #cfe0f3;
             border-radius: var(--radius-sm);
             color: var(--accent-strong);
             display: inline-flex;
+            flex: 0 0 auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
             font-size: 0.72rem;
-            font-weight: 750;
-            height: 1.75rem;
+            font-weight: 850;
+            height: 2.05rem;
             justify-content: center;
-            margin-bottom: 0.7rem;
-            width: 1.75rem;
+            width: 2.6rem;
         }
 
-        .workflow-card strong {
+        .workflow-mode-state {
+            border: 1px solid var(--border-default);
+            border-radius: 999px;
+            color: var(--text-secondary);
+            font-size: 0.67rem;
+            font-weight: 750;
+            padding: 0.22rem 0.48rem;
+            text-transform: uppercase;
+        }
+
+        .workflow-mode-card.is-active .workflow-mode-state {
+            background: #dff0fb;
+            border-color: #aad2ea;
+            color: var(--accent-strong);
+        }
+
+        .workflow-mode-title {
             color: var(--text-primary);
             display: block;
-            font-size: 0.92rem;
-            margin-bottom: 0.25rem;
+            font-size: 1rem;
+            font-weight: 760;
+            margin-bottom: 0.35rem;
         }
 
-        .workflow-card p {
+        .workflow-mode-copy,
+        .workflow-mode-outcome {
             color: var(--text-secondary);
-            font-size: 0.79rem;
+            font-size: 0.8rem;
             line-height: 1.45;
             margin: 0;
+        }
+
+        .workflow-mode-outcome {
+            border-top: 1px solid var(--border-default);
+            margin-top: 0.85rem;
+            padding-top: 0.75rem;
+        }
+
+        .workflow-mode-outcome strong {
+            color: var(--accent-strong);
         }
 
         .coverage-badges {
@@ -524,7 +633,7 @@ def apply_page_styles() -> None:
 
         /* Streamlit-specific hook for the native uploader dropzone. */
         [data-testid="stFileUploaderDropzone"] {
-            background: linear-gradient(135deg, #eef5ff, #ffffff);
+            background: #f8fbfe;
             border: 1.5px dashed #8bb7d8;
             border-radius: var(--radius-md);
             padding: 1.25rem;
@@ -576,7 +685,7 @@ def apply_page_styles() -> None:
         }
 
         .identity-card {
-            background: linear-gradient(135deg, #f7fbff, #ffffff);
+            background: #f8fbfe;
             border: 1px solid #cfe0f3;
             border-radius: var(--radius-md);
             margin: 0.4rem 0 1rem;
@@ -643,7 +752,7 @@ def apply_page_styles() -> None:
         }
 
         .result-summary-card {
-            background: linear-gradient(145deg, #f8fbff, #ffffff);
+            background: #f8fbff;
             border: 1px solid #d6e3ef;
             border-radius: var(--radius-md);
             min-height: 6.2rem;
@@ -674,7 +783,7 @@ def apply_page_styles() -> None:
         }
 
         .review-guide {
-            background: linear-gradient(135deg, #eef5ff, #f9fcff);
+            background: #f4f9fe;
             border: 1px solid #c9ddef;
             border-radius: var(--radius-md);
             margin-top: 1rem;
@@ -731,9 +840,18 @@ def apply_page_styles() -> None:
 
         @media (max-width: 900px) {
             .hero-grid,
-            .workflow-grid,
+            .traceability-strip,
             .result-summary-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .trace-node {
+                border-bottom: 1px solid var(--border-default);
+                border-right: 0;
+            }
+
+            .trace-node:last-child {
+                border-bottom: 0;
             }
 
             .review-guide ol {
@@ -754,6 +872,10 @@ def apply_page_styles() -> None:
 
             .app-hero {
                 padding: 1.5rem;
+            }
+
+            .app-hero h1 {
+                font-size: 2rem;
             }
 
             .section-title-row {
@@ -835,23 +957,72 @@ def render_page_header() -> None:
 def render_workflow_overview() -> None:
     st.markdown(
         """
-        <div class="workflow-grid" aria-label="Conversion workflow">
-          <div class="workflow-card">
-            <span class="workflow-index">01</span>
-            <strong>Upload XML</strong>
-            <p>Select one GDSN-like message for in-memory processing.</p>
+        <div class="traceability-strip" aria-label="Traceability rail">
+          <div class="trace-node">
+            <span class="trace-label">XML</span>
+            <strong>GDSN source</strong>
+            <p>Product data enters as single XML or ZIP-contained XML files.</p>
           </div>
-          <div class="workflow-card">
-            <span class="workflow-index">02</span>
-            <strong>Apply mapping profile</strong>
-            <p>Convert through a versioned, traceable canonical mapping.</p>
+          <div class="trace-node">
+            <span class="trace-label">BMS/XPath</span>
+            <strong>Mapping evidence</strong>
+            <p>Versioned profiles preserve source-to-property traceability.</p>
           </div>
-          <div class="workflow-card">
-            <span class="workflow-index">03</span>
-            <strong>Review and export</strong>
-            <p>Inspect JSON-LD, validation, traceability, and unmapped fields.</p>
+          <div class="trace-node">
+            <span class="trace-label">JSON-LD</span>
+            <strong>Linked data output</strong>
+            <p>GS1 Web Vocabulary-aligned product data is generated for review.</p>
+          </div>
+          <div class="trace-node">
+            <span class="trace-label">SDR</span>
+            <strong>Governance context</strong>
+            <p>Open standards decisions remain visible without changing runtime output.</p>
           </div>
         </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_workflow_entry_intro() -> None:
+    st.markdown(
+        """
+        <div class="workflow-entry">
+          <p class="section-kicker">Workflow entry point</p>
+          <h2>What do you want to do?</h2>
+          <p>
+            Choose the task first. Conversion, vocabulary exploration, and
+            standards review are separated so each workflow has its own
+            evidence, actions, and review surface.
+          </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_workflow_mode_card(
+    title: str,
+    description: str,
+    outcome: str,
+    marker: str,
+    selected: bool,
+) -> None:
+    state = "Active" if selected else "Available"
+    state_class = " is-active" if selected else ""
+    st.markdown(
+        f"""
+        <article class="workflow-mode-card{state_class}">
+          <div class="workflow-mode-card-header">
+            <span class="workflow-mode-mark">{escape(marker)}</span>
+            <span class="workflow-mode-state">{state}</span>
+          </div>
+          <strong class="workflow-mode-title">{escape(title)}</strong>
+          <p class="workflow-mode-copy">{escape(description)}</p>
+          <p class="workflow-mode-outcome">
+            <strong>Outcome:</strong> {escape(outcome)}
+          </p>
+        </article>
         """,
         unsafe_allow_html=True,
     )

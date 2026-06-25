@@ -43,6 +43,8 @@ from app.ui import (
     render_status_card,
     render_standards_backlog_status,
     render_vocabulary_status,
+    render_workflow_entry_intro,
+    render_workflow_mode_card,
     render_workflow_overview,
 )
 
@@ -58,6 +60,39 @@ BATCH_RESULT_STATE_KEYS = (
     "batch_conversion_report",
     "batch_export_zip_bytes",
 )
+WORKFLOW_MODES = (
+    {
+        "key": "convert",
+        "title": "Convert GDSN XML",
+        "marker": "XML",
+        "description": (
+            "Convert one product message or a ZIP batch through the active "
+            "mapping profile."
+        ),
+        "outcome": "JSON-LD, mapping reports, validation, and unmapped-field evidence.",
+    },
+    {
+        "key": "explore",
+        "title": "Explore GS1 Web Vocabulary",
+        "marker": "VOC",
+        "description": (
+            "Preview the planned local vocabulary browser and coverage review "
+            "surface."
+        ),
+        "outcome": "A clear placeholder for the later Explorer release.",
+    },
+    {
+        "key": "standards",
+        "title": "Standards Review",
+        "marker": "SDR",
+        "description": (
+            "Inspect open standards and governance decisions from the existing "
+            "backlog."
+        ),
+        "outcome": "Read-only SDR status without changing converter behavior.",
+    },
+)
+DEFAULT_WORKFLOW_MODE = WORKFLOW_MODES[0]["title"]
 
 
 def clear_results() -> None:
@@ -73,6 +108,10 @@ def clear_batch_results() -> None:
 def clear_all_results() -> None:
     clear_results()
     clear_batch_results()
+
+
+def set_workflow_mode(mode: str) -> None:
+    st.session_state["workflow_mode"] = mode
 
 
 def _load_webvoc_metadata() -> dict:
@@ -444,6 +483,10 @@ def main() -> None:
     apply_page_styles()
     render_page_header()
     render_workflow_overview()
+    if st.session_state.get("workflow_mode") not in {
+        mode["title"] for mode in WORKFLOW_MODES
+    }:
+        st.session_state["workflow_mode"] = DEFAULT_WORKFLOW_MODE
 
     mapping_profiles = {
         "Certifications & Documents v0.3.0": (
@@ -511,18 +554,29 @@ def main() -> None:
         )
 
     with st.container(border=True):
-        st.markdown("### Workflow mode")
-        workflow_mode = st.radio(
-            "Choose a workflow",
-            (
-                "Convert GDSN XML",
-                "Explore GS1 Web Vocabulary",
-                "Standards Review",
-            ),
-            horizontal=True,
-            label_visibility="collapsed",
-        )
+        render_workflow_entry_intro()
+        workflow_columns = st.columns(3)
+        for column, mode in zip(workflow_columns, WORKFLOW_MODES, strict=True):
+            with column:
+                selected = st.session_state["workflow_mode"] == mode["title"]
+                render_workflow_mode_card(
+                    mode["title"],
+                    mode["description"],
+                    mode["outcome"],
+                    mode["marker"],
+                    selected,
+                )
+                st.button(
+                    "Active workflow" if selected else f"Open {mode['title']}",
+                    key=f"workflow_mode_{mode['key']}",
+                    type="primary" if selected else "secondary",
+                    disabled=selected,
+                    on_click=set_workflow_mode,
+                    args=(mode["title"],),
+                    use_container_width=True,
+                )
 
+    workflow_mode = st.session_state["workflow_mode"]
     if workflow_mode == "Convert GDSN XML":
         single_tab, bulk_tab = st.tabs(["Single XML", "Bulk ZIP"])
         with single_tab:

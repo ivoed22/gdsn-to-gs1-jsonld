@@ -9,6 +9,10 @@ from streamlit.testing.v1 import AppTest
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def _button_index(app: AppTest, label: str) -> int:
+    return next(index for index, button in enumerate(app.button) if button.label == label)
+
+
 def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
     monkeypatch.syspath_prepend(str(ROOT))
@@ -43,7 +47,7 @@ def test_streamlit_result_survives_rerun(example_xml_path):
         ("example_product.xml", example_xml_path.read_bytes(), "application/xml")
     )
     app.run(timeout=20)
-    app.button[0].click().run(timeout=20)
+    app.button[_button_index(app, "Convert product to JSON-LD")].click().run(timeout=20)
 
     assert "conversion_result" in app.session_state
     assert app.session_state["output_name_base"] == "08712345678906"
@@ -74,9 +78,9 @@ def test_streamlit_clear_results_removes_persisted_result(example_xml_path):
         ("example_product.xml", example_xml_path.read_bytes(), "application/xml")
     )
     app.run(timeout=20)
-    app.button[0].click().run(timeout=20)
+    app.button[_button_index(app, "Convert product to JSON-LD")].click().run(timeout=20)
 
-    app.button[-1].click().run(timeout=20)
+    app.button[_button_index(app, "Clear results")].click().run(timeout=20)
 
     assert "conversion_result" not in app.session_state
     assert len(app.get("download_button")) == 0
@@ -110,13 +114,19 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
 
 def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
 
-    assert app.radio[0].options == [
-        "Convert GDSN XML",
-        "Explore GS1 Web Vocabulary",
-        "Standards Review",
-    ]
-    assert app.radio[0].value == "Convert GDSN XML"
+    assert "What do you want to do?" in rendered_markdown
+    assert "Convert GDSN XML" in rendered_markdown
+    assert "Explore GS1 Web Vocabulary" in rendered_markdown
+    assert "Standards Review" in rendered_markdown
+    assert "JSON-LD, mapping reports, validation" in rendered_markdown
+    assert app.session_state["workflow_mode"] == "Convert GDSN XML"
+    assert app.button[_button_index(app, "Active workflow")].disabled
+    assert any(
+        button.label == "Open Explore GS1 Web Vocabulary" for button in app.button
+    )
+    assert any(button.label == "Open Standards Review" for button in app.button)
     assert app.get("file_uploader")[0].label == "GDSN product XML"
     assert app.get("file_uploader")[1].label == "GDSN XML batch ZIP"
     assert any(
@@ -125,16 +135,20 @@ def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
         for info in app.info
     )
 
-    app.radio[0].set_value("Explore GS1 Web Vocabulary").run(timeout=20)
+    app.button[_button_index(app, "Open Explore GS1 Web Vocabulary")].click().run(
+        timeout=20
+    )
 
+    assert app.session_state["workflow_mode"] == "Explore GS1 Web Vocabulary"
     assert any(
         "This mode will let users browse the local GS1 Web Vocabulary snapshot"
         in info.value
         for info in app.info
     )
 
-    app.radio[0].set_value("Standards Review").run(timeout=20)
+    app.button[_button_index(app, "Open Standards Review")].click().run(timeout=20)
 
+    assert app.session_state["workflow_mode"] == "Standards Review"
     assert any(metric.label == "Open SDRs" and metric.value == "6" for metric in app.metric)
     assert any("docs/standards-decisions/index.md" in code.value for code in app.code)
 
@@ -175,7 +189,7 @@ def test_streamlit_profile_change_clears_results(example_xml_path):
         ("example_product.xml", example_xml_path.read_bytes(), "application/xml")
     )
     app.run(timeout=20)
-    app.button[0].click().run(timeout=20)
+    app.button[_button_index(app, "Convert product to JSON-LD")].click().run(timeout=20)
     assert "conversion_result" in app.session_state
 
     app.selectbox[0].select("Food v0.2.0 mapping").run(timeout=20)
