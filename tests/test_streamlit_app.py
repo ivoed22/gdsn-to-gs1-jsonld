@@ -9,8 +9,11 @@ from streamlit.testing.v1 import AppTest
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def _button_index(app: AppTest, label: str) -> int:
-    return next(index for index, button in enumerate(app.button) if button.label == label)
+def _button_index(app: AppTest, label: str, occurrence: int = 0) -> int:
+    matches = [
+        index for index, button in enumerate(app.button) if button.label == label
+    ]
+    return matches[occurrence]
 
 
 def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
@@ -120,13 +123,10 @@ def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
     assert "Convert GDSN XML" in rendered_markdown
     assert "Explore GS1 Web Vocabulary" in rendered_markdown
     assert "Standards Review" in rendered_markdown
-    assert "JSON-LD, mapping reports, validation" in rendered_markdown
+    assert "JSON-LD plus mapping, validation" in rendered_markdown
     assert app.session_state["workflow_mode"] == "Convert GDSN XML"
-    assert app.button[_button_index(app, "Active workflow")].disabled
-    assert any(
-        button.label == "Open Explore GS1 Web Vocabulary" for button in app.button
-    )
-    assert any(button.label == "Open Standards Review" for button in app.button)
+    assert app.button[_button_index(app, "Active")].disabled
+    assert [button.label for button in app.button[:3]] == ["Active", "Open", "Open"]
     assert app.get("file_uploader")[0].label == "GDSN product XML"
     assert app.get("file_uploader")[1].label == "GDSN XML batch ZIP"
     assert any(
@@ -135,9 +135,7 @@ def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
         for info in app.info
     )
 
-    app.button[_button_index(app, "Open Explore GS1 Web Vocabulary")].click().run(
-        timeout=20
-    )
+    app.button[_button_index(app, "Open")].click().run(timeout=20)
 
     assert app.session_state["workflow_mode"] == "Explore GS1 Web Vocabulary"
     assert any(
@@ -146,7 +144,7 @@ def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
         for info in app.info
     )
 
-    app.button[_button_index(app, "Open Standards Review")].click().run(timeout=20)
+    app.button[_button_index(app, "Open", occurrence=1)].click().run(timeout=20)
 
     assert app.session_state["workflow_mode"] == "Standards Review"
     assert any(metric.label == "Open SDRs" and metric.value == "6" for metric in app.metric)

@@ -15,6 +15,10 @@
   live HTTP startup probe.
 - [x] The UI uses GS1/product-data traceability language rather than generic
   template cards or decorative AI-style visuals.
+- [x] The traceability rail is the main process story; the hero side panel is
+  reduced to workspace posture and does not duplicate the rail.
+- [x] Workflow actions use short `Open` / `Active` labels connected to the
+  workflow cards.
 
 ## Run locally
 
@@ -39,7 +43,7 @@ checkout, and hard-refresh the browser if it still has an older app session.
 ## What changed visually
 
 - Added a premium dashboard composition pass:
-  - the hero is shorter and now includes a compact conversion pipeline panel;
+  - the hero is shorter and now includes a compact workspace posture panel;
   - a traceability rail explains source XML, mapping evidence, JSON-LD output,
     and standards governance context;
   - workflow mode cards ask "What do you want to do?" before the user chooses
@@ -89,7 +93,7 @@ checkout, and hard-refresh the browser if it still has an older app session.
 
 ## Manual review checklist
 
-- [ ] Compact hero and right-side conversion pipeline are visible.
+- [ ] Compact hero and right-side workspace posture panel are visible.
 - [ ] Traceability rail appears below the hero.
 - [ ] Workflow cards ask "What do you want to do?" and show the active mode.
 - [ ] Version shows `v0.8.0` in both the hero and sidebar.
@@ -114,10 +118,11 @@ checkout, and hard-refresh the browser if it still has an older app session.
 ## Manual screenshot
 
 No screenshot tooling is required. With the app open, capture one desktop image
-after conversion that includes the compact hero and pipeline, workflow row,
-Step 2 status, and Step 3 download grid. Capture a second image with the browser
-narrowed to approximately 390 CSS pixels to confirm that the hero, workflow
-cards, traceability rail, and columns stack while controls remain usable.
+after conversion that includes the compact hero, traceability rail, workflow
+cards, Step 2 status, and Step 3 download grid. Capture a second image with the
+browser narrowed to approximately 390 CSS pixels to confirm that the hero,
+workflow cards, traceability rail, and columns stack while controls remain
+usable.
 
 ## Known limitations
 

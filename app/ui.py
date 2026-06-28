@@ -177,9 +177,9 @@ def apply_page_styles() -> None:
         div[data-testid="stVerticalBlockBorderWrapper"] {
             background: var(--surface-default);
             border: 1px solid var(--border-default);
-            border-top: 4px solid var(--accent-primary);
+            border-top: 1px solid #c8d6e5;
             border-radius: var(--radius-lg);
-            box-shadow: 0 0.65rem 1.6rem rgba(21, 34, 56, 0.08);
+            box-shadow: 0 0.45rem 1.1rem rgba(21, 34, 56, 0.055);
         }
 
         .app-eyebrow,
@@ -351,6 +351,12 @@ def apply_page_styles() -> None:
             outline-offset: 2px;
         }
 
+        [data-testid="column"] .stButton > button {
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            margin-top: -0.65rem;
+            min-height: 2.45rem;
+        }
+
         /* Premium dashboard composition primitives. */
         .app-hero {
             padding: 1.55rem 1.7rem;
@@ -373,7 +379,7 @@ def apply_page_styles() -> None:
             font-size: 2.35rem;
         }
 
-        .pipeline-panel {
+        .workspace-panel {
             backdrop-filter: blur(8px);
             background: rgba(5, 35, 62, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.18);
@@ -381,47 +387,37 @@ def apply_page_styles() -> None:
             padding: 1rem;
         }
 
-        .pipeline-label {
+        .workspace-label {
             color: #bfe2f8;
             font-size: 0.68rem;
             font-weight: 750;
             letter-spacing: 0.08em;
-            margin: 0 0 0.75rem;
+            margin: 0 0 0.85rem;
             text-transform: uppercase;
         }
 
-        .pipeline-flow {
-            align-items: center;
-            display: flex;
-            gap: 0.45rem;
-            justify-content: space-between;
+        .workspace-list {
+            display: grid;
+            gap: 0.65rem;
         }
 
-        .pipeline-node {
-            flex: 1;
-            min-width: 0;
+        .workspace-item {
+            border-left: 2px solid rgba(143, 210, 244, 0.7);
+            padding-left: 0.65rem;
         }
 
-        .pipeline-node strong,
-        .pipeline-node span {
-            display: block;
-        }
-
-        .pipeline-node strong {
+        .workspace-item strong {
             color: #ffffff;
-            font-size: 0.82rem;
+            display: block;
+            font-size: 0.84rem;
         }
 
-        .pipeline-node span {
+        .workspace-item span {
             color: rgba(255, 255, 255, 0.65);
+            display: block;
             font-size: 0.7rem;
-            margin-top: 0.12rem;
-        }
-
-        .pipeline-arrow {
-            color: #8fd2f4;
-            flex: 0 0 auto;
-            font-weight: 750;
+            line-height: 1.35;
+            margin-top: 0.1rem;
         }
 
         .traceability-strip {
@@ -436,8 +432,8 @@ def apply_page_styles() -> None:
 
         .trace-node {
             border-right: 1px solid var(--border-default);
-            min-height: 6.1rem;
-            padding: 1rem;
+            min-height: 6.4rem;
+            padding: 1.05rem 1rem 1rem;
             position: relative;
         }
 
@@ -467,14 +463,14 @@ def apply_page_styles() -> None:
         .trace-node strong {
             color: var(--text-primary);
             display: block;
-            font-size: 0.9rem;
+            font-size: 0.94rem;
             margin-bottom: 0.25rem;
         }
 
         .trace-node p {
             color: var(--text-secondary);
-            font-size: 0.78rem;
-            line-height: 1.45;
+            font-size: 0.82rem;
+            line-height: 1.5;
             margin: 0;
         }
 
@@ -492,7 +488,8 @@ def apply_page_styles() -> None:
 
         .workflow-entry p {
             color: var(--text-secondary);
-            line-height: 1.55;
+            font-size: 0.96rem;
+            line-height: 1.6;
             margin: 0;
             max-width: 58rem;
         }
@@ -501,9 +498,9 @@ def apply_page_styles() -> None:
             background: var(--surface-default);
             border: 1px solid var(--border-default);
             border-left: 0.35rem solid #b7c8da;
-            border-radius: var(--radius-md);
-            min-height: 13.5rem;
-            padding: 1rem;
+            border-radius: var(--radius-md) var(--radius-md) 0 0;
+            min-height: 12.6rem;
+            padding: 1rem 1rem 0.95rem;
         }
 
         .workflow-mode-card.is-active {
@@ -538,25 +535,47 @@ def apply_page_styles() -> None:
         }
 
         .workflow-mode-state {
-            border: 1px solid var(--border-default);
+            background: #dff0fb;
+            border: 1px solid #aad2ea;
             border-radius: 999px;
-            color: var(--text-secondary);
+            color: var(--accent-strong);
             font-size: 0.67rem;
             font-weight: 750;
             padding: 0.22rem 0.48rem;
             text-transform: uppercase;
         }
 
-        .workflow-mode-card.is-active .workflow-mode-state {
-            background: #dff0fb;
-            border-color: #aad2ea;
-            color: var(--accent-strong);
+        .workflow-mode-card.mode-xml {
+            border-left-color: #70b7df;
+        }
+
+        .workflow-mode-card.mode-voc {
+            border-left-color: #7fb394;
+        }
+
+        .workflow-mode-card.mode-sdr {
+            border-left-color: #d4b75d;
+        }
+
+        .workflow-mode-card.mode-xml .workflow-mode-mark {
+            background: #eef8ff;
+            border-color: #c8e5f6;
+        }
+
+        .workflow-mode-card.mode-voc .workflow-mode-mark {
+            background: #f0f8f2;
+            border-color: #cde8d4;
+        }
+
+        .workflow-mode-card.mode-sdr .workflow-mode-mark {
+            background: #fff8e3;
+            border-color: #ead996;
         }
 
         .workflow-mode-title {
             color: var(--text-primary);
             display: block;
-            font-size: 1rem;
+            font-size: 1.04rem;
             font-weight: 760;
             margin-bottom: 0.35rem;
         }
@@ -564,8 +583,8 @@ def apply_page_styles() -> None:
         .workflow-mode-copy,
         .workflow-mode-outcome {
             color: var(--text-secondary);
-            font-size: 0.8rem;
-            line-height: 1.45;
+            font-size: 0.84rem;
+            line-height: 1.5;
             margin: 0;
         }
 
@@ -920,22 +939,20 @@ def render_page_header() -> None:
                 <span class="app-chip">BMS/XPath traceable</span>
               </div>
             </div>
-            <div class="pipeline-panel" aria-label="Conversion pipeline">
-              <p class="pipeline-label">Conversion pipeline</p>
-              <div class="pipeline-flow">
-                <div class="pipeline-node">
-                  <strong>GDSN XML</strong>
-                  <span>Product data</span>
+            <div class="workspace-panel" aria-label="Workspace posture">
+              <p class="workspace-label">Workspace posture</p>
+              <div class="workspace-list">
+                <div class="workspace-item">
+                  <strong>Reviewable outputs</strong>
+                  <span>JSON-LD, mapping trace, validation, and unmapped fields.</span>
                 </div>
-                <span class="pipeline-arrow" aria-hidden="true">&rarr;</span>
-                <div class="pipeline-node">
-                  <strong>Mapping</strong>
-                  <span>Canonical model</span>
+                <div class="workspace-item">
+                  <strong>Controlled inputs</strong>
+                  <span>XML is processed in memory; mappings stay versioned.</span>
                 </div>
-                <span class="pipeline-arrow" aria-hidden="true">&rarr;</span>
-                <div class="pipeline-node">
-                  <strong>JSON-LD</strong>
-                  <span>GS1 vocabulary</span>
+                <div class="workspace-item">
+                  <strong>Governance visible</strong>
+                  <span>Open SDRs are surfaced without suppressing warnings.</span>
                 </div>
               </div>
             </div>
@@ -1008,14 +1025,17 @@ def render_workflow_mode_card(
     marker: str,
     selected: bool,
 ) -> None:
-    state = "Active" if selected else "Available"
     state_class = " is-active" if selected else ""
+    marker_class = f" mode-{marker.lower()}"
+    state_html = (
+        '<span class="workflow-mode-state">Active</span>' if selected else ""
+    )
     st.markdown(
         f"""
-        <article class="workflow-mode-card{state_class}">
+        <article class="workflow-mode-card{marker_class}{state_class}">
           <div class="workflow-mode-card-header">
             <span class="workflow-mode-mark">{escape(marker)}</span>
-            <span class="workflow-mode-state">{state}</span>
+            {state_html}
           </div>
           <strong class="workflow-mode-title">{escape(title)}</strong>
           <p class="workflow-mode-copy">{escape(description)}</p>

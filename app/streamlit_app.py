@@ -66,18 +66,18 @@ WORKFLOW_MODES = (
         "title": "Convert GDSN XML",
         "marker": "XML",
         "description": (
-            "Convert one product message or a ZIP batch through the active "
-            "mapping profile."
+            "Convert a single product message or a ZIP batch with the active "
+            "mapping profile and evidence reports."
         ),
-        "outcome": "JSON-LD, mapping reports, validation, and unmapped-field evidence.",
+        "outcome": "JSON-LD plus mapping, validation, and unmapped-field evidence.",
     },
     {
         "key": "explore",
         "title": "Explore GS1 Web Vocabulary",
         "marker": "VOC",
         "description": (
-            "Preview the planned local vocabulary browser and coverage review "
-            "surface."
+            "Preview the planned local vocabulary browser for properties, "
+            "classes, and mapping coverage."
         ),
         "outcome": "A clear placeholder for the later Explorer release.",
     },
@@ -87,7 +87,7 @@ WORKFLOW_MODES = (
         "marker": "SDR",
         "description": (
             "Inspect open standards and governance decisions from the existing "
-            "backlog."
+            "SDR backlog."
         ),
         "outcome": "Read-only SDR status without changing converter behavior.",
     },
@@ -567,7 +567,7 @@ def main() -> None:
                     selected,
                 )
                 st.button(
-                    "Active workflow" if selected else f"Open {mode['title']}",
+                    "Active" if selected else "Open",
                     key=f"workflow_mode_{mode['key']}",
                     type="primary" if selected else "secondary",
                     disabled=selected,
