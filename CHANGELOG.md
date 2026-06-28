@@ -15,6 +15,9 @@
 - Added a Web Vocabulary Explorer placeholder and compact read-only Standards
   Review mode.
 - Added batch converter, CLI, and Streamlit workflow regression tests.
+- Applied final UI/UX polish with a workspace posture panel, traceability rail,
+  shorter `Open` / `Active` workflow actions, calmer container hierarchy, and
+  subtle XML/VOC/SDR accents.
 
 ### Preserved
 
@@ -23,6 +26,18 @@
   unchanged.
 - No warnings were suppressed.
 - No semantic mappings were changed.
+
+### Validation
+
+- pytest: 77 passed.
+- compileall `app src`: passed.
+- `git diff --check`: passed with only Windows LF/CRLF warnings.
+- `convert-samples`: 4/4 successful.
+- `check-catalog`: 0 errors, existing 8 warnings.
+- `check-mapping`: 0 errors, existing 12 warnings.
+- `convert-batch` sample ZIP: 4/4 successful.
+- Streamlit startup probe: HTTP 200.
+- GitHub Actions: success.
 
 ## v0.7.1 — Streamlit Cloud Import Fix
 
