@@ -109,6 +109,12 @@ BMS/XPath evidence plus SDR governance indicators beside mapped terms. This
 supports standards review without editing mappings, changing converter output,
 or fetching online vocabulary data.
 
+Version 0.9.1 adds a public source data inventory and offline reference-data
+import command. It records the public GDSN BMS/XPath workbook and GS1 Web
+Vocabulary JSON-LD source, verifies checksums, and writes normalized reference
+outputs that future review tooling can use without changing converter
+semantics.
+
 ## Combined outcome
 
 Track A creates understanding and stakeholder momentum. Track D turns project

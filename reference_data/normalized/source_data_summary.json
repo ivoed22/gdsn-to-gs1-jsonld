@@ -1,0 +1,127 @@
+{
+  "summary_version": "1.0",
+  "offline": true,
+  "sources": {
+    "gdsn_bms_xpath_3_1_36": {
+      "title": "GDSN Attributes with BMSId and XPath 3.1.36",
+      "source_url": "https://www.gs1.org/docs/gdsn/3.1/GDSN_Attributes_with_BMSId_xPath_3.1.36_June_5_2026.xlsx",
+      "local_path": "reference_data/raw_public/GDSN_Attributes_with_BMSId_xPath_3.1.36_June_5_2026.xlsx",
+      "version": "3.1.36",
+      "sha256": "1912edf47ea73295b57979b0cc1ae868f3955c1b16684ced08a85eff7f19be75",
+      "public_accessible": true,
+      "authoritative_or_derived": "authoritative_public_source_copy"
+    },
+    "gs1_web_vocabulary_jsonld_1_17": {
+      "title": "GS1 Web Vocabulary JSON-LD",
+      "source_url": "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
+      "local_path": "webvoc/current/gs1Voc.jsonld",
+      "version": "1.17",
+      "sha256": "cf48c79d5891195a30f873b333983b21ffacb518adc80568cf1141961a3889b9",
+      "public_accessible": true,
+      "authoritative_or_derived": "authoritative_local_snapshot"
+    }
+  },
+  "checksum_checks": [
+    {
+      "source_id": "gdsn_bms_xpath_3_1_36",
+      "local_path": "reference_data/raw_public/GDSN_Attributes_with_BMSId_xPath_3.1.36_June_5_2026.xlsx",
+      "expected_sha256": "1912edf47ea73295b57979b0cc1ae868f3955c1b16684ced08a85eff7f19be75",
+      "actual_sha256": "1912edf47ea73295b57979b0cc1ae868f3955c1b16684ced08a85eff7f19be75",
+      "exists": true,
+      "matches": true
+    },
+    {
+      "source_id": "gs1_web_vocabulary_jsonld_1_17",
+      "local_path": "webvoc/current/gs1Voc.jsonld",
+      "expected_sha256": "cf48c79d5891195a30f873b333983b21ffacb518adc80568cf1141961a3889b9",
+      "actual_sha256": "cf48c79d5891195a30f873b333983b21ffacb518adc80568cf1141961a3889b9",
+      "exists": true,
+      "matches": true
+    }
+  ],
+  "gdsn": {
+    "source_id": "gdsn_bms_xpath_3_1_36",
+    "source_url": "https://www.gs1.org/docs/gdsn/3.1/GDSN_Attributes_with_BMSId_xPath_3.1.36_June_5_2026.xlsx",
+    "local_path": "reference_data/raw_public/GDSN_Attributes_with_BMSId_xPath_3.1.36_June_5_2026.xlsx",
+    "version": "3.1.36",
+    "sha256": "1912edf47ea73295b57979b0cc1ae868f3955c1b16684ced08a85eff7f19be75",
+    "sheet_count": 3,
+    "selected_sheet": "3.1.36",
+    "active_rows": 7110,
+    "total_rows": 7171,
+    "attribute_rows": 6067,
+    "class_rows": 990,
+    "deleted_rows": 61,
+    "candidate_source_rows": 6007,
+    "rows_with_bms_id": 7171,
+    "rows_with_xpath": 7171,
+    "rows_with_definition": 6560,
+    "rows_with_data_type": 6073,
+    "rows_with_code_list": 1652,
+    "possible_duplicate_bms_ids": [],
+    "possible_duplicate_xpath_values": [
+      {
+        "value": "/catalogue_item_notification:catalogueItemNotificationMessage/transaction/documentCommand/catalogue_item_notification:catalogueItemNotification/catalogueItem/tradeItem/globalModelInformation/globalModelContactInformation/communicationChannel/communicationValue",
+        "count": 2
+      },
+      {
+        "value": "/catalogue_item_notification:catalogueItemNotificationMessage/transaction/documentCommand/catalogue_item_notification:catalogueItemNotification/catalogueItem/tradeItem/tradeItemInformation/extension/*[namespace-uri()='urn:gs1:gdsn:medical_device_trade_item:xsd:3' and local-name()='medicalDeviceTradeItemModule']/medicalDeviceInformation/medicalDeviceSubStatusInformation/recallPrecision/@languageCode",
+        "count": 2
+      },
+      {
+        "value": "/catalogue_item_notification:catalogueItemNotificationMessage/transaction/documentCommand/catalogue_item_notification:catalogueItemNotification/catalogueItem/tradeItem/tradeItemInformation/extension/*[namespace-uri()='urn:gs1:gdsn:sales_information:xsd:3' and local-name()='salesInformationModule']/salesInformation/targetMarketSalesConditions/salesConditionTargetMarketCountry",
+        "count": 2
+      },
+      {
+        "value": "/price_synchronisation_document:priceSynchronisationDocumentMessage/transaction/documentCommand/price_synchronisation_document:priceSynchronisationDocument/itemDepictionQualifier/itemPriceType/avpList/compoundStringAVP",
+        "count": 2
+      },
+      {
+        "value": "/price_synchronisation_document:priceSynchronisationDocumentMessage/transaction/documentCommand/price_synchronisation_document:priceSynchronisationDocument/itemDepictionQualifier/itemPriceType/avpList/stringAVP",
+        "count": 2
+      },
+      {
+        "value": "/price_synchronisation_document:priceSynchronisationDocumentMessage/transaction/documentCommand/price_synchronisation_document:priceSynchronisationDocument/priceSynchronisationCondition/avpList/compoundStringAVP",
+        "count": 2
+      },
+      {
+        "value": "/price_synchronisation_document:priceSynchronisationDocumentMessage/transaction/documentCommand/price_synchronisation_document:priceSynchronisationDocument/priceSynchronisationCondition/avpList/stringAVP",
+        "count": 2
+      },
+      {
+        "value": "/price_synchronisation_document:priceSynchronisationDocumentMessage/transaction/documentCommand/price_synchronisation_document:priceSynchronisationDocument/priceSynchronisationRelationship/avpList/compoundStringAVP",
+        "count": 2
+      },
+      {
+        "value": "/price_synchronisation_document:priceSynchronisationDocumentMessage/transaction/documentCommand/price_synchronisation_document:priceSynchronisationDocument/priceSynchronisationRelationship/avpList/stringAVP",
+        "count": 2
+      }
+    ],
+    "missing_critical_fields": {
+      "bms_id": 0,
+      "xpath": 0,
+      "attribute_name": 0,
+      "row_type": 1
+    }
+  },
+  "webvoc": {
+    "source_id": "gs1_web_vocabulary_jsonld_1_17",
+    "source_url": "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
+    "local_path": "webvoc/current/gs1Voc.jsonld",
+    "version": "1.17",
+    "last_modified": "2025-11-18",
+    "sha256": "cf48c79d5891195a30f873b333983b21ffacb518adc80568cf1141961a3889b9",
+    "class_count": 55,
+    "property_count": 553,
+    "link_type_property_count": 60,
+    "stable_property_count": 534,
+    "properties_with_domain": 553,
+    "properties_with_range": 553,
+    "missing_critical_fields": {
+      "label": 0,
+      "comment": 0,
+      "domain": 0,
+      "range": 0
+    }
+  }
+}

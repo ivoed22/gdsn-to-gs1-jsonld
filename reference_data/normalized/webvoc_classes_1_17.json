@@ -1,0 +1,873 @@
+[
+  {
+    "term_id": "gs1:AdditionalProductClassificationDetails",
+    "compact_name": "AdditionalProductClassificationDetails",
+    "label": "Additional Product Classification Details",
+    "comment": "A product classification for the product other than the Global Product Classification(GPC brick value).",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:AdditiveDetails",
+    "compact_name": "AdditiveDetails",
+    "label": "Additive Details",
+    "comment": "A set of details about one of the additives within the product.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:AllergenDetails",
+    "compact_name": "AllergenDetails",
+    "label": "Allergen Details",
+    "comment": "Details of an allergen for a product.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:AuthenticityDetails",
+    "compact_name": "AuthenticityDetails",
+    "label": "Authenticity Details",
+    "comment": "A set of details about covert or overt security features that may contribute to checking the authenticity of a product or product instance.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:AwardPrizeDetails",
+    "compact_name": "AwardPrizeDetails",
+    "label": "Award Prize",
+    "comment": "Describes a prize or award won by a product or organization.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Beverage",
+    "compact_name": "Beverage",
+    "label": "Beverage",
+    "comment": "Any potable liquid.",
+    "sub_class_of": [
+      "gs1:FoodBeverageTobaccoProduct"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Brand",
+    "compact_name": "Brand",
+    "label": "Brand",
+    "comment": "Information on brands and sub-brands for a product.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:CertificationDetails",
+    "compact_name": "CertificationDetails",
+    "label": "Certification",
+    "comment": "Certification issued by a certifying body to a certification subject (Organization, Place, Product).",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Clothing",
+    "compact_name": "Clothing",
+    "label": "Clothing",
+    "comment": " A product that is worn on the body.",
+    "sub_class_of": [
+      "gs1:WearableProduct"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:ColourCodeDetails",
+    "compact_name": "ColourCodeDetails",
+    "label": "Colour Code Details",
+    "comment": "A set of colour code details (colour code, party controlling the code list) for the product.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:CompulsoryAdditionalInformation",
+    "compact_name": "CompulsoryAdditionalInformation",
+    "label": "Compulsory Additional Information",
+    "comment": "The group of compulsory information about a product.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:ContactPoint",
+    "compact_name": "ContactPoint",
+    "label": "Contact",
+    "comment": "Information on an individual or department acting as point of contact for an organiation.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Country",
+    "compact_name": "Country",
+    "label": "Country",
+    "comment": "Country is a complex data type that indicates a country and a country subdivision.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:DietTypeCodeDetails",
+    "compact_name": "DietTypeCodeDetails",
+    "label": "Diet Type Code Details",
+    "comment": "A set of diet type code details (diet type code and diet type sub code) for the product.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Discount",
+    "compact_name": "Discount",
+    "label": "Discount",
+    "comment": "Provides information on a discount applicable to an offer for example 2 percent.",
+    "sub_class_of": [],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:FoodAndBeveragePreparationInformation",
+    "compact_name": "FoodAndBeveragePreparationInformation",
+    "label": "Food and Beverage Preparation Information",
+    "comment": "Food and Beverage Preparation Information is a complex data type that indicates a preparation state code and preparation instructions.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:FoodBeverageTobaccoIngredientDetails",
+    "compact_name": "FoodBeverageTobaccoIngredientDetails",
+    "label": "Food Beverage Tobacco Ingredient",
+    "comment": "Food Beverage Tobacco Ingredient is a complex data type that includes an ingredient statement and details.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:FoodBeverageTobaccoProduct",
+    "compact_name": "FoodBeverageTobaccoProduct",
+    "label": "Food Beverage Tobacco Product",
+    "comment": "A food, beverage or tobacco product.",
+    "sub_class_of": [
+      "gs1:Product"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Footwear",
+    "compact_name": "Footwear",
+    "label": "Footwear",
+    "comment": " Outerwear that is worn on the feet such as shoes or boots.",
+    "sub_class_of": [
+      "gs1:WearableProduct"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:FruitsVegetables",
+    "compact_name": "FruitsVegetables",
+    "label": "Fruits and Vegetables",
+    "comment": "Contains properties related specifically to fruit and vegetable products.",
+    "sub_class_of": [
+      "gs1:FoodBeverageTobaccoProduct"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:GeoCoordinates",
+    "compact_name": "GeoCoordinates",
+    "label": "GeoCoordinates",
+    "comment": "The geographic coordinates of a place or event.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:GeoShape",
+    "compact_name": "GeoShape",
+    "label": "GeoShape",
+    "comment": "The geographic shape of a place. A GeoShape can be described using several properties whose values are based on latitude/longitude pairs. Either whitespace or commas can be used to separate latitude and longitude; whitespace should be used when writing a list of several such points.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:LocationID_Details",
+    "compact_name": "LocationID_Details",
+    "label": "Location ID Details",
+    "comment": "Government bodies, trade organisations, and other parties issue identifiers that are associated to locations. Linking these identifiers to GLN and one another supports consolidating records, mapping related, collaborative identifiers, enhances search ability and enables more efficient transitions between identifiers.  This class provides a mechanism for connecting and sharing location identifiers.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:LocationStatusHistory",
+    "compact_name": "LocationStatusHistory",
+    "label": "Location Status History",
+    "comment": "Over the lifetime of a location, it may go through periods of being active and inactive. gs1:LocationStatusHistory allows changes in status to be communicated in advance and tracked over time.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:MeatPoultry",
+    "compact_name": "MeatPoultry",
+    "label": "Meat Poultry",
+    "comment": "Meat and poultry products.",
+    "sub_class_of": [
+      "gs1:FoodBeverageTobaccoProduct"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Message",
+    "compact_name": "Message",
+    "label": "Message",
+    "comment": "Any kind of electronic message for communication of information from one party to one or more other parties.",
+    "sub_class_of": [],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "provisional",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:MilkButterCreamYogurtCheeseEggsSubstitutes",
+    "compact_name": "MilkButterCreamYogurtCheeseEggsSubstitutes",
+    "label": "Milk Butter Cream Yogurt Cheese Eggs Substitutes",
+    "comment": "Milk butter cream yogurts cheese eggs and any substitutes for these products.",
+    "sub_class_of": [
+      "gs1:FoodBeverageTobaccoProduct"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:NutritionMeasurementType",
+    "compact_name": "NutritionMeasurementType",
+    "label": "Nutrition Measurement Type",
+    "comment": "A class providing nutritional value and intake percent.",
+    "sub_class_of": [
+      "gs1:QuantitativeValue"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Offer",
+    "compact_name": "Offer",
+    "label": "Offer",
+    "comment": "An offer to transfer some rights to an item or to provide a service,for example, an offer to sell tickets to an event, to rent the DVD of a movie, to stream a TV show over the internet, to repair a motorcycle, or to loan a book.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:OrganicClaimDetails",
+    "compact_name": "OrganicClaimDetails",
+    "label": "Organic Claim Details",
+    "comment": "A set of organic claim details for the product.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Organization",
+    "compact_name": "Organization",
+    "label": "Organization",
+    "comment": "An Organization is any legal or physical entity involved at any point in any supply chain and upon which there is a need to retrieve predefined information. An Organization is uniquely identified by a Global Location Number (GLN).",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:OrganizationID_Details",
+    "compact_name": "OrganizationID_Details",
+    "label": "Organisation ID Details",
+    "comment": "Government bodies, trade organisations, and other parties issue identifiers that are associated to legal entities and/or functions. Linking these identifiers to GLN and one another supports consolidating records, mapping related, collaborative identifiers, enhances search ability and enables more efficient transitions between identifiers.  This class provides a mechanism for connecting and sharing party identifiers.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:OrganizationStatusHistory",
+    "compact_name": "OrganizationStatusHistory",
+    "label": "Organisation Status History",
+    "comment": "Over the lifetime of an organisation, it may go through periods of being active and inactive. gs1:OrganizationStatusHistory allows changes in status to be communicated in advance and tracked over time.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:PackagingDetails",
+    "compact_name": "PackagingDetails",
+    "label": "Packaging",
+    "comment": "Details on packaging for a product for example packaging type (bottle), materials, features, recycling, etc..",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:PackagingMaterialDetails",
+    "compact_name": "PackagingMaterialDetails",
+    "label": "Packaging Material Details",
+    "comment": "Information on any material used for packaging.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Place",
+    "compact_name": "Place",
+    "label": "Place",
+    "comment": "Entities that have a somewhat fixed, physical location.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:PostalAddress",
+    "compact_name": "PostalAddress",
+    "label": "Address",
+    "comment": "The location at which a particular organization or person may be found or reached.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:PriceSpecification",
+    "compact_name": "PriceSpecification",
+    "label": "Price Specification",
+    "comment": "A structured value representing a monetary amount, consisting of a value and currency code.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Product",
+    "compact_name": "Product",
+    "label": "Product",
+    "comment": "Any item (product or service) upon which there is a need to retrieve pre-defined information and that may be priced, or ordered, or invoiced at any point in any supply chain.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:ProductYieldDetails",
+    "compact_name": "ProductYieldDetails",
+    "label": "Product Yield Details",
+    "comment": "A grouping of properties related to the yield of a food or beverage product according to a specified type of preparation.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:QuantitativeValue",
+    "compact_name": "QuantitativeValue",
+    "label": "Measurement Type",
+    "comment": "A point value or interval for product characteristics and other purposes. A unit of measurement is also specified.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:ReferencedFileDetails",
+    "compact_name": "ReferencedFileDetails",
+    "label": "Referenced File",
+    "comment": "Provides URL and other information on a referenced electronic file.",
+    "sub_class_of": [
+      "owl:Thing",
+      "schema:MediaObject"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:RegulatoryIdentifier",
+    "compact_name": "RegulatoryIdentifier",
+    "label": "Regulatory Identifier",
+    "comment": "A repeatable grouping of identifiers that reference one document, record or dataset within one regulatory information system, repository or registry",
+    "sub_class_of": [],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "provisional",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:RegulatoryInformation",
+    "compact_name": "RegulatoryInformation",
+    "label": "Regulatory Information",
+    "comment": "Information on applicable government regulations applicable to a trade item",
+    "sub_class_of": [],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "provisional",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:RegulatoryNotification",
+    "compact_name": "RegulatoryNotification",
+    "label": "Regulatory Notification",
+    "comment": "A notification message about information on applicable government regulations applicable to a trade item",
+    "sub_class_of": [
+      "gs1:Message"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "provisional",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:ReturnablePackageDepositDetails",
+    "compact_name": "ReturnablePackageDepositDetails",
+    "label": "Returnable Package Deposit Details",
+    "comment": "Details of the deposit for returnable packaging for a product.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Seafood",
+    "compact_name": "Seafood",
+    "label": "Seafood",
+    "comment": "Seafood Products including fish and shellfish.",
+    "sub_class_of": [
+      "gs1:FoodBeverageTobaccoProduct"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:SizeCodeDetails",
+    "compact_name": "SizeCodeDetails",
+    "label": "Size Code Details",
+    "comment": "A grouping of properties related to the representing the size of a product, by specifying a value from a specified code list.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:SizeDetails",
+    "compact_name": "SizeDetails",
+    "label": "Size Details",
+    "comment": "A grouping of properties related to the size of a wearable product",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:TargetMarketDetails",
+    "compact_name": "TargetMarketDetails",
+    "label": "Target Market Details",
+    "comment": "A set of target market details (product release date and associated countries) for the product.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:TextileMaterialDetails",
+    "compact_name": "TextileMaterialDetails",
+    "label": "Textile Material",
+    "comment": "Details on the composition of any materials used to make a product using textiles.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:Transaction",
+    "compact_name": "Transaction",
+    "label": "Transaction",
+    "comment": "A repeatable grouping of identifiers that identify a business transaction ID and its type",
+    "sub_class_of": [],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "provisional",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:TypeCode",
+    "compact_name": "TypeCode",
+    "label": "Type Code",
+    "comment": "A code list.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:WarrantyPromise",
+    "compact_name": "WarrantyPromise",
+    "label": "Warranty",
+    "comment": "An assurance that the product is reliable and that repairs or replacement will be done free of charge within a given time limit and under certain conditions in the event of a defect.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  },
+  {
+    "term_id": "gs1:WearableProduct",
+    "compact_name": "WearableProduct",
+    "label": "Wearable Product",
+    "comment": "Products that are worn on the body.",
+    "sub_class_of": [
+      "gs1:Product"
+    ],
+    "type": [
+      "rdfs:Class",
+      "owl:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.17",
+    "last_modified": "2025-11-18"
+  }
+]

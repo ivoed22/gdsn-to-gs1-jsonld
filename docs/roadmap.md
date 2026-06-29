@@ -1,12 +1,12 @@
 # Roadmap
 
-Version 0.9.0 adds a read-only Web Vocabulary Explorer on top of the v0.8.0
-workflow modes. The Explorer browses the local GS1 Web Vocabulary snapshot and
-compares properties with mapping catalog coverage, BMS/XPath evidence, and SDR
-governance indicators while preserving the v0.1.0, v0.2.0, and v0.3.0
+Version 0.9.1 adds a public source data inventory and offline reference-data
+import command on top of the v0.9.0 Web Vocabulary Explorer. It records the
+public GDSN BMS/XPath and GS1 Web Vocabulary sources, verifies checksums, and
+normalizes review data while preserving the v0.1.0, v0.2.0, and v0.3.0
 converter profiles and single-file output.
 
-Potential work after v0.9.0:
+Potential work after v0.9.1:
 
 - resolve catalog warnings through standards and project review
 - prototype manual JSON-LD authoring only when it can be linked to mapping
@@ -35,6 +35,11 @@ offline Explorer and `export-webvoc-explorer` CLI command. It is a read-only
 standards/mapping review release, not a converter-output or mapping-semantics
 release.
 
+Version 0.9.1 adds `import-reference-data` and a committed source-data
+inventory for public GDSN and Web Vocabulary references. It prepares normalized
+evidence for future manual prototyping and mapping-candidate review without
+building those features yet.
+
 Potential work after v0.7.0:
 
 - assign named reviewers and decision dates
@@ -42,7 +47,7 @@ Potential work after v0.7.0:
 - create versioned mapping changes only for accepted decisions
 - retain compatibility tests and migration notes for any accepted output change
 
-## Strategic tracks after v0.9.0
+## Strategic tracks after v0.9.1
 
 ### Positioning and demo
 

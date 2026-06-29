@@ -686,7 +686,8 @@ def _render_webvoc_explorer() -> None:
         )
         st.info(
             "Manual JSON-LD would not be GDSN/BMS/XPath traceable unless linked "
-            "to mapping evidence. v0.9.0 focuses on browsing and coverage review."
+            "to mapping evidence. The Explorer remains read-only while that "
+            "evidence model is governed."
         )
 
 

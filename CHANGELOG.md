@@ -1,5 +1,31 @@
 # Changelog
 
+## v0.9.1 — Public Source Data Inventory & Reference Import
+
+### Added
+
+- Added `reference_data/source_manifest.json` and a lightweight source manifest
+  schema for public GDSN and GS1 Web Vocabulary references.
+- Added a public GDSN BMS/XPath 3.1.36 workbook copy under
+  `reference_data/raw_public/`.
+- Added normalized GDSN and WebVoc JSON/CSV reference outputs under
+  `reference_data/normalized/`.
+- Added `gdsn-to-gs1-jsonld import-reference-data`.
+- Added offline importer tests for WebVoc BOM handling, class/property
+  extraction, fake GDSN Excel normalization, candidate/deleted row flags,
+  checksums, summary JSON, CLI outputs, and source-manifest schema coverage.
+- Added `docs/source-data-inventory.md`, `docs/reference-data-import.md`, and
+  v0.9.1 release notes.
+
+### Preserved
+
+- Converter logic, batch behavior, and single-file output remain unchanged.
+- Mapping YAML files, catalog data, and existing Web Vocabulary snapshots remain
+  unchanged.
+- No warnings were suppressed.
+- v0.10.0 Manual JSON-LD Prototype Builder and v0.11.0 Mapping Candidate
+  Generator were not created.
+
 ## v0.9.0 — Web Vocabulary Explorer
 
 ### Added

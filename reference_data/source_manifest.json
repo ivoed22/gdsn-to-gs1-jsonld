@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "generated_for": "v0.9.1 public source data inventory",
+  "sources": [
+    {
+      "source_id": "gdsn_bms_xpath_3_1_36",
+      "title": "GDSN Attributes with BMSId and XPath 3.1.36",
+      "source_url": "https://www.gs1.org/docs/gdsn/3.1/GDSN_Attributes_with_BMSId_xPath_3.1.36_June_5_2026.xlsx",
+      "retrieved_at": "2026-06-29T12:54:50Z",
+      "version": "3.1.36",
+      "publication_date": "2026-06-05",
+      "local_path": "reference_data/raw_public/GDSN_Attributes_with_BMSId_xPath_3.1.36_June_5_2026.xlsx",
+      "sha256": "1912edf47ea73295b57979b0cc1ae868f3955c1b16684ced08a85eff7f19be75",
+      "public_accessible": true,
+      "authoritative_or_derived": "authoritative_public_source_copy",
+      "used_by": [
+        "v0.9.1 reference data import",
+        "future v0.10.0 Manual JSON-LD Prototype Builder",
+        "future v0.11.0 Mapping Candidate Generator"
+      ],
+      "license_or_rights_note": "Public GS1 standards reference material. Use for traceability and review; do not imply redistributed ownership beyond the project inventory copy.",
+      "usage_note": "Offline source for BMS IDs, XPath evidence, row types, modules, data types, code-list indicators, definitions, and deleted-attribute flags."
+    },
+    {
+      "source_id": "gs1_web_vocabulary_jsonld_1_17",
+      "title": "GS1 Web Vocabulary JSON-LD",
+      "source_url": "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
+      "retrieved_at": "2026-06-14T13:32:35Z",
+      "version": "1.17",
+      "last_modified": "2025-11-18",
+      "local_path": "webvoc/current/gs1Voc.jsonld",
+      "sha256": "cf48c79d5891195a30f873b333983b21ffacb518adc80568cf1141961a3889b9",
+      "public_accessible": true,
+      "authoritative_or_derived": "authoritative_local_snapshot",
+      "used_by": [
+        "Web Vocabulary Explorer",
+        "v0.9.1 reference data import",
+        "future v0.10.0 Manual JSON-LD Prototype Builder",
+        "future v0.11.0 Mapping Candidate Generator"
+      ],
+      "license_or_rights_note": "Public GS1 Web Vocabulary reference data. Keep source URL and checksum with derived normalized outputs.",
+      "usage_note": "Offline source for Web Vocabulary classes, properties, labels, comments, domains, ranges, status metadata, and link-type indicators."
+    }
+  ]
+}

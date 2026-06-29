@@ -16,6 +16,14 @@ from .catalog_revalidation import (
     write_versioned_revalidated_catalog,
 )
 from .converter import convert_xml_to_jsonld
+from .reference_data_importer import (
+    DEFAULT_GDSN_XLSX,
+    DEFAULT_OUTPUT_DIR,
+    DEFAULT_SOURCE_MANIFEST,
+    DEFAULT_WEBVOC,
+    build_reference_data_import,
+    write_reference_data_outputs,
+)
 from .sample_runner import convert_sample_corpus
 from .standards_backlog import BACKLOG, export_standards_backlog
 from .webvoc_monitor import (
@@ -546,6 +554,70 @@ def export_webvoc_explorer_command(
         f"{summary['property_count']} properties, "
         f"{summary['mapped_property_count']} mapped properties, "
         f"{summary['standards_review_property_count']} standards-review properties"
+    )
+    for path in paths.values():
+        typer.echo(f"  - {path}")
+
+
+@app.command("import-reference-data")
+def import_reference_data_command(
+    gdsn_xlsx: Path = typer.Option(
+        DEFAULT_GDSN_XLSX,
+        "--gdsn-xlsx",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Public GDSN BMS/XPath Excel workbook.",
+    ),
+    webvoc: Path = typer.Option(
+        DEFAULT_WEBVOC,
+        "--webvoc",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Local GS1 Web Vocabulary JSON-LD snapshot.",
+    ),
+    source_manifest: Path = typer.Option(
+        DEFAULT_SOURCE_MANIFEST,
+        "--source-manifest",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Source manifest with URLs, checksums, and usage notes.",
+    ),
+    output_dir: Path = typer.Option(
+        DEFAULT_OUTPUT_DIR,
+        "--output-dir",
+        "-o",
+        help="Directory for normalized reference data outputs.",
+    ),
+) -> None:
+    """Normalize public GDSN and Web Vocabulary reference data offline."""
+    try:
+        import_result = build_reference_data_import(
+            gdsn_xlsx=gdsn_xlsx,
+            webvoc=webvoc,
+            source_manifest=source_manifest,
+        )
+        paths = write_reference_data_outputs(import_result, output_dir)
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        typer.echo(f"Reference data import failed: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    summary = import_result.summary
+    typer.echo(
+        "Reference data import: "
+        f"{summary['gdsn']['total_rows']} GDSN row(s), "
+        f"{summary['webvoc']['property_count']} WebVoc property row(s), "
+        f"{summary['webvoc']['class_count']} WebVoc class(es)"
+    )
+    typer.echo(
+        "GDSN sheet: "
+        f"{summary['gdsn']['selected_sheet']} "
+        f"({summary['gdsn']['candidate_source_rows']} candidate row(s))"
     )
     for path in paths.values():
         typer.echo(f"  - {path}")

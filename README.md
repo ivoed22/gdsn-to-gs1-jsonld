@@ -3,10 +3,9 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
-Version 0.9.0 adds a read-only Web Vocabulary Explorer for local GS1 Web
-Vocabulary classes, properties, mapping coverage, BMS/XPath evidence, and
-standards-review indicators. It keeps converter output and mapping semantics
-stable.
+Version 0.9.1 adds a public source data inventory and offline reference-data
+import command for GDSN BMS/XPath and GS1 Web Vocabulary sources. It keeps
+converter output and mapping semantics stable.
 
 ## Mapping profiles
 
@@ -152,6 +151,21 @@ gdsn-to-gs1-jsonld export-webvoc-explorer \
 The command writes property JSON/CSV and summary JSON/XLSX files without
 network access. See the [Web Vocabulary Explorer](docs/webvoc-explorer.md).
 
+Import public reference source data into normalized offline JSON and CSV:
+
+```bash
+gdsn-to-gs1-jsonld import-reference-data \
+  --gdsn-xlsx reference_data/raw_public/GDSN_Attributes_with_BMSId_xPath_3.1.36_June_5_2026.xlsx \
+  --webvoc webvoc/current/gs1Voc.jsonld \
+  --source-manifest reference_data/source_manifest.json \
+  --output-dir reference_data/normalized/
+```
+
+The command checks manifest hashes and writes normalized GDSN/WebVoc reference
+data plus `source_data_summary.json`. See the
+[source data inventory](docs/source-data-inventory.md) and
+[reference data import](docs/reference-data-import.md) notes.
+
 ## Streamlit
 
 ```bash
@@ -196,6 +210,8 @@ Vocabulary.
 - [Open governance questions](docs/open-governance-questions.md)
 - [Web Vocabulary conformance review](docs/web-vocabulary-conformance-review.md)
 - [Web Vocabulary Explorer](docs/webvoc-explorer.md)
+- [Public source data inventory](docs/source-data-inventory.md)
+- [Reference data import](docs/reference-data-import.md)
 - [Standards decision register](docs/standards-decisions/index.md)
 - [Strategic next steps](docs/strategic-next-steps.md)
 

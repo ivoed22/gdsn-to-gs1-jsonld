@@ -17,6 +17,8 @@ Web Vocabulary JSON-LD.
 - [Bulk XML batch conversion](bulk-xml-batch-conversion.md)
 - [Web Vocabulary update monitor](webvoc-update-monitor.md)
 - [Web Vocabulary Explorer](webvoc-explorer.md)
+- [Public source data inventory](source-data-inventory.md)
+- [Reference data import](reference-data-import.md)
 - [v0.6.1 warning cleanup review](warning-cleanup-v0.6.1.md)
 - [Standards decision register](standards-decisions/index.md)
 - [Sample testing](sample-testing.md)
@@ -40,6 +42,7 @@ Web Vocabulary JSON-LD.
 - [v0.7.1 release notes](releases/v0.7.1.md)
 - [v0.8.0 release notes](releases/v0.8.0.md)
 - [v0.9.0 release notes](releases/v0.9.0.md)
+- [v0.9.1 release notes](releases/v0.9.1.md)
 
 The MVP is experimental and does not implement full GDSN XSD validation or
 complete GDSN coverage.
