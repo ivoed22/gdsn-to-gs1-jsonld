@@ -136,7 +136,7 @@ checkout, and hard-refresh the browser if it still has an older app session.
 - [ ] Compact hero and right-side workspace posture panel are visible.
 - [ ] Traceability rail appears below the hero.
 - [ ] Workflow cards ask "What do you want to do?" and show the active mode.
-- [ ] Version shows `v0.9.0` in both the hero and sidebar.
+- [ ] Version shows the current app version in both the hero and sidebar.
 - [ ] Step 1 has a styled upload dropzone and polished empty state.
 - [ ] Sidebar version, conversion settings, and supported groups are visibly
   separated and coverage appears as compact badges.

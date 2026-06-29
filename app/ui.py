@@ -1017,9 +1017,9 @@ def render_workflow_entry_intro() -> None:
           <p class="section-kicker">Workflow entry point</p>
           <h2>What do you want to do?</h2>
           <p>
-            Choose the task first. Conversion, vocabulary exploration, and
-            standards review are separated so each workflow has its own
-            evidence, actions, and review surface.
+            Choose the task first. Conversion, vocabulary exploration,
+            prototype authoring, and standards review are separated so each
+            workflow has its own evidence, actions, and review surface.
           </p>
         </div>
         """,

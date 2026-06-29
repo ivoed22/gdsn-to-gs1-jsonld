@@ -199,6 +199,29 @@ def test_streamlit_manual_builder_card_and_live_jsonld_update():
     assert '"@language": "en"' in generated_json
     assert '"@value": "Example apple juice"' in generated_json
 
+    group_selectbox = next(
+        index for index, selector in enumerate(app.selectbox)
+        if selector.label == "Thematic group"
+    )
+    app.selectbox[group_selectbox].select("Physical Dimensions").run(timeout=20)
+    text_inputs = {text_input.label: index for index, text_input in enumerate(app.text_input)}
+    app.text_input[text_inputs["gs1:netContent quantity value"]].set_value("1")
+    app.text_input[text_inputs["gs1:netContent unitCode"]].set_value("LTR")
+    app.run(timeout=20)
+
+    generated_json = "\n".join(code.value for code in app.code)
+    assert '"@id": "https://id.gs1.org/01/09501234567890"' in generated_json
+    assert '"productName": [' in generated_json
+    assert '"netContent": {' in generated_json
+    assert '"unitCode": "LTR"' in generated_json
+
+    app.button[_button_index(app, "Clear builder")].click().run(timeout=20)
+
+    generated_json = "\n".join(code.value for code in app.code)
+    assert '"@id": "https://id.gs1.org/01/09501234567890"' not in generated_json
+    assert '"productName": [' not in generated_json
+    assert '"netContent": {' not in generated_json
+
 
 def test_streamlit_bulk_zip_conversion_produces_batch_result(sample_dir):
     buffer = BytesIO()

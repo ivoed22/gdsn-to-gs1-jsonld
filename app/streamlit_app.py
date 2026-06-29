@@ -217,6 +217,7 @@ def _builder_key(property_id: str, suffix: str = "value") -> str:
 
 
 def reset_manual_builder() -> None:
+    st.session_state.pop("manual_builder_values", None)
     for key in list(st.session_state):
         if key.startswith("manual_builder_") and key != "manual_builder_reset_index":
             st.session_state.pop(key, None)
@@ -350,6 +351,8 @@ def _render_manual_field(
                 value,
                 language=default_language,
             )
+        else:
+            state = update_builder_value(state, property_id, "")
     elif input_type == "quantity":
         value_col, unit_col = st.columns([1, 0.7])
         value = value_col.text_input(
@@ -371,6 +374,8 @@ def _render_manual_field(
                 value,
                 unit_code=unit_code,
             )
+        else:
+            state = update_builder_value(state, property_id, "")
     elif input_type == "checkbox":
         value = st.checkbox(
             f"{property_id} value",
@@ -379,6 +384,8 @@ def _render_manual_field(
         )
         if value:
             state = update_builder_value(state, property_id, value)
+        else:
+            state = update_builder_value(state, property_id, "")
     elif input_type == "url":
         value = st.text_input(
             f"{property_id} URL",
@@ -388,6 +395,8 @@ def _render_manual_field(
         )
         if value:
             state = update_builder_value(state, property_id, value)
+        else:
+            state = update_builder_value(state, property_id, "")
     else:
         value = st.text_input(
             f"{property_id} value",
@@ -398,6 +407,8 @@ def _render_manual_field(
         value = _coerce_builder_widget_value(value, input_type)
         if value not in ("", None):
             state = update_builder_value(state, property_id, value)
+        else:
+            state = update_builder_value(state, property_id, "")
     return state
 
 
@@ -999,6 +1010,7 @@ def _render_manual_jsonld_builder() -> None:
     state["product_category"] = product_category
     state["default_language"] = default_language
     state["selected_groups"] = [selected_group["key"]]
+    state["values"] = dict(st.session_state.get("manual_builder_values", {}))
     fields = get_builder_fields(manifest, selected_group)
 
     with form_column:
@@ -1020,6 +1032,7 @@ def _render_manual_jsonld_builder() -> None:
     jsonld_data = serialize_builder_state_to_jsonld(state, property_metadata)
     warnings = validate_builder_state(state, property_metadata)
     state["validation_warnings"] = warnings
+    st.session_state["manual_builder_values"] = dict(state["values"])
 
     with output_column:
         with st.container(border=True):

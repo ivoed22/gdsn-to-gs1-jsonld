@@ -272,7 +272,7 @@ def update_builder_value(
         "values": dict(state.get("values", {})),
         "validation_warnings": list(state.get("validation_warnings", [])),
     }
-    if value in (None, "", []):
+    if value in (None, "", []) and not language and not unit_code:
         updated["values"].pop(property_id, None)
         return updated
     if isinstance(value, dict):
@@ -368,7 +368,12 @@ def validate_builder_state(
         )
         supported = metadata.get("supported_in_v0_10", True)
         value = _entry_value(entry)
-        if _empty_manual_value(value) and input_type != "checkbox":
+        unit_code = _entry_unit_code(entry)
+        if (
+            _empty_manual_value(value)
+            and input_type != "checkbox"
+            and not (input_type == "quantity" and unit_code)
+        ):
             continue
         if not supported:
             warnings.append(
@@ -389,7 +394,6 @@ def validate_builder_state(
             except (ArithmeticError, ValueError):
                 warnings.append(f"{property_id} must be a valid number.")
         if input_type == "quantity":
-            unit_code = _entry_unit_code(entry)
             if value not in (None, "") and not unit_code:
                 warnings.append(f"{property_id} has a quantity value without unitCode.")
             if unit_code and value in (None, ""):

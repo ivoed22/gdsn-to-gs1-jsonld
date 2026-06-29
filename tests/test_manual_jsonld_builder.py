@@ -173,6 +173,15 @@ def test_validation_warnings_cover_prototype_url_language_quantity_and_unsupport
     assert any("not supported in v0.10" in warning for warning in warnings)
     assert any("unsupported nested or complex range" in warning for warning in warnings)
 
+    unit_only_state = update_builder_value(
+        build_empty_builder_state(),
+        "gs1:netContent",
+        "",
+        unit_code="LTR",
+    )
+    unit_only_warnings = validate_builder_state(unit_only_state, _metadata())
+    assert any("unitCode without a quantity value" in warning for warning in unit_only_warnings)
+
 
 def test_invalid_gtin_and_deterministic_jsonld_bytes():
     state = update_builder_value(
