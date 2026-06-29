@@ -84,11 +84,33 @@ def test_filter_properties_search_and_flags_work():
 
     searched = filter_properties(dataset.properties, search="gtin")
     assert any(item.term_id == "gs1:gtin" for item in searched)
+    xpath_searched = filter_properties(dataset.properties, search="/gtin")
+    assert any(item.term_id == "gs1:gtin" for item in xpath_searched)
+    bms_searched = filter_properties(dataset.properties, search="3733")
+    assert any(item.term_id == "gs1:netContent" for item in bms_searched)
     mapped = filter_properties(dataset.properties, only_mapped=True)
     assert mapped
     assert all(item.coverage_status in {"mapped", "high_confidence"} for item in mapped)
     review = filter_properties(dataset.properties, only_standards_review=True)
     assert any(item.governance for item in review)
+
+
+def test_sdr_governance_links_use_exact_affected_fields():
+    dataset = build_explorer_dataset(
+        webvoc_path=WEBVOC,
+        catalog_path=CATALOG,
+        backlog_path=BACKLOG,
+    )
+
+    preparation = next(
+        item for item in dataset.properties if item.term_id == "gs1:preparationCode"
+    )
+    assert any(ref.sdr_id == "SDR-001" for ref in preparation.governance)
+
+    allergen = next(
+        item for item in dataset.properties if item.term_id == "gs1:hasAllergen"
+    )
+    assert any(ref.sdr_id == "SDR-004" for ref in allergen.governance)
 
 
 def test_missing_optional_metadata_is_handled_gracefully(tmp_path):

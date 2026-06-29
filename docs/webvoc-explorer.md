@@ -63,6 +63,13 @@ Statuses are deterministic:
 Warnings are not suppressed. Existing review warnings remain visible through
 coverage and SDR indicators.
 
+In v0.9.0, `mapped property count` is intentionally conservative. It counts
+only native GS1 Web Vocabulary properties whose combined coverage is `mapped`
+or `high_confidence`. Schema.org fallback rows, candidate rows, and
+standards-review rows are excluded from the mapped count even when the catalog
+contains an official BMS/XPath source. This avoids presenting unresolved
+semantic or vocabulary-review topics as conformant native WebVoc mappings.
+
 ## Grouping Logic
 
 Property grouping is pragmatic rather than normative. It is intended to make a
@@ -122,7 +129,10 @@ mapped, candidate, or review-bound.
 ## SDR And Governance Links
 
 The Explorer loads the standards review backlog and links open SDR records to
-properties listed in each SDR's `affected_properties`.
+properties listed in each SDR's `affected_properties`. It also links SDRs by
+exact catalog field matches against `affected_fields` so review notes remain
+visible when the unresolved Web Vocabulary term itself is absent from the local
+snapshot.
 
 Displayed governance context includes:
 

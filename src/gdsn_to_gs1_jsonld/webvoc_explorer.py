@@ -352,30 +352,61 @@ def _combine_coverage(rows: list[dict[str, str]]) -> str:
     return max(statuses, key=lambda status: priority[status])
 
 
+def _governance_reference(item: dict[str, Any]) -> GovernanceReference:
+    return GovernanceReference(
+        sdr_id=str(item.get("id", "")),
+        title=str(item.get("title", "")),
+        category=str(item.get("category", "")),
+        status=str(item.get("status", "")),
+        warning_count=int(item.get("warning_count") or 0),
+        affected_fields=[
+            str(field)
+            for field in item.get("affected_fields", [])
+            if isinstance(field, str)
+        ],
+        issue_url=str(item.get("issue_url", "")),
+        decision_file=str(item.get("decision_file", "")),
+    )
+
+
 def _governance_by_property(backlog: Iterable[dict[str, Any]]) -> dict[str, list[GovernanceReference]]:
     references: dict[str, list[GovernanceReference]] = defaultdict(list)
     for item in backlog:
         properties = item.get("affected_properties", [])
         if not isinstance(properties, list):
             continue
-        reference = GovernanceReference(
-            sdr_id=str(item.get("id", "")),
-            title=str(item.get("title", "")),
-            category=str(item.get("category", "")),
-            status=str(item.get("status", "")),
-            warning_count=int(item.get("warning_count") or 0),
-            affected_fields=[
-                str(field)
-                for field in item.get("affected_fields", [])
-                if isinstance(field, str)
-            ],
-            issue_url=str(item.get("issue_url", "")),
-            decision_file=str(item.get("decision_file", "")),
-        )
+        reference = _governance_reference(item)
         for property_id in properties:
             if isinstance(property_id, str):
                 references[property_id].append(reference)
     return dict(references)
+
+
+def _governance_by_field(backlog: Iterable[dict[str, Any]]) -> dict[str, list[GovernanceReference]]:
+    references: dict[str, list[GovernanceReference]] = defaultdict(list)
+    for item in backlog:
+        fields = item.get("affected_fields", [])
+        if not isinstance(fields, list):
+            continue
+        reference = _governance_reference(item)
+        for field_name in fields:
+            if isinstance(field_name, str):
+                references[field_name].append(reference)
+    return dict(references)
+
+
+def _unique_governance(
+    references: Iterable[GovernanceReference],
+) -> list[GovernanceReference]:
+    unique: list[GovernanceReference] = []
+    seen: set[tuple[str, str]] = set()
+    for reference in references:
+        key = (reference.sdr_id, reference.decision_file)
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(reference)
+    return unique
 
 
 def _contains_any(text: str, words: tuple[str, ...]) -> bool:
@@ -477,6 +508,7 @@ def extract_properties(
     linktypes = linktypes or {}
     catalog_index = _catalog_by_property(catalog_rows)
     governance_index = _governance_by_property(backlog)
+    governance_by_field = _governance_by_field(backlog)
     properties: list[VocabularyProperty] = []
     for item in _graph(data):
         term_id = item.get("@id")
@@ -488,6 +520,19 @@ def extract_properties(
         range_values = _values(item.get("rdfs:range"))
         sub_property_of = _values(item.get("rdfs:subPropertyOf"))
         evidence = [_evidence_from_row(row) for row in catalog_index.get(term_id, [])]
+        governance = _unique_governance(
+            [
+                *governance_index.get(term_id, []),
+                *(
+                    reference
+                    for evidence_item in evidence
+                    for reference in governance_by_field.get(
+                        evidence_item.canonical_field,
+                        [],
+                    )
+                ),
+            ]
+        )
         is_link_type = _is_link_type(term_id, sub_property_of, linktypes)
         label = _text(item.get("rdfs:label"))
         comment = _text(item.get("rdfs:comment"))
@@ -516,7 +561,7 @@ def extract_properties(
                 ),
                 coverage_status=_combine_coverage(catalog_index.get(term_id, [])),
                 evidence=evidence,
-                governance=governance_index.get(term_id, []),
+                governance=governance,
             )
         )
     return sorted(properties, key=lambda item: (item.group, item.term_id.lower()))
@@ -626,7 +671,10 @@ def filter_properties(
                     " ".join(item.domain),
                     " ".join(item.range),
                     " ".join(e.canonical_field for e in item.evidence),
+                    " ".join(e.bms_id for e in item.evidence),
+                    " ".join(e.gdsn_xpath for e in item.evidence),
                     " ".join(e.source_attribute_name for e in item.evidence),
+                    " ".join(e.jsonld_property for e in item.evidence),
                 )
             ).lower()
             if normalized_search not in haystack:
