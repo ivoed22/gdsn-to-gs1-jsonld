@@ -25,6 +25,10 @@ from .webvoc_monitor import (
     check_webvoc_updates,
     write_webvoc_update_reports,
 )
+from .webvoc_explorer import (
+    build_explorer_dataset,
+    write_webvoc_explorer_outputs,
+)
 from .xml_parser import XMLParseError
 
 app = typer.Typer(
@@ -478,6 +482,71 @@ def export_standards_backlog_command(
             "Detailed SDR Markdown remains manually maintained; "
             "--overwrite does not replace review records."
         )
+    for path in paths.values():
+        typer.echo(f"  - {path}")
+
+
+@app.command("export-webvoc-explorer")
+def export_webvoc_explorer_command(
+    webvoc: Path = typer.Option(
+        Path("webvoc/current/gs1Voc.jsonld"),
+        "--webvoc",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Local GS1 Web Vocabulary JSON-LD snapshot.",
+    ),
+    catalog: Path = typer.Option(
+        Path(
+            "mapping_catalog/"
+            "gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv"
+        ),
+        "--catalog",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Mapping catalog CSV used for coverage and evidence.",
+    ),
+    backlog: Path = typer.Option(
+        Path("docs/standards-decisions/standards_review_backlog.json"),
+        "--backlog",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Standards review backlog JSON used for SDR indicators.",
+    ),
+    output_dir: Path = typer.Option(
+        Path("webvoc_explorer_output"),
+        "--output-dir",
+        "-o",
+        help="Directory for Explorer JSON, CSV, and summary files.",
+    ),
+) -> None:
+    """Export offline Web Vocabulary Explorer data and summaries."""
+    try:
+        dataset = build_explorer_dataset(
+            webvoc_path=webvoc,
+            catalog_path=catalog,
+            backlog_path=backlog,
+            metadata_path=webvoc.parent / "metadata.json",
+            linktypes_path=webvoc.parent / "linktypes.json",
+        )
+        paths = write_webvoc_explorer_outputs(dataset, output_dir)
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        typer.echo(f"Web Vocabulary Explorer export failed: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    summary = dataset.summary
+    typer.echo(
+        "Web Vocabulary Explorer: "
+        f"{summary['class_count']} class(es), "
+        f"{summary['property_count']} properties, "
+        f"{summary['mapped_property_count']} mapped properties, "
+        f"{summary['standards_review_property_count']} standards-review properties"
+    )
     for path in paths.values():
         typer.echo(f"  - {path}")
 

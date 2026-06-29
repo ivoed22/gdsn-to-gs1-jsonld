@@ -23,7 +23,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.8.0"
+    assert ui.APP_VERSION == "v0.9.0"
     assert callable(ui.render_page_header)
 
 
@@ -99,7 +99,7 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
     ]
     assert selector.value == "Certifications & Documents v0.3.0"
     assert any(
-        "App version: v0.8.0" in markdown.value
+        "App version: v0.9.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -138,10 +138,18 @@ def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
     app.button[_button_index(app, "Open")].click().run(timeout=20)
 
     assert app.session_state["workflow_mode"] == "Explore GS1 Web Vocabulary"
+    rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
+    assert "Browse the local GS1 Web Vocabulary snapshot" in rendered_markdown
+    assert any(metric.label == "WebVoc version" and metric.value == "1.17" for metric in app.metric)
+    assert any(metric.label == "Classes" for metric in app.metric)
+    assert any(metric.label == "Properties" for metric in app.metric)
+    assert any("Class reference" in expander.label for expander in app.expander)
+    assert any(selector.label == "Group" for selector in app.selectbox)
+    assert any(selector.label == "Coverage status" for selector in app.selectbox)
+    assert app.text_input[0].label == "Search properties"
     assert any(
-        "This mode will let users browse the local GS1 Web Vocabulary snapshot"
-        in info.value
-        for info in app.info
+        "Manual JSON-LD prototype — planned" in markdown.value
+        for markdown in app.markdown
     )
 
     app.button[_button_index(app, "Open", occurrence=1)].click().run(timeout=20)

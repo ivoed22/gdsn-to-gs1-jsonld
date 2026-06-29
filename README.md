@@ -3,9 +3,10 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
-Version 0.8.0 adds Streamlit workflow modes and safe bulk ZIP conversion while
-keeping single-file converter output and mapping semantics stable. It is
-deliberately a structured product converter, not a generic XML-to-JSON utility.
+Version 0.9.0 adds a read-only Web Vocabulary Explorer for local GS1 Web
+Vocabulary classes, properties, mapping coverage, BMS/XPath evidence, and
+standards-review indicators. It keeps converter output and mapping semantics
+stable.
 
 ## Mapping profiles
 
@@ -138,6 +139,19 @@ The command refreshes JSON and CSV backlog files. Detailed
 [standards decision records](docs/standards-decisions/index.md) remain
 human-maintained review documents.
 
+Export the read-only Web Vocabulary Explorer dataset:
+
+```bash
+gdsn-to-gs1-jsonld export-webvoc-explorer \
+  --webvoc webvoc/current/gs1Voc.jsonld \
+  --catalog mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv \
+  --backlog docs/standards-decisions/standards_review_backlog.json \
+  --output-dir webvoc_explorer_output/
+```
+
+The command writes property JSON/CSV and summary JSON/XLSX files without
+network access. See the [Web Vocabulary Explorer](docs/webvoc-explorer.md).
+
 ## Streamlit
 
 ```bash
@@ -148,7 +162,8 @@ The app defaults to Certifications & Documents v0.3.0 and can switch to the
 Food v0.2.0 or MVP v0.1.0 profiles. It now starts with workflow modes:
 
 - `Convert GDSN XML`, with `Single XML` and `Bulk ZIP` tabs
-- `Explore GS1 Web Vocabulary`, a placeholder for a later Explorer release
+- `Explore GS1 Web Vocabulary`, a read-only local vocabulary and coverage
+  explorer
 - `Standards Review`, a compact read-only view of open SDR/backlog status
 
 ## Mapping
@@ -180,6 +195,7 @@ Vocabulary.
 - [Internal positioning](docs/internal-positioning.md)
 - [Open governance questions](docs/open-governance-questions.md)
 - [Web Vocabulary conformance review](docs/web-vocabulary-conformance-review.md)
+- [Web Vocabulary Explorer](docs/webvoc-explorer.md)
 - [Standards decision register](docs/standards-decisions/index.md)
 - [Strategic next steps](docs/strategic-next-steps.md)
 
@@ -204,9 +220,10 @@ notes.
 
 ## Roadmap
 
-Later releases may accept or defer registered standards decisions, add broader
-food coverage, certification verification, validation profiles, and production
-batch operations beyond the current ZIP upload workflow.
+Later releases may accept or defer registered standards decisions, add manual
+JSON-LD authoring linked to mapping evidence, broaden food coverage, add
+certification verification, validation profiles, and production batch
+operations beyond the current ZIP upload workflow.
 
 ## Disclaimer
 

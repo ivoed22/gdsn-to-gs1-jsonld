@@ -1,5 +1,29 @@
 # Changelog
 
+## v0.9.0 — Web Vocabulary Explorer
+
+### Added
+
+- Replaced the Streamlit Web Vocabulary placeholder with a read-only Explorer.
+- Added local WebVoc class/property extraction with labels, comments, domains,
+  ranges, `subPropertyOf`, types, link-type indicators, and status metadata.
+- Added property grouping, search, domain, group, coverage, mapped-only, and
+  standards-review filters.
+- Added mapping coverage statuses, BMS/XPath evidence, and SDR/governance
+  indicators from existing local files.
+- Added `gdsn-to-gs1-jsonld export-webvoc-explorer` with JSON, CSV, summary
+  JSON, and summary XLSX outputs.
+- Added `docs/webvoc-explorer.md` and v0.9.0 release notes.
+- Added backend, CLI, helper, and Streamlit Explorer tests.
+
+### Preserved
+
+- Converter logic, batch behavior, and single-file output remain unchanged.
+- Mapping YAML files, catalog data, and Web Vocabulary snapshots remain
+  unchanged.
+- No warnings were suppressed.
+- No online fetching, external API dependency, or large dependency was added.
+
 ## v0.8.0 — Workflow Modes and Bulk XML Upload
 
 ### Added

@@ -102,6 +102,13 @@ conversion, Web Vocabulary exploration, and standards-review modes. Bulk ZIP
 upload makes sample-set review easier, but it remains a wrapper around the
 existing converter and does not change mapping semantics or warning policy.
 
+Version 0.9.0 turns Web Vocabulary exploration into a real read-only review
+surface. Users can browse the local GS1 Web Vocabulary snapshot, inspect
+classes and properties, filter by grouping and coverage status, and see
+BMS/XPath evidence plus SDR governance indicators beside mapped terms. This
+supports standards review without editing mappings, changing converter output,
+or fetching online vocabulary data.
+
 ## Combined outcome
 
 Track A creates understanding and stakeholder momentum. Track D turns project

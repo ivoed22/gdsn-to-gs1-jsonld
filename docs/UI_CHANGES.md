@@ -1,5 +1,26 @@
 # UI Changes
 
+## v0.9.0 Web Vocabulary Explorer checklist
+
+- [x] Explore GS1 Web Vocabulary mode opens as a real read-only Explorer.
+- [x] WebVoc version, class count, property count, mapped properties, and
+  standards-review properties appear as status metrics.
+- [x] Group selector appears.
+- [x] Domain selector appears.
+- [x] Coverage filter appears.
+- [x] Search box appears for property, label, comment, and evidence text.
+- [x] Mapped-only and standards-review-only filters appear.
+- [x] Property table is readable and includes coverage, evidence, and SDR
+  indicators.
+- [x] Property detail expander shows term metadata, BMS/XPath evidence, and
+  SDR/governance notes.
+- [x] Manual JSON-LD prototype panel is clearly labelled as planned.
+- [x] Explorer remains read-only and does not expose mapping edit or YAML
+  generation actions.
+- [x] v0.8.0 visual language is preserved: restrained navy/blue base,
+  traceability/evidence wording, XML/VOC/SDR accents, and no generic
+  template-looking UI.
+
 ## v0.8.0 workflow mode quality checklist
 
 - [x] Workflow selector is visible and asks "What do you want to do?"
@@ -11,6 +32,7 @@
   issues/warnings, table preview, and export ZIP download.
 - [x] Standards Review mode is readable and clearly read-only.
 - [x] Explorer placeholder is visible and framed as planned functionality.
+  Replaced by the read-only Explorer in v0.9.0.
 - [x] Responsive layout is checked through Streamlit regression tests and a
   live HTTP startup probe.
 - [x] The UI uses GS1/product-data traceability language rather than generic
@@ -96,7 +118,7 @@ checkout, and hard-refresh the browser if it still has an older app session.
 - [ ] Compact hero and right-side workspace posture panel are visible.
 - [ ] Traceability rail appears below the hero.
 - [ ] Workflow cards ask "What do you want to do?" and show the active mode.
-- [ ] Version shows `v0.8.0` in both the hero and sidebar.
+- [ ] Version shows `v0.9.0` in both the hero and sidebar.
 - [ ] Step 1 has a styled upload dropzone and polished empty state.
 - [ ] Sidebar version, conversion settings, and supported groups are visibly
   separated and coverage appears as compact badges.
