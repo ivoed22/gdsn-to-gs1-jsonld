@@ -4,6 +4,7 @@ import json
 import sys
 from dataclasses import asdict
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 import streamlit as st
@@ -28,6 +29,17 @@ from gdsn_to_gs1_jsonld.batch_converter import (
     convert_batch_zip,
 )
 from gdsn_to_gs1_jsonld.converter import convert_xml_to_jsonld
+from gdsn_to_gs1_jsonld.jsonld_builder import (
+    build_empty_builder_state,
+    get_builder_fields,
+    get_builder_groups,
+    infer_input_type,
+    jsonld_bytes as prototype_jsonld_bytes,
+    load_builder_manifest,
+    serialize_builder_state_to_jsonld,
+    update_builder_value,
+    validate_builder_state,
+)
 from gdsn_to_gs1_jsonld.reporter import json_bytes, mapping_report_xlsx_bytes
 from gdsn_to_gs1_jsonld.webvoc_explorer import (
     COVERAGE_STATUSES,
@@ -88,6 +100,19 @@ WORKFLOW_MODES = (
             "coverage, BMS/XPath evidence, and SDR context."
         ),
         "outcome": "Read-only vocabulary review with local catalog evidence.",
+    },
+    {
+        "key": "prototype",
+        "title": "Create JSON-LD Prototype",
+        "marker": "LD",
+        "description": (
+            "Manually select GS1 Web Vocabulary properties, enter values, and "
+            "preview prototype JSON-LD live."
+        ),
+        "outcome": (
+            "Manual JSON-LD prototype with visible governance and traceability "
+            "warning."
+        ),
     },
     {
         "key": "standards",
@@ -172,6 +197,208 @@ def _load_webvoc_explorer_dataset() -> object:
         metadata_path=REPOSITORY_ROOT / "webvoc" / "current" / "metadata.json",
         linktypes_path=REPOSITORY_ROOT / "webvoc" / "current" / "linktypes.json",
     )
+
+
+@st.cache_data(show_spinner=False)
+def _load_builder_manifest() -> dict:
+    return load_builder_manifest(
+        REPOSITORY_ROOT / "builder_manifest" / "product_builder_v0_10.yaml"
+    )
+
+
+def _builder_key(property_id: str, suffix: str = "value") -> str:
+    safe_property = (
+        property_id.replace(":", "_")
+        .replace("/", "_")
+        .replace("-", "_")
+    )
+    reset_index = st.session_state.get("manual_builder_reset_index", 0)
+    return f"manual_builder_{reset_index}_{safe_property}_{suffix}"
+
+
+def reset_manual_builder() -> None:
+    for key in list(st.session_state):
+        if key.startswith("manual_builder_") and key != "manual_builder_reset_index":
+            st.session_state.pop(key, None)
+    st.session_state["manual_builder_reset_index"] = (
+        st.session_state.get("manual_builder_reset_index", 0) + 1
+    )
+
+
+def _property_metadata_index(dataset: object, manifest: dict) -> dict[str, dict[str, Any]]:
+    index: dict[str, dict[str, Any]] = {}
+    for property_item in getattr(dataset, "properties", []):
+        evidence = [
+            asdict(item)
+            for item in getattr(property_item, "evidence", [])
+        ]
+        index[property_item.term_id] = {
+            "term_id": property_item.term_id,
+            "label": property_item.label,
+            "comment": property_item.comment,
+            "domain": list(property_item.domain),
+            "range": list(property_item.range),
+            "sub_property_of": list(property_item.sub_property_of),
+            "type": list(property_item.types),
+            "term_status": property_item.term_status,
+            "is_link_type": property_item.is_link_type,
+            "coverage_status": property_item.coverage_status,
+            "evidence": evidence,
+            "supported_in_v0_10": True,
+        }
+    for group in manifest.get("groups", []):
+        for field in group.get("properties", []):
+            property_id = field.get("property_id")
+            if not property_id:
+                continue
+            metadata = dict(index.get(property_id, {"term_id": property_id}))
+            metadata.update(
+                {
+                    "requirement": field.get("requirement", "optional"),
+                    "input_type_override": field.get("input_type_override"),
+                    "example_value": field.get("example_value", ""),
+                    "help_text": field.get("help_text", ""),
+                    "appears_because": field.get("appears_because", ""),
+                    "supported_in_v0_10": field.get("supported_in_v0_10", True),
+                    "planned_reason": field.get("planned_reason", ""),
+                }
+            )
+            index[property_id] = metadata
+    return index
+
+
+def _metadata_for_field(
+    field: dict[str, Any],
+    property_metadata: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    property_id = str(field["property_id"])
+    metadata = dict(property_metadata.get(property_id, {"term_id": property_id}))
+    metadata.update(
+        {
+            "requirement": field.get("requirement", "optional"),
+            "input_type_override": field.get("input_type_override"),
+            "example_value": field.get("example_value", ""),
+            "help_text": field.get("help_text", ""),
+            "appears_because": field.get("appears_because", ""),
+            "supported_in_v0_10": field.get("supported_in_v0_10", True),
+            "planned_reason": field.get("planned_reason", ""),
+        }
+    )
+    return metadata
+
+
+def _render_field_header(metadata: dict[str, Any]) -> None:
+    property_id = metadata["term_id"]
+    label = metadata.get("label") or property_id.split(":", 1)[-1]
+    requirement = str(metadata.get("requirement") or "optional").title()
+    ranges = ", ".join(metadata.get("range") or []) or "range unavailable"
+    evidence = metadata.get("evidence") or []
+    evidence_hint = (
+        f"{len(evidence)} mapping evidence row(s)"
+        if evidence
+        else "No mapping catalog evidence linked"
+    )
+    st.markdown(f"**{label}**")
+    st.caption(
+        f"`{property_id}` | {requirement} | Range: {ranges} | {evidence_hint}"
+    )
+    if metadata.get("help_text"):
+        st.caption(str(metadata["help_text"]))
+    if metadata.get("example_value"):
+        st.caption(f"Example: `{metadata['example_value']}`")
+
+
+def _coerce_builder_widget_value(value: Any, input_type: str) -> Any:
+    if input_type == "checkbox":
+        return bool(value)
+    if isinstance(value, str):
+        return value.strip()
+    return value
+
+
+def _render_manual_field(
+    state: dict[str, Any],
+    metadata: dict[str, Any],
+    *,
+    default_language: str,
+) -> dict[str, Any]:
+    property_id = metadata["term_id"]
+    input_type = infer_input_type(
+        metadata,
+        metadata.get("input_type_override"),
+    )
+    _render_field_header(metadata)
+    if not metadata.get("supported_in_v0_10", True):
+        st.info(
+            "Planned for a later release: "
+            + str(metadata.get("planned_reason") or "requires governed modelling")
+        )
+        return state
+
+    key = _builder_key(property_id)
+    if input_type == "language_text":
+        value = st.text_input(
+            f"{property_id} value",
+            key=key,
+            placeholder=str(metadata.get("example_value") or ""),
+            label_visibility="collapsed",
+        )
+        if value:
+            state = update_builder_value(
+                state,
+                property_id,
+                value,
+                language=default_language,
+            )
+    elif input_type == "quantity":
+        value_col, unit_col = st.columns([1, 0.7])
+        value = value_col.text_input(
+            f"{property_id} quantity value",
+            key=key,
+            placeholder="1.0",
+            label_visibility="collapsed",
+        )
+        unit_code = unit_col.text_input(
+            f"{property_id} unitCode",
+            key=_builder_key(property_id, "unit"),
+            placeholder="LTR",
+            label_visibility="collapsed",
+        )
+        if value or unit_code:
+            state = update_builder_value(
+                state,
+                property_id,
+                value,
+                unit_code=unit_code,
+            )
+    elif input_type == "checkbox":
+        value = st.checkbox(
+            f"{property_id} value",
+            key=key,
+            label_visibility="collapsed",
+        )
+        if value:
+            state = update_builder_value(state, property_id, value)
+    elif input_type == "url":
+        value = st.text_input(
+            f"{property_id} URL",
+            key=key,
+            placeholder=str(metadata.get("example_value") or "https://"),
+            label_visibility="collapsed",
+        )
+        if value:
+            state = update_builder_value(state, property_id, value)
+    else:
+        value = st.text_input(
+            f"{property_id} value",
+            key=key,
+            placeholder=str(metadata.get("example_value") or ""),
+            label_visibility="collapsed",
+        )
+        value = _coerce_builder_widget_value(value, input_type)
+        if value not in ("", None):
+            state = update_builder_value(state, property_id, value)
+    return state
 
 
 def _backlog_categories(backlog: list[dict]) -> list[str]:
@@ -680,15 +907,150 @@ def _render_webvoc_explorer() -> None:
     with st.container(border=True):
         render_section_header(
             4,
-            "Manual JSON-LD prototype — planned",
-            "Future releases may allow range-based inputs for selected WebVoc "
-            "properties.",
+            "Manual JSON-LD Builder",
+            "Use the Create JSON-LD Prototype workflow to author range-aware "
+            "manual product markup.",
         )
         st.info(
-            "Manual JSON-LD would not be GDSN/BMS/XPath traceable unless linked "
-            "to mapping evidence. The Explorer remains read-only while that "
-            "evidence model is governed."
+            "The Explorer remains read-only. Manual prototypes are entered in a "
+            "separate workflow and are not GDSN/BMS/XPath traceable unless "
+            "linked to governed mapping evidence."
         )
+
+
+def _render_manual_jsonld_builder() -> None:
+    try:
+        dataset = _load_webvoc_explorer_dataset()
+        manifest = _load_builder_manifest()
+    except (FileNotFoundError, OSError, ValueError, json.JSONDecodeError) as exc:
+        st.error(f"Manual JSON-LD Builder could not load local sources: {exc}")
+        return
+
+    property_metadata = _property_metadata_index(dataset, manifest)
+    categories = [
+        item["label"]
+        for item in manifest.get("product_categories", [])
+        if isinstance(item, dict) and item.get("label")
+    ]
+    root_classes = [
+        item["label"]
+        for item in manifest.get("root_classes", [])
+        if isinstance(item, dict) and item.get("label")
+    ]
+    language_options = manifest.get("default_language_options", ["en", "nl", "de", "fr"])
+
+    with st.container(border=True):
+        render_section_header(
+            1,
+            "Create JSON-LD Prototype",
+            "Manually select GS1 Web Vocabulary properties, enter values, and "
+            "preview prototype JSON-LD live.",
+        )
+        st.warning(
+            "Manual JSON-LD prototype. This output is entered manually, not "
+            "generated from GDSN XML. It is not BMS/XPath traceable unless linked "
+            "to governed mapping evidence. It is not an official GS1 validation "
+            "result."
+        )
+
+    control_column, form_column, output_column = st.columns([0.86, 1.25, 1.05])
+    with control_column:
+        with st.container(border=True):
+            render_section_header(
+                2,
+                "Builder controls",
+                "Choose the root class, category, language, and thematic group.",
+            )
+            root_class = st.selectbox(
+                "Root class",
+                root_classes or ["Product"],
+                help="v0.10 supports Product only.",
+            )
+            product_category = st.selectbox(
+                "Product category",
+                categories or ["General Product"],
+                help="Controls which thematic groups are offered.",
+            )
+            default_language = st.selectbox(
+                "Default language",
+                language_options,
+                help="Used for language-tagged Web Vocabulary values.",
+            )
+            st.checkbox(
+                "Product is for sale",
+                help=(
+                    "Form helper only in v0.10. This does not emit unsupported "
+                    "offer JSON-LD."
+                ),
+            )
+
+            groups = get_builder_groups(manifest, product_category)
+            group_labels = [group["label"] for group in groups]
+            selected_group_label = st.selectbox(
+                "Thematic group",
+                group_labels,
+                help="Select which manifest-driven field group to edit.",
+            )
+            selected_group = next(
+                group for group in groups if group["label"] == selected_group_label
+            )
+
+    state = build_empty_builder_state(root_class=root_class)
+    state["product_category"] = product_category
+    state["default_language"] = default_language
+    state["selected_groups"] = [selected_group["key"]]
+    fields = get_builder_fields(manifest, selected_group)
+
+    with form_column:
+        with st.container(border=True):
+            render_section_header(
+                3,
+                selected_group["label"],
+                selected_group.get("description", "Enter values for this group."),
+            )
+            for field in fields:
+                metadata = _metadata_for_field(field, property_metadata)
+                with st.container(border=True):
+                    state = _render_manual_field(
+                        state,
+                        metadata,
+                        default_language=default_language,
+                    )
+
+    jsonld_data = serialize_builder_state_to_jsonld(state, property_metadata)
+    warnings = validate_builder_state(state, property_metadata)
+    state["validation_warnings"] = warnings
+
+    with output_column:
+        with st.container(border=True):
+            render_section_header(
+                4,
+                "Generated JSON-LD Output",
+                "Live preview of the current manual prototype.",
+            )
+            if warnings:
+                for warning in warnings:
+                    st.warning(warning)
+            st.json(jsonld_data)
+            formatted_jsonld = json.dumps(
+                jsonld_data,
+                indent=2,
+                ensure_ascii=False,
+            )
+            st.code(formatted_jsonld, language="json")
+            gtin = jsonld_data.get("gtin") or "manual-prototype"
+            st.download_button(
+                "Download JSON-LD",
+                data=prototype_jsonld_bytes(jsonld_data),
+                file_name=f"manual_jsonld_{gtin}.jsonld",
+                mime="application/ld+json",
+                use_container_width=True,
+            )
+            st.button(
+                "Clear builder",
+                on_click=reset_manual_builder,
+                use_container_width=True,
+            )
 
 
 def _render_standards_review_mode(backlog: list[dict]) -> None:
@@ -793,7 +1155,7 @@ def main() -> None:
 
     with st.container(border=True):
         render_workflow_entry_intro()
-        workflow_columns = st.columns(3)
+        workflow_columns = st.columns(len(WORKFLOW_MODES))
         for column, mode in zip(workflow_columns, WORKFLOW_MODES, strict=True):
             with column:
                 selected = st.session_state["workflow_mode"] == mode["title"]
@@ -823,6 +1185,8 @@ def main() -> None:
             _render_bulk_zip_workflow(mapping_path)
     elif workflow_mode == "Explore GS1 Web Vocabulary":
         _render_webvoc_explorer()
+    elif workflow_mode == "Create JSON-LD Prototype":
+        _render_manual_jsonld_builder()
     else:
         _render_standards_review_mode(backlog)
 

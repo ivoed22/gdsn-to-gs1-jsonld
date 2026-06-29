@@ -115,6 +115,10 @@ Vocabulary JSON-LD source, verifies checksums, and writes normalized reference
 outputs that future review tooling can use without changing converter
 semantics.
 
+Version 0.10.0 turns manual JSON-LD prototyping into a visible workflow. It
+helps reviewers test Web Vocabulary property choices and DPP/document/certifier
+modelling ideas without claiming GDSN traceability or official GS1 validation.
+
 ## Combined outcome
 
 Track A creates understanding and stakeholder momentum. Track D turns project

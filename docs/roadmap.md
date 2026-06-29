@@ -1,16 +1,15 @@
 # Roadmap
 
-Version 0.9.1 adds a public source data inventory and offline reference-data
-import command on top of the v0.9.0 Web Vocabulary Explorer. It records the
-public GDSN BMS/XPath and GS1 Web Vocabulary sources, verifies checksums, and
-normalizes review data while preserving the v0.1.0, v0.2.0, and v0.3.0
+Version 0.10.0 adds a Manual JSON-LD Prototype Builder on top of the v0.9.1
+source-data inventory. It lets reviewers manually author range-aware GS1 Web
+Vocabulary product markup while preserving the v0.1.0, v0.2.0, and v0.3.0
 converter profiles and single-file output.
 
-Potential work after v0.9.1:
+Potential work after v0.10.0:
 
 - resolve catalog warnings through standards and project review
-- prototype manual JSON-LD authoring only when it can be linked to mapping
-  evidence and clear governance
+- connect manual JSON-LD prototypes to governed BMS/XPath evidence where
+  appropriate
 - broader GDSN modules and mapping profiles
 - richer ingredients, allergens, serving sizes, and nutrition
 - standards review for generic document-link relationships
@@ -40,6 +39,10 @@ inventory for public GDSN and Web Vocabulary references. It prepares normalized
 evidence for future manual prototyping and mapping-candidate review without
 building those features yet.
 
+Version 0.10.0 adds manual JSON-LD prototype authoring. It is intentionally
+separate from GDSN XML conversion and mapping YAML so manually entered examples
+can be reviewed without changing governed converter output.
+
 Potential work after v0.7.0:
 
 - assign named reviewers and decision dates
@@ -47,7 +50,7 @@ Potential work after v0.7.0:
 - create versioned mapping changes only for accepted decisions
 - retain compatibility tests and migration notes for any accepted output change
 
-## Strategic tracks after v0.9.1
+## Strategic tracks after v0.10.0
 
 ### Positioning and demo
 

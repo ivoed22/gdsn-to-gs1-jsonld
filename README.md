@@ -3,9 +3,9 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
-Version 0.9.1 adds a public source data inventory and offline reference-data
-import command for GDSN BMS/XPath and GS1 Web Vocabulary sources. It keeps
-converter output and mapping semantics stable.
+Version 0.10.0 adds a Manual JSON-LD Prototype Builder for authoring
+range-aware GS1 Web Vocabulary product markup by hand. It keeps converter
+output and mapping semantics stable.
 
 ## Mapping profiles
 
@@ -178,6 +178,8 @@ Food v0.2.0 or MVP v0.1.0 profiles. It now starts with workflow modes:
 - `Convert GDSN XML`, with `Single XML` and `Bulk ZIP` tabs
 - `Explore GS1 Web Vocabulary`, a read-only local vocabulary and coverage
   explorer
+- `Create JSON-LD Prototype`, a manual Web Vocabulary markup form with live
+  JSON-LD preview
 - `Standards Review`, a compact read-only view of open SDR/backlog status
 
 ## Mapping
@@ -210,6 +212,7 @@ Vocabulary.
 - [Open governance questions](docs/open-governance-questions.md)
 - [Web Vocabulary conformance review](docs/web-vocabulary-conformance-review.md)
 - [Web Vocabulary Explorer](docs/webvoc-explorer.md)
+- [Manual JSON-LD Prototype Builder](docs/manual-jsonld-builder.md)
 - [Public source data inventory](docs/source-data-inventory.md)
 - [Reference data import](docs/reference-data-import.md)
 - [Standards decision register](docs/standards-decisions/index.md)

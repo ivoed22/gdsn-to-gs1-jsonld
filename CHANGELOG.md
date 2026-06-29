@@ -1,5 +1,29 @@
 # Changelog
 
+## v0.10.0 — Manual JSON-LD Prototype Builder
+
+### Added
+
+- Added `builder_manifest/product_builder_v0_10.yaml` as UI/configuration for
+  manual prototype authoring.
+- Added manifest-driven manual-builder functions in
+  `src/gdsn_to_gs1_jsonld/jsonld_builder.py`.
+- Added the `Create JSON-LD Prototype` Streamlit workflow card.
+- Added root class, product category, default language, thematic group,
+  range-aware form fields, live JSON-LD preview, warnings, and JSON-LD download.
+- Added explicit prototype/governance warning for manually entered output.
+- Added `docs/manual-jsonld-builder.md` and v0.10.0 release notes.
+- Added backend and Streamlit regression tests for the Builder.
+
+### Preserved
+
+- Converter logic, batch behavior, and single-file output remain unchanged.
+- Mapping YAML files, catalog data, and Web Vocabulary snapshots remain
+  unchanged.
+- No warnings were suppressed.
+- Mapping Candidate Generator was not created.
+- No online fetching, external API dependency, or large dependency was added.
+
 ## v0.9.1 — Public Source Data Inventory & Reference Import
 
 ### Added

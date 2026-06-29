@@ -1,5 +1,23 @@
 # UI Changes
 
+## v0.10.0 Manual JSON-LD Builder checklist
+
+- [x] `Create JSON-LD Prototype` workflow card is visible.
+- [x] Workflow selector still asks "What do you want to do?"
+- [x] Root class selector appears with Product as the supported v0.10 root.
+- [x] Product category selector appears.
+- [x] Default language selector appears with `en`, `nl`, `de`, and `fr`.
+- [x] Thematic group selector appears.
+- [x] Core Product Information fields render from the builder manifest.
+- [x] Entering GTIN updates the generated `@id`.
+- [x] Entering `productName` updates the live JSON-LD preview.
+- [x] Empty fields are omitted.
+- [x] JSON-LD download appears.
+- [x] Prototype/governance warning is visible.
+- [x] Explorer remains read-only and points to the separate Builder workflow.
+- [x] Converter, Bulk ZIP, and Standards Review workflows remain available.
+- [x] Streamlit-native controls preserve keyboard/focus behaviour.
+
 ## v0.9.0 Web Vocabulary Explorer checklist
 
 - [x] Explore GS1 Web Vocabulary mode opens as a real read-only Explorer.
@@ -14,7 +32,7 @@
   indicators.
 - [x] Property detail expander shows term metadata, BMS/XPath evidence, and
   SDR/governance notes.
-- [x] Manual JSON-LD prototype panel is clearly labelled as planned.
+- [x] Manual JSON-LD Builder panel points to the v0.10.0 Builder workflow.
 - [x] Explorer remains read-only and does not expose mapping edit or YAML
   generation actions.
 - [x] v0.8.0 visual language is preserved: restrained navy/blue base,

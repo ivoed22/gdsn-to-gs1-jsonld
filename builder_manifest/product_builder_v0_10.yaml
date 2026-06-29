@@ -1,0 +1,365 @@
+manifest_version: "0.10.0"
+title: Manual JSON-LD Product Builder
+description: >
+  UI configuration for manually authoring prototype GS1 Web Vocabulary JSON-LD.
+  This is not converter mapping logic and must not be used to generate or
+  update mapping YAML.
+root_classes:
+  - key: Product
+    label: Product
+    webvoc_id: gs1:Product
+    supported_in_v0_10: true
+default_language_options:
+  - en
+  - nl
+  - de
+  - fr
+product_categories:
+  - key: general_product
+    label: General Product
+    groups:
+      - core_product_information
+      - classification_links
+      - physical_dimensions
+      - digital_links_services
+      - other_webvoc_properties
+  - key: food_beverage_tobacco
+    label: Food / Beverage / Tobacco
+    groups:
+      - core_product_information
+      - classification_links
+      - physical_dimensions
+      - nutritional_information
+      - allergens
+      - digital_links_services
+  - key: packaging
+    label: Packaging
+    groups:
+      - core_product_information
+      - physical_dimensions
+      - packaging_details
+      - digital_links_services
+  - key: certifications_documents
+    label: Certifications & Documents
+    groups:
+      - core_product_information
+      - certifications
+      - documents_dpp
+      - digital_links_services
+groups:
+  - key: core_product_information
+    label: Core Product Information
+    description: >
+      Product identity and consumer-facing description fields that can be
+      authored as simple values without nested object modelling.
+    properties:
+      - property_id: gs1:gtin
+        requirement: required
+        input_type_override: text
+        example_value: "09501234567890"
+        help_text: GTIN is used to create the product @id.
+        appears_because: Core GS1 product identity and Digital Link-style identifier.
+        supported_in_v0_10: true
+      - property_id: gs1:productID
+        requirement: optional
+        example_value: "SKU-12345"
+        help_text: Additional product identifier when a local product ID is useful.
+        appears_because: WebVoc provides a string identifier beside GTIN.
+        supported_in_v0_10: true
+      - property_id: gs1:productName
+        requirement: required
+        input_type_override: language_text
+        example_value: "Example apple juice"
+        help_text: Consumer-friendly product name with a language tag.
+        appears_because: Common visible product label text in Web Vocabulary.
+        supported_in_v0_10: true
+      - property_id: gs1:additionalProductDescription
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Apple juice from concentrate, 1 L carton"
+        help_text: Extra consumer/product description with a language tag.
+        appears_because: Useful manual description field with a simple langString range.
+        supported_in_v0_10: true
+      - property_id: gs1:brand
+        requirement: recommended
+        example_value: "Example Brand"
+        help_text: Brand requires a Brand object in WebVoc.
+        appears_because: Brand is important for product markup but has nested object range.
+        supported_in_v0_10: false
+        planned_reason: Requires safe Brand object modelling before emission.
+      - property_id: gs1:brandName
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example Brand"
+        help_text: Brand name is shown as planned because its domain is Brand, not Product.
+        appears_because: Included to make the brand modelling gap visible.
+        supported_in_v0_10: false
+        planned_reason: Needs a governed Brand object container.
+      - property_id: gs1:colourDescription
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Red"
+        help_text: Optional colour description with a language tag.
+        appears_because: Simple product-level langString field available in WebVoc.
+        supported_in_v0_10: true
+      - property_id: gs1:image
+        requirement: recommended
+        example_value: "https://example.com/product-image.jpg"
+        help_text: WebVoc image uses ReferencedFileDetails, not a direct image URL.
+        appears_because: Product image is a common markup need but is nested in WebVoc.
+        supported_in_v0_10: false
+        planned_reason: Requires safe ReferencedFileDetails object modelling.
+      - property_id: gs1:relatedImage
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/product-image.jpg"
+        help_text: Direct URL link-type for a related product image.
+        appears_because: Available link-type field for lightweight image URL prototypes.
+        supported_in_v0_10: true
+      - property_id: gs1:pip
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/products/09501234567890"
+        help_text: Product information page URL.
+        appears_because: Available WebVoc link type for product pages.
+        supported_in_v0_10: true
+
+  - key: classification_links
+    label: Classification & Links
+    description: >
+      Category codes and authoritative product links useful for discovery and
+      review.
+    properties:
+      - property_id: gs1:gpcCategoryCode
+        requirement: recommended
+        example_value: "10000237"
+        help_text: 8-digit GPC brick code.
+        appears_because: Common GS1 classification evidence.
+        supported_in_v0_10: true
+      - property_id: gs1:gpcCategoryDescription
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Fruit and vegetable juices"
+        help_text: Human-readable GPC category description.
+        appears_because: Simple language-tagged category description.
+        supported_in_v0_10: true
+      - property_id: gs1:masterData
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/master-data/09501234567890"
+        help_text: Link to master data for the product.
+        appears_because: Available link-type field for product master-data references.
+        supported_in_v0_10: true
+
+  - key: physical_dimensions
+    label: Physical Dimensions
+    description: >
+      Simple quantitative values represented as value plus unitCode.
+    properties:
+      - property_id: gs1:netContent
+        requirement: recommended
+        input_type_override: quantity
+        example_value: "1 LTR"
+        help_text: Enter numeric value and UN/ECE-style unit code.
+        appears_because: Common product quantity field with QuantitativeValue range.
+        supported_in_v0_10: true
+      - property_id: gs1:grossWeight
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1.08 KGM"
+        help_text: Gross weight including packaging.
+        appears_because: QuantitativeValue range can be represented safely.
+        supported_in_v0_10: true
+      - property_id: gs1:inPackageHeight
+        requirement: optional
+        input_type_override: quantity
+        example_value: "24 CMT"
+        help_text: Height while product is in package.
+        appears_because: WebVoc provides in-package dimensions with QuantitativeValue range.
+        supported_in_v0_10: true
+      - property_id: gs1:inPackageWidth
+        requirement: optional
+        input_type_override: quantity
+        example_value: "8 CMT"
+        help_text: Width while product is in package.
+        appears_because: WebVoc provides in-package dimensions with QuantitativeValue range.
+        supported_in_v0_10: true
+      - property_id: gs1:inPackageDepth
+        requirement: optional
+        input_type_override: quantity
+        example_value: "8 CMT"
+        help_text: Depth while product is in package.
+        appears_because: WebVoc provides in-package dimensions with QuantitativeValue range.
+        supported_in_v0_10: true
+
+  - key: digital_links_services
+    label: Digital Links & Services
+    description: Link-type properties that can safely emit direct HTTP(S) URLs.
+    properties:
+      - property_id: gs1:defaultLink
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/01/09501234567890"
+        help_text: Default link for product resolver experiences.
+        appears_because: Common Digital Link resolver target.
+        supported_in_v0_10: true
+      - property_id: gs1:smartLabel
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/smartlabel/09501234567890"
+        help_text: SmartLabel information URL.
+        appears_because: Available consumer-information link type.
+        supported_in_v0_10: true
+      - property_id: gs1:traceability
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/trace/09501234567890"
+        help_text: Traceability information URL.
+        appears_because: Useful lightweight provenance link.
+        supported_in_v0_10: true
+
+  - key: packaging_details
+    label: Packaging Details
+    description: >
+      Packaging information where v0.10 can show safe URL or simple code
+      fields; nested packaging structures remain planned.
+    properties:
+      - property_id: gs1:packagingMarkedLabelAccreditation
+        requirement: optional
+        example_value: "RECYCLABLE"
+        help_text: Accreditation code is a controlled-code object in WebVoc.
+        appears_because: Included as a visible packaging review topic.
+        supported_in_v0_10: false
+        planned_reason: Requires controlled-code handling before emission.
+      - property_id: gs1:packagingMaterial
+        requirement: optional
+        example_value: "Carton"
+        help_text: Packaging material is a nested object.
+        appears_because: Important for DPP/packaging review but not safe as scalar.
+        supported_in_v0_10: false
+        planned_reason: Requires PackagingMaterialDetails object modelling.
+      - property_id: gs1:sustainabilityInfo
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/sustainability/09501234567890"
+        help_text: Sustainability and recycling information URL.
+        appears_because: Available link type for packaging/sustainability references.
+        supported_in_v0_10: true
+
+  - key: nutritional_information
+    label: Nutritional Information
+    description: >
+      v0.10 supports lightweight nutrition information links and plain
+      ingredient text; structured nutrient details remain planned.
+    properties:
+      - property_id: gs1:ingredientStatement
+        requirement: recommended
+        input_type_override: language_text
+        example_value: "Apple juice from concentrate."
+        help_text: Ingredient statement with a language tag.
+        appears_because: Safe Food/Beverage langString field.
+        supported_in_v0_10: true
+      - property_id: gs1:nutritionalInfo
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/nutrition/09501234567890"
+        help_text: Nutrition information URL.
+        appears_because: Available link type for nutrition information.
+        supported_in_v0_10: true
+      - property_id: gs1:nutrientDetail
+        requirement: optional
+        example_value: "Energy 190 KJ"
+        help_text: Structured nutrient detail is not present as a simple WebVoc term.
+        appears_because: Existing mapping review tracks nutrient modelling.
+        supported_in_v0_10: false
+        planned_reason: Requires governed nested nutrient modelling.
+
+  - key: allergens
+    label: Allergens
+    description: Text and link fields for allergen review; structured details remain planned.
+    properties:
+      - property_id: gs1:allergenStatement
+        requirement: recommended
+        input_type_override: language_text
+        example_value: "Contains almonds."
+        help_text: Textual allergen statement with a language tag.
+        appears_because: Safe Food/Beverage langString field.
+        supported_in_v0_10: true
+      - property_id: gs1:allergenInfo
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/allergens/09501234567890"
+        help_text: Allergen information URL.
+        appears_because: Available link type for allergen information.
+        supported_in_v0_10: true
+      - property_id: gs1:hasAllergen
+        requirement: optional
+        example_value: "AM FREE_FROM"
+        help_text: Structured allergen details are nested.
+        appears_because: Existing mapping review tracks allergen containment semantics.
+        supported_in_v0_10: false
+        planned_reason: Requires safe AllergenDetails object modelling.
+
+  - key: certifications
+    label: Certifications
+    description: Link fields for certification evidence; detailed certification objects remain planned.
+    properties:
+      - property_id: gs1:certificationInfo
+        requirement: recommended
+        input_type_override: url
+        example_value: "https://example.com/certificates/09501234567890"
+        help_text: Certification information URL.
+        appears_because: Available link type for certification evidence.
+        supported_in_v0_10: true
+      - property_id: gs1:certification
+        requirement: optional
+        example_value: "EU Organic"
+        help_text: Certification details are a nested object.
+        appears_because: Existing mapping review tracks certification semantics.
+        supported_in_v0_10: false
+        planned_reason: Requires CertificationDetails object modelling.
+
+  - key: documents_dpp
+    label: Documents and DPP
+    description: DPP and document links that can be emitted as direct URLs in v0.10.
+    properties:
+      - property_id: gs1:dpp
+        requirement: recommended
+        input_type_override: url
+        example_value: "https://example.com/dpp/09501234567890"
+        help_text: Digital Product Passport URL.
+        appears_because: Available link type and central future DPP review field.
+        supported_in_v0_10: true
+      - property_id: gs1:instructions
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/instructions/09501234567890"
+        help_text: Instruction document URL.
+        appears_because: Safe direct link-type field.
+        supported_in_v0_10: true
+      - property_id: gs1:referencedFile
+        requirement: optional
+        example_value: "https://example.com/document.pdf"
+        help_text: Referenced file requires ReferencedFileDetails.
+        appears_because: Existing mapping review tracks document/DPP modelling.
+        supported_in_v0_10: false
+        planned_reason: Requires ReferencedFileDetails object modelling.
+
+  - key: other_webvoc_properties
+    label: Other Web Vocabulary Properties
+    description: Additional safe URL fields useful for prototypes.
+    properties:
+      - property_id: gs1:jws
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/signatures/09501234567890.jws"
+        help_text: JSON Web Signature link.
+        appears_because: Useful future bridge to authenticity and VC/DPP review.
+        supported_in_v0_10: true
+      - property_id: gs1:verificationService
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/verify/09501234567890"
+        help_text: Verification service URL.
+        appears_because: Lightweight link to external verification information.
+        supported_in_v0_10: true

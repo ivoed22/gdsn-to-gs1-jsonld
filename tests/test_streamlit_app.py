@@ -23,7 +23,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.9.1"
+    assert ui.APP_VERSION == "v0.10.0"
     assert callable(ui.render_page_header)
 
 
@@ -99,7 +99,7 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
     ]
     assert selector.value == "Certifications & Documents v0.3.0"
     assert any(
-        "App version: v0.9.1" in markdown.value
+        "App version: v0.10.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -122,11 +122,18 @@ def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
     assert "What do you want to do?" in rendered_markdown
     assert "Convert GDSN XML" in rendered_markdown
     assert "Explore GS1 Web Vocabulary" in rendered_markdown
+    assert "Create JSON-LD Prototype" in rendered_markdown
     assert "Standards Review" in rendered_markdown
     assert "JSON-LD plus mapping, validation" in rendered_markdown
+    assert "Manual JSON-LD prototype with visible governance" in rendered_markdown
     assert app.session_state["workflow_mode"] == "Convert GDSN XML"
     assert app.button[_button_index(app, "Active")].disabled
-    assert [button.label for button in app.button[:3]] == ["Active", "Open", "Open"]
+    assert [button.label for button in app.button[:4]] == [
+        "Active",
+        "Open",
+        "Open",
+        "Open",
+    ]
     assert app.get("file_uploader")[0].label == "GDSN product XML"
     assert app.get("file_uploader")[1].label == "GDSN XML batch ZIP"
     assert any(
@@ -148,15 +155,49 @@ def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
     assert any(selector.label == "Coverage status" for selector in app.selectbox)
     assert app.text_input[0].label == "Search properties"
     assert any(
-        "Manual JSON-LD prototype — planned" in markdown.value
+        "Manual JSON-LD Builder" in markdown.value
         for markdown in app.markdown
     )
 
-    app.button[_button_index(app, "Open", occurrence=1)].click().run(timeout=20)
+    app.button[_button_index(app, "Open", occurrence=2)].click().run(timeout=20)
 
     assert app.session_state["workflow_mode"] == "Standards Review"
     assert any(metric.label == "Open SDRs" and metric.value == "6" for metric in app.metric)
     assert any("docs/standards-decisions/index.md" in code.value for code in app.code)
+
+
+def test_streamlit_manual_builder_card_and_live_jsonld_update():
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+
+    app.button[_button_index(app, "Open", occurrence=1)].click().run(timeout=20)
+
+    assert app.session_state["workflow_mode"] == "Create JSON-LD Prototype"
+    rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
+    assert "Create JSON-LD Prototype" in rendered_markdown
+    assert "Manual JSON-LD prototype" in "\n".join(warning.value for warning in app.warning)
+    assert any(selector.label == "Root class" for selector in app.selectbox)
+    assert any(selector.label == "Product category" for selector in app.selectbox)
+    assert any(selector.label == "Default language" for selector in app.selectbox)
+    assert any(selector.label == "Thematic group" for selector in app.selectbox)
+    assert "Core Product Information" in rendered_markdown
+    assert any(
+        download.label == "Download JSON-LD"
+        for download in app.get("download_button")
+    )
+
+    text_inputs = {text_input.label: index for index, text_input in enumerate(app.text_input)}
+    app.text_input[text_inputs["gs1:gtin value"]].set_value("09501234567890")
+    app.text_input[text_inputs["gs1:productName value"]].set_value(
+        "Example apple juice"
+    )
+    app.run(timeout=20)
+
+    generated_json = "\n".join(code.value for code in app.code)
+    assert '"@id": "https://id.gs1.org/01/09501234567890"' in generated_json
+    assert '"gtin": "09501234567890"' in generated_json
+    assert '"productName": [' in generated_json
+    assert '"@language": "en"' in generated_json
+    assert '"@value": "Example apple juice"' in generated_json
 
 
 def test_streamlit_bulk_zip_conversion_produces_batch_result(sample_dir):
