@@ -945,7 +945,7 @@ def render_page_header() -> None:
               <div class="app-meta" aria-label="Application characteristics">
                 <span class="app-chip">Converter {APP_VERSION}</span>
                 <span class="app-chip">In-memory</span>
-                <span class="app-chip">BMS/XPath traceable</span>
+                <span class="app-chip">Converter: BMS/XPath traceable</span>
               </div>
             </div>
             <div class="workspace-panel" aria-label="Workspace posture">
@@ -1098,7 +1098,7 @@ def render_vocabulary_status(
         f"""
         <div class="vocabulary-status">
           <strong>Vocabulary status</strong>
-          Local snapshot: {safe_version}<br>
+          Local snapshot (offline): {safe_version}<br>
           Last modified: {safe_modified}<br>
           Update guidance: <code>docs/webvoc-update-monitor.md</code>
         </div>

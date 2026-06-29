@@ -297,12 +297,10 @@ def _render_field_header(metadata: dict[str, Any]) -> None:
     evidence_hint = (
         f"{len(evidence)} mapping evidence row(s)"
         if evidence
-        else "No mapping catalog evidence linked"
+        else "No catalog evidence linked"
     )
-    st.markdown(f"**{label}**")
-    st.caption(
-        f"`{property_id}` | {requirement} | Range: {ranges} | {evidence_hint}"
-    )
+    st.markdown(f"**{label}** — {requirement}")
+    st.caption(f"`{property_id}` · Range: {ranges} · {evidence_hint}")
     if metadata.get("help_text"):
         st.caption(str(metadata["help_text"]))
     if metadata.get("example_value"):
@@ -955,13 +953,14 @@ def _render_manual_jsonld_builder() -> None:
             1,
             "Create JSON-LD Prototype",
             "Manually select GS1 Web Vocabulary properties, enter values, and "
-            "preview prototype JSON-LD live.",
+            "preview prototype JSON-LD live. This is a review and authoring tool, "
+            "not a GDSN XML converter.",
         )
         st.warning(
-            "Manual JSON-LD prototype. This output is entered manually, not "
-            "generated from GDSN XML. It is not BMS/XPath traceable unless linked "
-            "to governed mapping evidence. It is not an official GS1 validation "
-            "result."
+            "⚠️ Prototype output only. "
+            "This JSON-LD is entered manually, not generated from GDSN XML. "
+            "It is not BMS/XPath traceable unless separately linked to governed "
+            "mapping evidence. It is not an official GS1 validation result."
         )
 
     control_column, form_column, output_column = st.columns([0.86, 1.25, 1.05])
@@ -988,10 +987,10 @@ def _render_manual_jsonld_builder() -> None:
                 help="Used for language-tagged Web Vocabulary values.",
             )
             st.checkbox(
-                "Product is for sale",
+                "Product is for sale (form helper only — no JSON-LD emitted)",
                 help=(
-                    "Form helper only in v0.10. This does not emit unsupported "
-                    "offer JSON-LD."
+                    "This is a form-scoping helper only. v0.10 does not emit "
+                    "offer or pricing JSON-LD for this flag."
                 ),
             )
 
@@ -1038,8 +1037,9 @@ def _render_manual_jsonld_builder() -> None:
         with st.container(border=True):
             render_section_header(
                 4,
-                "Generated JSON-LD Output",
-                "Live preview of the current manual prototype.",
+                "Prototype JSON-LD Preview",
+                "Live preview of the manually entered prototype. "
+                "This is not converter output.",
             )
             if warnings:
                 for warning in warnings:
@@ -1053,9 +1053,9 @@ def _render_manual_jsonld_builder() -> None:
             st.code(formatted_jsonld, language="json")
             gtin = jsonld_data.get("gtin") or "manual-prototype"
             st.download_button(
-                "Download JSON-LD",
+                "Download prototype JSON-LD",
                 data=prototype_jsonld_bytes(jsonld_data),
-                file_name=f"manual_jsonld_{gtin}.jsonld",
+                file_name=f"manual_jsonld_prototype_{gtin}.jsonld",
                 mime="application/ld+json",
                 use_container_width=True,
             )

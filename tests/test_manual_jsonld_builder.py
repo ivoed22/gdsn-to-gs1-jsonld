@@ -196,3 +196,82 @@ def test_invalid_gtin_and_deterministic_jsonld_bytes():
     assert any("Invalid GTIN" in warning for warning in warnings)
     assert encoded == json.dumps(data, indent=2, ensure_ascii=False).encode("utf-8") + b"\n"
     assert jsonld_bytes(data) == encoded
+
+
+def test_context_is_present_in_all_serialized_states():
+    """@context must be present in every Builder output, even empty state."""
+    empty_state = build_empty_builder_state()
+    data = serialize_builder_state_to_jsonld(empty_state, _metadata())
+    assert "@context" in data
+    assert data["@context"][0] == "https://ref.gs1.org/voc/data/gs1Voc.jsonld"
+
+    # Also with a GTIN present.
+    state = update_builder_value(empty_state, "gs1:gtin", "09501234567890")
+    data = serialize_builder_state_to_jsonld(state, _metadata())
+    assert "@context" in data
+    assert data["@context"][0] == "https://ref.gs1.org/voc/data/gs1Voc.jsonld"
+
+
+def test_field_persistence_across_group_switches():
+    """Values from one group must survive when state is re-used across groups."""
+    state = build_empty_builder_state()
+    state = update_builder_value(state, "gs1:gtin", "09501234567890")
+    state = update_builder_value(state, "gs1:productName", "Apple juice", language="en")
+
+    # Simulate switching to Physical Dimensions group; add a quantity field.
+    state["selected_groups"] = ["physical_dimensions"]
+    state = update_builder_value(state, "gs1:netContent", "1.5", unit_code="LTR")
+
+    # The GTIN and productName values from the core group must still be present.
+    assert state["values"]["gs1:gtin"]["value"] == "09501234567890"
+    assert state["values"]["gs1:productName"]["value"] == "Apple juice"
+    assert state["values"]["gs1:netContent"]["value"] == "1.5"
+
+    # Serialized JSON-LD must contain all three across group boundary.
+    data = serialize_builder_state_to_jsonld(state, _metadata())
+    assert data.get("gtin") == "09501234567890"
+    assert "productName" in data
+    assert "netContent" in data
+
+
+def test_clearing_a_field_removes_it_from_jsonld():
+    """Setting a value to empty must remove it from the serialized output."""
+    state = build_empty_builder_state()
+    state = update_builder_value(state, "gs1:gtin", "09501234567890")
+    state = update_builder_value(state, "gs1:productID", "SKU-123")
+    data = serialize_builder_state_to_jsonld(state, _metadata())
+    assert data.get("productID") == "SKU-123"
+
+    # Now clear the productID field.
+    state = update_builder_value(state, "gs1:productID", "")
+    data_after_clear = serialize_builder_state_to_jsonld(state, _metadata())
+    assert "productID" not in data_after_clear
+    # GTIN must still be present.
+    assert data_after_clear.get("gtin") == "09501234567890"
+
+
+def test_reset_clears_all_builder_values():
+    """Empty builder state must have no values and reset validation warnings."""
+    state = build_empty_builder_state()
+    state = update_builder_value(state, "gs1:gtin", "09501234567890")
+    state = update_builder_value(state, "gs1:productID", "SKU-123")
+    assert state["values"]
+
+    # Simulate a reset by reinitialising the state.
+    reset_state = build_empty_builder_state()
+    assert reset_state["values"] == {}
+    assert reset_state["validation_warnings"] == []
+    data = serialize_builder_state_to_jsonld(reset_state, _metadata())
+    assert "gtin" not in data
+    assert "productID" not in data
+
+
+def test_prototype_governance_warning_is_always_first():
+    """PROTOTYPE_GOVERNANCE_WARNING must appear first in every validation result."""
+    empty_state = build_empty_builder_state()
+    warnings = validate_builder_state(empty_state, _metadata())
+    assert warnings[0] == PROTOTYPE_GOVERNANCE_WARNING
+
+    state = update_builder_value(empty_state, "gs1:gtin", "09501234567890")
+    warnings_with_gtin = validate_builder_state(state, _metadata())
+    assert warnings_with_gtin[0] == PROTOTYPE_GOVERNANCE_WARNING

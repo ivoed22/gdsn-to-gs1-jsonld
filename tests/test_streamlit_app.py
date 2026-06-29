@@ -174,14 +174,17 @@ def test_streamlit_manual_builder_card_and_live_jsonld_update():
     assert app.session_state["workflow_mode"] == "Create JSON-LD Prototype"
     rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
     assert "Create JSON-LD Prototype" in rendered_markdown
-    assert "Manual JSON-LD prototype" in "\n".join(warning.value for warning in app.warning)
+    assert any(
+        "Prototype output only" in warning.value or "Manual JSON-LD prototype" in warning.value
+        for warning in app.warning
+    )
     assert any(selector.label == "Root class" for selector in app.selectbox)
     assert any(selector.label == "Product category" for selector in app.selectbox)
     assert any(selector.label == "Default language" for selector in app.selectbox)
     assert any(selector.label == "Thematic group" for selector in app.selectbox)
     assert "Core Product Information" in rendered_markdown
     assert any(
-        download.label == "Download JSON-LD"
+        download.label == "Download prototype JSON-LD"
         for download in app.get("download_button")
     )
 
