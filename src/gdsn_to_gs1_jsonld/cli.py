@@ -49,6 +49,7 @@ from .mapping_candidate_generator import (
 )
 from .product_passport_sources import (
     build_product_passport_source_inventory,
+    load_json_schema,
     load_product_passport_source_manifest,
     validate_product_passport_source_manifest,
     validate_product_passport_file,
@@ -824,7 +825,16 @@ def inventory_product_passport_sources_command(
     )
     try:
         pp_manifest = load_product_passport_source_manifest(str(manifest))
-        validation_errors = validate_product_passport_source_manifest(pp_manifest)
+        manifest_schema = None
+        schema_sibling = manifest.parent / "source_manifest.schema.json"
+        if schema_sibling.is_file():
+            try:
+                manifest_schema = load_json_schema(str(schema_sibling))
+            except (OSError, ValueError):
+                manifest_schema = None
+        validation_errors = validate_product_passport_source_manifest(
+            pp_manifest, schema=manifest_schema
+        )
         if validation_errors:
             for err in validation_errors:
                 typer.echo(f"Manifest warning: {err}", err=True)
@@ -936,6 +946,12 @@ def validate_product_passport_command(
     status = report.get("validation_status", "unknown")
     error_count = len(report.get("errors", []))
     typer.echo(f"Validation status: {status}")
+    if report.get("validator_mode") == "minimal_fallback":
+        typer.echo(
+            "WARNING: jsonschema not available — fallback validator used "
+            "(required-field presence only, not full Draft7 structural validation).",
+            err=True,
+        )
     typer.echo(f"Schema: {report.get('schema_title') or report.get('schema_id') or schema_file}")
     typer.echo(f"Errors: {error_count}")
     if error_count:

@@ -18,6 +18,8 @@ Web Vocabulary JSON-LD.
 - [Web Vocabulary update monitor](webvoc-update-monitor.md)
 - [Web Vocabulary Explorer](webvoc-explorer.md)
 - [Manual JSON-LD Prototype Builder](manual-jsonld-builder.md)
+- [Mapping Candidate Generator](mapping-candidate-generator.md)
+- [Product Passport Bridge](product-passport-bridge.md)
 - [Public source data inventory](source-data-inventory.md)
 - [Reference data import](reference-data-import.md)
 - [v0.6.1 warning cleanup review](warning-cleanup-v0.6.1.md)
@@ -45,6 +47,9 @@ Web Vocabulary JSON-LD.
 - [v0.9.0 release notes](releases/v0.9.0.md)
 - [v0.9.1 release notes](releases/v0.9.1.md)
 - [v0.10.0 release notes](releases/v0.10.0.md)
+- [v0.11.0 release notes](releases/v0.11.0.md)
+- [v0.12.0 release notes](releases/v0.12.0.md)
+- [v0.12.1 release notes](releases/v0.12.1.md)
 
 The MVP is experimental and does not implement full GDSN XSD validation or
 complete GDSN coverage.

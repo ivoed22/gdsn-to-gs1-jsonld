@@ -1,6 +1,14 @@
 # Product Passport Bridge
 
-**Status: Prototype/reference only. v0.12.0 performs source inventory and structural schema validation only. No official GS1 validation or production compliance is claimed.**
+**Status: Prototype/reference only. Source inventory and structural schema validation only. No official GS1 validation or production compliance is claimed.**
+
+> **v0.12.1 hardening.** `jsonschema>=4` is now an explicit project dependency.
+> Structural validation uses jsonschema Draft7; a required-field-only fallback
+> is retained but clearly flagged (`validator_mode`, plus a visible warning in
+> the CLI and UI) so a "Passed" result under the fallback is never mistaken for
+> full structural validation. The source manifest is also enforced against
+> `source_manifest.schema.json`. Placeholder schemas with no downloaded file
+> are listed as unavailable and are not offered as validation targets.
 
 ## Purpose
 

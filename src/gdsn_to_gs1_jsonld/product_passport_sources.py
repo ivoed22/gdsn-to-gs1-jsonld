@@ -59,11 +59,19 @@ def load_product_passport_source_manifest(path: str) -> dict:
 # ---------------------------------------------------------------------------
 
 
-def validate_product_passport_source_manifest(manifest: dict) -> list[str]:
+def validate_product_passport_source_manifest(
+    manifest: dict,
+    schema: dict | None = None,
+) -> list[str]:
     """Validate *manifest* structure and return a list of error strings.
 
     An empty list means no errors were found.
     Does not raise — errors are returned as strings.
+
+    Custom domain checks (required fields, duplicate ids, enum membership)
+    always run. If *schema* is provided, the manifest is additionally validated
+    against it with jsonschema (Draft7) when available, enforcing schema-only
+    rules such as the ``source_id`` pattern and ``additionalProperties: false``.
     """
     errors: list[str] = []
     if not isinstance(manifest, dict):
@@ -112,7 +120,37 @@ def validate_product_passport_source_manifest(manifest: dict) -> list[str]:
                 f"Expected one of: {sorted(VALID_SECTORS)}."
             )
 
+    if schema is not None:
+        errors.extend(_validate_manifest_against_schema(manifest, schema))
+
     return errors
+
+
+def _validate_manifest_against_schema(manifest: dict, schema: dict) -> list[str]:
+    """Validate *manifest* against *schema* using jsonschema Draft7.
+
+    Returns a list of human-readable error strings. If jsonschema is not
+    installed, returns a single note explaining the manifest schema is being
+    treated as descriptive only.
+    """
+    try:
+        from jsonschema import Draft7Validator, SchemaError
+    except ImportError:
+        return [
+            "jsonschema is not installed: manifest schema enforcement was "
+            "skipped (manifest schema treated as descriptive only)."
+        ]
+
+    try:
+        Draft7Validator.check_schema(schema)
+    except SchemaError as exc:
+        return [f"Manifest schema is invalid: {exc.message}"]
+
+    out: list[str] = []
+    for err in sorted(Draft7Validator(schema).iter_errors(manifest), key=str):
+        loc = ".".join(str(p) for p in err.path) or "root"
+        out.append(f"[schema:{loc}] {err.message}")
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -256,9 +294,21 @@ def inventory_report_bytes_csv(inventory: dict) -> bytes:
     writer = csv.DictWriter(buf, fieldnames=columns, extrasaction="ignore")
     writer.writeheader()
     for entry in entries:
-        row = {col: entry.get(col, "") for col in columns}
+        row = {col: _csv_safe(entry.get(col, "")) for col in columns}
         writer.writerow(row)
     return buf.getvalue().encode("utf-8")
+
+
+def _csv_safe(value: Any) -> Any:
+    """Neutralize spreadsheet formula injection for CSV cells.
+
+    String values beginning with ``=``, ``+``, ``-``, or ``@`` are prefixed
+    with a single quote so spreadsheet software does not evaluate them as
+    formulas. Only affects CSV output; JSON output is unchanged.
+    """
+    if isinstance(value, str) and value[:1] in ("=", "+", "-", "@"):
+        return "'" + value
+    return value
 
 
 def write_product_passport_inventory_reports(
@@ -357,10 +407,13 @@ def validate_product_passport_json(instance: dict, schema: dict) -> dict:
     errors: list[str] = []
     warnings: list[str] = []
     validator_version = "unknown"
+    validator_mode = "minimal_fallback"
 
     try:
         import jsonschema
         from jsonschema import Draft7Validator, SchemaError, ValidationError
+
+        validator_mode = "jsonschema"
 
         try:
             import importlib.metadata as _imeta
@@ -377,6 +430,7 @@ def validate_product_passport_json(instance: dict, schema: dict) -> dict:
                 "errors": [f"Schema is invalid: {exc.message}"],
                 "warnings": [],
                 "validator_version": validator_version,
+                "validator_mode": validator_mode,
                 "prototype_warning": _SCHEMA_VALIDATOR_WARNING,
             }
 
@@ -398,8 +452,10 @@ def validate_product_passport_json(instance: dict, schema: dict) -> dict:
                     f"Required field '{field}' is missing (minimal fallback check)."
                 )
         warnings.append(
-            "jsonschema is not installed. Only required-field presence was checked. "
-            "Install jsonschema for full Draft7 validation."
+            "FALLBACK MODE: jsonschema is not installed, so only required-field "
+            "presence was checked — this is weaker than full Draft7 validation. "
+            "A 'valid' result here does not mean the document passed structural "
+            "schema validation. Install jsonschema for full Draft7 validation."
         )
         validation_status = "valid" if not errors else "invalid"
 
@@ -408,6 +464,7 @@ def validate_product_passport_json(instance: dict, schema: dict) -> dict:
         "errors": errors,
         "warnings": warnings,
         "validator_version": validator_version,
+        "validator_mode": validator_mode,
         "prototype_warning": _SCHEMA_VALIDATOR_WARNING,
     }
 

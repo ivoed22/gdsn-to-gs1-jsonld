@@ -3,6 +3,14 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.12.1 hardens the Product Passport Bridge: `jsonschema` is now an
+explicit dependency (with a clearly-flagged fallback), the source manifest is
+enforced against its JSON Schema, the workflow narrative covers all six
+workflows, placeholder schemas are no longer offered as selectable validation
+targets, structural-check wording avoids implying compliance, and CI runs
+`compileall` plus a CLI smoke matrix. Prototype/reference only; no official GS1
+validation or production compliance is claimed.
+
 Version 0.12.0 adds the Product Passport Bridge — a prototype/reference
 workflow that inventories public Digital Product Passport (DPP) reference
 sources and validates prototype Product Passport JSON against local JSON

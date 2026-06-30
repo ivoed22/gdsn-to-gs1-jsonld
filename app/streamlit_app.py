@@ -1489,7 +1489,16 @@ def _render_validate_product_passport_workflow() -> None:
         if st.button("Load Source Manifest", type="primary", use_container_width=True):
             try:
                 pp_manifest = load_product_passport_source_manifest(str(manifest_path))
-                errors = validate_product_passport_source_manifest(pp_manifest)
+                manifest_schema = None
+                schema_sibling = manifest_path.parent / "source_manifest.schema.json"
+                if schema_sibling.is_file():
+                    try:
+                        manifest_schema = load_json_schema(str(schema_sibling))
+                    except (OSError, ValueError):
+                        manifest_schema = None
+                errors = validate_product_passport_source_manifest(
+                    pp_manifest, schema=manifest_schema
+                )
                 base_dir = str(REPOSITORY_ROOT)
                 inventory = build_product_passport_source_inventory(pp_manifest, base_dir=base_dir)
                 st.session_state["pp_inventory"] = inventory
@@ -1631,16 +1640,33 @@ def _render_validate_product_passport_workflow() -> None:
                 if s.get("source_type") == "json_schema"
             ]
 
-        # Schema selector from manifest.
-        local_schema_options = {
-            f"{s.get('source_id')} — {s.get('title', '')}": s.get("local_path", "")
-            for s in schema_entries
-        }
-        # Always add the built-in minimal schema.
+        # Only schemas whose local file exists are offered as active choices.
+        # Placeholder schemas (file not yet downloaded) are listed as
+        # unavailable rather than presented as selectable validation targets.
+        local_schema_options: dict[str, str] = {}
+        unavailable_schemas: list[str] = []
+        for s in schema_entries:
+            local_path = s.get("local_path", "")
+            schema_file_candidate = REPOSITORY_ROOT / local_path if local_path else None
+            label = f"{s.get('source_id')} — {s.get('title', '')}"
+            if schema_file_candidate and schema_file_candidate.is_file():
+                local_schema_options[label] = local_path
+            else:
+                unavailable_schemas.append(str(s.get("source_id", "")))
+
+        # Always add the built-in minimal schema (committed, always available).
         minimal_schema_path = str(
             REPOSITORY_ROOT / "product_passport" / "reference_sources" / "raw_public" / "schemas" / "dpp_minimal.schema.json"
         )
         local_schema_options["dpp_minimal — Minimal DPP Structural Schema (built-in)"] = minimal_schema_path
+
+        if unavailable_schemas:
+            st.caption(
+                "Unavailable — placeholder source file not downloaded yet: "
+                + ", ".join(unavailable_schemas)
+                + ". These remain listed in Source Inventory as provenance "
+                "placeholders and cannot be used for validation until downloaded."
+            )
 
         with st.container(border=True):
             render_section_header(
@@ -1718,12 +1744,12 @@ def _render_validate_product_passport_workflow() -> None:
                 warning_count = len(val_report.get("warnings", []))
                 s_col, e_col, w_col = st.columns(3)
                 status_label = {
-                    "valid": "Valid",
-                    "invalid": "Invalid — review errors below",
-                    "schema_error": "Schema error — cannot validate",
+                    "valid": "Structural schema check: Passed",
+                    "invalid": "Structural schema check: Failed — review schema errors",
+                    "schema_error": "Schema could not be evaluated",
                     "not_run": "Not run",
-                }.get(status, status.upper())
-                s_col.metric("Structural validation status", status_label)
+                }.get(status, status)
+                s_col.metric("Structural schema check", status_label)
                 e_col.metric("Schema errors", error_count)
                 w_col.metric("Validator warnings", warning_count)
 
@@ -1731,6 +1757,13 @@ def _render_validate_product_passport_workflow() -> None:
                     st.markdown("**Schema validation errors**")
                     error_rows = [{"#": i + 1, "error": e} for i, e in enumerate(val_report["errors"])]
                     st.dataframe(pd.DataFrame(error_rows), hide_index=True, use_container_width=True)
+
+                if val_report.get("validator_mode") == "minimal_fallback":
+                    st.warning(
+                        "Fallback validator in use (jsonschema not available): only "
+                        "required-field presence was checked. A 'Passed' result here "
+                        "is weaker than full structural schema validation."
+                    )
 
                 if val_report.get("warnings"):
                     for warn in val_report["warnings"]:

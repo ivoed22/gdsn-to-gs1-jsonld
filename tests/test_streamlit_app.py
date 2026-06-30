@@ -23,7 +23,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.12.0"
+    assert ui.APP_VERSION == "v0.12.1"
     assert callable(ui.render_page_header)
 
 
@@ -99,7 +99,7 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
     ]
     assert selector.value == "Certifications & Documents v0.3.0"
     assert any(
-        "App version: v0.12.0" in markdown.value
+        "App version: v0.12.1" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -333,3 +333,41 @@ def test_product_passport_bridge_warning_text_appears():
         f"Expected prototype/reference warning text in rendered markdown. "
         f"Got: {rendered_markdown[:500]!r}"
     )
+
+
+def test_all_six_workflows_and_narrative_present():
+    """UX-1: the overview names all six workflows and the entry narrative
+    mentions Mapping Candidates and Product Passport."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    for title in (
+        "Convert GDSN XML",
+        "Explore GS1 Web Vocabulary",
+        "Create JSON-LD Prototype",
+        "Generate Mapping Candidates",
+        "Validate Product Passport Sources",
+        "Standards Review",
+    ):
+        assert title in rendered, f"Workflow not represented in overview: {title}"
+
+    lowered = rendered.lower()
+    assert "mapping candidates" in lowered
+    assert "product passport" in lowered
+
+
+def test_placeholder_schemas_not_offered_as_active_choices():
+    """UX-2: placeholder schemas (no committed file) are not selectable
+    validation targets; the built-in minimal schema is always available."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    app.button[_button_index(app, "Open", occurrence=4)].click().run(timeout=20)
+    assert app.session_state["workflow_mode"] == "Validate Product Passport Sources"
+
+    schema_selects = [s for s in app.selectbox if s.label == "Local schema"]
+    assert schema_selects, "Local schema selectbox not found"
+    options = list(schema_selects[0].options)
+    joined = " ".join(options).lower()
+
+    assert any("dpp_minimal" in opt for opt in options), "built-in minimal missing"
+    assert "dpp_general_product_schema" not in joined
+    assert "dpp_battery_schema" not in joined
+    assert "dpp_textile_schema" not in joined

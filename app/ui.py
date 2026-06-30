@@ -2,7 +2,7 @@ from html import escape
 
 import streamlit as st
 
-APP_VERSION = "v0.12.0"
+APP_VERSION = "v0.12.1"
 
 
 def apply_page_styles() -> None:
@@ -1052,9 +1052,11 @@ def render_workflow_entry_intro() -> None:
           <p class="section-kicker">Workflow entry point</p>
           <h2>What do you want to do?</h2>
           <p>
-            Choose the task first. Conversion, vocabulary exploration,
-            prototype authoring, and standards review are separated so each
-            workflow has its own evidence, actions, and review surface.
+            Choose the task first. Six workflows are separated so each has its
+            own evidence, actions, and review surface: convert GDSN XML,
+            explore the GS1 Web Vocabulary, author JSON-LD prototypes, generate
+            mapping candidates, validate Product Passport sources, and review
+            open standards decisions.
           </p>
         </div>
         """,

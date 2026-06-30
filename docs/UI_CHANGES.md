@@ -1,5 +1,19 @@
 # UI Changes
 
+## v0.12.1 Product Passport Bridge hardening checklist
+
+- [x] Workflow-entry narrative names all six workflows (Convert, Explore,
+      Create JSON-LD Prototype, Generate Mapping Candidates, Validate Product
+      Passport Sources, Standards Review).
+- [x] Schema Validator: placeholder schemas with no downloaded file are not
+      offered as selectable validation targets; they are listed as unavailable.
+- [x] Schema Validator: status wording changed to "Structural schema check:
+      Passed / Failed / could not be evaluated" (no compliance implication).
+- [x] Schema Validator: fallback validator (jsonschema unavailable) surfaces a
+      visible warning.
+- [x] No new workflow cards; still 6 cards in 3+3 grid.
+- [x] No accept/apply button, no online fetch, no production compliance claim.
+
 ## v0.12.0 Validate Product Passport Sources workflow card checklist
 
 - [x] `Validate Product Passport Sources` workflow card is visible (marker: PP).

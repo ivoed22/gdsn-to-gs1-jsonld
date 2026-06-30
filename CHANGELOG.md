@@ -1,5 +1,58 @@
 # Changelog
 
+## v0.12.1 — Product Passport Bridge Hardening
+
+Hardening, consistency, CI, and UI/UX polish release. No new features; no
+Product Passport Builder. Prototype/reference only; structural validation only;
+no official GS1 validation or production compliance claimed.
+
+### Changed
+
+- Declared `jsonschema>=4` as an explicit project dependency (previously used
+  but only present transitively). The required-field fallback validator is
+  retained but now clearly labelled: validation reports carry a
+  `validator_mode` (`jsonschema` or `minimal_fallback`), and CLI/UI surface a
+  visible warning when the fallback path is used.
+- Enforced the Product Passport source manifest against
+  `source_manifest.schema.json` using jsonschema (Draft7) in addition to the
+  existing custom domain checks (`source_id` pattern, `additionalProperties`).
+- Refreshed the workflow-entry narrative so all six workflows are represented
+  (Convert, Explore, Create JSON-LD Prototype, Generate Mapping Candidates,
+  Validate Product Passport Sources, Standards Review).
+- Product Passport Schema Validator: placeholder schemas with no downloaded
+  file are no longer offered as selectable validation targets; they are listed
+  as unavailable provenance placeholders. Validation status wording changed to
+  "Structural schema check: Passed / Failed / could not be evaluated" to avoid
+  implying regulatory or official compliance.
+- CSV inventory output neutralizes spreadsheet formula injection (cells
+  starting with `=`, `+`, `-`, `@`). JSON output is unchanged.
+- Roadmap consolidated; duplicated/stale sections removed.
+
+### CI
+
+- CI now runs `python -m compileall app src` and a minimal CLI smoke matrix
+  (Product Passport inventory, Product Passport validation, mapping candidate
+  generation) in addition to `pytest`. Smoke commands write only to `/tmp`.
+
+### Tests
+
+- Added `tests/test_version_consistency.py` (pyproject / APP_VERSION /
+  CHANGELOG / release notes / README must agree).
+- Added `tests/test_product_passport_hardening.py` (jsonschema path, fallback
+  warning, manifest schema enforcement, CSV injection neutralization).
+- Added Streamlit tests for the six-workflow narrative and placeholder-schema
+  handling.
+
+### Preserved
+
+- Converter logic, batch behavior, and single-file output remain unchanged.
+- Mapping YAML files, catalog data, and Web Vocabulary snapshots remain
+  unchanged.
+- No warnings were suppressed.
+- No Product Passport Builder, GS1 ↔ Product Passport Crosswalk, SHACL
+  execution, or VC/signed-credential features were created.
+- No tag or release v0.12.1 was created.
+
 ## v0.12.0 — Product Passport Source Import & Schema Validator
 
 ### Added

@@ -5,6 +5,15 @@ structural JSON Schema validation for prototype Product Passport JSON. SHACL
 execution, Product Passport Builder, and GS1 ↔ Product Passport Crosswalk
 remain as future work. All PP work is prototype/reference only.
 
+v0.12.1 hardens that foundation before any Builder work: `jsonschema` is an
+explicit dependency with a flagged fallback, the source manifest is enforced
+against its schema, the workflow narrative covers all six workflows,
+placeholder schemas are no longer selectable validation targets,
+structural-check wording avoids implying compliance, and CI runs `compileall`
+plus a CLI smoke matrix. The Product Passport Builder (v0.13.0) still requires
+at least one real, license-cleared DPP schema and example, or an explicit
+decision to validate only against the built-in minimal schema.
+
 After v0.5.0, the project can create the most value through two complementary
 tracks: explaining the demonstrated strategic bridge and hardening the
 standards claims behind it.

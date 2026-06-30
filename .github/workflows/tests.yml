@@ -20,3 +20,31 @@ jobs:
 
       - run: pip install -e ".[dev]"
       - run: pytest
+
+      - name: Compile all sources
+        run: python -m compileall app src
+
+      - name: CLI smoke — Product Passport source inventory
+        run: >-
+          gdsn-to-gs1-jsonld inventory-product-passport-sources
+          --manifest product_passport/reference_sources/source_manifest.json
+          --output-dir /tmp/product_passport_inventory
+
+      - name: CLI smoke — Product Passport structural validation
+        run: >-
+          gdsn-to-gs1-jsonld validate-product-passport
+          --input product_passport/examples/minimal_product_passport.json
+          --schema product_passport/reference_sources/raw_public/schemas/dpp_minimal.schema.json
+          --manifest product_passport/reference_sources/source_manifest.json
+          --output-dir /tmp/product_passport_validation
+
+      - name: CLI smoke — Mapping candidate generation
+        run: >-
+          gdsn-to-gs1-jsonld generate-mapping-candidates
+          --property gs1:gtin
+          --webvoc-properties reference_data/normalized/webvoc_properties_1_17.csv
+          --gdsn-reference reference_data/normalized/gdsn_attributes_bms_xpath_3_1_36.csv
+          --catalog mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv
+          --mapping mapping/mapping_v0_3.yaml
+          --standards-backlog docs/standards-decisions/standards_review_backlog.json
+          --output-dir /tmp/mapping_candidate_gtin

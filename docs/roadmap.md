@@ -1,79 +1,88 @@
 # Roadmap
 
-Version 0.12.0 adds the Product Passport Bridge — a prototype/reference workflow
-for inventorying public DPP reference sources and validating prototype Product
-Passport JSON against local JSON Schemas. Source inventory and structural
-schema validation only. No official GS1 validation or production compliance
-claimed. SHACL execution, Product Passport Builder, and GS1 ↔ Product Passport
-Crosswalk are not yet built.
+All work is versioned in the v0.x series. The project is prototype/reference
+tooling for standards discussion: it does not claim official GS1 validation or
+production compliance, and it is not full GDSN coverage.
 
-Version 0.11.0 adds the Mapping Candidate Generator, a deterministic offline
-tool that proposes possible GDSN/BMS/XPath source fields for GS1 Web Vocabulary
-properties with confidence scoring and review reasons.  Candidates are review
-support only; no mappings are automatically accepted or written.
+## Planned
 
-Version 0.10.0 added a Manual JSON-LD Prototype Builder on top of the v0.9.1
-source-data inventory.
+### v0.12.1 — Product Passport Bridge Hardening (this line of work)
 
-Potential work after v0.12.0:
+Hardening, consistency, CI, and UI/UX polish. No new features. `jsonschema`
+becomes an explicit dependency with a clearly-flagged fallback; the source
+manifest is enforced against its JSON Schema; the workflow narrative covers all
+six workflows; placeholder schemas are not offered as selectable validation
+targets; structural-check wording avoids implying compliance; CI runs
+`compileall` and a CLI smoke matrix.
 
-- resolve catalog warnings through standards and project review
-- connect manual JSON-LD prototypes to governed BMS/XPath evidence where
-  appropriate
-- broader GDSN modules and mapping profiles
-- richer ingredients, allergens, serving sizes, and nutrition
-- standards review for generic document-link relationships
-- certificate verification and richer certification agency modeling
-- optional GDSN XSD validation
-- production-oriented batch processing beyond ZIP upload and diagnostic aggregation
-- API and data-platform integrations
+### v0.13.0 — Product Passport Builder (next feature release)
 
-The current release is still not full GDSN coverage.
+Wrap existing GS1 JSON-LD — from the converter or the Manual JSON-LD Builder —
+into a DPP-shaped **prototype** envelope, validated (encouraged, not mandatory)
+against a local schema. Clearly prototype/reference. No VC, no signing, no SHACL
+execution, no crosswalk, no regulatory-grade guarantees. Requires at least one
+real, license-cleared general-product DPP schema and example, or an explicit
+decision to validate only against the built-in minimal schema.
 
-Version 0.6.1 separates tooling false positives from 12 genuine conformance
-and governance warnings. Version 0.7.0 organizes those warnings into six open
-standards decisions rather than changing semantic mappings solely to reduce
-counts.
+### v0.14.0 — GS1 ↔ Product Passport Crosswalk
 
-Version 0.8.0 introduces workflow modes in Streamlit, keeps the single XML path
-unchanged, adds a Bulk ZIP tab, and adds a `convert-batch` CLI command. It is
-an operational workflow release, not a mapping semantics release.
+Map GS1 Web Vocabulary properties to Product Passport fields as review-only
+crosswalk evidence. No automatic acceptance.
 
-Version 0.9.0 replaces the Web Vocabulary Explorer placeholder with a real
-offline Explorer and `export-webvoc-explorer` CLI command. It is a read-only
-standards/mapping review release, not a converter-output or mapping-semantics
-release.
+### Later (still v0.x)
 
-Version 0.9.1 adds `import-reference-data` and a committed source-data
-inventory for public GDSN and Web Vocabulary references. It prepares normalized
-evidence for future manual prototyping and mapping-candidate review without
-building those features yet.
+- SHACL shape execution against prototype Product Passport data.
+- GS1 Digital Link / EPCIS publication previews.
+- Verifiable Credentials / trust layer (envelope and proofs).
+- Resolve catalog warnings through standards and project review.
+- Connect manual JSON-LD prototypes to governed BMS/XPath evidence where
+  appropriate.
+- Broader GDSN modules and mapping profiles; richer ingredients, allergens,
+  serving sizes, and nutrition.
+- Standards review for generic document-link relationships; richer
+  certification modelling.
+- Optional GDSN XSD validation.
+- Operational batch processing beyond ZIP upload and diagnostic aggregation.
+- API and data-platform integrations.
 
-Version 0.11.0 adds the Mapping Candidate Generator: offline, deterministic,
-review-only.  Candidates do not update YAML or converter output.
+### Standards-review workflow (future)
 
-Version 0.10.0 adds manual JSON-LD prototype authoring. It is intentionally
-separate from GDSN XML conversion and mapping YAML so manually entered examples
-can be reviewed without changing governed converter output.
+- Assign named reviewers and decision dates.
+- Move reviewed records to Proposed, Accepted, Rejected, or Deferred.
+- Create versioned mapping changes only for accepted decisions.
+- Retain compatibility tests and migration notes for any accepted output change.
 
-Potential work on the standards-review workflow after v0.12.0:
+## Released
 
-- assign named reviewers and decision dates
-- move reviewed records to Proposed, Accepted, Rejected, or Deferred
-- create versioned mapping changes only for accepted decisions
-- retain compatibility tests and migration notes for any accepted output change
+- **v0.12.0 — Product Passport Bridge.** Inventory public DPP reference sources
+  and validate prototype Product Passport JSON against local JSON Schemas.
+  Source inventory and structural schema validation only. SHACL execution,
+  Product Passport Builder, and the GS1 ↔ Product Passport Crosswalk are not
+  built.
+- **v0.11.0 — Mapping Candidate Generator.** Deterministic, offline tool that
+  proposes possible GDSN/BMS/XPath source fields for GS1 Web Vocabulary
+  properties with confidence scoring and review reasons. Review-only; no
+  mappings are automatically accepted or written.
+- **v0.10.0 — Manual JSON-LD Prototype Builder.** Manual prototype authoring,
+  intentionally separate from GDSN XML conversion and mapping YAML so manually
+  entered examples can be reviewed without changing governed converter output.
+- **v0.9.1 — Public source-data inventory & reference import.** Adds
+  `import-reference-data` and a committed source-data inventory for public GDSN
+  and Web Vocabulary references. Prepares normalized evidence for later manual
+  prototyping and mapping-candidate review without building those features.
+- **v0.9.0 — Web Vocabulary Explorer.** Replaces the Explorer placeholder with a
+  real offline Explorer and `export-webvoc-explorer` CLI command. Read-only
+  standards/mapping review; not a converter-output or mapping-semantics change.
+- **v0.8.0 — Workflow modes & Bulk ZIP.** Introduces Streamlit workflow modes,
+  keeps the single-XML path unchanged, adds a Bulk ZIP tab and a `convert-batch`
+  CLI command. Operational workflow release, not a mapping-semantics release.
+- **v0.7.0 — Standards decisions.** Organizes conformance/governance warnings
+  into six open standards decisions rather than changing mappings to reduce
+  counts.
+- **v0.6.1 — Warning triage.** Separates tooling false positives from 12 genuine
+  conformance and governance warnings.
 
-## PP Bridge source inventory — built in v0.12.0
-
-- Source manifest: 7 entries (context, json_schema x3, shacl_shape, example, epcis_example)
-- CLI: inventory-product-passport-sources, validate-product-passport
-- Streamlit: Validate Product Passport Sources (PP) workflow with 3 tabs
-- JSON Schema structural validation (jsonschema Draft7)
-- SHACL execution: NOT built — shapes inventoried only
-- Product Passport Builder: NOT built
-- GS1 ↔ Product Passport Crosswalk: NOT built
-
-## Strategic tracks after v0.12.0
+## Strategic tracks
 
 ### Positioning and demo
 
@@ -96,5 +105,5 @@ every source element as new mapping scope.
 ### Catalog-to-YAML generation
 
 Consider generating executable YAML from an authoritative mapping catalog as a
-later option. This should follow decisions on mapping authority, status
-vocabulary, versioning, and review workflow rather than precede them.
+later option, after decisions on mapping authority, status vocabulary,
+versioning, and review workflow.
