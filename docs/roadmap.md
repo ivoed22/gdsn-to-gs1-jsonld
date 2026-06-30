@@ -49,7 +49,7 @@ Version 0.10.0 adds manual JSON-LD prototype authoring. It is intentionally
 separate from GDSN XML conversion and mapping YAML so manually entered examples
 can be reviewed without changing governed converter output.
 
-Potential work after v0.7.0:
+Potential work on the standards-review workflow after v0.11.0:
 
 - assign named reviewers and decision dates
 - move reviewed records to Proposed, Accepted, Rejected, or Deferred

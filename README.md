@@ -201,6 +201,9 @@ Food v0.2.0 or MVP v0.1.0 profiles. It now starts with workflow modes:
 - `Create JSON-LD Prototype`, a manual Web Vocabulary markup form with live
   JSON-LD preview
 - `Standards Review`, a compact read-only view of open SDR/backlog status
+- `Generate Mapping Candidates`, a review-only candidate report pairing WebVoc
+  properties with GDSN/BMS/XPath source fields (no mappings are accepted or
+  written)
 
 ## Mapping
 

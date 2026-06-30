@@ -1150,8 +1150,9 @@ def _render_mapping_candidates_workflow() -> None:
             "properties. Candidates are review support only.",
         )
         st.warning(
-            "Mapping candidates are review support only. They are not accepted "
-            "mappings and do not update mapping YAML or converter behavior."
+            "Review support only. Candidates are proposals, not accepted mappings. "
+            "They do not update mapping YAML, the mapping catalog, or converter "
+            "behavior. Review each candidate before any mapping decision is made."
         )
 
     try:
