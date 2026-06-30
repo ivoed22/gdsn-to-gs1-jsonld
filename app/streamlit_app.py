@@ -1453,10 +1453,16 @@ def _render_mapping_candidates_workflow() -> None:
 
 def _render_validate_product_passport_workflow() -> None:
     """Render the Validate Product Passport Sources workflow page."""
-    st.warning(
-        "⚠️ Product Passport Bridge is a prototype/reference workflow. "
-        "v0.12.0 performs source inventory and structural schema validation only. "
-        "It does not claim official GS1 validation or production compliance."
+    st.markdown(
+        """
+        <div class="pp-prototype-warning">
+          <strong>Prototype / Reference only — not official GS1 validation</strong>
+          v0.12.0 performs source inventory and structural JSON Schema validation only.
+          It does not claim official GS1 validation, EU DPP regulatory compliance,
+          or production readiness.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
     manifest_path = REPOSITORY_ROOT / "product_passport" / "reference_sources" / "source_manifest.json"
@@ -1498,12 +1504,26 @@ def _render_validate_product_passport_workflow() -> None:
             for err in manifest_errors:
                 st.warning(f"Manifest issue: {err}")
 
+        if inventory is None:
+            st.markdown(
+                """
+                <div class="empty-state">
+                  <span class="empty-state-mark" aria-hidden="true">PP</span>
+                  <div>
+                    <strong>Ready to load source manifest</strong>
+                    <span>Click "Load Source Manifest" to inspect all reference sources by type and sector.</span>
+                  </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
         if inventory is not None:
             with st.container(border=True):
                 render_section_header(
                     2,
                     "Inventory Summary",
-                    "Source counts by type and sector.",
+                    "Source counts by type and sector. Missing local files are placeholder entries that require a separate download.",
                 )
                 col_total, col_missing = st.columns(2)
                 col_total.metric("Total sources", inventory.get("total_sources", 0))
@@ -1697,13 +1717,19 @@ def _render_validate_product_passport_workflow() -> None:
                 error_count = len(val_report.get("errors", []))
                 warning_count = len(val_report.get("warnings", []))
                 s_col, e_col, w_col = st.columns(3)
-                s_col.metric("Status", status.upper())
-                e_col.metric("Errors", error_count)
-                w_col.metric("Warnings", warning_count)
+                status_label = {
+                    "valid": "Valid",
+                    "invalid": "Invalid — review errors below",
+                    "schema_error": "Schema error — cannot validate",
+                    "not_run": "Not run",
+                }.get(status, status.upper())
+                s_col.metric("Structural validation status", status_label)
+                e_col.metric("Schema errors", error_count)
+                w_col.metric("Validator warnings", warning_count)
 
                 if val_report.get("errors"):
-                    st.markdown("**Validation errors**")
-                    error_rows = [{"error": e} for e in val_report["errors"]]
+                    st.markdown("**Schema validation errors**")
+                    error_rows = [{"#": i + 1, "error": e} for i, e in enumerate(val_report["errors"])]
                     st.dataframe(pd.DataFrame(error_rows), hide_index=True, use_container_width=True)
 
                 if val_report.get("warnings"):
@@ -1714,12 +1740,12 @@ def _render_validate_product_passport_workflow() -> None:
                 st.caption(val_report.get("prototype_warning", ""))
 
                 render_download_intro(
-                    "Validation report JSON",
-                    "Full validation report for offline review.",
+                    "Structural validation report JSON",
+                    "Full structural validation report for offline review. Prototype/reference only — not official GS1 validation.",
                     "JSON",
                 )
                 st.download_button(
-                    "Download validation report JSON",
+                    "Download structural validation report JSON",
                     data=json.dumps(val_report, indent=2, ensure_ascii=False).encode("utf-8"),
                     file_name="product_passport_validation_report.json",
                     mime="application/json",
@@ -1731,10 +1757,13 @@ def _render_validate_product_passport_workflow() -> None:
             render_section_header(
                 1,
                 "Reference Examples",
-                "List of example and EPCIS example entries from the source manifest.",
+                "Example and EPCIS example entries from the source manifest. "
+                "Local committed examples can be previewed below. "
+                "Placeholder entries require a separate download.",
             )
             st.info(
-                "Prototype/reference examples only. Not official GS1 or DPP production data."
+                "Prototype/reference examples only. Not official GS1 or DPP production data. "
+                "The minimal example is committed to the repository for structural testing."
             )
 
         if pp_manifest_data:
@@ -1773,14 +1802,15 @@ def _render_validate_product_passport_workflow() -> None:
                     if example_file and example_file.is_file():
                         try:
                             example_data = json.loads(example_file.read_text(encoding="utf-8"))
-                            with st.expander("Example JSON preview", expanded=True):
+                            with st.expander("Example JSON preview (prototype/reference only — not production data)", expanded=True):
                                 st.json(example_data)
                         except (json.JSONDecodeError, OSError) as exc:
                             st.warning(f"Could not load example: {exc}")
                     else:
                         st.info(
-                            f"Local file not yet present: {local_path}. "
-                            "Download and place the file as described in the source manifest."
+                            f"Local file not yet available: `{local_path}`. "
+                            "This is a placeholder entry. Download the file from the URL in the source manifest "
+                            "and place it at the path shown."
                         )
             else:
                 st.info("No example entries found in the source manifest.")

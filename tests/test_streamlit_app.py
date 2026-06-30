@@ -319,9 +319,17 @@ def test_product_passport_bridge_warning_text_appears():
     app.button[_button_index(app, "Open", occurrence=4)].click().run(timeout=20)
 
     assert app.session_state["workflow_mode"] == "Validate Product Passport Sources"
-    assert any(
-        "product passport bridge" in warning.value.lower()
-        or "prototype/reference workflow" in warning.value.lower()
-        or "no official gs1 validation" in warning.value.lower()
-        for warning in app.warning
+    # The top banner is rendered as custom HTML (pp-prototype-warning div via st.markdown).
+    # Check the rendered markdown for the key prototype/reference governance text.
+    rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
+    prototype_keywords = [
+        "prototype",
+        "reference only",
+        "not official gs1 validation",
+        "structural",
+        "no production compliance",
+    ]
+    assert any(kw in rendered_markdown.lower() for kw in prototype_keywords), (
+        f"Expected prototype/reference warning text in rendered markdown. "
+        f"Got: {rendered_markdown[:500]!r}"
     )

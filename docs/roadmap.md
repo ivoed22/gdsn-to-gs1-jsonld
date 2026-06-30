@@ -15,7 +15,7 @@ support only; no mappings are automatically accepted or written.
 Version 0.10.0 added a Manual JSON-LD Prototype Builder on top of the v0.9.1
 source-data inventory.
 
-Potential work after v0.11.0:
+Potential work after v0.12.0:
 
 - resolve catalog warnings through standards and project review
 - connect manual JSON-LD prototypes to governed BMS/XPath evidence where
@@ -56,7 +56,7 @@ Version 0.10.0 adds manual JSON-LD prototype authoring. It is intentionally
 separate from GDSN XML conversion and mapping YAML so manually entered examples
 can be reviewed without changing governed converter output.
 
-Potential work on the standards-review workflow after v0.11.0:
+Potential work on the standards-review workflow after v0.12.0:
 
 - assign named reviewers and decision dates
 - move reviewed records to Proposed, Accepted, Rejected, or Deferred
