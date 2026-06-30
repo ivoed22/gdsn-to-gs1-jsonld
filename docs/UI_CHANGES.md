@@ -1,5 +1,28 @@
 # UI Changes
 
+## v0.11.0 Generate Mapping Candidates workflow card checklist
+
+- [x] `Generate Mapping Candidates` workflow card is visible (marker: MAP).
+- [x] Workflow selector still asks "What do you want to do?"
+- [x] 5 workflow cards displayed in 3+2 grid layout.
+- [x] Top-level review-only warning is shown on entering the workflow.
+- [x] WebVoc property selector appears ("All properties" plus individual IDs).
+- [x] Confidence levels multiselect appears.
+- [x] Review statuses multiselect appears.
+- [x] "Include already mapped" checkbox appears.
+- [x] "Include low confidence" checkbox appears.
+- [x] Limit per property number input appears.
+- [x] "Generate Candidates" button appears.
+- [x] After generation: metrics (total, high/medium/low/review_required/already_mapped).
+- [x] Candidate table with WebVoc property, GDSN name, BMS ID, score, confidence, review status, top reason, SDR linked.
+- [x] Detail expander for selected candidate appears.
+- [x] JSON download button appears.
+- [x] CSV download button appears.
+- [x] XLSX download button appears (if openpyxl available).
+- [x] No accept/apply button exists.
+- [x] No mapping YAML edit capability exists.
+- [x] Existing workflows (XML, VOC, LD, SDR) remain available.
+
 ## v0.10.0 Manual JSON-LD Builder checklist
 
 - [x] `Create JSON-LD Prototype` workflow card is visible.

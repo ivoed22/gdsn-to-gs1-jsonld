@@ -3,9 +3,14 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
-Version 0.10.0 adds a Manual JSON-LD Prototype Builder for authoring
-range-aware GS1 Web Vocabulary product markup by hand. It keeps converter
-output and mapping semantics stable.
+Version 0.11.0 adds a Mapping Candidate Generator — a deterministic,
+offline tool that proposes possible GDSN/BMS/XPath source fields for GS1
+Web Vocabulary properties with confidence scoring and review reasons.
+Candidates are review support only; no mappings are automatically accepted
+or written.
+
+Version 0.10.0 added a Manual JSON-LD Prototype Builder for authoring
+range-aware GS1 Web Vocabulary product markup by hand.
 
 ## Mapping profiles
 
@@ -165,6 +170,21 @@ The command checks manifest hashes and writes normalized GDSN/WebVoc reference
 data plus `source_data_summary.json`. See the
 [source data inventory](docs/source-data-inventory.md) and
 [reference data import](docs/reference-data-import.md) notes.
+
+Generate mapping candidates for GS1 Web Vocabulary properties:
+
+```bash
+gdsn-to-gs1-jsonld generate-mapping-candidates \
+  --webvoc-properties reference_data/normalized/webvoc_properties_1_17.csv \
+  --gdsn-reference reference_data/normalized/gdsn_attributes_bms_xpath_3_1_36.csv \
+  --catalog mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv \
+  --mapping mapping/mapping_v0_3.yaml \
+  --standards-backlog docs/standards-decisions/standards_review_backlog.json \
+  --output-dir mapping_candidate_reports/
+```
+
+Candidates are review support only; no mappings are accepted or written.
+See [Mapping Candidate Generator](docs/mapping-candidate-generator.md).
 
 ## Streamlit
 

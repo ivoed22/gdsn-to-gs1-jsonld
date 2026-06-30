@@ -1,6 +1,7 @@
 """Typer command line interface."""
 
 from pathlib import Path
+from typing import Optional
 
 import typer
 
@@ -38,6 +39,14 @@ from .webvoc_explorer import (
     write_webvoc_explorer_outputs,
 )
 from .xml_parser import XMLParseError
+from .mapping_candidate_generator import (
+    build_candidate_inputs,
+    filter_candidates,
+    generate_all_candidates,
+    generate_candidates_for_property,
+    generate_candidate_summary,
+    write_candidate_reports,
+)
 
 app = typer.Typer(
     help="Convert GDSN product XML to GS1 Web Vocabulary JSON-LD.",
@@ -618,6 +627,160 @@ def import_reference_data_command(
         "GDSN sheet: "
         f"{summary['gdsn']['selected_sheet']} "
         f"({summary['gdsn']['candidate_source_rows']} candidate row(s))"
+    )
+    for path in paths.values():
+        typer.echo(f"  - {path}")
+
+
+@app.command("generate-mapping-candidates")
+def generate_mapping_candidates_command(
+    webvoc_properties: Path = typer.Option(
+        ...,
+        "--webvoc-properties",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Normalized WebVoc properties CSV.",
+    ),
+    gdsn_reference: Path = typer.Option(
+        ...,
+        "--gdsn-reference",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Normalized GDSN attributes CSV.",
+    ),
+    catalog: Path = typer.Option(
+        ...,
+        "--catalog",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Mapping catalog CSV.",
+    ),
+    mapping: Path = typer.Option(
+        ...,
+        "--mapping",
+        "-m",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="YAML mapping profile.",
+    ),
+    standards_backlog: Optional[Path] = typer.Option(
+        None,
+        "--standards-backlog",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Standards review backlog JSON (optional).",
+    ),
+    output_dir: Path = typer.Option(
+        ...,
+        "--output-dir",
+        "-o",
+        help="Directory for candidate report outputs.",
+    ),
+    property_filter: Optional[str] = typer.Option(
+        None,
+        "--property",
+        help="Limit to one WebVoc property term_id, e.g. gs1:gtin.",
+    ),
+    limit_per_property: int = typer.Option(
+        20,
+        "--limit-per-property",
+        min=1,
+        max=200,
+        help="Maximum candidate GDSN attributes per WebVoc property.",
+    ),
+    min_confidence: str = typer.Option(
+        "low",
+        "--min-confidence",
+        help="Minimum confidence level to include: high, medium, low.",
+    ),
+    include_low_confidence: bool = typer.Option(
+        True,
+        "--include-low-confidence/--no-include-low-confidence",
+        help="Include low-confidence candidates.",
+    ),
+    include_review_required: bool = typer.Option(
+        True,
+        "--include-review-required/--no-include-review-required",
+        help="Include review_required candidates.",
+    ),
+    output_format: str = typer.Option(
+        "json,csv",
+        "--format",
+        help="Output formats: comma-separated combination of json, csv, xlsx.",
+    ),
+) -> None:
+    """Propose GDSN/BMS/XPath source fields for GS1 Web Vocabulary properties.
+
+    Candidates are review support only. They do not update mapping YAML or
+    converter behavior.  No mappings are automatically accepted or written.
+    """
+    typer.echo(
+        "Mapping Candidate Generator: candidates are review support only. "
+        "No mappings are automatically accepted or written."
+    )
+    try:
+        backlog_path = str(standards_backlog) if standards_backlog else None
+        inputs = build_candidate_inputs(
+            webvoc_path=str(webvoc_properties),
+            gdsn_path=str(gdsn_reference),
+            catalog_path=str(catalog),
+            mapping_path=str(mapping),
+            backlog_path=backlog_path,
+        )
+        if property_filter:
+            candidates = generate_candidates_for_property(
+                property_filter.strip(),
+                inputs,
+                limit=limit_per_property,
+            )
+        else:
+            candidates = generate_all_candidates(
+                inputs,
+                limit_per_property=limit_per_property,
+            )
+
+        # Apply confidence filter.
+        candidates = filter_candidates(
+            candidates,
+            min_confidence=min_confidence,
+            include_low_confidence=include_low_confidence,
+            include_review_required=include_review_required,
+        )
+
+        formats = [f.strip().lower() for f in output_format.split(",") if f.strip()]
+        paths = write_candidate_reports(candidates, str(output_dir), formats=formats)
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        typer.echo(f"Mapping candidate generation failed: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    summary = generate_candidate_summary(candidates)
+    typer.echo(
+        f"Mapping candidates: {summary['total_candidates']} total, "
+        f"{summary['properties_covered']} properties covered"
+    )
+    by_conf = summary["by_confidence"]
+    typer.echo(
+        f"Confidence: high={by_conf.get('high', 0)}, "
+        f"medium={by_conf.get('medium', 0)}, "
+        f"low={by_conf.get('low', 0)}, "
+        f"review_required={by_conf.get('review_required', 0)}"
+    )
+    by_status = summary["by_review_status"]
+    typer.echo(
+        f"Review status: proposed={by_status.get('proposed', 0)}, "
+        f"already_mapped={by_status.get('already_mapped', 0)}, "
+        f"review_required={by_status.get('review_required', 0)}, "
+        f"not_recommended={by_status.get('not_recommended', 0)}"
     )
     for path in paths.values():
         typer.echo(f"  - {path}")

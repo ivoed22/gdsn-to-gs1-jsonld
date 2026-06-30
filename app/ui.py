@@ -2,7 +2,7 @@ from html import escape
 
 import streamlit as st
 
-APP_VERSION = "v0.10.0"
+APP_VERSION = "v0.11.0"
 
 
 def apply_page_styles() -> None:
@@ -579,6 +579,15 @@ def apply_page_styles() -> None:
         .workflow-mode-card.mode-ld .workflow-mode-mark {
             background: #f3f3ff;
             border-color: #d9dcff;
+        }
+
+        .workflow-mode-card.mode-map {
+            border-left-color: #7ca9b8;
+        }
+
+        .workflow-mode-card.mode-map .workflow-mode-mark {
+            background: #f0f6f9;
+            border-color: #c5dde7;
         }
 
         .workflow-mode-title {

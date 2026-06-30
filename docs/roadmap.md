@@ -1,11 +1,14 @@
 # Roadmap
 
-Version 0.10.0 adds a Manual JSON-LD Prototype Builder on top of the v0.9.1
-source-data inventory. It lets reviewers manually author range-aware GS1 Web
-Vocabulary product markup while preserving the v0.1.0, v0.2.0, and v0.3.0
-converter profiles and single-file output.
+Version 0.11.0 adds the Mapping Candidate Generator, a deterministic offline
+tool that proposes possible GDSN/BMS/XPath source fields for GS1 Web Vocabulary
+properties with confidence scoring and review reasons.  Candidates are review
+support only; no mappings are automatically accepted or written.
 
-Potential work after v0.10.0:
+Version 0.10.0 added a Manual JSON-LD Prototype Builder on top of the v0.9.1
+source-data inventory.
+
+Potential work after v0.11.0:
 
 - resolve catalog warnings through standards and project review
 - connect manual JSON-LD prototypes to governed BMS/XPath evidence where
@@ -39,6 +42,9 @@ inventory for public GDSN and Web Vocabulary references. It prepares normalized
 evidence for future manual prototyping and mapping-candidate review without
 building those features yet.
 
+Version 0.11.0 adds the Mapping Candidate Generator: offline, deterministic,
+review-only.  Candidates do not update YAML or converter output.
+
 Version 0.10.0 adds manual JSON-LD prototype authoring. It is intentionally
 separate from GDSN XML conversion and mapping YAML so manually entered examples
 can be reviewed without changing governed converter output.
@@ -50,7 +56,7 @@ Potential work after v0.7.0:
 - create versioned mapping changes only for accepted decisions
 - retain compatibility tests and migration notes for any accepted output change
 
-## Strategic tracks after v0.10.0
+## Strategic tracks after v0.11.0
 
 ### Positioning and demo
 

@@ -23,7 +23,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.10.0"
+    assert ui.APP_VERSION == "v0.11.0"
     assert callable(ui.render_page_header)
 
 
@@ -99,7 +99,7 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
     ]
     assert selector.value == "Certifications & Documents v0.3.0"
     assert any(
-        "App version: v0.10.0" in markdown.value
+        "App version: v0.11.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -128,8 +128,9 @@ def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
     assert "Manual JSON-LD prototype with visible governance" in rendered_markdown
     assert app.session_state["workflow_mode"] == "Convert GDSN XML"
     assert app.button[_button_index(app, "Active")].disabled
-    assert [button.label for button in app.button[:4]] == [
+    assert [button.label for button in app.button[:5]] == [
         "Active",
+        "Open",
         "Open",
         "Open",
         "Open",
@@ -268,3 +269,30 @@ def test_streamlit_profile_change_clears_results(example_xml_path):
     app.selectbox[0].select("Food v0.2.0 mapping").run(timeout=20)
 
     assert "conversion_result" not in app.session_state
+
+
+def test_generate_mapping_candidates_workflow_card_exists():
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
+
+    assert "Generate Mapping Candidates" in rendered_markdown
+    assert "MAP" in rendered_markdown
+    assert "Review-only candidate report" in rendered_markdown
+
+
+def test_mapping_candidate_warning_text_appears():
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+
+    # Navigate to the Generate Mapping Candidates workflow.
+    # It is the 5th card in the 3+2 layout — "Open" button occurrence 3
+    # (0=VOC, 1=LD, 2=SDR, 3=MAP).
+    app.button[_button_index(app, "Open", occurrence=3)].click().run(timeout=20)
+
+    assert app.session_state["workflow_mode"] == "Generate Mapping Candidates"
+    assert any(
+        "review support only" in warning.value.lower()
+        or "not accepted mappings" in warning.value.lower()
+        for warning in app.warning
+    )
+    rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
+    assert "Generate Mapping Candidates" in rendered_markdown

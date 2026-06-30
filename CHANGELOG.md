@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.11.0 — Mapping Candidate Generator
+
+### Added
+
+- Added `src/gdsn_to_gs1_jsonld/mapping_candidate_generator.py` with
+  deterministic offline scoring of (WebVoc property, GDSN attribute) pairs.
+- Added `gdsn-to-gs1-jsonld generate-mapping-candidates` CLI command.
+- Added "Generate Mapping Candidates" Streamlit workflow card (marker: MAP).
+- Added `docs/mapping-candidate-generator.md`.
+- Added v0.11.0 release notes.
+- Added backend and Streamlit regression tests for the Mapping Candidate Generator.
+- Updated `app/ui.py`: `APP_VERSION = "v0.11.0"`.
+
+### Preserved
+
+- Converter logic, batch behavior, and single-file output remain unchanged.
+- Mapping YAML files, catalog data, and Web Vocabulary snapshots remain
+  unchanged.
+- No warnings were suppressed.
+- No mappings are automatically accepted or written.
+- No online fetching, external API dependency, or large dependency was added.
+- No Product Passport or VC features were added.
+
 ## v0.10.0 — Manual JSON-LD Prototype Builder
 
 ### Added

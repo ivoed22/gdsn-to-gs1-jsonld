@@ -87,6 +87,14 @@ Version 0.6.0 provides the monitoring and revalidation foundation for this
 track. Its reports should inform standards review; they must not be used to
 silently rewrite semantic mappings.
 
+## Status as of v0.11.0
+
+Version 0.11.0 builds the Mapping Candidate Generator, which provides
+review-support candidates pairing WebVoc properties with GDSN/BMS/XPath
+attributes.  This directly supports Track D by making it easier to discover
+and document unmapped or weakly-mapped property coverage.  Candidates remain
+review-only and do not modify any mapping file or converter behavior.
+
 Version 0.6.1 removes three reporting false positives and leaves 12 explicit,
 non-blocking review items. Those items form a practical standards-review
 backlog rather than a reason to weaken report severity or change mappings
