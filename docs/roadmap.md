@@ -1,5 +1,12 @@
 # Roadmap
 
+Version 0.12.0 adds the Product Passport Bridge — a prototype/reference workflow
+for inventorying public DPP reference sources and validating prototype Product
+Passport JSON against local JSON Schemas. Source inventory and structural
+schema validation only. No official GS1 validation or production compliance
+claimed. SHACL execution, Product Passport Builder, and GS1 ↔ Product Passport
+Crosswalk are not yet built.
+
 Version 0.11.0 adds the Mapping Candidate Generator, a deterministic offline
 tool that proposes possible GDSN/BMS/XPath source fields for GS1 Web Vocabulary
 properties with confidence scoring and review reasons.  Candidates are review
@@ -56,7 +63,17 @@ Potential work on the standards-review workflow after v0.11.0:
 - create versioned mapping changes only for accepted decisions
 - retain compatibility tests and migration notes for any accepted output change
 
-## Strategic tracks after v0.11.0
+## PP Bridge source inventory — built in v0.12.0
+
+- Source manifest: 7 entries (context, json_schema x3, shacl_shape, example, epcis_example)
+- CLI: inventory-product-passport-sources, validate-product-passport
+- Streamlit: Validate Product Passport Sources (PP) workflow with 3 tabs
+- JSON Schema structural validation (jsonschema Draft7)
+- SHACL execution: NOT built — shapes inventoried only
+- Product Passport Builder: NOT built
+- GS1 ↔ Product Passport Crosswalk: NOT built
+
+## Strategic tracks after v0.12.0
 
 ### Positioning and demo
 

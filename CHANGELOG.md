@@ -1,5 +1,44 @@
 # Changelog
 
+## v0.12.0 — Product Passport Source Import & Schema Validator
+
+### Added
+
+- Added `product_passport/` directory structure with reference source directories.
+- Added `product_passport/reference_sources/source_manifest.json` with 7 source
+  entries (contexts, JSON schemas, SHACL shapes, examples) for DPP reference
+  tracking.
+- Added `product_passport/reference_sources/source_manifest.schema.json`.
+- Added `product_passport/examples/minimal_product_passport.json` — a minimal
+  prototype Product Passport JSON-LD example for structural testing.
+- Added `product_passport/reference_sources/raw_public/schemas/dpp_minimal.schema.json` —
+  a minimal JSON Schema requiring `@context` and `@type`.
+- Added `src/gdsn_to_gs1_jsonld/product_passport_sources.py` with source
+  inventory, checksum verification, and JSON Schema structural validation
+  functions.
+- Added `gdsn-to-gs1-jsonld inventory-product-passport-sources` CLI command.
+- Added `gdsn-to-gs1-jsonld validate-product-passport` CLI command.
+- Added "Validate Product Passport Sources" Streamlit workflow card (marker: PP)
+  with Source Inventory, Schema Validator, and Examples tabs.
+- Added `docs/product-passport-bridge.md`.
+- Added `docs/releases/v0.12.0.md`.
+- Added `tests/test_product_passport_sources.py` with 14+ tests.
+- Updated `app/ui.py`: `APP_VERSION = "v0.12.0"`.
+- Updated README.md, CHANGELOG.md, roadmap, strategic-next-steps, UI_CHANGES.
+
+### Preserved
+
+- Converter logic, batch behavior, and single-file output remain unchanged.
+- Mapping YAML files, catalog data, and Web Vocabulary snapshots remain
+  unchanged.
+- No warnings were suppressed.
+- No Product Passport Builder was created.
+- No GS1 ↔ Product Passport Crosswalk was created.
+- No SHACL validation execution was implemented (shapes inventoried only).
+- No VC/signed credentials were created.
+- No online fetching or external API dependency was added.
+- No tag or release v0.12.0 was created.
+
 ## v0.11.0 — Mapping Candidate Generator
 
 ### Added

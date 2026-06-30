@@ -1,0 +1,34 @@
+{
+  "_prototype_note": "This is a prototype/reference example. Not official GS1 or DPP production data. For structural testing only.",
+  "@context": [
+    "https://gs1.org/voc/",
+    {
+      "dpp": "https://example.org/dpp/",
+      "xsd": "http://www.w3.org/2001/XMLSchema#"
+    }
+  ],
+  "@type": "gs1:Product",
+  "@id": "https://id.gs1.org/01/09521234543213",
+  "gs1:gtin": "09521234543213",
+  "gs1:productName": [
+    {
+      "@language": "en",
+      "@value": "Prototype Product — DPP Reference Example"
+    }
+  ],
+  "gs1:description": [
+    {
+      "@language": "en",
+      "@value": "A minimal prototype product for Digital Product Passport structural testing. Not production data."
+    }
+  ],
+  "gs1:brand": [
+    {
+      "@language": "en",
+      "@value": "Reference Brand"
+    }
+  ],
+  "dpp:passportVersion": "v0.12.0-prototype",
+  "dpp:issuedAt": "2026-06-30",
+  "dpp:passportStatus": "prototype"
+}

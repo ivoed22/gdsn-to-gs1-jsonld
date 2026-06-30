@@ -47,6 +47,14 @@ from .mapping_candidate_generator import (
     generate_candidate_summary,
     write_candidate_reports,
 )
+from .product_passport_sources import (
+    build_product_passport_source_inventory,
+    load_product_passport_source_manifest,
+    validate_product_passport_source_manifest,
+    validate_product_passport_file,
+    write_product_passport_inventory_reports,
+    write_schema_validation_report,
+)
 
 app = typer.Typer(
     help="Convert GDSN product XML to GS1 Web Vocabulary JSON-LD.",
@@ -784,6 +792,157 @@ def generate_mapping_candidates_command(
     )
     for path in paths.values():
         typer.echo(f"  - {path}")
+
+
+@app.command("inventory-product-passport-sources")
+def inventory_product_passport_sources_command(
+    manifest: Path = typer.Option(
+        Path("product_passport/reference_sources/source_manifest.json"),
+        "--manifest",
+        help="Product Passport source manifest JSON.",
+    ),
+    output_dir: Path = typer.Option(
+        Path("product_passport/reference_sources/normalized/"),
+        "--output-dir",
+        "-o",
+        help="Directory for inventory report outputs.",
+    ),
+    output_format: str = typer.Option(
+        "json,csv",
+        "--format",
+        help="Output formats: comma-separated combination of json, csv.",
+    ),
+) -> None:
+    """Inventory Product Passport reference sources from the source manifest.
+
+    Prototype/reference only. Does not claim official GS1 validation or
+    production compliance.
+    """
+    typer.echo(
+        "Product Passport Bridge: source inventory — prototype/reference only. "
+        "No official GS1 validation or production compliance claimed."
+    )
+    try:
+        pp_manifest = load_product_passport_source_manifest(str(manifest))
+        validation_errors = validate_product_passport_source_manifest(pp_manifest)
+        if validation_errors:
+            for err in validation_errors:
+                typer.echo(f"Manifest warning: {err}", err=True)
+
+        base_dir = str(manifest.parent.parent.parent)  # repo root relative to manifest
+        inventory = build_product_passport_source_inventory(
+            pp_manifest,
+            base_dir=base_dir,
+        )
+        paths = write_product_passport_inventory_reports(
+            inventory,
+            str(output_dir),
+        )
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        typer.echo(f"Source inventory failed: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    typer.echo(
+        f"Product Passport source inventory: {inventory['total_sources']} source(s)"
+    )
+    by_type = inventory.get("sources_by_type", {})
+    by_sector = inventory.get("sources_by_sector", {})
+    typer.echo(
+        "By type: "
+        + ", ".join(f"{k}={v}" for k, v in sorted(by_type.items()))
+    )
+    typer.echo(
+        "By sector: "
+        + ", ".join(f"{k}={v}" for k, v in sorted(by_sector.items()))
+    )
+    missing = inventory.get("missing_local_files", [])
+    if missing:
+        typer.echo(
+            f"Missing local files ({len(missing)}): "
+            + ", ".join(missing),
+            err=True,
+        )
+    for path in paths.values():
+        typer.echo(f"  - {path}")
+
+
+@app.command("validate-product-passport")
+def validate_product_passport_command(
+    input_file: Path = typer.Option(
+        ...,
+        "--input",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Product Passport JSON file to validate.",
+    ),
+    schema_file: Path = typer.Option(
+        ...,
+        "--schema",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="JSON Schema file for structural validation.",
+    ),
+    manifest: Optional[Path] = typer.Option(
+        None,
+        "--manifest",
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Optional Product Passport source manifest JSON.",
+    ),
+    output_dir: Path = typer.Option(
+        Path("product_passport/validation_reports/"),
+        "--output-dir",
+        "-o",
+        help="Directory for validation report output.",
+    ),
+    output_format: str = typer.Option(
+        "json",
+        "--format",
+        help="Output format: json.",
+    ),
+) -> None:
+    """Validate a Product Passport JSON file against a local JSON Schema.
+
+    Structural validation only. Does not claim official GS1 validation or
+    production compliance. Exit 0 on success; non-zero only on tool error.
+    """
+    typer.echo(
+        "Product Passport Bridge: schema validator — prototype/reference only."
+    )
+    typer.echo(
+        "Structural validation only. Not official GS1 validation. "
+        "Not production compliance."
+    )
+    try:
+        pp_manifest: dict | None = None
+        if manifest is not None and manifest.is_file():
+            pp_manifest = load_product_passport_source_manifest(str(manifest))
+
+        report = validate_product_passport_file(
+            str(input_file),
+            str(schema_file),
+            manifest=pp_manifest,
+        )
+        report_path = write_schema_validation_report(report, str(output_dir))
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        typer.echo(f"Product Passport validation tool error: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    status = report.get("validation_status", "unknown")
+    error_count = len(report.get("errors", []))
+    typer.echo(f"Validation status: {status}")
+    typer.echo(f"Schema: {report.get('schema_title') or report.get('schema_id') or schema_file}")
+    typer.echo(f"Errors: {error_count}")
+    if error_count:
+        for err in report.get("errors", []):
+            typer.echo(f"  Error: {err}")
+    typer.echo(f"  - {report_path}")
+    typer.echo(f"Note: {report.get('prototype_warning', '')}")
 
 
 if __name__ == "__main__":

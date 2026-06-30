@@ -1,5 +1,10 @@
 # Strategic Next Steps
 
+v0.12.0 (Product Passport Bridge) is built. It adds source inventory and
+structural JSON Schema validation for prototype Product Passport JSON. SHACL
+execution, Product Passport Builder, and GS1 ↔ Product Passport Crosswalk
+remain as future work. All PP work is prototype/reference only.
+
 After v0.5.0, the project can create the most value through two complementary
 tracks: explaining the demonstrated strategic bridge and hardening the
 standards claims behind it.

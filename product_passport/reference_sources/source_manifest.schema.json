@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "product_passport_source_manifest.schema.json",
+  "title": "Product Passport Source Manifest Schema",
+  "description": "JSON Schema for product_passport/reference_sources/source_manifest.json. Prototype/reference only — not an official GS1 or DPP production schema.",
+  "type": "object",
+  "required": ["schema_version", "sources"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Manifest schema version identifier."
+    },
+    "generated_for": {
+      "type": "string",
+      "description": "Release or context this manifest was generated for."
+    },
+    "prototype_note": {
+      "type": "string",
+      "description": "Prototype/reference disclaimer note."
+    },
+    "sources": {
+      "type": "array",
+      "description": "List of source entries.",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_id",
+          "title",
+          "source_url",
+          "source_type",
+          "sector",
+          "local_path"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "description": "Unique snake_case identifier for this source.",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "title": {
+            "type": "string",
+            "description": "Human-readable title for the source."
+          },
+          "source_url": {
+            "type": "string",
+            "description": "URL of the public source, or PLACEHOLDER if not yet known."
+          },
+          "source_type": {
+            "type": "string",
+            "description": "Type of source artifact.",
+            "enum": [
+              "context",
+              "json_schema",
+              "shacl_shape",
+              "example",
+              "epcis_example"
+            ]
+          },
+          "version": {
+            "type": ["string", "null"],
+            "description": "Version string of the source artifact."
+          },
+          "sector": {
+            "type": "string",
+            "description": "Industry sector or scope for this source.",
+            "enum": [
+              "core",
+              "general_product",
+              "battery",
+              "textile",
+              "epcis"
+            ]
+          },
+          "local_path": {
+            "type": "string",
+            "description": "Path to the local file relative to the repository root."
+          },
+          "sha256": {
+            "type": ["string", "null"],
+            "description": "SHA-256 checksum of the downloaded file, or PLACEHOLDER."
+          },
+          "retrieved_at": {
+            "type": ["string", "null"],
+            "description": "ISO 8601 date/datetime when the file was retrieved."
+          },
+          "public_accessible": {
+            "type": ["boolean", "null"],
+            "description": "Whether the source URL is publicly accessible."
+          },
+          "license_or_rights_note": {
+            "type": "string",
+            "description": "License or rights information note."
+          },
+          "proof_of_concept_note": {
+            "type": "string",
+            "description": "Notes on the proof-of-concept or placeholder status."
+          },
+          "usage_note": {
+            "type": "string",
+            "description": "How this source is used in the project."
+          },
+          "used_by": {
+            "type": "array",
+            "description": "List of features or releases using this source.",
+            "items": {"type": "string"}
+          },
+          "normalized_output": {
+            "type": ["string", "null"],
+            "description": "Path to a normalized output derived from this source, if any."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

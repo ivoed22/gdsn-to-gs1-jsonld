@@ -3,7 +3,13 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
-Version 0.11.0 adds a Mapping Candidate Generator — a deterministic,
+Version 0.12.0 adds the Product Passport Bridge — a prototype/reference
+workflow that inventories public Digital Product Passport (DPP) reference
+sources and validates prototype Product Passport JSON against local JSON
+Schemas. Prototype/reference only; no official GS1 validation or production
+compliance is claimed.
+
+Version 0.11.0 added a Mapping Candidate Generator — a deterministic,
 offline tool that proposes possible GDSN/BMS/XPath source fields for GS1
 Web Vocabulary properties with confidence scoring and review reasons.
 Candidates are review support only; no mappings are automatically accepted
@@ -186,6 +192,26 @@ gdsn-to-gs1-jsonld generate-mapping-candidates \
 Candidates are review support only; no mappings are accepted or written.
 See [Mapping Candidate Generator](docs/mapping-candidate-generator.md).
 
+Inventory Product Passport reference sources (prototype/reference only):
+
+```bash
+gdsn-to-gs1-jsonld inventory-product-passport-sources \
+  --manifest product_passport/reference_sources/source_manifest.json \
+  --output-dir product_passport/reference_sources/normalized/
+```
+
+Validate a prototype Product Passport JSON against a local schema (structural
+validation only; no official GS1 validation or production compliance):
+
+```bash
+gdsn-to-gs1-jsonld validate-product-passport \
+  --input product_passport/examples/minimal_product_passport.json \
+  --schema product_passport/reference_sources/raw_public/schemas/dpp_minimal.schema.json \
+  --output-dir product_passport/validation_reports/
+```
+
+See [Product Passport Bridge](docs/product-passport-bridge.md).
+
 ## Streamlit
 
 ```bash
@@ -193,7 +219,7 @@ streamlit run app/streamlit_app.py
 ```
 
 The app defaults to Certifications & Documents v0.3.0 and can switch to the
-Food v0.2.0 or MVP v0.1.0 profiles. It now starts with workflow modes:
+Food v0.2.0 or MVP v0.1.0 profiles. It now starts with six workflow modes:
 
 - `Convert GDSN XML`, with `Single XML` and `Bulk ZIP` tabs
 - `Explore GS1 Web Vocabulary`, a read-only local vocabulary and coverage
@@ -204,6 +230,9 @@ Food v0.2.0 or MVP v0.1.0 profiles. It now starts with workflow modes:
 - `Generate Mapping Candidates`, a review-only candidate report pairing WebVoc
   properties with GDSN/BMS/XPath source fields (no mappings are accepted or
   written)
+- `Validate Product Passport Sources` (marker: PP), a prototype/reference
+  workflow for inventorying DPP reference sources and structural schema
+  validation (no official GS1 validation or production compliance claimed)
 
 ## Mapping
 
@@ -240,6 +269,7 @@ Vocabulary.
 - [Reference data import](docs/reference-data-import.md)
 - [Standards decision register](docs/standards-decisions/index.md)
 - [Strategic next steps](docs/strategic-next-steps.md)
+- [Product Passport Bridge](docs/product-passport-bridge.md)
 
 ## For GS1 stakeholders
 

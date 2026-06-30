@@ -1,5 +1,19 @@
 # UI Changes
 
+## v0.12.0 Validate Product Passport Sources workflow card checklist
+
+- [x] `Validate Product Passport Sources` workflow card is visible (marker: PP).
+- [x] Workflow selector still asks "What do you want to do?"
+- [x] 6 workflow cards displayed in 3+3 grid layout.
+- [x] Top-level prototype/reference warning is shown (PP Bridge warning).
+- [x] Source Inventory tab: Load manifest button, counts by type/sector, source table, download JSON/CSV.
+- [x] Schema Validator tab: Upload/paste JSON, schema selector, Validate button, status/errors/warnings display, download report.
+- [x] Examples tab: List of example entries, preview for local files.
+- [x] No accept/apply button exists.
+- [x] No production compliance claim exists.
+- [x] No online fetch button exists.
+- [x] Existing workflows (XML, VOC, LD, SDR, MAP) remain available.
+
 ## v0.11.0 Generate Mapping Candidates workflow card checklist
 
 - [x] `Generate Mapping Candidates` workflow card is visible (marker: MAP).
