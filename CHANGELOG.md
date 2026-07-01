@@ -1,5 +1,36 @@
 # Changelog
 
+## v0.13.1 — Guided Convert Workflow
+
+Patch release. Presents the Convert GDSN XML (Single XML) path as a guided
+four-step flow with a progress indicator, wired to the real converter. No new
+features, no mock data, no fabricated coverage or compliance claims.
+
+### Changed
+
+- Convert GDSN XML → Single XML is now a guided four-step flow with a progress
+  indicator: Upload → Mapping → Validate → Export (colour-coded step accents).
+- The flow uses the real converter/validator/reporter — the same outputs are
+  produced and downloadable: product JSON-LD, mapping report XLSX, validation
+  report JSON, and unmapped fields JSON.
+- All seven workflows remain reachable; every governance warning is preserved;
+  session persistence, "Clear results", and profile-change behaviour are
+  unchanged.
+
+### Added
+
+- `app/ui.py` `render_convert_progress()` and progress/step styling.
+- Progress-indicator regression test.
+
+### Preserved
+
+- Converter logic, batch behavior, and single-file output are unchanged.
+- Mapping YAML files, catalog data, and Web Vocabulary snapshots are unchanged.
+- No warnings were suppressed. No mock data. No fabricated coverage or
+  compliance claims.
+- No GS1 ↔ Product Passport Crosswalk, SHACL execution, VC, or signed
+  credentials were created.
+
 ## v0.13.0 — Product Passport Builder
 
 Adds the Product Passport Builder in **minimal-schema prototype mode**. Wraps

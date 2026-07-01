@@ -23,7 +23,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.13.0"
+    assert ui.APP_VERSION == "v0.13.1"
     assert callable(ui.render_page_header)
 
 
@@ -108,7 +108,7 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
     ]
     assert selector.value == "Certifications & Documents v0.3.0"
     assert any(
-        "App version: v0.13.0" in markdown.value
+        "App version: v0.13.1" in markdown.value
         for markdown in app.markdown
     )
     assert any(

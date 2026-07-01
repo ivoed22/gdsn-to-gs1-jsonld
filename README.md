@@ -3,6 +3,12 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.13.1 presents the Convert GDSN XML (Single XML) path as a guided
+four-step flow — Upload → Mapping → Validate → Export — wired to the real
+converter. No new features, no mock data, no fabricated coverage or compliance
+claims; all seven workflows remain reachable and every governance warning is
+preserved.
+
 Version 0.13.0 adds the Product Passport Builder in minimal-schema prototype
 mode: it wraps GS1 Web Vocabulary JSON-LD (from the converter, the Manual
 JSON-LD Prototype Builder, or pasted/uploaded input) into a prototype Product
