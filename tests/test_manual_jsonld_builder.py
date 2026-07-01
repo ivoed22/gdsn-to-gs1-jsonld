@@ -227,6 +227,40 @@ def test_nutrition_group_and_nutrient_serialization():
     assert "value" in data["fatPerNutrientBasis"]
 
 
+def test_food_coding_code_lists_and_serialization():
+    """Food controlled-code attributes are code-list fields sourced from the
+    snapshot and emitted as node references."""
+    manifest = load_builder_manifest(str(MANIFEST))
+    food_coding = next((g for g in manifest["groups"] if g["key"] == "food_coding"), None)
+    assert food_coding is not None
+    fields = {p["property_id"]: p for p in food_coding["properties"]}
+    for pid in (
+        "gs1:nutritionalClaim",
+        "gs1:preservationTechnique",
+        "gs1:growingMethod",
+        "gs1:sourceAnimal",
+        "gs1:foodBeverageTargetUse",
+    ):
+        assert pid in fields, f"missing code field: {pid}"
+        assert fields[pid]["input_type_override"] == "code"
+        assert fields[pid]["options"]
+        for opt in fields[pid]["options"]:
+            assert opt["value"].startswith("gs1:")
+            assert opt["label"]
+
+    food_groups = [g["key"] for g in get_builder_groups(manifest, "Food / Beverage / Tobacco")]
+    assert "food_coding" in food_groups
+
+    code = fields["gs1:nutritionalClaim"]["options"][0]["value"]
+    metadata = {
+        "gs1:nutritionalClaim": {"term_id": "gs1:nutritionalClaim", "input_type_override": "code", "supported_in_v0_10": True},
+    }
+    state = build_empty_builder_state()
+    state = update_builder_value(state, "gs1:nutritionalClaim", code)
+    data = serialize_builder_state_to_jsonld(state, metadata)
+    assert data["nutritionalClaim"] == {"@id": code}
+
+
 def _metadata() -> dict:
     return {
         "gs1:gtin": {

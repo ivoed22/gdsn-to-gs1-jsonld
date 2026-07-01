@@ -14,12 +14,14 @@ language-tagged text (`rdf:langString`), URL/link types (`xsd:anyURI`),
 `xsd:date`/`xsd:dateTime`, `xsd:boolean`, numeric (`xsd:integer`/`decimal`), and
 `gs1:QuantitativeValue` (value + unitCode).
 
-The manifest (`builder_manifest/product_builder_v0_10.yaml`) now covers 132
-fields across 15 thematic groups. Beyond the original core set it adds Product
+The manifest (`builder_manifest/product_builder_v0_10.yaml`) now covers 144
+fields across 16 thematic groups. Beyond the original core set it adds Product
 descriptions & marketing, consumer information (instructions, safety, recall),
-lifecycle dates, consumer/DPP link types, and a full Nutrition group (43
-per-nutrient measurements plus the nutrient basis quantity), each emitted as a
-`value` + `unitCode` quantity like `gs1:netContent`.
+lifecycle dates, consumer/DPP link types, a full Nutrition group (43
+per-nutrient measurements plus the nutrient basis quantity), and a Food Coding &
+Claims group of controlled-code attributes (nutritional claim, preservation
+technique, growing method, source animal, and more) sourced from the local
+Web Vocabulary snapshot.
 
 ### Nested objects
 

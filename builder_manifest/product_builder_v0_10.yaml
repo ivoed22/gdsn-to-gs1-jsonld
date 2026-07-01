@@ -38,6 +38,7 @@ product_categories:
       - dates_lifecycle
       - nutritional_information
       - nutrition
+      - food_coding
       - allergens
       - digital_links_services
       - consumer_dpp_links
@@ -1187,3 +1188,231 @@ groups:
         help_text: "Zinc per specified nutrient basis quantity (value + unitCode)."
         appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
         supported_in_v0_10: true
+
+  - key: food_coding
+    label: Food Coding & Claims
+    description: >
+      Controlled-code food attributes and claims, chosen from GS1 code
+      lists and emitted as JSON-LD node references.
+    properties:
+      - property_id: gs1:nutritionalClaim
+        requirement: optional
+        input_type_override: code
+        help_text: "Nutritional claim type."
+        appears_because: "Controlled gs1:NutritionalClaimTypeCode value from the local Web Vocabulary snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:NutritionalClaimTypeCode-ADDITIVE_FREE", label: "Additive Free"}
+          - {value: "gs1:NutritionalClaimTypeCode-ARTIFICIALLY_SWEETENED", label: "Artificially Sweetened"}
+          - {value: "gs1:NutritionalClaimTypeCode-CHOLESTEROL_FREE", label: "Cholesterol Free"}
+          - {value: "gs1:NutritionalClaimTypeCode-COLOURING_AGENT_FREE", label: "Colouring Agent Free"}
+          - {value: "gs1:NutritionalClaimTypeCode-CONTAINS_GLYZYRRHIZIN", label: "Contains Glyzyrrhizin"}
+          - {value: "gs1:NutritionalClaimTypeCode-CONTAINS_LIQUORICE", label: "Contains Liquorice"}
+          - {value: "gs1:NutritionalClaimTypeCode-CONTAINS_SOY", label: "Contains Soy"}
+          - {value: "gs1:NutritionalClaimTypeCode-EGG_FREE", label: "Egg Free"}
+          - {value: "gs1:NutritionalClaimTypeCode-ENERGY_FREE", label: "Energy Free"}
+          - {value: "gs1:NutritionalClaimTypeCode-ENERGY_REDUCED", label: "Energy Reduced"}
+          - {value: "gs1:NutritionalClaimTypeCode-ENRICHED_OR_FORTIFIED_IN_VITAMINS_AND_OR_MINERALS", label: "Enriched or Fortified in Vitamins Minerals"}
+          - {value: "gs1:NutritionalClaimTypeCode-FAT_FREE", label: "Fat Free"}
+          - {value: "gs1:NutritionalClaimTypeCode-FREE_FROM_GLUTEN", label: "Free From Gluten"}
+          - {value: "gs1:NutritionalClaimTypeCode-GUARANTEED_LACTOSE_FREE", label: "Guarantee Lactose Free"}
+          - {value: "gs1:NutritionalClaimTypeCode-HIGH_FIBRE", label: "High Fibre"}
+          - {value: "gs1:NutritionalClaimTypeCode-HIGH_PROTEIN", label: "High Protein"}
+          - {value: "gs1:NutritionalClaimTypeCode-HIGH_VITAMINS_AND_OR_MINERALS", label: "High in Vitamins Minerals"}
+          - {value: "gs1:NutritionalClaimTypeCode-LACTOSE_FREE", label: "Lactose Free"}
+          - {value: "gs1:NutritionalClaimTypeCode-LIGHT_LITE", label: "Light or Lite"}
+          - {value: "gs1:NutritionalClaimTypeCode-LOW_ENERGY", label: "Low Energy"}
+          - {value: "gs1:NutritionalClaimTypeCode-LOW_PROTEIN", label: "Low Protein"}
+          - {value: "gs1:NutritionalClaimTypeCode-LOW_FAT", label: "Low in Fat"}
+          - {value: "gs1:NutritionalClaimTypeCode-LOW_LACTOSE", label: "Low in Lactose"}
+          - {value: "gs1:NutritionalClaimTypeCode-LOW_SATURATED_FAT", label: "Low in Saturated Fat"}
+          - {value: "gs1:NutritionalClaimTypeCode-LOW_SODIUM_SALT", label: "Low in Sodium"}
+          - {value: "gs1:NutritionalClaimTypeCode-LOW_SUGARS", label: "Low in sugars"}
+          - {value: "gs1:NutritionalClaimTypeCode-MILK_FREE", label: "Milk Free"}
+          - {value: "gs1:NutritionalClaimTypeCode-MILK_PROTEIN_FREE", label: "Milk Protein Free"}
+          - {value: "gs1:NutritionalClaimTypeCode-NATURAL_SOURCE_OF_VITAMINS_AND_OR_MINERALS", label: "Natural Source of Vitamins Minerals"}
+          - {value: "gs1:NutritionalClaimTypeCode-WITH_NO_ADDED_SUGARS", label: "No Added Sugar"}
+      - property_id: gs1:preservationTechnique
+        requirement: optional
+        input_type_override: code
+        help_text: "Preservation technique applied."
+        appears_because: "Controlled gs1:PreservationTechniqueCode value from the local Web Vocabulary snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:PreservationTechniqueCode-ACIDIFICATION", label: "Acidification"}
+          - {value: "gs1:PreservationTechniqueCode-ALCOHOL_CURING", label: "Alcohol Curing"}
+          - {value: "gs1:PreservationTechniqueCode-ATTESTED_MILK", label: "Attested Milk"}
+          - {value: "gs1:PreservationTechniqueCode-BRINING", label: "Brining"}
+          - {value: "gs1:PreservationTechniqueCode-CANNING", label: "Canning"}
+          - {value: "gs1:PreservationTechniqueCode-COLD_SMOKE_CURING", label: "Cold Smoke Curing"}
+          - {value: "gs1:PreservationTechniqueCode-CONSERVE", label: "Conserve"}
+          - {value: "gs1:PreservationTechniqueCode-BOILING", label: "Cooking"}
+          - {value: "gs1:PreservationTechniqueCode-DEHYDRATION", label: "Dehydration"}
+          - {value: "gs1:PreservationTechniqueCode-DRYING", label: "Drying"}
+          - {value: "gs1:PreservationTechniqueCode-FERMENTATION", label: "Fermentation"}
+          - {value: "gs1:PreservationTechniqueCode-FREEZE_DRYING", label: "Freeze Drying"}
+          - {value: "gs1:PreservationTechniqueCode-FREEZING", label: "Freezing"}
+          - {value: "gs1:PreservationTechniqueCode-HIGH_TEMPERATURE_TREATED_MILK", label: "High Temperature Treated Milk"}
+          - {value: "gs1:PreservationTechniqueCode-HOT_SMOKE_CURING", label: "Hot Smoke Curing"}
+          - {value: "gs1:PreservationTechniqueCode-IONISATION", label: "Ionisation"}
+          - {value: "gs1:PreservationTechniqueCode-IRRADIATION", label: "Irradiation"}
+          - {value: "gs1:PreservationTechniqueCode-PASTEURISATION", label: "Pasteurisation"}
+          - {value: "gs1:PreservationTechniqueCode-QUICK_FREEZING", label: "Quick Freezing"}
+          - {value: "gs1:PreservationTechniqueCode-SALT_CURING", label: "Salt Curing"}
+          - {value: "gs1:PreservationTechniqueCode-SOUS_VIDE", label: "Sous Vide"}
+          - {value: "gs1:PreservationTechniqueCode-STERILISATION", label: "Sterilisation"}
+          - {value: "gs1:PreservationTechniqueCode-SUGAR_CURING", label: "Sugar Curing"}
+          - {value: "gs1:PreservationTechniqueCode-ULTRA_HIGH_TEMPERATURE", label: "Ultra High Temperature"}
+          - {value: "gs1:PreservationTechniqueCode-UNDER_MODIFIED_ATMOSPHERE", label: "Under Modified Atmosphere"}
+          - {value: "gs1:PreservationTechniqueCode-VACUUM_PACKED", label: "Vacuum Packed"}
+      - property_id: gs1:growingMethod
+        requirement: optional
+        input_type_override: code
+        help_text: "Growing method."
+        appears_because: "Controlled gs1:GrowingMethodCode value from the local Web Vocabulary snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:GrowingMethodCode-CAGE_FREE", label: "Cage Free"}
+          - {value: "gs1:GrowingMethodCode-CLONED_FOODS", label: "Cloned Food"}
+          - {value: "gs1:GrowingMethodCode-CONVENTIONAL", label: "Conventional"}
+          - {value: "gs1:GrowingMethodCode-FARM_RAISED", label: "Farm Raised"}
+          - {value: "gs1:GrowingMethodCode-FIELD_GROWN", label: "Field Grown"}
+          - {value: "gs1:GrowingMethodCode-FLY_FREE", label: "Fly Free"}
+          - {value: "gs1:GrowingMethodCode-FREE_RANGE", label: "Free Range"}
+          - {value: "gs1:GrowingMethodCode-GRASS_FED", label: "Grass Fed"}
+          - {value: "gs1:GrowingMethodCode-GREENHOUSE", label: "Greenhouse"}
+          - {value: "gs1:GrowingMethodCode-HUMANELY_RAISED", label: "Humanely Raised"}
+          - {value: "gs1:GrowingMethodCode-HYDROPONIC", label: "Hydroponic"}
+          - {value: "gs1:GrowingMethodCode-INTEGRATED_PEST_MANAGEMENT", label: "Integrated Pest Management"}
+          - {value: "gs1:GrowingMethodCode-ORGANIC", label: "Organic"}
+          - {value: "gs1:GrowingMethodCode-SHADE_GROWN", label: "Shade Grown"}
+          - {value: "gs1:GrowingMethodCode-SUSTAINABLE", label: "Sustainable"}
+          - {value: "gs1:GrowingMethodCode-WILD", label: "Wild"}
+      - property_id: gs1:sourceAnimal
+        requirement: optional
+        input_type_override: code
+        help_text: "Source animal."
+        appears_because: "Controlled gs1:SourceAnimalCode value from the local Web Vocabulary snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:SourceAnimalCode-ALLIGATOR", label: "Alligator"}
+          - {value: "gs1:SourceAnimalCode-ASS", label: "Ass"}
+          - {value: "gs1:SourceAnimalCode-BEAR", label: "Bear"}
+          - {value: "gs1:SourceAnimalCode-BEEF_COW", label: "Beef Cow"}
+          - {value: "gs1:SourceAnimalCode-BOAR", label: "Boar"}
+          - {value: "gs1:SourceAnimalCode-BUFFALO", label: "Buffalo"}
+          - {value: "gs1:SourceAnimalCode-CALF", label: "Calf"}
+          - {value: "gs1:SourceAnimalCode-CAMEL", label: "Camel"}
+          - {value: "gs1:SourceAnimalCode-CHICKEN", label: "Chicken"}
+          - {value: "gs1:SourceAnimalCode-COCKEREL", label: "Cockerel"}
+          - {value: "gs1:SourceAnimalCode-COW", label: "Cow"}
+          - {value: "gs1:SourceAnimalCode-CROCODILE", label: "Crocodile"}
+          - {value: "gs1:SourceAnimalCode-DEER", label: "Deer"}
+          - {value: "gs1:SourceAnimalCode-DOG", label: "Dog"}
+          - {value: "gs1:SourceAnimalCode-DUCK", label: "Duck"}
+          - {value: "gs1:SourceAnimalCode-DUCKLING", label: "Duckling"}
+          - {value: "gs1:SourceAnimalCode-FISH", label: "Fish"}
+          - {value: "gs1:SourceAnimalCode-FOWL", label: "Fowl"}
+          - {value: "gs1:SourceAnimalCode-FROG", label: "Frog"}
+          - {value: "gs1:SourceAnimalCode-GOAT", label: "Goat"}
+          - {value: "gs1:SourceAnimalCode-GOOSE", label: "Goose"}
+          - {value: "gs1:SourceAnimalCode-GROUSE", label: "Grouse"}
+          - {value: "gs1:SourceAnimalCode-GUINEAFOWL", label: "Guinea Fowl"}
+          - {value: "gs1:SourceAnimalCode-HARE", label: "Hare"}
+          - {value: "gs1:SourceAnimalCode-HORSE", label: "Horse"}
+          - {value: "gs1:SourceAnimalCode-INVERTEBRATE", label: "Invertebrate"}
+          - {value: "gs1:SourceAnimalCode-LAMB", label: "Lamb"}
+          - {value: "gs1:SourceAnimalCode-LAND_SNAIL", label: "Land Snail"}
+          - {value: "gs1:SourceAnimalCode-MILK_COW", label: "Milk Cow"}
+          - {value: "gs1:SourceAnimalCode-MOOSE", label: "Moose"}
+      - property_id: gs1:foodBeverageTargetUse
+        requirement: optional
+        input_type_override: code
+        help_text: "Target use."
+        appears_because: "Controlled gs1:FoodBeverageTargetUseCode value from the local Web Vocabulary snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:FoodBeverageTargetUseCode-ANY_MEAL", label: "Any Meal"}
+          - {value: "gs1:FoodBeverageTargetUseCode-BREAKFAST", label: "Breakfast"}
+          - {value: "gs1:FoodBeverageTargetUseCode-MAIN_MEAL", label: "Main Meal"}
+          - {value: "gs1:FoodBeverageTargetUseCode-PORTABLE_MEAL", label: "Portable Meal"}
+          - {value: "gs1:FoodBeverageTargetUseCode-SNACK", label: "Snack"}
+          - {value: "gs1:FoodBeverageTargetUseCode-UNCLASSIFIED", label: "Unclassified"}
+      - property_id: gs1:consumerSalesCondition
+        requirement: optional
+        input_type_override: code
+        help_text: "Consumer sales condition."
+        appears_because: "Controlled gs1:ConsumerSalesConditionsCode value from the local Web Vocabulary snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:ConsumerSalesConditionsCode-BTC", label: "Behind the Counter"}
+          - {value: "gs1:ConsumerSalesConditionsCode-OTC", label: "Over the Counter"}
+          - {value: "gs1:ConsumerSalesConditionsCode-PRESCRIPTION_REQUIRED", label: "Prescription Required"}
+          - {value: "gs1:ConsumerSalesConditionsCode-RESTRICTED_TO_SELL_16", label: "Restricted To Sell 16"}
+          - {value: "gs1:ConsumerSalesConditionsCode-RESTRICTED_TO_SELL_18", label: "Restricted To Sell 18"}
+          - {value: "gs1:ConsumerSalesConditionsCode-RESTRICTED_TO_SELL_21", label: "Restricted To Sell 21"}
+      - property_id: gs1:foodBeverageRefrigerationClaim
+        requirement: optional
+        input_type_override: code
+        help_text: "Refrigeration claim."
+        appears_because: "Controlled gs1:FoodBeverageRefrigerationClaimCode value from the local Web Vocabulary snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:FoodBeverageRefrigerationClaimCode-CAN_BE_REFRIGERATED", label: "Can Be Refrigerated."}
+          - {value: "gs1:FoodBeverageRefrigerationClaimCode-MUST_BE_REFRIGERATED", label: "Must Be Refrigerated."}
+          - {value: "gs1:FoodBeverageRefrigerationClaimCode-SHELF_STABLE", label: "Shelf Stable."}
+          - {value: "gs1:FoodBeverageRefrigerationClaimCode-UNIDENTIFIED", label: "Unidentified."}
+      - property_id: gs1:productYieldType
+        requirement: optional
+        input_type_override: code
+        help_text: "Product yield type."
+        appears_because: "Controlled gs1:ProductYieldTypeCode value from the local Web Vocabulary snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:ProductYieldTypeCode-AFTER_COOKING", label: "After Cooking"}
+          - {value: "gs1:ProductYieldTypeCode-AFTER_DILUTION", label: "After Dilution"}
+          - {value: "gs1:ProductYieldTypeCode-DRAINED_WEIGHT", label: "Drained Weight"}
+          - {value: "gs1:ProductYieldTypeCode-UNSPECIFIED", label: "Unspecified"}
+      - property_id: gs1:geneticallyModifiedDeclaration
+        requirement: optional
+        input_type_override: code
+        help_text: "GMO declaration (containment level)."
+        appears_because: "Controlled gs1:LevelOfContainmentCode value from the local Web Vocabulary snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:LevelOfContainmentCode-CONTAINS", label: "Contains"}
+          - {value: "gs1:LevelOfContainmentCode-FREE_FROM", label: "Free From"}
+          - {value: "gs1:LevelOfContainmentCode-MAY_CONTAIN", label: "May Contain"}
+      - property_id: gs1:isInstant
+        requirement: optional
+        input_type_override: code
+        help_text: "Is the product instant."
+        appears_because: "Controlled gs1:NonbinaryLogicCode value from the local Web Vocabulary snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:NonbinaryLogicCode-FALSE", label: "False"}
+          - {value: "gs1:NonbinaryLogicCode-NOT_APPLICABLE", label: "Not Applicable"}
+          - {value: "gs1:NonbinaryLogicCode-TRUE", label: "True"}
+          - {value: "gs1:NonbinaryLogicCode-UNSPECIFIED", label: "Unspecified"}
+      - property_id: gs1:isSliced
+        requirement: optional
+        input_type_override: code
+        help_text: "Is the product sliced."
+        appears_because: "Controlled gs1:NonbinaryLogicCode value from the local Web Vocabulary snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:NonbinaryLogicCode-FALSE", label: "False"}
+          - {value: "gs1:NonbinaryLogicCode-NOT_APPLICABLE", label: "Not Applicable"}
+          - {value: "gs1:NonbinaryLogicCode-TRUE", label: "True"}
+          - {value: "gs1:NonbinaryLogicCode-UNSPECIFIED", label: "Unspecified"}
+      - property_id: gs1:irradiatedCode
+        requirement: optional
+        input_type_override: code
+        help_text: "Has the product been irradiated."
+        appears_because: "Controlled gs1:NonbinaryLogicCode value from the local Web Vocabulary snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:NonbinaryLogicCode-FALSE", label: "False"}
+          - {value: "gs1:NonbinaryLogicCode-NOT_APPLICABLE", label: "Not Applicable"}
+          - {value: "gs1:NonbinaryLogicCode-TRUE", label: "True"}
+          - {value: "gs1:NonbinaryLogicCode-UNSPECIFIED", label: "Unspecified"}
