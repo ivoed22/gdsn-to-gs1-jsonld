@@ -9,6 +9,7 @@ from gdsn_to_gs1_jsonld.jsonld_builder import (
     infer_input_type,
     jsonld_bytes,
     load_builder_manifest,
+    object_subfield_key,
     serialize_builder_state_to_jsonld,
     update_builder_value,
     validate_builder_state,
@@ -79,6 +80,77 @@ def test_manifest_breadth_expansion_groups_and_fields():
     assert data["bestBeforeDate"] == "2026-12-31"
     assert data["isProductRecalled"] is True
     assert data["eifu"] == "https://example.com/eifu/1"
+
+
+def test_manifest_nested_object_fields_present():
+    """Depth track: brand, image, certification, packaging material, and
+    referenced-file are now nested-object fields with safe sub-fields."""
+    manifest = load_builder_manifest(str(MANIFEST))
+    objects = {
+        field["property_id"]: field
+        for group in manifest["groups"]
+        for field in group["properties"]
+        if field.get("input_type_override") == "object"
+    }
+    for pid, otype in [
+        ("gs1:brand", "gs1:Brand"),
+        ("gs1:image", "gs1:ReferencedFileDetails"),
+        ("gs1:certification", "gs1:CertificationDetails"),
+        ("gs1:packagingMaterial", "gs1:PackagingMaterial"),
+        ("gs1:referencedFile", "gs1:ReferencedFileDetails"),
+    ]:
+        assert pid in objects, f"missing object field: {pid}"
+        field = objects[pid]
+        assert field["object_type"] == otype
+        assert field.get("supported_in_v0_10") is True
+        assert field.get("object_fields")
+        for sub in field["object_fields"]:
+            assert sub.get("property_id")
+            assert sub.get("input_type_override")
+
+
+def test_nested_object_serialization_and_omission():
+    metadata = {
+        "gs1:gtin": {"term_id": "gs1:gtin", "range": ["xsd:string"], "input_type_override": "text", "supported_in_v0_10": True},
+        "gs1:brand": {"term_id": "gs1:brand", "input_type_override": "object", "object_type": "gs1:Brand", "supported_in_v0_10": True,
+            "object_fields": [{"property_id": "gs1:brandName", "input_type_override": "language_text"}]},
+        "gs1:certification": {"term_id": "gs1:certification", "input_type_override": "object", "object_type": "gs1:CertificationDetails", "supported_in_v0_10": True,
+            "object_fields": [
+                {"property_id": "gs1:certificationStandard", "input_type_override": "language_text"},
+                {"property_id": "gs1:certificationURI", "input_type_override": "url"},
+                {"property_id": "gs1:certificationStartDate", "input_type_override": "date"},
+            ]},
+    }
+    state = build_empty_builder_state()
+    state = update_builder_value(state, "gs1:gtin", "09501234567890")
+    state = update_builder_value(state, object_subfield_key("gs1:brand", "gs1:brandName"), "Example Brand", language="en")
+    state = update_builder_value(state, object_subfield_key("gs1:certification", "gs1:certificationStandard"), "EU Organic", language="en")
+    state = update_builder_value(state, object_subfield_key("gs1:certification", "gs1:certificationURI"), "https://example.com/cert/1")
+    state = update_builder_value(state, object_subfield_key("gs1:certification", "gs1:certificationStartDate"), "2026-01-01")
+
+    data = serialize_builder_state_to_jsonld(state, metadata)
+    assert data["brand"] == {
+        "@type": "gs1:Brand",
+        "brandName": [{"@language": "en", "@value": "Example Brand"}],
+    }
+    cert = data["certification"]
+    assert cert["@type"] == "gs1:CertificationDetails"
+    assert cert["certificationStandard"] == [{"@language": "en", "@value": "EU Organic"}]
+    assert cert["certificationURI"] == "https://example.com/cert/1"
+    assert cert["certificationStartDate"] == "2026-01-01"
+
+    # An object with no sub-values is omitted entirely.
+    empty = build_empty_builder_state()
+    empty = update_builder_value(empty, "gs1:gtin", "09501234567890")
+    data2 = serialize_builder_state_to_jsonld(empty, metadata)
+    assert "brand" not in data2
+    assert "certification" not in data2
+
+    # An invalid sub-field URL produces a targeted validation warning.
+    bad = build_empty_builder_state()
+    bad = update_builder_value(bad, object_subfield_key("gs1:certification", "gs1:certificationURI"), "not-a-url")
+    warnings = validate_builder_state(bad, metadata)
+    assert any("certificationURI" in warning for warning in warnings)
 
 
 def _metadata() -> dict:

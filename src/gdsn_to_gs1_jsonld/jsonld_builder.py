@@ -361,6 +361,9 @@ def validate_builder_state(
         warnings.append("Invalid GTIN format or check digit.")
 
     for property_id, entry in values.items():
+        # Nested-object sub-values are validated via their parent object below.
+        if "#" in property_id:
+            continue
         metadata = _metadata_for_property(property_metadata, property_id)
         input_type = infer_input_type(
             metadata,
@@ -398,7 +401,99 @@ def validate_builder_state(
                 warnings.append(f"{property_id} has a quantity value without unitCode.")
             if unit_code and value in (None, ""):
                 warnings.append(f"{property_id} has unitCode without a quantity value.")
+
+    # Validate nested-object sub-fields (URL and language-tag checks).
+    if isinstance(property_metadata, dict):
+        for object_id, meta in property_metadata.items():
+            if not isinstance(meta, dict):
+                continue
+            if (meta.get("input_type_override") or meta.get("input_type")) != "object":
+                continue
+            for sub in meta.get("object_fields") or []:
+                sub_id = sub.get("property_id")
+                if not sub_id:
+                    continue
+                sub_entry = values.get(object_subfield_key(object_id, sub_id))
+                if sub_entry is None:
+                    continue
+                sub_type = sub.get("input_type_override") or sub.get("input_type") or "text"
+                sub_value = _entry_value(sub_entry)
+                if _empty_manual_value(sub_value):
+                    continue
+                if sub_type == "url" and not _looks_like_url(str(sub_value)):
+                    warnings.append(f"{object_id} / {sub_id} is not a valid HTTP(S) URL.")
+                if sub_type == "language_text" and not _entry_language(sub_entry):
+                    warnings.append(f"{object_id} / {sub_id} needs a language tag.")
+
     return list(dict.fromkeys(warnings))
+
+
+def _emit_scalar_like(entry: Any, input_type: str) -> Any:
+    """Emit a single builder value the same way the top-level serializer does.
+
+    Returns the JSON-LD-ready value (language-value list, quantity object, URL
+    string, or coerced scalar), or None when the value should be omitted.
+    Shared by top-level fields and nested-object sub-fields.
+    """
+    value = _entry_value(entry)
+    if _empty_manual_value(value) and value is not False:
+        return None
+    if input_type == "language_text":
+        language = _entry_language(entry)
+        if not language:
+            return None
+        return [{"@language": language, "@value": str(value)}]
+    if input_type == "quantity":
+        unit_code = _entry_unit_code(entry)
+        if value in (None, "") or not unit_code:
+            return None
+        try:
+            return {"value": _coerce_scalar(value, "quantity"), "unitCode": unit_code}
+        except (ArithmeticError, ValueError):
+            return None
+    if input_type == "url":
+        return str(value) if _looks_like_url(str(value)) else None
+    try:
+        return _coerce_scalar(value, input_type)
+    except (ArithmeticError, ValueError):
+        return None
+
+
+def object_subfield_key(object_id: str, sub_property_id: str) -> str:
+    """State key for a nested-object sub-field value (parent#child)."""
+    return f"{object_id}#{sub_property_id}"
+
+
+def _serialize_object_field(
+    object_id: str,
+    metadata: dict[str, Any],
+    values: dict[str, Any],
+) -> dict[str, Any] | None:
+    """Build a nested typed object from its declared sub-field values.
+
+    Returns a ``{"@type": ..., <compact sub name>: <value>, ...}`` dict, or None
+    when no sub-field has a usable value. Emits only safe scalar/langString/URL/
+    quantity sub-values; unsupported or empty sub-fields are omitted.
+    """
+    obj: dict[str, Any] = {}
+    object_type = metadata.get("object_type")
+    if object_type:
+        obj["@type"] = object_type
+    for sub in metadata.get("object_fields") or []:
+        sub_id = sub.get("property_id")
+        if not sub_id:
+            continue
+        entry = values.get(object_subfield_key(object_id, sub_id))
+        if entry is None:
+            continue
+        sub_type = sub.get("input_type_override") or sub.get("input_type") or "text"
+        emitted = _emit_scalar_like(entry, sub_type)
+        if emitted in (None, "", []):
+            continue
+        obj[_compact_property_name(sub_id)] = emitted
+    if len(obj) <= (1 if object_type else 0):
+        return None
+    return obj
 
 
 def serialize_builder_state_to_jsonld(
@@ -416,6 +511,10 @@ def serialize_builder_state_to_jsonld(
         data["@id"] = f"https://id.gs1.org/01/{gtin}"
 
     for property_id in sorted(values):
+        # Nested-object sub-values (parent#child) are emitted via their parent
+        # object field below, not as top-level properties.
+        if "#" in property_id:
+            continue
         entry = values[property_id]
         value = _entry_value(entry)
         if _empty_manual_value(value) and value is not False:
@@ -426,6 +525,9 @@ def serialize_builder_state_to_jsonld(
             metadata.get("input_type_override") or metadata.get("input_type"),
         )
         if not metadata.get("supported_in_v0_10", True) or input_type == "unsupported":
+            continue
+        if input_type == "object":
+            # Object fields have no direct value; handled after this loop.
             continue
         compact_name = _compact_property_name(property_id)
         if input_type == "language_text":
@@ -453,6 +555,22 @@ def serialize_builder_state_to_jsonld(
                 data[compact_name] = _coerce_scalar(value, input_type)
             except (ArithmeticError, ValueError):
                 continue
+
+    # Emit declared nested-object fields (input_type "object") from their
+    # sub-field values, deterministically in sorted order.
+    if isinstance(property_metadata, dict):
+        for object_id in sorted(property_metadata):
+            meta = property_metadata[object_id]
+            if not isinstance(meta, dict):
+                continue
+            if (meta.get("input_type_override") or meta.get("input_type")) != "object":
+                continue
+            if not meta.get("supported_in_v0_10", True):
+                continue
+            obj = _serialize_object_field(object_id, meta, values)
+            if obj:
+                data[_compact_property_name(object_id)] = obj
+
     return data
 
 

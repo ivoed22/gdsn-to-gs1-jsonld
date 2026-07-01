@@ -19,11 +19,38 @@ across 14 thematic groups. Beyond the original core set it adds Product
 descriptions & marketing, consumer information (instructions, safety, recall),
 lifecycle dates, and consumer/DPP link types.
 
-Properties whose range is a **nested object** (e.g. `gs1:Brand`,
-`gs1:ReferencedFileDetails`, certification / allergen / packaging / nutrient
-objects) remain flagged `supported_in_v0_10: false` and are shown as *planned*
-until safe object modelling is added. This is a UI/config manifest only — it is
-not converter mapping YAML and does not change governed converter output.
+### Nested objects
+
+Selected **nested-object** properties are now authorable via a generic object
+input type. The Builder renders an object's safe sub-fields and emits a typed
+nested object, e.g.:
+
+```json
+"brand": { "@type": "gs1:Brand", "brandName": [ { "@language": "en", "@value": "…" } ] }
+```
+
+Supported object fields and their safe sub-fields:
+
+- `gs1:brand` → `gs1:Brand` (brandName, subBrandName)
+- `gs1:image` / `gs1:referencedFile` → `gs1:ReferencedFileDetails`
+  (referencedFileURL, pixel size, file language)
+- `gs1:certification` → `gs1:CertificationDetails` (standard, value, agency,
+  identification, URI, start/end dates)
+- `gs1:packagingMaterial` → `gs1:PackagingMaterial` (composition quantity,
+  thickness)
+
+Only **safe scalar/langString/URL/quantity/date** sub-fields are offered;
+sub-fields whose own range is another code/object type (e.g. an agency
+`gs1:Organization`, allergen/nutrient code objects) are intentionally omitted.
+Objects with no sub-value entered are not emitted.
+
+Remaining nested structures without safe scalar sub-fields (e.g.
+`gs1:hasAllergen` / `gs1:AllergenDetails`, structured nutrient details) stay
+flagged `supported_in_v0_10: false` and are shown as *planned*.
+
+This is a UI/config manifest plus the manual Builder serializer only — it is not
+converter mapping YAML and does not change governed converter output. Manual
+output stays prototype and is not BMS/XPath traceable.
 
 ## Purpose
 

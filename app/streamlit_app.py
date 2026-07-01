@@ -36,6 +36,7 @@ from gdsn_to_gs1_jsonld.jsonld_builder import (
     infer_input_type,
     jsonld_bytes as prototype_jsonld_bytes,
     load_builder_manifest,
+    object_subfield_key,
     serialize_builder_state_to_jsonld,
     update_builder_value,
     validate_builder_state,
@@ -372,6 +373,8 @@ def _property_metadata_index(dataset: object, manifest: dict) -> dict[str, dict[
                     "appears_because": field.get("appears_because", ""),
                     "supported_in_v0_10": field.get("supported_in_v0_10", True),
                     "planned_reason": field.get("planned_reason", ""),
+                    "object_type": field.get("object_type"),
+                    "object_fields": field.get("object_fields"),
                 }
             )
             index[property_id] = metadata
@@ -425,6 +428,87 @@ def _coerce_builder_widget_value(value: Any, input_type: str) -> Any:
     return value
 
 
+def _render_field_widget(
+    state: dict[str, Any],
+    state_id: str,
+    input_type: str,
+    metadata: dict[str, Any],
+    *,
+    default_language: str,
+) -> dict[str, Any]:
+    """Render a single builder input for *state_id* and update state.
+
+    Used for both top-level fields and nested-object sub-fields; the state key
+    for a sub-field is the ``parent#child`` compound id.
+    """
+    key = _builder_key(state_id)
+    if input_type == "language_text":
+        value = st.text_input(
+            f"{state_id} value",
+            key=key,
+            placeholder=str(metadata.get("example_value") or ""),
+            label_visibility="collapsed",
+        )
+        if value:
+            state = update_builder_value(
+                state, state_id, value, language=default_language
+            )
+        else:
+            state = update_builder_value(state, state_id, "")
+    elif input_type == "quantity":
+        value_col, unit_col = st.columns([1, 0.7])
+        value = value_col.text_input(
+            f"{state_id} quantity value",
+            key=key,
+            placeholder="1.0",
+            label_visibility="collapsed",
+        )
+        unit_code = unit_col.text_input(
+            f"{state_id} unitCode",
+            key=_builder_key(state_id, "unit"),
+            placeholder="LTR",
+            label_visibility="collapsed",
+        )
+        if value or unit_code:
+            state = update_builder_value(state, state_id, value, unit_code=unit_code)
+        else:
+            state = update_builder_value(state, state_id, "")
+    elif input_type == "checkbox":
+        value = st.checkbox(
+            f"{state_id} value",
+            key=key,
+            label_visibility="collapsed",
+        )
+        if value:
+            state = update_builder_value(state, state_id, value)
+        else:
+            state = update_builder_value(state, state_id, "")
+    elif input_type == "url":
+        value = st.text_input(
+            f"{state_id} URL",
+            key=key,
+            placeholder=str(metadata.get("example_value") or "https://"),
+            label_visibility="collapsed",
+        )
+        if value:
+            state = update_builder_value(state, state_id, value)
+        else:
+            state = update_builder_value(state, state_id, "")
+    else:
+        value = st.text_input(
+            f"{state_id} value",
+            key=key,
+            placeholder=str(metadata.get("example_value") or ""),
+            label_visibility="collapsed",
+        )
+        value = _coerce_builder_widget_value(value, input_type)
+        if value not in ("", None):
+            state = update_builder_value(state, state_id, value)
+        else:
+            state = update_builder_value(state, state_id, "")
+    return state
+
+
 def _render_manual_field(
     state: dict[str, Any],
     metadata: dict[str, Any],
@@ -444,80 +528,40 @@ def _render_manual_field(
         )
         return state
 
-    key = _builder_key(property_id)
-    if input_type == "language_text":
-        value = st.text_input(
-            f"{property_id} value",
-            key=key,
-            placeholder=str(metadata.get("example_value") or ""),
-            label_visibility="collapsed",
+    if input_type == "object":
+        object_fields = metadata.get("object_fields") or []
+        if not object_fields:
+            st.info("This object has no simple sub-fields available to author.")
+            return state
+        object_type = metadata.get("object_type") or "object"
+        st.caption(
+            f"Nested {object_type} object — fill any sub-field to include it in "
+            "the prototype."
         )
-        if value:
-            state = update_builder_value(
+        for sub in object_fields:
+            sub_id = sub.get("property_id")
+            if not sub_id:
+                continue
+            sub_type = sub.get("input_type_override") or sub.get("input_type") or "text"
+            compound_id = object_subfield_key(property_id, sub_id)
+            help_text = sub.get("help_text") or ""
+            st.markdown(f"**{sub_id}**" + (f" — {help_text}" if help_text else ""))
+            state = _render_field_widget(
                 state,
-                property_id,
-                value,
-                language=default_language,
+                compound_id,
+                sub_type,
+                sub,
+                default_language=default_language,
             )
-        else:
-            state = update_builder_value(state, property_id, "")
-    elif input_type == "quantity":
-        value_col, unit_col = st.columns([1, 0.7])
-        value = value_col.text_input(
-            f"{property_id} quantity value",
-            key=key,
-            placeholder="1.0",
-            label_visibility="collapsed",
-        )
-        unit_code = unit_col.text_input(
-            f"{property_id} unitCode",
-            key=_builder_key(property_id, "unit"),
-            placeholder="LTR",
-            label_visibility="collapsed",
-        )
-        if value or unit_code:
-            state = update_builder_value(
-                state,
-                property_id,
-                value,
-                unit_code=unit_code,
-            )
-        else:
-            state = update_builder_value(state, property_id, "")
-    elif input_type == "checkbox":
-        value = st.checkbox(
-            f"{property_id} value",
-            key=key,
-            label_visibility="collapsed",
-        )
-        if value:
-            state = update_builder_value(state, property_id, value)
-        else:
-            state = update_builder_value(state, property_id, "")
-    elif input_type == "url":
-        value = st.text_input(
-            f"{property_id} URL",
-            key=key,
-            placeholder=str(metadata.get("example_value") or "https://"),
-            label_visibility="collapsed",
-        )
-        if value:
-            state = update_builder_value(state, property_id, value)
-        else:
-            state = update_builder_value(state, property_id, "")
-    else:
-        value = st.text_input(
-            f"{property_id} value",
-            key=key,
-            placeholder=str(metadata.get("example_value") or ""),
-            label_visibility="collapsed",
-        )
-        value = _coerce_builder_widget_value(value, input_type)
-        if value not in ("", None):
-            state = update_builder_value(state, property_id, value)
-        else:
-            state = update_builder_value(state, property_id, "")
-    return state
+        return state
+
+    return _render_field_widget(
+        state,
+        property_id,
+        input_type,
+        metadata,
+        default_language=default_language,
+    )
 
 
 def _backlog_categories(backlog: list[dict]) -> list[str]:

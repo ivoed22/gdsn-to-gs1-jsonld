@@ -90,19 +90,22 @@ groups:
         supported_in_v0_10: true
       - property_id: gs1:brand
         requirement: recommended
-        example_value: "Example Brand"
-        help_text: Brand requires a Brand object in WebVoc.
-        appears_because: Brand is important for product markup but has nested object range.
-        supported_in_v0_10: false
-        planned_reason: Requires safe Brand object modelling before emission.
-      - property_id: gs1:brandName
-        requirement: optional
-        input_type_override: language_text
-        example_value: "Example Brand"
-        help_text: Brand name is shown as planned because its domain is Brand, not Product.
-        appears_because: Included to make the brand modelling gap visible.
-        supported_in_v0_10: false
-        planned_reason: Needs a governed Brand object container.
+        input_type_override: object
+        object_type: gs1:Brand
+        help_text: "Brand as a nested gs1:Brand object with a language-tagged brand name."
+        appears_because: "Brand is modelled as a nested gs1:Brand object in the Web Vocabulary."
+        supported_in_v0_10: true
+        object_fields:
+          - property_id: gs1:brandName
+            requirement: recommended
+            input_type_override: language_text
+            example_value: "Example Brand"
+            help_text: "Brand name (language-tagged)."
+          - property_id: gs1:subBrandName
+            requirement: optional
+            input_type_override: language_text
+            example_value: "Example Sub-brand"
+            help_text: "Sub-brand name (language-tagged)."
       - property_id: gs1:colourDescription
         requirement: optional
         input_type_override: language_text
@@ -112,11 +115,32 @@ groups:
         supported_in_v0_10: true
       - property_id: gs1:image
         requirement: recommended
-        example_value: "https://example.com/product-image.jpg"
-        help_text: WebVoc image uses ReferencedFileDetails, not a direct image URL.
-        appears_because: Product image is a common markup need but is nested in WebVoc.
-        supported_in_v0_10: false
-        planned_reason: Requires safe ReferencedFileDetails object modelling.
+        input_type_override: object
+        object_type: gs1:ReferencedFileDetails
+        help_text: "Product image as a nested gs1:ReferencedFileDetails object (file URL plus optional pixel size)."
+        appears_because: "Images are modelled as gs1:ReferencedFileDetails in the Web Vocabulary."
+        supported_in_v0_10: true
+        object_fields:
+          - property_id: gs1:referencedFileURL
+            requirement: recommended
+            input_type_override: url
+            example_value: "https://example.com/product-image.jpg"
+            help_text: "Direct URL of the image file."
+          - property_id: gs1:filePixelWidth
+            requirement: optional
+            input_type_override: integer
+            example_value: "800"
+            help_text: "Image width in pixels."
+          - property_id: gs1:filePixelHeight
+            requirement: optional
+            input_type_override: integer
+            example_value: "600"
+            help_text: "Image height in pixels."
+          - property_id: gs1:fileLanguageCode
+            requirement: optional
+            input_type_override: text
+            example_value: "en"
+            help_text: "Language code of the file content."
       - property_id: gs1:relatedImage
         requirement: optional
         input_type_override: url
@@ -241,11 +265,22 @@ groups:
         planned_reason: Requires controlled-code handling before emission.
       - property_id: gs1:packagingMaterial
         requirement: optional
-        example_value: "Carton"
-        help_text: Packaging material is a nested object.
-        appears_because: Important for DPP/packaging review but not safe as scalar.
-        supported_in_v0_10: false
-        planned_reason: Requires PackagingMaterialDetails object modelling.
+        input_type_override: object
+        object_type: gs1:PackagingMaterial
+        help_text: "Packaging material as a nested gs1:PackagingMaterial object (safe quantity sub-fields)."
+        appears_because: "Packaging material is modelled as gs1:PackagingMaterial in the Web Vocabulary."
+        supported_in_v0_10: true
+        object_fields:
+          - property_id: gs1:packagingMaterialCompositionQuantity
+            requirement: optional
+            input_type_override: quantity
+            example_value: "20 GRM"
+            help_text: "Quantity of this material (value + unitCode)."
+          - property_id: gs1:packagingMaterialThickness
+            requirement: optional
+            input_type_override: quantity
+            example_value: "0.2 MMT"
+            help_text: "Material thickness (value + unitCode)."
       - property_id: gs1:sustainabilityInfo
         requirement: optional
         input_type_override: url
@@ -321,11 +356,47 @@ groups:
         supported_in_v0_10: true
       - property_id: gs1:certification
         requirement: optional
-        example_value: "EU Organic"
-        help_text: Certification details are a nested object.
-        appears_because: Existing mapping review tracks certification semantics.
-        supported_in_v0_10: false
-        planned_reason: Requires CertificationDetails object modelling.
+        input_type_override: object
+        object_type: gs1:CertificationDetails
+        help_text: "Certification as a nested gs1:CertificationDetails object (safe text/URL/date sub-fields; agency/status code objects remain out of scope)."
+        appears_because: "Certifications are modelled as gs1:CertificationDetails in the Web Vocabulary."
+        supported_in_v0_10: true
+        object_fields:
+          - property_id: gs1:certificationStandard
+            requirement: recommended
+            input_type_override: language_text
+            example_value: "EU Organic"
+            help_text: "Certification standard name (language-tagged)."
+          - property_id: gs1:certificationValue
+            requirement: optional
+            input_type_override: language_text
+            example_value: "Certified"
+            help_text: "Certification value (language-tagged)."
+          - property_id: gs1:certificationAgency
+            requirement: optional
+            input_type_override: language_text
+            example_value: "Example Certification Agency"
+            help_text: "Certifying agency name (language-tagged)."
+          - property_id: gs1:certificationIdentification
+            requirement: optional
+            input_type_override: text
+            example_value: "CERT-12345"
+            help_text: "Certification identifier."
+          - property_id: gs1:certificationURI
+            requirement: optional
+            input_type_override: url
+            example_value: "https://example.com/certificates/09501234567890"
+            help_text: "URL to the certification record."
+          - property_id: gs1:certificationStartDate
+            requirement: optional
+            input_type_override: date
+            example_value: "2026-01-01"
+            help_text: "Certification start date."
+          - property_id: gs1:certificationEndDate
+            requirement: optional
+            input_type_override: date
+            example_value: "2027-01-01"
+            help_text: "Certification end date."
 
   - key: documents_dpp
     label: Documents and DPP
@@ -347,11 +418,22 @@ groups:
         supported_in_v0_10: true
       - property_id: gs1:referencedFile
         requirement: optional
-        example_value: "https://example.com/document.pdf"
-        help_text: Referenced file requires ReferencedFileDetails.
-        appears_because: Existing mapping review tracks document/DPP modelling.
-        supported_in_v0_10: false
-        planned_reason: Requires ReferencedFileDetails object modelling.
+        input_type_override: object
+        object_type: gs1:ReferencedFileDetails
+        help_text: "Referenced document/DPP file as a nested gs1:ReferencedFileDetails object."
+        appears_because: "Documents are modelled as gs1:ReferencedFileDetails in the Web Vocabulary."
+        supported_in_v0_10: true
+        object_fields:
+          - property_id: gs1:referencedFileURL
+            requirement: recommended
+            input_type_override: url
+            example_value: "https://example.com/document.pdf"
+            help_text: "Direct URL of the referenced file."
+          - property_id: gs1:fileLanguageCode
+            requirement: optional
+            input_type_override: text
+            example_value: "en"
+            help_text: "Language code of the file content."
 
   - key: other_webvoc_properties
     label: Other Web Vocabulary Properties
