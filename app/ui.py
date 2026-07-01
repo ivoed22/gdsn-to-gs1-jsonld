@@ -40,13 +40,18 @@ def apply_page_styles() -> None:
         }
 
         /* Streamlit-specific layout hooks; recheck after framework upgrades. */
-        /* Wider comfortable workspace (~82rem ≈ 1310px) so cards, JSON
-           previews, mapping tables, and reports get more room without going
-           full-bleed. Long text stays constrained via .app-summary etc. */
-        [data-testid="stMainBlockContainer"] {
-            max-width: 82rem;
+        /* Wider comfortable workspace (~92rem ≈ 1470px) so the main column
+           fills the space next to the sidebar instead of floating as a narrow
+           centred block. Both the data-testid hook and the stable
+           .block-container class are targeted so the width applies across
+           Streamlit versions. Long text stays constrained via .app-summary. */
+        [data-testid="stMainBlockContainer"],
+        .block-container {
+            max-width: 92rem;
             padding-top: 1.5rem;
             padding-bottom: 3rem;
+            padding-left: 2.5rem;
+            padding-right: 2.5rem;
         }
 
         [data-testid="stMainBlockContainer"]
@@ -354,10 +359,31 @@ def apply_page_styles() -> None:
             outline-offset: 2px;
         }
 
+        /* Keep the active ("Active") button fully readable. Streamlit dims
+           disabled buttons, which made the dark-blue primary label hard to
+           read; restore full opacity and force white label text. */
+        .stButton > button:disabled,
+        .stDownloadButton > button:disabled {
+            cursor: default;
+            opacity: 1;
+        }
+
+        .stButton > button[kind="primary"]:disabled {
+            background: var(--accent-primary);
+            border-color: var(--accent-strong);
+            color: #ffffff;
+        }
+
+        .stButton > button[kind="primary"]:disabled p,
+        .stButton > button[kind="primary"]:disabled span,
+        .stButton > button[kind="primary"]:disabled div {
+            color: #ffffff;
+        }
+
         [data-testid="column"] .stButton > button {
             border-radius: 0 0 var(--radius-md) var(--radius-md);
             margin-top: -0.65rem;
-            min-height: 2.45rem;
+            min-height: 2.75rem;
         }
 
         /* Premium dashboard composition primitives. */
@@ -523,14 +549,22 @@ def apply_page_styles() -> None:
             text-transform: uppercase;
         }
 
-        /* Primary route cards (stage 1) — visually heavier than child cards. */
+        /* Primary route cards (stage 1) — visually heavier than child cards.
+           A firm min-height keeps all three cards the same height regardless of
+           description length, so the row (and the buttons under it) align. */
         .route-card {
             background: var(--surface-default);
             border: 1px solid var(--border-default);
             border-top: 3px solid var(--accent-rail);
             border-radius: var(--radius-md) var(--radius-md) 0 0;
-            min-height: 13.5rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 15rem;
             padding: 1.3rem 1.3rem 1.1rem;
+        }
+
+        .route-card .route-card-outcome {
+            margin-top: auto;
         }
 
         .route-card.is-active {
@@ -618,8 +652,14 @@ def apply_page_styles() -> None:
             border: 1px solid var(--border-default);
             border-left: 0.35rem solid #b7c8da;
             border-radius: var(--radius-md) var(--radius-md) 0 0;
-            min-height: 12.6rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 13rem;
             padding: 1rem 1rem 0.95rem;
+        }
+
+        .workflow-mode-card .workflow-mode-outcome {
+            margin-top: auto;
         }
 
         .workflow-mode-card.is-active {
