@@ -1,5 +1,41 @@
 # Changelog
 
+## v0.13.2 — Workspace Layout & Theme Navigation Polish
+
+UI/UX and information-architecture polish. No behaviour changes, no new
+features, no mock data, no fabricated coverage or compliance claims.
+
+### Changed
+
+- **Wider workspace.** Main container max-width raised to ~82rem (≈1310px) so
+  cards, JSON previews, mapping tables, and reports get more room without going
+  full-bleed; long text stays constrained.
+- **Sidebar reframed** as compact Workspace status / context: workspace status
+  (version, mode, storage, warnings-visible), current context (mapping profile
+  + active file), Sources (WebVoc snapshot, Product Passport schemas), and a
+  Governance note. Supported-group chips moved into a collapsed expander.
+- **Themed landing navigation.** The overview groups workflows under headings —
+  Recommended path (Convert), Vocabulary & Mapping, JSON-LD Prototyping, and
+  Product Passport Bridge — with Convert as the recommended starting point.
+- **Shorter workflow-card copy** (one sentence + one outcome line each).
+- **Clearer Product Passport distinction:** Validate Product Passport Sources
+  (inspect sources/schemas/examples) vs Build Product Passport Prototype
+  (wrap GS1 JSON-LD into a prototype envelope).
+- **Traceability rail labelled** "Core conversion traceability" with a note that
+  Product Passport workflows build on GS1 JSON-LD output as prototype/reference
+  tooling — not an official traceability output.
+- **Compacted hero** copy and badges (In-memory, BMS/XPath traceable,
+  Review-only, Prototype Passport); privacy/trust messaging preserved.
+
+### Preserved
+
+- Converter logic, batch behavior, and single-file output are unchanged.
+- Mapping YAML, catalog data, and Web Vocabulary snapshots are unchanged.
+- All seven workflows remain reachable; every governance warning is preserved.
+- No warnings suppressed, no mock data, no fabricated coverage/compliance.
+- No Crosswalk, SHACL execution, VC, or signed credentials. No official GS1
+  validation or production compliance claimed.
+
 ## v0.13.1 — Guided Convert Workflow
 
 Patch release. Presents the Convert GDSN XML (Single XML) path as a guided

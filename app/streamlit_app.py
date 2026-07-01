@@ -118,103 +118,81 @@ WORKFLOW_MODES = (
         "key": "convert",
         "title": "Convert GDSN XML",
         "marker": "XML",
-        "description": (
-            "Convert a single product message or a ZIP batch with the active "
-            "mapping profile and evidence reports."
-        ),
-        "outcome": "JSON-LD plus mapping, validation, and unmapped-field evidence.",
+        "description": "Convert product XML into GS1 Web Vocabulary JSON-LD.",
+        "outcome": "JSON-LD + mapping, validation, and unmapped-field evidence.",
     },
     {
         "key": "explore",
         "title": "Explore GS1 Web Vocabulary",
         "marker": "VOC",
-        "description": (
-            "Browse the local GS1 Web Vocabulary snapshot and inspect mapping "
-            "coverage, BMS/XPath evidence, and SDR context."
-        ),
-        "outcome": "Read-only vocabulary review with local catalog evidence.",
+        "description": "Browse local GS1 vocabulary classes and properties.",
+        "outcome": "Vocabulary evidence and coverage context (read-only).",
     },
     {
         "key": "candidates",
         "title": "Generate Mapping Candidates",
         "marker": "MAP",
         "description": (
-            "Propose possible GDSN/BMS/XPath source fields for GS1 Web Vocabulary "
-            "properties, with confidence and review reasons."
+            "Suggest possible GDSN/BMS/XPath sources for WebVoc properties."
         ),
-        "outcome": (
-            "Review-only candidate report. No mappings are automatically accepted "
-            "or written."
-        ),
+        "outcome": "Review-only candidate report; nothing is written.",
     },
     {
         "key": "standards",
         "title": "Standards Review",
         "marker": "SDR",
-        "description": (
-            "Inspect open standards and governance decisions from the existing "
-            "SDR backlog."
-        ),
-        "outcome": "Read-only SDR status without changing converter behavior.",
+        "description": "Inspect open standards and governance decisions.",
+        "outcome": "Read-only SDR context.",
     },
     {
         "key": "prototype",
         "title": "Create JSON-LD Prototype",
         "marker": "LD",
-        "description": (
-            "Manually author GS1 Web Vocabulary JSON-LD by selecting properties "
-            "and entering values, with a live preview."
-        ),
-        "outcome": (
-            "Manual JSON-LD prototype with visible governance and traceability "
-            "warning."
-        ),
+        "description": "Manually author GS1 Web Vocabulary JSON-LD.",
+        "outcome": "Prototype JSON-LD with governance warning.",
     },
     {
         "key": "product_passport",
         "title": "Validate Product Passport Sources",
         "marker": "PP",
         "description": (
-            "Inventory public Product Passport reference sources and validate "
-            "prototype Product Passport JSON against local schemas."
+            "Inspect local Product Passport reference sources, schemas, and "
+            "examples."
         ),
-        "outcome": (
-            "Reference-source inventory and structural validation report. "
-            "No production compliance claim."
-        ),
+        "outcome": "Source inventory + structural validation report.",
     },
     {
         "key": "product_passport_builder",
         "title": "Build Product Passport Prototype",
         "marker": "PB",
         "description": (
-            "Wrap GS1 Web Vocabulary JSON-LD (converter or manual-builder "
-            "output) into a prototype Product Passport envelope, validated "
-            "against a local schema."
+            "Wrap GS1 JSON-LD into a prototype Product Passport envelope."
         ),
-        "outcome": (
-            "Prototype Product Passport JSON-LD and structural validation "
-            "report. No official GS1 validation or production compliance claim."
-        ),
+        "outcome": "Passport JSON-LD + structural validation report.",
     },
 )
 DEFAULT_WORKFLOW_MODE = WORKFLOW_MODES[0]["title"]
 
 # Information-architecture grouping for the workflow overview (v0.13.0).
 # Cards are rendered under these group headings, in this order, so seven
-# workflows read as three intents rather than one dense grid.
+# workflows read as themed intents rather than one dense grid. Convert leads as
+# the recommended path; supporting thematic tools follow.
 WORKFLOW_GROUPS = (
     {
-        "label": "Start here — convert product data",
+        "label": "Recommended path",
         "keys": ("convert",),
     },
     {
-        "label": "Explore & review mappings",
+        "label": "Vocabulary & Mapping",
         "keys": ("explore", "candidates", "standards"),
     },
     {
-        "label": "Prototype linked data & Product Passports",
-        "keys": ("prototype", "product_passport", "product_passport_builder"),
+        "label": "JSON-LD Prototyping",
+        "keys": ("prototype",),
+    },
+    {
+        "label": "Product Passport Bridge",
+        "keys": ("product_passport", "product_passport_builder"),
     },
 )
 
@@ -2240,57 +2218,95 @@ def main() -> None:
         st.markdown(
             f"""
             <div class="sidebar-brand">
-              <strong>Conversion workspace</strong>
+              <strong>Standards workbench</strong>
               <span>App version: {APP_VERSION}</span>
             </div>
             """,
             unsafe_allow_html=True,
         )
+        # Compact workspace status/context — not the primary work area.
+        st.markdown(
+            """
+            <div class="vocabulary-status">
+              <strong>Workspace status</strong>
+              Mode: Prototype / review<br>
+              Storage: In-memory<br>
+              Warnings: visible (not suppressed)
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
         with st.container(border=True):
             st.markdown(
-                '<p class="sidebar-label">Conversion settings</p>',
+                '<p class="sidebar-label">Current context</p>',
                 unsafe_allow_html=True,
             )
             selected_profile = st.selectbox(
                 "Mapping profile",
                 list(mapping_profiles),
                 on_change=clear_all_results,
-                help="Changing the profile clears current conversion results.",
+                help=(
+                    "Active mapping profile. It also applies inside Convert "
+                    "GDSN XML. Changing it clears current conversion results."
+                ),
             )
             mapping_path = mapping_profiles[selected_profile]
             st.markdown("**Active mapping file**")
             st.code(mapping_path.relative_to(REPOSITORY_ROOT).as_posix())
 
-        with st.expander("Profile coverage", expanded=True):
+        with st.expander("Profile coverage & supported groups", expanded=False):
             st.markdown(
                 """
-    <p class="sidebar-label">Supported groups</p>
-    <div class="coverage-badges">
-      <span class="coverage-badge">Identity</span>
-      <span class="coverage-badge">Descriptions</span>
-      <span class="coverage-badge">Brand &amp; GPC</span>
-      <span class="coverage-badge">Net content</span>
-      <span class="coverage-badge">Images &amp; links</span>
-      <span class="coverage-badge">Ingredients</span>
-      <span class="coverage-badge">Allergens</span>
-      <span class="coverage-badge">Nutrients</span>
-      <span class="coverage-badge">Certifications</span>
-      <span class="coverage-badge">Documents</span>
-    </div>
-    """,
+                <p class="sidebar-label">Supported groups</p>
+                <div class="coverage-badges">
+                  <span class="coverage-badge">Identity</span>
+                  <span class="coverage-badge">Descriptions</span>
+                  <span class="coverage-badge">Brand &amp; GPC</span>
+                  <span class="coverage-badge">Net content</span>
+                  <span class="coverage-badge">Images &amp; links</span>
+                  <span class="coverage-badge">Ingredients</span>
+                  <span class="coverage-badge">Allergens</span>
+                  <span class="coverage-badge">Nutrients</span>
+                  <span class="coverage-badge">Certifications</span>
+                  <span class="coverage-badge">Documents</span>
+                </div>
+                """,
                 unsafe_allow_html=True,
             )
 
+        st.markdown('<p class="sidebar-label">Sources</p>', unsafe_allow_html=True)
         webvoc_metadata = _load_webvoc_metadata()
         render_vocabulary_status(
             webvoc_metadata.get("detected_version"),
             webvoc_metadata.get("detected_last_modified"),
+        )
+        st.markdown(
+            """
+            <div class="vocabulary-status">
+              <strong>Product Passport schemas</strong>
+              Built-in minimal schema (offline).<br>
+              External DPP schemas: placeholders, not downloaded.<br>
+              Prototype/reference only.
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
         backlog = _load_open_standards_backlog()
         render_standards_backlog_status(
             len(backlog),
             _backlog_categories(backlog),
+        )
+        st.markdown(
+            """
+            <div class="standards-backlog-status">
+              <strong>Governance</strong>
+              No official GS1 validation.<br>
+              No production compliance claim.
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
     with st.container(border=True):
@@ -2324,7 +2340,7 @@ def main() -> None:
                         args=(mode["title"],),
                         use_container_width=True,
                     )
-            if len(group["keys"]) == 1:
+            if group["keys"] == ("convert",):
                 with group_columns[1]:
                     st.caption(
                         "Recommended starting point. Convert product XML first, "

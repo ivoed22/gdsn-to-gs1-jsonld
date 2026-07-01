@@ -23,7 +23,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.13.1"
+    assert ui.APP_VERSION == "v0.13.2"
     assert callable(ui.render_page_header)
 
 
@@ -108,7 +108,7 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
     ]
     assert selector.value == "Certifications & Documents v0.3.0"
     assert any(
-        "App version: v0.13.1" in markdown.value
+        "App version: v0.13.2" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -133,8 +133,8 @@ def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
     assert "Explore GS1 Web Vocabulary" in rendered_markdown
     assert "Create JSON-LD Prototype" in rendered_markdown
     assert "Standards Review" in rendered_markdown
-    assert "JSON-LD plus mapping, validation" in rendered_markdown
-    assert "Manual JSON-LD prototype with visible governance" in rendered_markdown
+    assert "JSON-LD + mapping, validation" in rendered_markdown
+    assert "Prototype JSON-LD with governance warning" in rendered_markdown
     assert app.session_state["workflow_mode"] == "Convert GDSN XML"
     assert app.button[_button_index(app, "Active")].disabled
     assert [button.label for button in app.button[:6]] == [
@@ -405,3 +405,40 @@ def test_build_product_passport_warning_and_minimal_mode():
     assert "prototype" in normalized
     assert "not official gs1 validation" in normalized
     assert "not production-ready" in normalized
+
+
+def test_theme_group_labels_and_rail_visible():
+    """v0.13.2: landing page shows themed group headings and the labelled
+    core-conversion traceability rail."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    for label in (
+        "Recommended path",
+        "Vocabulary & Mapping",
+        "JSON-LD Prototyping",
+        "Product Passport Bridge",
+    ):
+        assert label in rendered, f"missing theme label: {label}"
+    assert "Core conversion traceability" in rendered
+
+
+def test_convert_active_by_default_with_progress():
+    """v0.13.2: Convert is the recommended default and shows the guided
+    Upload -> Mapping -> Validate -> Export progress steps."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    assert app.session_state["workflow_mode"] == "Convert GDSN XML"
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    for step in ("Upload", "Mapping", "Validate", "Export"):
+        assert step in rendered, f"missing guided-convert step: {step}"
+
+
+def test_sidebar_workspace_status_version_and_no_positive_compliance():
+    """v0.13.2: sidebar is reframed as compact workspace status/context with
+    the current version and governance negations (no positive compliance)."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
+    assert "workspace status" in rendered
+    assert "app version: v0.13.2" in rendered
+    # Compliance is only ever stated as a negation.
+    assert "no official gs1 validation" in rendered
+    assert "no production compliance" in rendered

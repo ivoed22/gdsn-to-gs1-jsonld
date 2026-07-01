@@ -2,7 +2,7 @@ from html import escape
 
 import streamlit as st
 
-APP_VERSION = "v0.13.1"
+APP_VERSION = "v0.13.2"
 
 
 def apply_page_styles() -> None:
@@ -40,8 +40,11 @@ def apply_page_styles() -> None:
         }
 
         /* Streamlit-specific layout hooks; recheck after framework upgrades. */
+        /* Wider comfortable workspace (~82rem ≈ 1310px) so cards, JSON
+           previews, mapping tables, and reports get more room without going
+           full-bleed. Long text stays constrained via .app-summary etc. */
         [data-testid="stMainBlockContainer"] {
-            max-width: 76rem;
+            max-width: 82rem;
             padding-top: 1.5rem;
             padding-bottom: 3rem;
         }
@@ -472,6 +475,23 @@ def apply_page_styles() -> None:
             font-size: 0.82rem;
             line-height: 1.5;
             margin: 0;
+        }
+
+        .trace-rail-label {
+            color: var(--accent-primary);
+            font-size: 0.7rem;
+            font-weight: 750;
+            letter-spacing: 0.08em;
+            margin: 0 0 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .trace-note {
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            line-height: 1.5;
+            margin: 0.55rem 0 0;
+            max-width: 58rem;
         }
 
         .workflow-entry {
@@ -1042,12 +1062,15 @@ def render_page_header() -> None:
               <p class="app-eyebrow">Standards-traceable conversion workspace</p>
               <h1>GDSN to GS1 JSON-LD Converter</h1>
               <p class="app-summary">
-                Turn product XML into machine-readable, reviewable linked data.
+                Standards-traceable workspace for GS1 JSON-LD, mapping evidence,
+                and Product Passport prototypes.
               </p>
               <div class="app-meta" aria-label="Application characteristics">
                 <span class="app-chip">Converter {APP_VERSION}</span>
                 <span class="app-chip">In-memory</span>
-                <span class="app-chip">Converter: BMS/XPath traceable</span>
+                <span class="app-chip">BMS/XPath traceable</span>
+                <span class="app-chip">Review-only</span>
+                <span class="app-chip">Prototype Passport</span>
               </div>
             </div>
             <div class="workspace-panel" aria-label="Workspace posture">
@@ -1085,7 +1108,8 @@ def render_page_header() -> None:
 def render_workflow_overview() -> None:
     st.markdown(
         """
-        <div class="traceability-strip" aria-label="Traceability rail">
+        <p class="trace-rail-label">Core conversion traceability</p>
+        <div class="traceability-strip" aria-label="Core conversion traceability rail">
           <div class="trace-node">
             <span class="trace-label">XML</span>
             <strong>GDSN source</strong>
@@ -1097,7 +1121,7 @@ def render_workflow_overview() -> None:
             <p>Versioned profiles preserve source-to-property traceability.</p>
           </div>
           <div class="trace-node">
-            <span class="trace-label">JSON-LD</span>
+            <span class="trace-label">GS1 JSON-LD</span>
             <strong>Linked data output</strong>
             <p>GS1 Web Vocabulary-aligned product data is generated for review.</p>
           </div>
@@ -1107,6 +1131,11 @@ def render_workflow_overview() -> None:
             <p>Open standards decisions remain visible without changing runtime output.</p>
           </div>
         </div>
+        <p class="trace-note">
+          Product Passport workflows build on this GS1 JSON-LD output as
+          prototype/reference tooling &mdash; not an official traceability or
+          compliance output.
+        </p>
         """,
         unsafe_allow_html=True,
     )

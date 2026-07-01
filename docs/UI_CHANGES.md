@@ -1,5 +1,32 @@
 # UI Changes
 
+## v0.13.2 Workspace layout & theme navigation checklist
+
+- [x] Main container max-width raised to ~82rem (≈1310px); not full-bleed;
+      long text still constrained. Mobile/tablet breakpoints (900/640px) intact.
+- [x] Sidebar reframed as compact workspace status/context: Workspace status
+      (version, mode, storage, warnings-visible), Current context (profile +
+      active file), Sources (WebVoc + Product Passport schemas), Governance.
+- [x] Supported-group chips moved into a collapsed expander.
+- [x] Landing page grouped under themes: Recommended path, Vocabulary & Mapping,
+      JSON-LD Prototyping, Product Passport Bridge. Convert is the recommended
+      start (large card + cue).
+- [x] Workflow card copy shortened to one sentence + one outcome line.
+- [x] Validate Product Passport Sources vs Build Product Passport Prototype are
+      clearly distinguished.
+- [x] Traceability rail labelled "Core conversion traceability" with a
+      prototype/reference note for Product Passport workflows.
+- [x] Hero copy/badges compacted (In-memory, BMS/XPath traceable, Review-only,
+      Prototype Passport). Privacy/trust messaging preserved.
+- [x] All seven workflows reachable; governance warnings preserved; no
+      compliance claims.
+
+**Width strategy:** a single CSS override on `[data-testid="stMainBlockContainer"]`
+(`max-width: 82rem`) widens the canvas. Streamlit `st.columns` manage their own
+responsive stacking, so exact 2-column control at ~800px is not reliably
+achievable via CSS alone; the themed grouping caps rows at three cards as the
+practical mitigation.
+
 ## Convert GDSN XML — guided four-step flow
 
 - [x] Convert (Single XML) is presented as a guided four-step flow with a
