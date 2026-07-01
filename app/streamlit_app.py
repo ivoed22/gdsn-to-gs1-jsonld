@@ -94,6 +94,7 @@ from app.ui import (
     render_section_header,
     render_status_card,
     render_standards_backlog_status,
+    render_convert_progress,
     render_vocabulary_status,
     render_workflow_entry_intro,
     render_workflow_mode_card,
@@ -511,12 +512,20 @@ def _backlog_categories(backlog: list[dict]) -> list[str]:
 
 
 def _render_single_xml_workflow(mapping_path: Path) -> None:
+    # Guided four-step conversion flow (Upload -> Mapping -> Validate -> Export)
+    # wrapped around the real converter. The progress indicator is a visual
+    # roadmap only; conversion behaviour, outputs, and warnings are unchanged.
+    result = st.session_state.get("conversion_result")
+    render_convert_progress(converted=result is not None)
+
+    # Step 1 — Upload GDSN XML
     with st.container(border=True):
         render_section_header(
             1,
-            "Upload product data",
-            "Choose one XML product message. The source remains in memory and is "
-            "not written to the repository.",
+            "Upload GDSN XML",
+            "Choose one XML product message. The source stays in memory and is "
+            f"not written to the repository. Active mapping profile: "
+            f"{mapping_path.stem}.",
         )
         uploaded_file = st.file_uploader(
             "GDSN product XML",
@@ -524,9 +533,9 @@ def _render_single_xml_workflow(mapping_path: Path) -> None:
             help="Accepted format: one XML file. The file is processed in memory.",
         )
 
-        if uploaded_file is None:
+        if uploaded_file is None and result is None:
             render_empty_upload_state()
-        elif st.button(
+        if uploaded_file is not None and st.button(
             "Convert product to JSON-LD",
             type="primary",
             use_container_width=True,
@@ -534,7 +543,7 @@ def _render_single_xml_workflow(mapping_path: Path) -> None:
             clear_results()
             try:
                 with st.spinner("Converting and validating product data..."):
-                    result = convert_xml_to_jsonld(
+                    conversion = convert_xml_to_jsonld(
                         uploaded_file.getvalue(),
                         mapping_path,
                         write_files=False,
@@ -542,58 +551,79 @@ def _render_single_xml_workflow(mapping_path: Path) -> None:
             except (XMLParseError, FileNotFoundError, ValueError) as exc:
                 st.error(f"Conversion failed: {exc}")
             else:
-                output_name_base = result.canonical_product.gtin or "unknown"
-                st.session_state["conversion_result"] = result
-                st.session_state["jsonld_bytes"] = json_bytes(result.jsonld_data)
+                output_name_base = conversion.canonical_product.gtin or "unknown"
+                st.session_state["conversion_result"] = conversion
+                st.session_state["jsonld_bytes"] = json_bytes(conversion.jsonld_data)
                 st.session_state["mapping_report_bytes"] = mapping_report_xlsx_bytes(
-                    result.mapping_report_rows
+                    conversion.mapping_report_rows
                 )
                 st.session_state["validation_report_bytes"] = json_bytes(
-                    result.validation_report
+                    conversion.validation_report
                 )
                 st.session_state["unmapped_fields_bytes"] = json_bytes(
-                    result.unmapped_fields
+                    conversion.unmapped_fields
                 )
                 st.session_state["output_name_base"] = output_name_base
+                result = conversion
 
-    result = st.session_state.get("conversion_result")
     if result is not None:
+        validation = result.validation_report
+        if validation["valid"] and not validation["warnings"]:
+            validation_tone = "success"
+            validation_title = "Conversion complete"
+            validation_detail = "Validation passed with no warnings."
+            validation_value = "Passed"
+        elif validation["valid"]:
+            validation_tone = "warning"
+            validation_title = "Conversion complete with review points"
+            validation_detail = (
+                f"Validation passed with {len(validation['warnings'])} "
+                "warning(s)."
+            )
+            validation_value = "Passed with warnings"
+        else:
+            validation_tone = "error"
+            validation_title = "Conversion complete with validation errors"
+            validation_detail = (
+                f"Review {len(validation['errors'])} validation error(s) "
+                "before using the output."
+            )
+            validation_value = "Review required"
+
+        mapped_rows = sum(
+            1 for row in result.mapping_report_rows if row.get("found")
+        )
+        unmapped_rows = len(
+            result.unmapped_fields.get("unmapped_elements", [])
+        )
+        output_name_base = st.session_state["output_name_base"]
+
+        # Step 2 — Review mapping & evidence
         with st.container(border=True):
             render_section_header(
                 2,
-                "Review conversion result",
+                "Review mapping & evidence",
+                "Inspect the applied mapping profile and the source-to-property "
+                "trace before using the output.",
+            )
+            render_preview_heading(
+                "Mapping report preview",
+                "Compare source fields, canonical fields, and generated properties.",
+                f"{mapped_rows}/{len(result.mapping_report_rows)} mapped",
+            )
+            with st.expander("Open mapping trace preview"):
+                st.dataframe(
+                    pd.DataFrame(result.mapping_report_rows),
+                    use_container_width=True,
+                )
+
+        # Step 3 — Generate & validate output
+        with st.container(border=True):
+            render_section_header(
+                3,
+                "Generate & validate output",
                 "Check validation first, then inspect the product identity and "
                 "generated structured data.",
-            )
-
-            validation = result.validation_report
-            if validation["valid"] and not validation["warnings"]:
-                validation_tone = "success"
-                validation_title = "Conversion complete"
-                validation_detail = "Validation passed with no warnings."
-                validation_value = "Passed"
-            elif validation["valid"]:
-                validation_tone = "warning"
-                validation_title = "Conversion complete with review points"
-                validation_detail = (
-                    f"Validation passed with {len(validation['warnings'])} "
-                    "warning(s)."
-                )
-                validation_value = "Passed with warnings"
-            else:
-                validation_tone = "error"
-                validation_title = "Conversion complete with validation errors"
-                validation_detail = (
-                    f"Review {len(validation['errors'])} validation error(s) "
-                    "before using the output."
-                )
-                validation_value = "Review required"
-
-            mapped_rows = sum(
-                1 for row in result.mapping_report_rows if row.get("found")
-            )
-            unmapped_rows = len(
-                result.unmapped_fields.get("unmapped_elements", [])
             )
             render_result_summary(
                 validation_value,
@@ -628,25 +658,14 @@ def _render_single_xml_workflow(mapping_path: Path) -> None:
             with st.expander("Open structured data preview"):
                 st.code(formatted_jsonld, language="json")
 
+        # Step 4 — Export & actions
         with st.container(border=True):
             render_section_header(
-                3,
-                "Inspect traceability and export",
-                "Review the applied mappings and download the generated data and "
-                "diagnostic reports.",
+                4,
+                "Export & actions",
+                "Download the generated data and diagnostic reports, or start "
+                "over.",
             )
-            render_preview_heading(
-                "Mapping report preview",
-                "Compare source fields, canonical fields, and generated properties.",
-                f"{mapped_rows}/{len(result.mapping_report_rows)} mapped",
-            )
-            with st.expander("Open mapping trace preview"):
-                st.dataframe(
-                    pd.DataFrame(result.mapping_report_rows),
-                    use_container_width=True,
-                )
-
-            output_name_base = st.session_state["output_name_base"]
             render_preview_heading(
                 "Export package",
                 "Download the product output and all supporting review reports.",

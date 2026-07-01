@@ -1,5 +1,23 @@
 # UI Changes
 
+## Convert GDSN XML — guided four-step flow
+
+- [x] Convert (Single XML) is presented as a guided four-step flow with a
+      progress indicator: Upload → Mapping → Validate → Export (colour-coded
+      teal/amber/orange/green step accents).
+- [x] Wired to the real converter/validator/reporter — no mock data, no
+      fabricated coverage or compliance claims.
+- [x] Step 1 Upload: real uploader + "Convert product to JSON-LD" (active
+      mapping profile shown inline).
+- [x] Step 2 Review mapping & evidence: real mapping-trace preview.
+- [x] Step 3 Generate & validate: real validation status, product identity
+      (@id), and generated JSON-LD preview.
+- [x] Step 4 Export & actions: the four real downloads (JSON-LD, mapping XLSX,
+      validation JSON, unmapped JSON), review guidance, and Clear results.
+- [x] All seven workflows remain reachable; governance warnings unchanged.
+- [x] Existing behaviour, session persistence, and downloads preserved
+      (result-survives-rerun, clear-results, and profile-change tests pass).
+
 ## v0.13.0 Build Product Passport Prototype workflow checklist
 
 - [x] `Build Product Passport Prototype` workflow card is visible (marker: PB).

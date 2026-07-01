@@ -912,6 +912,55 @@ def apply_page_styles() -> None:
             width: 1.1rem;
         }
 
+        .convert-progress {
+            display: grid;
+            gap: 0.5rem;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            margin: 0.1rem 0 1.15rem;
+        }
+
+        .convert-progress-step {
+            background: var(--surface-muted);
+            border: 1px solid var(--border-default);
+            border-top: 3px solid var(--border-default);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-size: 0.76rem;
+            padding: 0.55rem 0.6rem;
+            text-align: center;
+        }
+
+        .convert-progress-step .cp-num {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 800;
+            margin-bottom: 0.15rem;
+        }
+
+        .convert-progress-step.active {
+            background: var(--surface-active);
+            border-top-color: var(--accent-primary);
+            color: var(--text-primary);
+            font-weight: 650;
+        }
+
+        .convert-progress-step.done {
+            background: var(--surface-default);
+            color: var(--text-primary);
+            font-weight: 650;
+        }
+
+        .convert-progress-step.s1.done { border-top-color: #0f9b8e; }
+        .convert-progress-step.s2.done { border-top-color: #c98a1b; }
+        .convert-progress-step.s3.done { border-top-color: #d2691e; }
+        .convert-progress-step.s4.done { border-top-color: #2e9e5b; }
+
+        @media (max-width: 640px) {
+            .convert-progress {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
         @media (hover: hover) {
             .stButton > button:hover,
             .stDownloadButton > button:hover {
@@ -1276,6 +1325,41 @@ def render_download_intro(title: str, summary: str, file_type: str) -> None:
         </div>
         <p class="download-card-copy">{summary}</p>
         """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_convert_progress(converted: bool) -> None:
+    """Render the four-step guided-conversion progress indicator.
+
+    Before conversion, step 1 (Upload) is the active step; after a successful
+    conversion, all four steps are marked done. This is a visual roadmap only —
+    it does not change conversion behaviour.
+    """
+    steps = (
+        (1, "Upload"),
+        (2, "Mapping"),
+        (3, "Validate"),
+        (4, "Export"),
+    )
+    cells = []
+    for number, label in steps:
+        if converted:
+            state = " done"
+            mark = "✓"
+        elif number == 1:
+            state = " active"
+            mark = str(number)
+        else:
+            state = ""
+            mark = str(number)
+        cells.append(
+            f'<div class="convert-progress-step s{number}{state}">'
+            f'<span class="cp-num">{mark}</span>{label}</div>'
+        )
+    st.markdown(
+        f'<div class="convert-progress" aria-label="Conversion steps: '
+        f'Upload, Mapping, Validate, Export">{"".join(cells)}</div>',
         unsafe_allow_html=True,
     )
 

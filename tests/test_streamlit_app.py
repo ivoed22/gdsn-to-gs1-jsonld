@@ -75,6 +75,15 @@ def test_streamlit_result_survives_rerun(example_xml_path):
     )
 
 
+def test_convert_wizard_progress_indicator_present():
+    """The Convert workflow shows the guided four-step progress indicator."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    assert "convert-progress" in rendered
+    for label in ("Upload", "Mapping", "Validate", "Export"):
+        assert label in rendered
+
+
 def test_streamlit_clear_results_removes_persisted_result(example_xml_path):
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     app.get("file_uploader")[0].set_value(
