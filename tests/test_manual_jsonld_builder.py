@@ -19,6 +19,68 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "builder_manifest" / "product_builder_v0_10.yaml"
 
 
+def test_manifest_breadth_expansion_groups_and_fields():
+    """v0.13.x breadth expansion: new simple-range Product groups are present,
+    wired into categories, and their fields serialize safely."""
+    manifest = load_builder_manifest(str(MANIFEST))
+    group_keys = {group["key"] for group in manifest["groups"]}
+    for key in (
+        "product_descriptions",
+        "consumer_information",
+        "dates_lifecycle",
+        "consumer_dpp_links",
+    ):
+        assert key in group_keys, f"missing new group: {key}"
+
+    general_group_keys = [g["key"] for g in get_builder_groups(manifest, "General Product")]
+    # Existing first three groups keep their order (builder test contract).
+    assert general_group_keys[:3] == [
+        "core_product_information",
+        "classification_links",
+        "physical_dimensions",
+    ]
+    assert "product_descriptions" in general_group_keys
+    assert "consumer_dpp_links" in general_group_keys
+
+    # Every new field is flagged supported and carries an input_type_override.
+    new_fields = [
+        field
+        for group in manifest["groups"]
+        if group["key"] in {
+            "product_descriptions",
+            "consumer_information",
+            "dates_lifecycle",
+            "consumer_dpp_links",
+        }
+        for field in group["properties"]
+    ]
+    assert len(new_fields) >= 40
+    for field in new_fields:
+        assert field.get("supported_in_v0_10") is True
+        assert field.get("input_type_override")
+
+    # A representative subset serializes to safe prototype JSON-LD.
+    metadata = {
+        "gs1:gtin": {"term_id": "gs1:gtin", "range": ["xsd:string"], "input_type_override": "text"},
+        "gs1:productDescription": {"term_id": "gs1:productDescription", "range": ["rdf:langString"], "input_type_override": "language_text"},
+        "gs1:bestBeforeDate": {"term_id": "gs1:bestBeforeDate", "range": ["xsd:date"], "input_type_override": "date"},
+        "gs1:isProductRecalled": {"term_id": "gs1:isProductRecalled", "range": ["xsd:boolean"], "input_type_override": "checkbox"},
+        "gs1:eifu": {"term_id": "gs1:eifu", "range": ["xsd:anyURI"], "input_type_override": "url"},
+    }
+    state = build_empty_builder_state()
+    state = update_builder_value(state, "gs1:gtin", "09501234567890")
+    state = update_builder_value(state, "gs1:productDescription", "Apple juice 1L", language="en")
+    state = update_builder_value(state, "gs1:bestBeforeDate", "2026-12-31")
+    state = update_builder_value(state, "gs1:isProductRecalled", True)
+    state = update_builder_value(state, "gs1:eifu", "https://example.com/eifu/1")
+
+    data = serialize_builder_state_to_jsonld(state, metadata)
+    assert data["productDescription"] == [{"@language": "en", "@value": "Apple juice 1L"}]
+    assert data["bestBeforeDate"] == "2026-12-31"
+    assert data["isProductRecalled"] is True
+    assert data["eifu"] == "https://example.com/eifu/1"
+
+
 def _metadata() -> dict:
     return {
         "gs1:gtin": {

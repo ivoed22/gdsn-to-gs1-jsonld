@@ -6,6 +6,25 @@ JSON-LD live.
 
 This is prototype authoring, not GDSN XML conversion.
 
+## Property coverage
+
+The Builder exposes a curated subset of the ~553 GS1 Web Vocabulary properties,
+limited to **simple ("flat") ranges** the Builder can emit safely: text,
+language-tagged text (`rdf:langString`), URL/link types (`xsd:anyURI`),
+`xsd:date`/`xsd:dateTime`, `xsd:boolean`, numeric (`xsd:integer`/`decimal`), and
+`gs1:QuantitativeValue` (value + unitCode).
+
+The manifest (`builder_manifest/product_builder_v0_10.yaml`) now covers 88 fields
+across 14 thematic groups. Beyond the original core set it adds Product
+descriptions & marketing, consumer information (instructions, safety, recall),
+lifecycle dates, and consumer/DPP link types.
+
+Properties whose range is a **nested object** (e.g. `gs1:Brand`,
+`gs1:ReferencedFileDetails`, certification / allergen / packaging / nutrient
+objects) remain flagged `supported_in_v0_10: false` and are shown as *planned*
+until safe object modelling is added. This is a UI/config manifest only — it is
+not converter mapping YAML and does not change governed converter output.
+
 ## Purpose
 
 The Builder helps standards and product-data reviewers explore what GS1 Web

@@ -21,7 +21,11 @@ product_categories:
       - core_product_information
       - classification_links
       - physical_dimensions
+      - product_descriptions
+      - consumer_information
+      - dates_lifecycle
       - digital_links_services
+      - consumer_dpp_links
       - other_webvoc_properties
   - key: food_beverage_tobacco
     label: Food / Beverage / Tobacco
@@ -29,9 +33,13 @@ product_categories:
       - core_product_information
       - classification_links
       - physical_dimensions
+      - product_descriptions
+      - consumer_information
+      - dates_lifecycle
       - nutritional_information
       - allergens
       - digital_links_services
+      - consumer_dpp_links
   - key: packaging
     label: Packaging
     groups:
@@ -362,4 +370,386 @@ groups:
         example_value: "https://example.com/verify/09501234567890"
         help_text: Verification service URL.
         appears_because: Lightweight link to external verification information.
+        supported_in_v0_10: true
+
+
+  - key: product_descriptions
+    label: Product Descriptions & Marketing
+    description: >
+      Language-tagged descriptive and marketing fields on the Product that emit as simple langString values.
+    properties:
+      - property_id: gs1:productDescription
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "An understandable and useable description of a product using brand and other descriptors"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:functionalName
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "Describes use of the product or service by the consumer"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:regulatedProductName
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "The prescribed, regulated or generic product name or denomination that describes the true nature of the product"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:variantDescription
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "Free text field used to identify the variant of the product"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:productMarketingMessage
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "Marketing message associated with the product"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:productFeatureBenefit
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "Element for consumer facing marketing content to describe the key features or benefits of the style suitable for display purposes"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:provenanceStatement
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "Free text description of the region or place the product originates from"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:countryOfOriginStatement
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "A description of the geographic area the item may have originated from or has been processed"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:includedAccessories
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "Any included object or device not part of the core product itself but which adds to its functionality or use"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:descriptiveSize
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "An alphanumeric size factor the brand owner wishes to communicate to the consumer"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:productRange
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "A name, used by a Brand Owner, that span multiple consumer categories or uses"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:productFormDescription
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "The physical form or shape of the product"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+
+  - key: consumer_information
+    label: Consumer Information
+    description: >
+      Consumer-facing instructions, safety and recall fields with simple text, boolean or integer ranges.
+    properties:
+      - property_id: gs1:consumerUsageInstructions
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "Free text containing the usage instructions of a product, which are normally held on the label or accompanying the product"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:consumerStorageInstructions
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "Expresses in text the consumer storage instructions of a product which are normally held on the label or accompanying the product"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:consumerSafetyInformation
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "Information on consumer safety regarding the product"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:consumerRecyclingInstructions
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "Expresses in text the consumer recycling instructions which are normally held on the label or accompanying the product"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:consumerPackageDisclaimer
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "Additional information that should be used in advertising and in displaying"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:warningCopyDescription
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "Warning information is additional information that outlines special requirements, warning and caution information printed on the package"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:healthClaimDescription
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Example text"
+        help_text: "A description of health claims according to regulations of the target market"
+        appears_because: "Safe rdf:langString Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:isProductRecalled
+        requirement: optional
+        input_type_override: checkbox
+        example_value: "true"
+        help_text: "An indicator for the product to determine if the Manufacturer or Supplier has recalled the product"
+        appears_because: "Safe xsd:boolean Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:supplierSpecifiedMinimumConsumerStorageDays
+        requirement: optional
+        input_type_override: integer
+        example_value: "30"
+        help_text: "Represents the number of days between a product's sell by date and its use by date"
+        appears_because: "Safe xsd:integer Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+
+  - key: dates_lifecycle
+    label: Dates & Lifecycle
+    description: >
+      Product lifecycle dates emitted as xsd:date or xsd:dateTime values.
+    properties:
+      - property_id: gs1:bestBeforeDate
+        requirement: optional
+        input_type_override: date
+        example_value: "2026-12-31"
+        help_text: "Best before date on the label or package signifies the end of the period under which the product will retain specific quality attributes or claims eve"
+        appears_because: "Safe xsd:date Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:expirationDate
+        requirement: optional
+        input_type_override: date
+        example_value: "2026-12-31"
+        help_text: "The expiration date is the date that determines the limit of consumption or use of a product/coupon"
+        appears_because: "Safe xsd:date Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:expirationDateTime
+        requirement: optional
+        input_type_override: datetime
+        example_value: "2026-12-31T00:00:00Z"
+        help_text: "The manufacturer determines the expiration date and time, which is relevant only for short duration and for items that will not be sent on long distan"
+        appears_because: "Safe xsd:dateTime Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:sellByDate
+        requirement: optional
+        input_type_override: date
+        example_value: "2026-12-31"
+        help_text: "The date specified by the manufacturer as the last date the retailer is to offer the product for sale to the consumer"
+        appears_because: "Safe xsd:date Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:productionDate
+        requirement: optional
+        input_type_override: date
+        example_value: "2026-12-31"
+        help_text: "The production date is the production or assembly date determined by the manufacturer"
+        appears_because: "Safe xsd:date Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:productionDateTime
+        requirement: optional
+        input_type_override: datetime
+        example_value: "2026-12-31T00:00:00Z"
+        help_text: "The date and time of production (or assembly)"
+        appears_because: "Safe xsd:dateTime Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:packagingDate
+        requirement: optional
+        input_type_override: date
+        example_value: "2026-12-31"
+        help_text: "The packaging date is the date when the goods were packed as determined by the packager"
+        appears_because: "Safe xsd:date Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:harvestDate
+        requirement: optional
+        input_type_override: date
+        example_value: "2026-12-31"
+        help_text: "The harvest date"
+        appears_because: "Safe xsd:date Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:harvestDateStart
+        requirement: optional
+        input_type_override: date
+        example_value: "2026-12-31"
+        help_text: "The harvest start date"
+        appears_because: "Safe xsd:date Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:harvestDateEnd
+        requirement: optional
+        input_type_override: date
+        example_value: "2026-12-31"
+        help_text: "The harvest end date"
+        appears_because: "Safe xsd:date Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:firstFreezeDate
+        requirement: optional
+        input_type_override: date
+        example_value: "2026-12-31"
+        help_text: "The first freeze date is applicable to products that are frozen directly after slaughtering, harvesting, catching or after initial processing of the p"
+        appears_because: "Safe xsd:date Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:dueDate
+        requirement: optional
+        input_type_override: date
+        example_value: "2026-12-31"
+        help_text: "The date by which an invoice should be paid"
+        appears_because: "Safe xsd:date Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+
+  - key: consumer_dpp_links
+    label: Consumer & DPP Links
+    description: >
+      Product-relevant link-type properties that safely emit direct HTTP(S) URLs.
+    properties:
+      - property_id: gs1:eifu
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/eifu/09501234567890"
+        help_text: "A link to electronic Instruction For Use instructions for Medical Devices"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:epil
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/epil/09501234567890"
+        help_text: "A link to an electronic patient information leaflet"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:epcis
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/epcis/09501234567890"
+        help_text: "A link to an EPCIS repository of visibility event data"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:ingredientsInfo
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/ingredients-xnfo/09501234567890"
+        help_text: "A link to facts about ingredients"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:safetyInfo
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/safety-xnfo/09501234567890"
+        help_text: "A link to safety information"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:recallStatus
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/recall-xtatus/09501234567890"
+        help_text: "A link to information about whether the product has been recalled or not, typically an API"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:consumerHandlingStorageInfo
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/consumer-xandling-xtorage-xnfo/09501234567890"
+        help_text: "A link to information about safe handling and storage for consumer use"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:quickStartGuide
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/quick-xtart-xuide/09501234567890"
+        help_text: "A link to a description of the key features needed to be understood to begin using the item or interacting with something new"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:whatsInTheBox
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/whats-xn-xhe-xox/09501234567890"
+        help_text: "A link to a description of all the individual items in a packaged item"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:userAgreement
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/user-xgreement/09501234567890"
+        help_text: "A link to an agreement or waiver"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:registerProduct
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/register-xroduct/09501234567890"
+        help_text: "A link to an entry point for registering ownership of a product including for warranty purposes"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:review
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/review/09501234567890"
+        help_text: "A link to reviews"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:faqs
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/faqs/09501234567890"
+        help_text: "A link to a set of frequently asked questions"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:tutorial
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/tutorial/09501234567890"
+        help_text: "A link to a tutorial or set of tutorials, such as online classes, how-to videos etc"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:support
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/support/09501234567890"
+        help_text: "A link to a source of support such as a helpdesk, chat support, email etc"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:recipeInfo
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/recipe-xnfo/09501234567890"
+        help_text: "A link to a recipe website"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:appDownload
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/app-xownload/09501234567890"
+        help_text: "A link to a related mobile app"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:smpc
+        requirement: optional
+        input_type_override: url
+        example_value: "https://example.com/smpc/09501234567890"
+        help_text: "A link to Summary Product Characteristics"
+        appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
         supported_in_v0_10: true
