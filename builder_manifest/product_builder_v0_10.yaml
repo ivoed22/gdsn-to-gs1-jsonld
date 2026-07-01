@@ -21,6 +21,8 @@ product_categories:
       - core_product_information
       - classification_links
       - physical_dimensions
+      - additional_measurements
+      - identifiers_variants
       - product_descriptions
       - consumer_information
       - dates_lifecycle
@@ -33,11 +35,14 @@ product_categories:
       - core_product_information
       - classification_links
       - physical_dimensions
+      - additional_measurements
+      - identifiers_variants
       - product_descriptions
       - consumer_information
       - dates_lifecycle
       - nutritional_information
       - nutrition
+      - food_serving_details
       - food_coding
       - allergens
       - digital_links_services
@@ -260,11 +265,104 @@ groups:
     properties:
       - property_id: gs1:packagingMarkedLabelAccreditation
         requirement: optional
-        example_value: "RECYCLABLE"
-        help_text: Accreditation code is a controlled-code object in WebVoc.
-        appears_because: Included as a visible packaging review topic.
-        supported_in_v0_10: false
-        planned_reason: Requires controlled-code handling before emission.
+        input_type_override: code
+        help_text: "A marking that the product received recognition, endorsement, certification by following guidelines by the label issuing"
+        appears_because: "Controlled gs1:PackagingMarkedLabelAccreditationCode value from the local snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-LABEL_OF_THE_ALLERGY_AND_ASTHMA_FEDERATION", label: "Allergy and Asthma Federation"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-TUNNUSTATUD_EESTI_MAITSE", label: "Approved Estonian Taste"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-AUS_KAUP_ESTONIA", label: "Aus Kaup Estonia"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-AMA_ORGANIC_SEAL", label: "Austria Ministry of Agriculture Organic Label"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-BDIH_LOGO", label: "BDIH Germany guidelines for Certified Natural Cosmetics"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-EESTI_PARIM_TOIDUAINE", label: "Best Food Association of Estonia Food Industry"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-BETER_LEVEN_1_STER", label: "Beter Leven One Star Mark"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-BETER_LEVEN_3_STER", label: "Beter Leven Three Star Mark"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-BETER_LEVEN_2_STER", label: "Beter Leven Two Star Mark"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-BIO_AUSTRIA_LABEL", label: "Bio Austria"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-BLUE_ANGEL", label: "Blue Angel"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-BORD_BIA_APPROVED_MEAT", label: "Bord Bia Approved - Meat Content Only"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-BORD_BIA_APPROVED", label: "Bord Bia Approved Logo"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-BRA_MILJOVAL_LABEL_SWEDISH", label: "Bra Miljoval"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-OEKO_TEX_LABEL", label: "Confidence in Textiles Oeko-Tex"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-CROSSED_GRAIN_SYMBOL", label: "Crossed grain logo"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-DEMETER_LABEL", label: "Demeter International Trademark"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-EC_NATIONAL_HEALTH_MARK", label: "EC National Health Mark"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-ECOCERT_CERTIFICATE", label: "ECOCERT Certification"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-EESTI_OKOMARK", label: "EESTI OKOMARK (Label of Organic Food)"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-EU_ORGANIC_FARMING", label: "EU Organic Farming Logo"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-ECO_LABEL_LADYBUG", label: "Eco Label Ladybug"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-EU_ECO_LABEL", label: "European Union Eco Label"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-FALKEN", label: "Falken"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-GOODS_FROM_FINLAND_BLUE_SWAN", label: "Finfood Suomen Ruokatieto Ry"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-FINNISH_HEART_SYMBOL", label: "Finnish Heart Symbol"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-FOREST_STEWARDSHIP_COUNCIL_LABEL", label: "Forest Stewardship Council Label"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-GMO_MARKED", label: "GMO Marked"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-BIO_LABEL_GERMAN", label: "German national organic certification label (Bio-Siegel)"}
+          - {value: "gs1:PackagingMarkedLabelAccreditationCode-GREEN_DOT", label: "Green Dot"}
+      - property_id: gs1:packagingMarkedFreeFrom
+        requirement: optional
+        input_type_override: code
+        help_text: "Indication of the food ingredients that the package is marked free from"
+        appears_because: "Controlled gs1:PackagingMarkedFreeFromCode value from the local snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_ARTIFICIAL_COLOURING", label: "Free From Artificial Colouring"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_ARTIFICIAL_FLAVOURING", label: "Free From Artificial Flavouring"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_ARTIFICIAL_PRESERVATIVES", label: "Free From Artificial Preservatives"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_CHOLESTEROL", label: "Free From Cholesterol"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_CLONED_FOOD", label: "Free From Cloned Food"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_DAIRY", label: "Free From Dairy and Dairy Products"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_EGG", label: "Free From Egg"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_FISH", label: "Free From Fish"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_GLUTEN", label: "Free From Gluten"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_LATEX", label: "Free From Latex"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_LEGUME_PROTEIN", label: "Free From Legume Protein"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_MILK", label: "Free From Milk"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_MILK_PROTEIN", label: "Free From Milk Protein"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_PEANUTS", label: "Free From Peanuts"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_SOYA", label: "Free From Soya"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_SUGAR", label: "Free From Sugar"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_LACTOSE", label: "Free Of Lactose"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_PVC", label: "Free from PVC"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_PROTEIN", label: "Free from Protein"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_TRANSFAT", label: "Free from Trans Fatty Acids"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-REDUCED_PROTEIN", label: "Low Level of Protein"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-FREE_FROM_NATURAL_GLUTEN", label: "Naturally Free From Gluten"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-REDUCED_LACTOSE", label: "Reduced Amount of Lactose"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-REDUCED_TRANSFAT", label: "Reduced Amount of Transfats"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-VERY_LOW_GLUTEN", label: "Very Low Amount of Gluten"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-WITHOUT_ADDED_SALT", label: "Without Added Salt"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-WITHOUT_ADDED_SUGAR", label: "Without Added Sugar"}
+          - {value: "gs1:PackagingMarkedFreeFromCode-WITHOUT_ADDED_SWEETENER", label: "Without Added Sweetener"}
+      - property_id: gs1:packagingMarkedDietAllergenType
+        requirement: optional
+        input_type_override: code
+        help_text: "Indication of which dietary or allergen marks are on the package"
+        appears_because: "Controlled gs1:PackagingMarkedDietAllergenCode value from the local snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:PackagingMarkedDietAllergenCode-DIET_PRODUCT_450_800_KCAL_PER_DAY", label: "450-800 Kilocalorie Per Day Diet"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-DIET_PRODUCT_800_1200_KCAL_PER_DAY", label: "800-1200 Kilocalorie Per Day Diet"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-APPROVED_FOR_TUBE_FEEDING", label: "Approved for Tube Feeding"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-APPROVED_BY_ASTHMA_AND_ALLERGY_ASSOC", label: "Asthma and Allergist Association"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-BIOLOGICAL", label: "Biological"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-CALORIES_PER_PORTION", label: "Calories Per Portion"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-CONTAINS_LATEX", label: "Contains Latex"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-CONTAINS_PVC", label: "Contains PVC"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-CONTAINS_PVC_WITH_PHTHALATES", label: "Contains PVC With Phthalates"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-CONTAINS_PVC_WITHOUT_PHTHALATES", label: "Contains PVC Without Phthalates"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-GEZONDE_KEUZE_KLAVERTJE", label: "Gezonde Keuze Klavertje"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-HALAL", label: "Halal"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-IK_KIES_BEWUST", label: "Ik Kies Bewust"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-KOSHER", label: "Kosher"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-LACTASE_ENZYME", label: "Lactase Enzyme"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-LOW_ON_SUGAR", label: "Low Sugar"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-LOW_ON_PHENYLALANINE", label: "Low in Phenylalanine"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-MOTHERS_MILK_SUBSTITUTE", label: "Mother's Milk Substitute"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-NUTRITION_SUPPLEMENT", label: "Nutrition Supplement"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-NYCKELHAL_MARK", label: "Nyckelhal Mark"}
+          - {value: "gs1:PackagingMarkedDietAllergenCode-VEGETARIAN", label: "Vegetarian"}
       - property_id: gs1:packagingMaterial
         requirement: optional
         input_type_override: object
@@ -465,6 +563,60 @@ groups:
             example_value: "en"
             help_text: "Language code of the file content."
 
+      - property_id: gs1:instructionsForUse
+        requirement: optional
+        input_type_override: object
+        object_type: gs1:ReferencedFileDetails
+        help_text: "Instructions for use as a nested gs1:ReferencedFileDetails object (file URL)."
+        appears_because: "Modelled as gs1:ReferencedFileDetails in the Web Vocabulary."
+        supported_in_v0_10: true
+        object_fields:
+          - property_id: gs1:referencedFileURL
+            requirement: recommended
+            input_type_override: url
+            example_value: "https://example.com/file"
+            help_text: "Direct URL of the file."
+          - property_id: gs1:fileLanguageCode
+            requirement: optional
+            input_type_override: text
+            example_value: "en"
+            help_text: "Language code of the file content."
+      - property_id: gs1:consumerHandlingStorage
+        requirement: optional
+        input_type_override: object
+        object_type: gs1:ReferencedFileDetails
+        help_text: "Consumer handling and storage as a nested gs1:ReferencedFileDetails object (file URL)."
+        appears_because: "Modelled as gs1:ReferencedFileDetails in the Web Vocabulary."
+        supported_in_v0_10: true
+        object_fields:
+          - property_id: gs1:referencedFileURL
+            requirement: recommended
+            input_type_override: url
+            example_value: "https://example.com/file"
+            help_text: "Direct URL of the file."
+          - property_id: gs1:fileLanguageCode
+            requirement: optional
+            input_type_override: text
+            example_value: "en"
+            help_text: "Language code of the file content."
+      - property_id: gs1:audioFile
+        requirement: optional
+        input_type_override: object
+        object_type: gs1:ReferencedFileDetails
+        help_text: "Audio file as a nested gs1:ReferencedFileDetails object (file URL)."
+        appears_because: "Modelled as gs1:ReferencedFileDetails in the Web Vocabulary."
+        supported_in_v0_10: true
+        object_fields:
+          - property_id: gs1:referencedFileURL
+            requirement: recommended
+            input_type_override: url
+            example_value: "https://example.com/file"
+            help_text: "Direct URL of the file."
+          - property_id: gs1:fileLanguageCode
+            requirement: optional
+            input_type_override: text
+            example_value: "en"
+            help_text: "Language code of the file content."
   - key: other_webvoc_properties
     label: Other Web Vocabulary Properties
     description: Additional safe URL fields useful for prototypes.
@@ -1416,3 +1568,271 @@ groups:
           - {value: "gs1:NonbinaryLogicCode-NOT_APPLICABLE", label: "Not Applicable"}
           - {value: "gs1:NonbinaryLogicCode-TRUE", label: "True"}
           - {value: "gs1:NonbinaryLogicCode-UNSPECIFIED", label: "Unspecified"}
+
+
+  - key: additional_measurements
+    label: Additional Measurements
+    description: >
+      Extra weight, volume, area and dimension quantities (value + unitCode).
+    properties:
+      - property_id: gs1:netWeight
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1 KGM"
+        help_text: "Used to identify the net weight of the product"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:drainedWeight
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1 KGM"
+        help_text: "The weight of the product when drained of its liquid"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:grossVolume
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1 KGM"
+        help_text: "The overall volume of the item including packaging"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:grossArea
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1 KGM"
+        help_text: "The overall area of the item including packaging"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:netArea
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1 KGM"
+        help_text: "The net area of the item"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:massPerUnitArea
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1 KGM"
+        help_text: "The mass per unit area of the item"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:inPackageDiameter
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1 KGM"
+        help_text: "The measurement of the diameter of the product in its package at its largest point"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:outOfPackageHeight
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1 KGM"
+        help_text: "The height of the product out of the package, as measured according to the GS1 Package Measurement Rules"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:outOfPackageWidth
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1 KGM"
+        help_text: "The width of the product out of the package, as measured according to the GS1 Package Measurement Rules"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:outOfPackageDepth
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1 KGM"
+        help_text: "The depth of the product out of its packaging, as measured according to the GS1 Package Measurement Rules"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:outOfPackageDiameter
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1 KGM"
+        help_text: "The measurement of the diameter of the product out of its package at its largest point"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:productYield
+        requirement: optional
+        input_type_override: quantity
+        example_value: "1 KGM"
+        help_text: "Product quantity after preparation"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:productYieldVariationPercentage
+        requirement: optional
+        input_type_override: number
+        example_value: "0"
+        help_text: "Indication of range in percent of the given cooking / roasting loss"
+        appears_because: "Safe xsd:float Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+
+  - key: identifiers_variants
+    label: Identifiers & Variants
+    description: >
+      Batch/lot and serial identifiers, production variant and sustainability info.
+    properties:
+      - property_id: gs1:consumerProductVariant
+        requirement: optional
+        input_type_override: text
+        example_value: "EXAMPLE-123"
+        help_text: "The consumer product variant may be used to distinguish one variant of a retail consumer trade item from another if the "
+        appears_because: "Safe xsd:string Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:hasBatchLotNumber
+        requirement: optional
+        input_type_override: text
+        example_value: "EXAMPLE-123"
+        help_text: "The batch or lot number associates an item with information the manufacturer considers relevant for traceability of the "
+        appears_because: "Safe xsd:string Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:hasSerialNumber
+        requirement: optional
+        input_type_override: text
+        example_value: "EXAMPLE-123"
+        help_text: "A serial number is assigned to an entity for its lifetime"
+        appears_because: "Safe xsd:string Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:hasThirdPartyControlledSerialNumber
+        requirement: optional
+        input_type_override: text
+        example_value: "EXAMPLE-123"
+        help_text: "This identifier is assigned to an entity for its lifetime"
+        appears_because: "Safe xsd:string Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:productionVariantDescription
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Variant A"
+        help_text: "Free text assigned by the manufacturer to describe the production variant"
+        appears_because: "Safe rdf:langString Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:productionVariantEffectiveDateTime
+        requirement: optional
+        input_type_override: datetime
+        example_value: "2026-01-01T00:00:00Z"
+        help_text: "The start date of a production variant"
+        appears_because: "Safe xsd:dateTime Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:productSustainabilityInfo
+        requirement: optional
+        input_type_override: url
+        help_text: "This term has been deprecated"
+        appears_because: "Safe xsd:anyURI Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+
+  - key: food_serving_details
+    label: Food Serving & Details
+    description: >
+      Serving sizes/suggestions, servings per package, diet and allergen specification, and related codes.
+    properties:
+      - property_id: gs1:servingSize
+        requirement: optional
+        input_type_override: quantity
+        example_value: "30 GRM"
+        help_text: "Measurement value specifying the serving size in which the information per nutrient has been stated"
+        appears_because: "Safe gs1:QuantitativeValue Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:servingSizeDescription
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Per 30 g"
+        help_text: "A free text field specifying the serving size for which the nutrient information has been stated for example: per 1/3 cu"
+        appears_because: "Safe rdf:langString Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:servingSuggestion
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Serve chilled"
+        help_text: "Free text field for serving suggestion"
+        appears_because: "Safe rdf:langString Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:numberOfServingsPerPackage
+        requirement: optional
+        input_type_override: number
+        example_value: "10"
+        help_text: "The total number of servings contained in the package"
+        appears_because: "Safe xsd:float Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:numberOfServingsRangeDescription
+        requirement: optional
+        input_type_override: language_text
+        example_value: "8 to 10 servings"
+        help_text: "A free text field specifying a range for the number of servings contained in the package"
+        appears_because: "Safe rdf:langString Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:juiceContentPercent
+        requirement: optional
+        input_type_override: number
+        example_value: "100"
+        help_text: "The fruit juice content of the product expressed as a percentage"
+        appears_because: "Safe xsd:float Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:ingredientOfConcern
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Contains caffeine"
+        help_text: "Indicates a claim to an ingredient, considered to be a concern for regulatory or other reasons, and which is 'contained'"
+        appears_because: "Safe rdf:langString Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:dietTypeDescription
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Suitable for vegetarians"
+        help_text: "Free text for indication of diet not stated in the list of diets"
+        appears_because: "Safe rdf:langString Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:allergenSpecificationName
+        requirement: optional
+        input_type_override: language_text
+        example_value: "EU 1169/2011"
+        help_text: "Free text field containing the name and version of the regulation or standard that defines the criteria of allergen cont"
+        appears_because: "Safe rdf:langString Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:allergenSpecificationAgency
+        requirement: optional
+        input_type_override: language_text
+        example_value: "EU"
+        help_text: "The agency or other organization that defines or manages the criteria for allergen containment"
+        appears_because: "Safe rdf:langString Product property from the Web Vocabulary."
+        supported_in_v0_10: true
+      - property_id: gs1:reheatingClaim
+        requirement: optional
+        input_type_override: code
+        help_text: "Indicates, with reference to the product branding, labelling or packaging whether a food product which is ready to eat c"
+        appears_because: "Controlled gs1:NonbinaryLogicCode value from the local snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:NonbinaryLogicCode-FALSE", label: "False"}
+          - {value: "gs1:NonbinaryLogicCode-NOT_APPLICABLE", label: "Not Applicable"}
+          - {value: "gs1:NonbinaryLogicCode-TRUE", label: "True"}
+          - {value: "gs1:NonbinaryLogicCode-UNSPECIFIED", label: "Unspecified"}
+      - property_id: gs1:nutrientBasisQuantityType
+        requirement: optional
+        input_type_override: code
+        help_text: "The type of quantity specified in the nutrientBasisQuantity for example measurement, serving size, or container"
+        appears_because: "Controlled gs1:NutrientBasisQuantityCode value from the local snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:NutrientBasisQuantityCode-BY_MEASURE", label: "By Measure"}
+          - {value: "gs1:NutrientBasisQuantityCode-BY_SERVING", label: "By Serving"}
+      - property_id: gs1:nutrientMeasurementPrecision
+        requirement: optional
+        input_type_override: code
+        help_text: "The Code indicating whether the specified nutrient content is exact or approximate"
+        appears_because: "Controlled gs1:MeasurementPrecisionCode value from the local snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:MeasurementPrecisionCode-APPROXIMATELY", label: "Approximately"}
+          - {value: "gs1:MeasurementPrecisionCode-EXACT", label: "Exact"}
+          - {value: "gs1:MeasurementPrecisionCode-LESS_THAN", label: "Less Than"}
+      - property_id: gs1:numberOfServingsPerPackageMeasurementPrecision
+        requirement: optional
+        input_type_override: code
+        help_text: "Code indicating whether the number of servings per package is exact or approximate"
+        appears_because: "Controlled gs1:MeasurementPrecisionCode value from the local snapshot."
+        supported_in_v0_10: true
+        options:
+          - {value: "gs1:MeasurementPrecisionCode-APPROXIMATELY", label: "Approximately"}
+          - {value: "gs1:MeasurementPrecisionCode-EXACT", label: "Exact"}
+          - {value: "gs1:MeasurementPrecisionCode-LESS_THAN", label: "Less Than"}

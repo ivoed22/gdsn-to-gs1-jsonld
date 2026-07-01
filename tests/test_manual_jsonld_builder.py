@@ -261,6 +261,36 @@ def test_food_coding_code_lists_and_serialization():
     assert data["nutritionalClaim"] == {"@id": code}
 
 
+def test_manifest_full_coverage_groups_and_conversions():
+    """Final coverage pass: extra measurement/identifier/serving groups, the
+    accreditation code conversion, and media ReferencedFileDetails objects."""
+    manifest = load_builder_manifest(str(MANIFEST))
+    keys = {g["key"] for g in manifest["groups"]}
+    for key in ("additional_measurements", "identifiers_variants", "food_serving_details"):
+        assert key in keys, f"missing group: {key}"
+
+    total = sum(len(g["properties"]) for g in manifest["groups"])
+    assert total >= 180
+
+    accreditation = next(
+        p
+        for g in manifest["groups"]
+        for p in g["properties"]
+        if p["property_id"] == "gs1:packagingMarkedLabelAccreditation"
+    )
+    assert accreditation["input_type_override"] == "code"
+    assert accreditation["options"]
+
+    object_ids = {
+        p["property_id"]
+        for g in manifest["groups"]
+        for p in g["properties"]
+        if p.get("input_type_override") == "object"
+    }
+    for pid in ("gs1:instructionsForUse", "gs1:consumerHandlingStorage", "gs1:audioFile"):
+        assert pid in object_ids, f"missing media object: {pid}"
+
+
 def _metadata() -> dict:
     return {
         "gs1:gtin": {
