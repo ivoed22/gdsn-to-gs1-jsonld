@@ -39,14 +39,30 @@ Supported object fields and their safe sub-fields:
 - `gs1:packagingMaterial` → `gs1:PackagingMaterial` (composition quantity,
   thickness)
 
-Only **safe scalar/langString/URL/quantity/date** sub-fields are offered;
-sub-fields whose own range is another code/object type (e.g. an agency
-`gs1:Organization`, allergen/nutrient code objects) are intentionally omitted.
-Objects with no sub-value entered are not emitted.
+Safe **scalar/langString/URL/quantity/date** sub-fields are offered directly.
+Sub-fields whose range is a **controlled code list** are offered as a dropdown
+and emitted as JSON-LD node references, e.g.:
 
-Remaining nested structures without safe scalar sub-fields (e.g.
-`gs1:hasAllergen` / `gs1:AllergenDetails`, structured nutrient details) stay
-flagged `supported_in_v0_10: false` and are shown as *planned*.
+```json
+"hasAllergen": {
+  "@type": "gs1:AllergenDetails",
+  "allergenType": { "@id": "gs1:AllergenTypeCode-AM" },
+  "allergenLevelOfContainmentCode": { "@id": "gs1:LevelOfContainmentCode-CONTAINS" }
+}
+```
+
+- `gs1:hasAllergen` → `gs1:AllergenDetails` with `allergenType` (curated EU-14
+  allergen codes from the local snapshot) and `allergenLevelOfContainmentCode`
+  (Contains / Free from / May contain).
+
+Sub-fields whose range is a nested *object* (e.g. an agency
+`gs1:Organization`) are intentionally omitted. Objects with no sub-value entered
+are not emitted.
+
+Structured **nutrient** details (`gs1:NutritionMeasurementType` and the
+per-nutrient measurement objects) remain flagged `supported_in_v0_10: false` and
+are shown as *planned*; they need a repeatable measurement structure that is a
+later step.
 
 This is a UI/config manifest plus the manual Builder serializer only — it is not
 converter mapping YAML and does not change governed converter output. Manual

@@ -153,6 +153,48 @@ def test_nested_object_serialization_and_omission():
     assert any("certificationURI" in warning for warning in warnings)
 
 
+def test_allergen_code_object_serialization():
+    """Allergen is a nested AllergenDetails object with GS1 code-list values
+    emitted as JSON-LD node references."""
+    manifest = load_builder_manifest(str(MANIFEST))
+    allergen = next(
+        field
+        for group in manifest["groups"]
+        for field in group["properties"]
+        if field["property_id"] == "gs1:hasAllergen"
+    )
+    assert allergen["input_type_override"] == "object"
+    assert allergen["object_type"] == "gs1:AllergenDetails"
+    subs = {sub["property_id"]: sub for sub in allergen["object_fields"]}
+    assert subs["gs1:allergenType"]["input_type_override"] == "code"
+    assert any(
+        opt["value"] == "gs1:AllergenTypeCode-AM"
+        for opt in subs["gs1:allergenType"]["options"]
+    )
+    assert subs["gs1:allergenLevelOfContainmentCode"]["input_type_override"] == "code"
+
+    metadata = {
+        "gs1:hasAllergen": {"term_id": "gs1:hasAllergen", "input_type_override": "object", "object_type": "gs1:AllergenDetails", "supported_in_v0_10": True,
+            "object_fields": [
+                {"property_id": "gs1:allergenType", "input_type_override": "code"},
+                {"property_id": "gs1:allergenLevelOfContainmentCode", "input_type_override": "code"},
+            ]},
+    }
+    state = build_empty_builder_state()
+    state = update_builder_value(state, object_subfield_key("gs1:hasAllergen", "gs1:allergenType"), "gs1:AllergenTypeCode-AM")
+    state = update_builder_value(state, object_subfield_key("gs1:hasAllergen", "gs1:allergenLevelOfContainmentCode"), "gs1:LevelOfContainmentCode-CONTAINS")
+
+    data = serialize_builder_state_to_jsonld(state, metadata)
+    assert data["hasAllergen"] == {
+        "@type": "gs1:AllergenDetails",
+        "allergenType": {"@id": "gs1:AllergenTypeCode-AM"},
+        "allergenLevelOfContainmentCode": {"@id": "gs1:LevelOfContainmentCode-CONTAINS"},
+    }
+
+    empty = build_empty_builder_state()
+    assert "hasAllergen" not in serialize_builder_state_to_jsonld(empty, metadata)
+
+
 def _metadata() -> dict:
     return {
         "gs1:gtin": {

@@ -453,6 +453,9 @@ def _emit_scalar_like(entry: Any, input_type: str) -> Any:
             return None
     if input_type == "url":
         return str(value) if _looks_like_url(str(value)) else None
+    if input_type == "code":
+        # Emit a controlled code as a JSON-LD node reference.
+        return {"@id": str(value)}
     try:
         return _coerce_scalar(value, input_type)
     except (ArithmeticError, ValueError):
@@ -550,6 +553,8 @@ def serialize_builder_state_to_jsonld(
         elif input_type == "url":
             if _looks_like_url(str(value)):
                 data[compact_name] = str(value)
+        elif input_type == "code":
+            data[compact_name] = {"@id": str(value)}
         else:
             try:
                 data[compact_name] = _coerce_scalar(value, input_type)

@@ -337,11 +337,39 @@ groups:
         supported_in_v0_10: true
       - property_id: gs1:hasAllergen
         requirement: optional
-        example_value: "AM FREE_FROM"
-        help_text: Structured allergen details are nested.
-        appears_because: Existing mapping review tracks allergen containment semantics.
-        supported_in_v0_10: false
-        planned_reason: Requires safe AllergenDetails object modelling.
+        input_type_override: object
+        object_type: gs1:AllergenDetails
+        help_text: "Allergen as a nested gs1:AllergenDetails object: pick an allergen type and a containment level from the GS1 code lists."
+        appears_because: "Allergens are modelled as gs1:AllergenDetails with controlled code values in the Web Vocabulary."
+        supported_in_v0_10: true
+        object_fields:
+          - property_id: gs1:allergenType
+            requirement: recommended
+            input_type_override: code
+            help_text: "Allergen type (GS1 AllergenTypeCode; EU-14 subset)."
+            options:
+              - {value: "gs1:AllergenTypeCode-CEREALS_CONTAINING_GLUTEN", label: "Cereals containing gluten"}
+              - {value: "gs1:AllergenTypeCode-AC", label: "Crustaceans"}
+              - {value: "gs1:AllergenTypeCode-AE", label: "Eggs"}
+              - {value: "gs1:AllergenTypeCode-AF", label: "Fish"}
+              - {value: "gs1:AllergenTypeCode-AP", label: "Peanuts"}
+              - {value: "gs1:AllergenTypeCode-AY", label: "Soybeans"}
+              - {value: "gs1:AllergenTypeCode-AM", label: "Milk"}
+              - {value: "gs1:AllergenTypeCode-AN", label: "Tree nuts"}
+              - {value: "gs1:AllergenTypeCode-BC", label: "Celery"}
+              - {value: "gs1:AllergenTypeCode-BM", label: "Mustard"}
+              - {value: "gs1:AllergenTypeCode-AS", label: "Sesame seeds"}
+              - {value: "gs1:AllergenTypeCode-SULPHUR_DIOXIDE", label: "Sulphur dioxide and sulphites"}
+              - {value: "gs1:AllergenTypeCode-NL", label: "Lupin"}
+              - {value: "gs1:AllergenTypeCode-UM", label: "Molluscs"}
+          - property_id: gs1:allergenLevelOfContainmentCode
+            requirement: recommended
+            input_type_override: code
+            help_text: "Containment level (GS1 LevelOfContainmentCode)."
+            options:
+              - {value: "gs1:LevelOfContainmentCode-CONTAINS", label: "Contains"}
+              - {value: "gs1:LevelOfContainmentCode-FREE_FROM", label: "Free from"}
+              - {value: "gs1:LevelOfContainmentCode-MAY_CONTAIN", label: "May contain"}
 
   - key: certifications
     label: Certifications

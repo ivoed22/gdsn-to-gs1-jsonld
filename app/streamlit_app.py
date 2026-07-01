@@ -494,6 +494,21 @@ def _render_field_widget(
             state = update_builder_value(state, state_id, value)
         else:
             state = update_builder_value(state, state_id, "")
+    elif input_type == "code":
+        options = metadata.get("options") or []
+        labels = ["— none —"] + [str(opt.get("label") or opt.get("value")) for opt in options]
+        values = [""] + [str(opt.get("value")) for opt in options]
+        selected_label = st.selectbox(
+            f"{state_id} code",
+            labels,
+            key=key,
+            label_visibility="collapsed",
+        )
+        selected_value = values[labels.index(selected_label)] if selected_label in labels else ""
+        if selected_value:
+            state = update_builder_value(state, state_id, selected_value)
+        else:
+            state = update_builder_value(state, state_id, "")
     else:
         value = st.text_input(
             f"{state_id} value",
