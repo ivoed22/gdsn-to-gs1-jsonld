@@ -134,16 +134,16 @@ WORKFLOW_MODES = (
         "outcome": "Read-only vocabulary review with local catalog evidence.",
     },
     {
-        "key": "prototype",
-        "title": "Create JSON-LD Prototype",
-        "marker": "LD",
+        "key": "candidates",
+        "title": "Generate Mapping Candidates",
+        "marker": "MAP",
         "description": (
-            "Manually select GS1 Web Vocabulary properties, enter values, and "
-            "preview prototype JSON-LD live."
+            "Propose possible GDSN/BMS/XPath source fields for GS1 Web Vocabulary "
+            "properties, with confidence and review reasons."
         ),
         "outcome": (
-            "Manual JSON-LD prototype with visible governance and traceability "
-            "warning."
+            "Review-only candidate report. No mappings are automatically accepted "
+            "or written."
         ),
     },
     {
@@ -157,16 +157,16 @@ WORKFLOW_MODES = (
         "outcome": "Read-only SDR status without changing converter behavior.",
     },
     {
-        "key": "candidates",
-        "title": "Generate Mapping Candidates",
-        "marker": "MAP",
+        "key": "prototype",
+        "title": "Create JSON-LD Prototype",
+        "marker": "LD",
         "description": (
-            "Propose possible GDSN/BMS/XPath source fields for GS1 Web Vocabulary "
-            "properties, with confidence and review reasons."
+            "Manually author GS1 Web Vocabulary JSON-LD by selecting properties "
+            "and entering values, with a live preview."
         ),
         "outcome": (
-            "Review-only candidate report. No mappings are automatically accepted "
-            "or written."
+            "Manual JSON-LD prototype with visible governance and traceability "
+            "warning."
         ),
     },
     {
@@ -187,8 +187,9 @@ WORKFLOW_MODES = (
         "title": "Build Product Passport Prototype",
         "marker": "PB",
         "description": (
-            "Wrap GS1 Web Vocabulary JSON-LD into a prototype Product Passport "
-            "envelope and run structural validation against a local schema."
+            "Wrap GS1 Web Vocabulary JSON-LD (converter or manual-builder "
+            "output) into a prototype Product Passport envelope, validated "
+            "against a local schema."
         ),
         "outcome": (
             "Prototype Product Passport JSON-LD and structural validation "
@@ -197,6 +198,24 @@ WORKFLOW_MODES = (
     },
 )
 DEFAULT_WORKFLOW_MODE = WORKFLOW_MODES[0]["title"]
+
+# Information-architecture grouping for the workflow overview (v0.13.0).
+# Cards are rendered under these group headings, in this order, so seven
+# workflows read as three intents rather than one dense grid.
+WORKFLOW_GROUPS = (
+    {
+        "label": "Start here — convert product data",
+        "keys": ("convert",),
+    },
+    {
+        "label": "Explore & review mappings",
+        "keys": ("explore", "candidates", "standards"),
+    },
+    {
+        "label": "Prototype linked data & Product Passports",
+        "keys": ("prototype", "product_passport", "product_passport_builder"),
+    },
+)
 
 
 def clear_results() -> None:
@@ -2257,49 +2276,41 @@ def main() -> None:
 
     with st.container(border=True):
         render_workflow_entry_intro()
-        # 7 workflow cards: render as 4+3 grid layout.
-        first_row_modes = WORKFLOW_MODES[:4]
-        second_row_modes = WORKFLOW_MODES[4:]
-        top_columns = st.columns(4)
-        for column, mode in zip(top_columns, first_row_modes, strict=True):
-            with column:
-                selected = st.session_state["workflow_mode"] == mode["title"]
-                render_workflow_mode_card(
-                    mode["title"],
-                    mode["description"],
-                    mode["outcome"],
-                    mode["marker"],
-                    selected,
-                )
-                st.button(
-                    "Active" if selected else "Open",
-                    key=f"workflow_mode_{mode['key']}",
-                    type="primary" if selected else "secondary",
-                    disabled=selected,
-                    on_click=set_workflow_mode,
-                    args=(mode["title"],),
-                    use_container_width=True,
-                )
-        bottom_columns = st.columns(3)
-        for column, mode in zip(bottom_columns, second_row_modes, strict=True):
-            with column:
-                selected = st.session_state["workflow_mode"] == mode["title"]
-                render_workflow_mode_card(
-                    mode["title"],
-                    mode["description"],
-                    mode["outcome"],
-                    mode["marker"],
-                    selected,
-                )
-                st.button(
-                    "Active" if selected else "Open",
-                    key=f"workflow_mode_{mode['key']}",
-                    type="primary" if selected else "secondary",
-                    disabled=selected,
-                    on_click=set_workflow_mode,
-                    args=(mode["title"],),
-                    use_container_width=True,
-                )
+        # Seven workflows rendered as three labelled groups (max three cards
+        # per row) so the overview reads as intents, not one dense grid.
+        modes_by_key = {mode["key"]: mode for mode in WORKFLOW_MODES}
+        for group in WORKFLOW_GROUPS:
+            st.markdown(
+                f'<p class="workflow-group-label">{group["label"]}</p>',
+                unsafe_allow_html=True,
+            )
+            group_columns = st.columns(3)
+            for index, key in enumerate(group["keys"]):
+                mode = modes_by_key[key]
+                with group_columns[index]:
+                    selected = st.session_state["workflow_mode"] == mode["title"]
+                    render_workflow_mode_card(
+                        mode["title"],
+                        mode["description"],
+                        mode["outcome"],
+                        mode["marker"],
+                        selected,
+                    )
+                    st.button(
+                        "Active" if selected else "Open",
+                        key=f"workflow_mode_{mode['key']}",
+                        type="primary" if selected else "secondary",
+                        disabled=selected,
+                        on_click=set_workflow_mode,
+                        args=(mode["title"],),
+                        use_container_width=True,
+                    )
+            if len(group["keys"]) == 1:
+                with group_columns[1]:
+                    st.caption(
+                        "Recommended starting point. Convert product XML first, "
+                        "then explore, review, and prototype from the output."
+                    )
 
     workflow_mode = st.session_state["workflow_mode"]
     if workflow_mode == "Convert GDSN XML":

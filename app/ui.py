@@ -494,6 +494,15 @@ def apply_page_styles() -> None:
             max-width: 58rem;
         }
 
+        .workflow-group-label {
+            color: var(--accent-primary);
+            font-size: 0.72rem;
+            font-weight: 750;
+            letter-spacing: 0.07em;
+            margin: 1.35rem 0 0.55rem;
+            text-transform: uppercase;
+        }
+
         .workflow-mode-card {
             background: var(--surface-default);
             border: 1px solid var(--border-default);
@@ -1061,11 +1070,12 @@ def render_workflow_entry_intro() -> None:
           <p class="section-kicker">Workflow entry point</p>
           <h2>What do you want to do?</h2>
           <p>
-            Choose the task first. Six workflows are separated so each has its
-            own evidence, actions, and review surface: convert GDSN XML,
-            explore the GS1 Web Vocabulary, author JSON-LD prototypes, generate
-            mapping candidates, validate Product Passport sources, and review
-            open standards decisions.
+            Choose a task. Workflows are grouped by intent: start by converting
+            GDSN XML; explore and review mappings (Web Vocabulary, mapping
+            candidates, standards decisions); and prototype linked data and
+            Product Passports (JSON-LD prototypes, Product Passport source
+            validation, and the Product Passport Builder). Each workflow keeps
+            its own evidence, actions, and review surface.
           </p>
         </div>
         """,

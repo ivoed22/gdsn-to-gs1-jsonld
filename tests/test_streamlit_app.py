@@ -171,7 +171,9 @@ def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
 def test_streamlit_manual_builder_card_and_live_jsonld_update():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
 
-    app.button[_button_index(app, "Open", occurrence=1)].click().run(timeout=20)
+    # Grouped overview "Open" order: 0=explore(VOC), 1=candidates(MAP),
+    # 2=standards(SDR), 3=prototype(LD), 4=product_passport(PP), 5=builder(PB).
+    app.button[_button_index(app, "Open", occurrence=3)].click().run(timeout=20)
 
     assert app.session_state["workflow_mode"] == "Create JSON-LD Prototype"
     rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
@@ -285,9 +287,9 @@ def test_mapping_candidate_warning_text_appears():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
 
     # Navigate to the Generate Mapping Candidates workflow.
-    # It is the 5th card in the 3+3 layout — "Open" button occurrence 3
-    # (0=VOC, 1=LD, 2=SDR, 3=MAP, 4=PP).
-    app.button[_button_index(app, "Open", occurrence=3)].click().run(timeout=20)
+    # Grouped overview "Open" order: 0=explore(VOC), 1=candidates(MAP),
+    # 2=standards(SDR), 3=prototype(LD), 4=product_passport(PP), 5=builder(PB).
+    app.button[_button_index(app, "Open", occurrence=1)].click().run(timeout=20)
 
     assert app.session_state["workflow_mode"] == "Generate Mapping Candidates"
     assert any(
@@ -314,8 +316,8 @@ def test_product_passport_bridge_warning_text_appears():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
 
     # Navigate to the Validate Product Passport Sources workflow.
-    # It is the 6th card in the 3+3 layout — "Open" button occurrence 4
-    # (0=VOC, 1=LD, 2=SDR, 3=MAP, 4=PP).
+    # Grouped overview "Open" order: 0=explore(VOC), 1=candidates(MAP),
+    # 2=standards(SDR), 3=prototype(LD), 4=product_passport(PP), 5=builder(PB).
     app.button[_button_index(app, "Open", occurrence=4)].click().run(timeout=20)
 
     assert app.session_state["workflow_mode"] == "Validate Product Passport Sources"
