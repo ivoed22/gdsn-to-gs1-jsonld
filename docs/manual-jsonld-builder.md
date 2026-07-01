@@ -14,10 +14,12 @@ language-tagged text (`rdf:langString`), URL/link types (`xsd:anyURI`),
 `xsd:date`/`xsd:dateTime`, `xsd:boolean`, numeric (`xsd:integer`/`decimal`), and
 `gs1:QuantitativeValue` (value + unitCode).
 
-The manifest (`builder_manifest/product_builder_v0_10.yaml`) now covers 88 fields
-across 14 thematic groups. Beyond the original core set it adds Product
+The manifest (`builder_manifest/product_builder_v0_10.yaml`) now covers 132
+fields across 15 thematic groups. Beyond the original core set it adds Product
 descriptions & marketing, consumer information (instructions, safety, recall),
-lifecycle dates, and consumer/DPP link types.
+lifecycle dates, consumer/DPP link types, and a full Nutrition group (43
+per-nutrient measurements plus the nutrient basis quantity), each emitted as a
+`value` + `unitCode` quantity like `gs1:netContent`.
 
 ### Nested objects
 
@@ -59,10 +61,11 @@ Sub-fields whose range is a nested *object* (e.g. an agency
 `gs1:Organization`) are intentionally omitted. Objects with no sub-value entered
 are not emitted.
 
-Structured **nutrient** details (`gs1:NutritionMeasurementType` and the
-per-nutrient measurement objects) remain flagged `supported_in_v0_10: false` and
-are shown as *planned*; they need a repeatable measurement structure that is a
-later step.
+Per-nutrient values (`…PerNutrientBasis`) are authored in the **Nutrition**
+group as `value` + `unitCode` quantities on the food product, alongside the
+nutrient basis quantity and an optional nutritional-claim statement. The older
+`gs1:nutrientDetail` placeholder in the *Nutritional Information* group remains
+`supported_in_v0_10: false` (it references a different structured concept).
 
 This is a UI/config manifest plus the manual Builder serializer only — it is not
 converter mapping YAML and does not change governed converter output. Manual

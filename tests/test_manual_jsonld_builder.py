@@ -195,6 +195,38 @@ def test_allergen_code_object_serialization():
     assert "hasAllergen" not in serialize_builder_state_to_jsonld(empty, metadata)
 
 
+def test_nutrition_group_and_nutrient_serialization():
+    """Per-nutrient values are mapped as quantity fields (value + unitCode) in a
+    Nutrition group wired into the Food/Beverage/Tobacco category."""
+    manifest = load_builder_manifest(str(MANIFEST))
+    nutrition = next((g for g in manifest["groups"] if g["key"] == "nutrition"), None)
+    assert nutrition is not None
+    pids = {p["property_id"] for p in nutrition["properties"]}
+    for pid in (
+        "gs1:nutrientBasisQuantity",
+        "gs1:energyPerNutrientBasis",
+        "gs1:fatPerNutrientBasis",
+        "gs1:saturatedFatPerNutrientBasis",
+        "gs1:sugarsPerNutrientBasis",
+        "gs1:proteinPerNutrientBasis",
+        "gs1:saltPerNutrientBasis",
+    ):
+        assert pid in pids, f"missing nutrient field: {pid}"
+    assert len([p for p in nutrition["properties"] if p["property_id"].endswith("PerNutrientBasis")]) >= 40
+
+    food_groups = [g["key"] for g in get_builder_groups(manifest, "Food / Beverage / Tobacco")]
+    assert "nutrition" in food_groups
+
+    metadata = {
+        "gs1:fatPerNutrientBasis": {"term_id": "gs1:fatPerNutrientBasis", "input_type_override": "quantity", "supported_in_v0_10": True},
+    }
+    state = build_empty_builder_state()
+    state = update_builder_value(state, "gs1:fatPerNutrientBasis", "3.5", unit_code="GRM")
+    data = serialize_builder_state_to_jsonld(state, metadata)
+    assert data["fatPerNutrientBasis"]["unitCode"] == "GRM"
+    assert "value" in data["fatPerNutrientBasis"]
+
+
 def _metadata() -> dict:
     return {
         "gs1:gtin": {

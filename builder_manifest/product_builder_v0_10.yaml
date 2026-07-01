@@ -37,6 +37,7 @@ product_categories:
       - consumer_information
       - dates_lifecycle
       - nutritional_information
+      - nutrition
       - allergens
       - digital_links_services
       - consumer_dpp_links
@@ -862,4 +863,327 @@ groups:
         example_value: "https://example.com/smpc/09501234567890"
         help_text: "A link to Summary Product Characteristics"
         appears_because: "Safe xsd:anyURI Product property available in the Web Vocabulary."
+        supported_in_v0_10: true
+
+  - key: nutrition
+    label: Nutrition (per nutrient basis)
+    description: >
+      Per-nutrient measurement values for the declared nutrient basis. Each
+      nutrient emits as a value + unitCode (e.g. 3.5 GRM). Set the nutrient
+      basis quantity (for example, per 100 g) alongside.
+    properties:
+      - property_id: gs1:nutrientBasisQuantity
+        requirement: recommended
+        input_type_override: quantity
+        example_value: "100 GRM"
+        help_text: "Nutrient basis quantity the values are declared per (e.g. 100 g or 100 ml)."
+        appears_because: "Nutrient basis for the per-nutrient values (QuantitativeValue)."
+        supported_in_v0_10: true
+      - property_id: gs1:nutritionalClaimStatement
+        requirement: optional
+        input_type_override: language_text
+        example_value: "Low in saturated fat"
+        help_text: "Free-text nutritional claim (language-tagged)."
+        appears_because: "Safe langString nutritional-claim field."
+        supported_in_v0_10: true
+      - property_id: gs1:biotinPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Biotin Acid per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:calciumPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Calcium per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:carbohydratesPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Carbohydrates per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:chloridePerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Chloride per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:cholesterolPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Cholesterol per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:chromiumPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Chromium per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:copperPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Copper per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:energyFromFatPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Energy from Fat per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:energyPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Energy Per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:fatPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Fat per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:fibrePerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Fibre per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:fluoridePerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Fluoride per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:folicAcidPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Folic Acid per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:iodinePerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Iodine per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:ironPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Iron per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:magnesiumPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Magnesium per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:manganesePerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Manganese per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:molybdenumPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Molybdenum per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:monounsaturatedFatPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Monounsaturated fat per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:niacinPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Niacin per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:pantothenicAcidPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Pantothenic Acid per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:phosphorusPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Phosphorus per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:polyolsPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Polyols per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:polyunsaturatedFatPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Polyunsaturated fat per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:potassiumPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Potassium per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:proteinPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Protein per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:riboflavinPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Riboflavin per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:saltPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Salt per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:saturatedFatPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Saturated fat per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:seleniumPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Selenium per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:sodiumPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Sodium per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:starchPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Starch per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:sugarsPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Sugars per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:thiaminPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Thiamin per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:transFatPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Trans Fat per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:vitaminAPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Vitamin A per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:vitaminB12PerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Vitamin B12 per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:vitaminB6PerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Vitamin B6 per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:vitaminCPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Vitamin C per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:vitaminDPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Vitamin D per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:vitaminEPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Vitamin E per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:vitaminKPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Vitamin K per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
+        supported_in_v0_10: true
+      - property_id: gs1:zincPerNutrientBasis
+        requirement: optional
+        input_type_override: quantity
+        example_value: "0 GRM"
+        help_text: "Zinc per specified nutrient basis quantity (value + unitCode)."
+        appears_because: "Per-nutrient measurement on the food product (NutritionMeasurementType)."
         supported_in_v0_10: true
