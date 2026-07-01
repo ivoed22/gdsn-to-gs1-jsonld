@@ -2,7 +2,7 @@ from html import escape
 
 import streamlit as st
 
-APP_VERSION = "v0.13.2"
+APP_VERSION = "v0.13.3"
 
 
 def apply_page_styles() -> None:
@@ -520,6 +520,96 @@ def apply_page_styles() -> None:
             font-weight: 750;
             letter-spacing: 0.07em;
             margin: 1.35rem 0 0.55rem;
+            text-transform: uppercase;
+        }
+
+        /* Primary route cards (stage 1) — visually heavier than child cards. */
+        .route-card {
+            background: var(--surface-default);
+            border: 1px solid var(--border-default);
+            border-top: 3px solid var(--accent-rail);
+            border-radius: var(--radius-md) var(--radius-md) 0 0;
+            min-height: 13.5rem;
+            padding: 1.3rem 1.3rem 1.1rem;
+        }
+
+        .route-card.is-active {
+            background: var(--surface-active);
+            border-color: #8bb7d8;
+            border-top-color: var(--accent-primary);
+            box-shadow: inset 0 0 0 1px rgba(23, 105, 170, 0.14);
+        }
+
+        .route-card-header {
+            align-items: center;
+            display: flex;
+            gap: 0.65rem;
+            justify-content: space-between;
+            margin-bottom: 0.95rem;
+        }
+
+        .route-card-mark {
+            align-items: center;
+            background: var(--accent-primary);
+            border-radius: var(--radius-sm);
+            color: #ffffff;
+            display: inline-flex;
+            flex: 0 0 auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.72rem;
+            font-weight: 850;
+            height: 2.15rem;
+            justify-content: center;
+            letter-spacing: 0.04em;
+            min-width: 3.6rem;
+            padding: 0 0.55rem;
+        }
+
+        .route-card-state {
+            background: #dff0fb;
+            border: 1px solid #aad2ea;
+            border-radius: 999px;
+            color: var(--accent-strong);
+            font-size: 0.67rem;
+            font-weight: 750;
+            padding: 0.22rem 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .route-card-title {
+            color: var(--text-primary);
+            display: block;
+            font-size: 1.22rem;
+            font-weight: 780;
+            margin-bottom: 0.4rem;
+        }
+
+        .route-card-copy {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        .route-card-outcome {
+            border-top: 1px solid var(--border-default);
+            color: var(--text-secondary);
+            font-size: 0.86rem;
+            line-height: 1.5;
+            margin-top: 0.95rem;
+            padding-top: 0.75rem;
+        }
+
+        .route-card-outcome strong {
+            color: var(--accent-strong);
+        }
+
+        .route-child-heading {
+            color: var(--accent-primary);
+            font-size: 0.74rem;
+            font-weight: 750;
+            letter-spacing: 0.07em;
+            margin: 1.5rem 0 0.6rem;
             text-transform: uppercase;
         }
 
@@ -1148,14 +1238,48 @@ def render_workflow_entry_intro() -> None:
           <p class="section-kicker">Workflow entry point</p>
           <h2>What do you want to do?</h2>
           <p>
-            Choose a task. Workflows are grouped by intent: start by converting
-            GDSN XML; explore and review mappings (Web Vocabulary, mapping
-            candidates, standards decisions); and prototype linked data and
-            Product Passports (JSON-LD prototypes, Product Passport source
-            validation, and the Product Passport Builder). Each workflow keeps
-            its own evidence, actions, and review surface.
+            Pick a route, then a tool. Three routes cover the work: Create GS1
+            JSON-LD (convert GDSN XML or author a prototype), Vocabulary &amp;
+            Mapping (explore the Web Vocabulary, review mapping candidates and
+            standards decisions), and the Product Passport Bridge (validate
+            sources or build a prototype passport). Choosing a route reveals
+            only its relevant workflows.
           </p>
         </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_route_card(
+    title: str,
+    description: str,
+    outcome: str,
+    marker: str,
+    selected: bool,
+) -> None:
+    """Render a primary route card (stage 1 of the guided route navigation).
+
+    Route cards are visually heavier than child workflow cards and carry a
+    clear active-state indicator so the selected route reads at a glance.
+    """
+    state_class = " is-active" if selected else ""
+    state_html = (
+        '<span class="route-card-state">Active</span>' if selected else ""
+    )
+    st.markdown(
+        f"""
+        <article class="route-card{state_class}">
+          <div class="route-card-header">
+            <span class="route-card-mark">{escape(marker)}</span>
+            {state_html}
+          </div>
+          <strong class="route-card-title">{escape(title)}</strong>
+          <p class="route-card-copy">{escape(description)}</p>
+          <p class="route-card-outcome">
+            <strong>Outcome:</strong> {escape(outcome)}
+          </p>
+        </article>
         """,
         unsafe_allow_html=True,
     )

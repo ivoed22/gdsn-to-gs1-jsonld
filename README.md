@@ -3,6 +3,13 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.13.3 adds guided route navigation: the landing page starts with three
+primary routes — Create GS1 JSON-LD, Vocabulary & Mapping, and the Product
+Passport Bridge — and reveals only the child workflows for the chosen route
+(progressive disclosure). Convert GDSN XML remains the default. All seven
+workflows stay reachable; no behaviour changes, no mock data, no compliance
+claims.
+
 Version 0.13.2 is a UI/UX polish release: a wider main workspace, a sidebar
 reframed as compact workspace status/context, themed landing navigation
 (Recommended path → Vocabulary & Mapping → JSON-LD Prototyping → Product

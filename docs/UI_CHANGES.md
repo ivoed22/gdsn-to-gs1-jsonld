@@ -1,5 +1,28 @@
 # UI Changes
 
+## v0.13.3 Guided route navigation checklist
+
+- [x] Landing page starts with three primary route cards: Create GS1 JSON-LD,
+      Vocabulary & Mapping, Product Passport Bridge.
+- [x] Route cards are visually heavier than child cards (larger title, top
+      accent, monospace marker, clear active state).
+- [x] Selecting a route reveals only its child workflows under a context heading
+      (Choose how to create JSON-LD / Choose a review tool / Choose a Product
+      Passport tool).
+- [x] Default route Create GS1 JSON-LD; Convert GDSN XML is the default active
+      workflow with its guided four-step flow.
+- [x] Selecting a route opens its first child as active without clearing
+      results; clicking a child opens the existing workflow.
+- [x] All seven workflow keys unchanged and reachable.
+- [x] Sidebar workspace status/context, compact hero, and core-conversion
+      traceability rail preserved from v0.13.2.
+- [x] No governance warnings removed; no compliance claims added.
+
+**Responsive:** route cards use a 3-column row (Streamlit stacks on narrow
+screens); child rows size to the route's child count (2 or 3) so no empty filler
+cards appear. Navigation tests select route/child buttons by `key` rather than
+positional index, so they stay stable across layout changes.
+
 ## v0.13.2 Workspace layout & theme navigation checklist
 
 - [x] Main container max-width raised to ~82rem (≈1310px); not full-bleed;

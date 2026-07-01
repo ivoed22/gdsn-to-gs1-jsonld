@@ -16,6 +16,23 @@ def _button_index(app: AppTest, label: str, occurrence: int = 0) -> int:
     return matches[occurrence]
 
 
+def _button_by_key(app: AppTest, key: str):
+    for button in app.button:
+        if getattr(button, "key", None) == key:
+            return button
+    raise AssertionError(f"button with key {key!r} not found")
+
+
+def _open_route(app: AppTest, route_key: str) -> None:
+    """Guided route navigation stage 1: select a primary route."""
+    _button_by_key(app, f"route_{route_key}").click().run(timeout=20)
+
+
+def _open_workflow(app: AppTest, workflow_key: str) -> None:
+    """Guided route navigation stage 2: open a child workflow."""
+    _button_by_key(app, f"workflow_mode_{workflow_key}").click().run(timeout=20)
+
+
 def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
     monkeypatch.syspath_prepend(str(ROOT))
@@ -23,8 +40,9 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.13.2"
+    assert ui.APP_VERSION == "v0.13.3"
     assert callable(ui.render_page_header)
+    assert callable(ui.render_route_card)
 
 
 def test_streamlit_app_imports_package_ui_from_non_repo_cwd(
@@ -108,7 +126,7 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
     ]
     assert selector.value == "Certifications & Documents v0.3.0"
     assert any(
-        "App version: v0.13.2" in markdown.value
+        "App version: v0.13.3" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -124,27 +142,31 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
     assert any("mapping/mapping_v0_3.yaml" in code.value for code in app.code)
 
 
-def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
-    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
-    rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
+# ---------------------------------------------------------------------------
+# Guided route navigation (v0.13.3)
+# ---------------------------------------------------------------------------
 
-    assert "What do you want to do?" in rendered_markdown
-    assert "Convert GDSN XML" in rendered_markdown
-    assert "Explore GS1 Web Vocabulary" in rendered_markdown
-    assert "Create JSON-LD Prototype" in rendered_markdown
-    assert "Standards Review" in rendered_markdown
-    assert "JSON-LD + mapping, validation" in rendered_markdown
-    assert "Prototype JSON-LD with governance warning" in rendered_markdown
+
+def test_route_navigation_default_route_and_convert():
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+
+    assert "What do you want to do?" in rendered
+    # Stage 1 — three primary route cards ("&" is HTML-escaped in card markup).
+    assert "Create GS1 JSON-LD" in rendered
+    assert "Vocabulary &amp; Mapping" in rendered
+    assert "Product Passport Bridge" in rendered
+    # Stage 2 — only the default route's children are revealed.
+    assert "Choose how to create JSON-LD" in rendered
+    assert "Convert GDSN XML" in rendered
+    assert "Create JSON-LD Prototype" in rendered
+    # Other routes' children are hidden until the route is selected.
+    assert "Explore GS1 Web Vocabulary" not in rendered
+    assert "Validate Product Passport Sources" not in rendered
+    assert "Build Product Passport Prototype" not in rendered
+
+    assert app.session_state["selected_route"] == "jsonld_creation"
     assert app.session_state["workflow_mode"] == "Convert GDSN XML"
-    assert app.button[_button_index(app, "Active")].disabled
-    assert [button.label for button in app.button[:6]] == [
-        "Active",
-        "Open",
-        "Open",
-        "Open",
-        "Open",
-        "Open",
-    ]
     assert app.get("file_uploader")[0].label == "GDSN product XML"
     assert app.get("file_uploader")[1].label == "GDSN XML batch ZIP"
     assert any(
@@ -153,25 +175,89 @@ def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
         for info in app.info
     )
 
-    app.button[_button_index(app, "Open")].click().run(timeout=20)
 
+def test_route_headings_and_rail_visible():
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    assert "Choose a route" in rendered
+    for route_title in (
+        "Create GS1 JSON-LD",
+        "Vocabulary &amp; Mapping",
+        "Product Passport Bridge",
+    ):
+        assert route_title in rendered
+    assert "Choose how to create JSON-LD" in rendered
+    assert "Core conversion traceability" in rendered
+
+
+def test_route_switching_reveals_child_workflows():
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+
+    _open_route(app, "vocabulary_mapping")
+    assert app.session_state["selected_route"] == "vocabulary_mapping"
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    assert "Choose a review tool" in rendered
+    for title in (
+        "Explore GS1 Web Vocabulary",
+        "Generate Mapping Candidates",
+        "Standards Review",
+    ):
+        assert title in rendered
     assert app.session_state["workflow_mode"] == "Explore GS1 Web Vocabulary"
-    rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
-    assert "Browse the local GS1 Web Vocabulary snapshot" in rendered_markdown
-    assert any(metric.label == "WebVoc version" and metric.value == "1.17" for metric in app.metric)
+
+    _open_route(app, "product_passport_bridge")
+    assert app.session_state["selected_route"] == "product_passport_bridge"
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    assert "Choose a Product Passport tool" in rendered
+    for title in (
+        "Validate Product Passport Sources",
+        "Build Product Passport Prototype",
+    ):
+        assert title in rendered
+    assert app.session_state["workflow_mode"] == "Validate Product Passport Sources"
+
+
+def test_each_workflow_opens_via_route_then_child():
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+
+    # Create GS1 JSON-LD route (default) children.
+    _open_workflow(app, "prototype")
+    assert app.session_state["workflow_mode"] == "Create JSON-LD Prototype"
+    _open_workflow(app, "convert")
+    assert app.session_state["workflow_mode"] == "Convert GDSN XML"
+
+    # Vocabulary & Mapping route.
+    _open_route(app, "vocabulary_mapping")
+    assert app.session_state["workflow_mode"] == "Explore GS1 Web Vocabulary"
+    _open_workflow(app, "candidates")
+    assert app.session_state["workflow_mode"] == "Generate Mapping Candidates"
+    _open_workflow(app, "standards")
+    assert app.session_state["workflow_mode"] == "Standards Review"
+
+    # Product Passport Bridge route.
+    _open_route(app, "product_passport_bridge")
+    assert app.session_state["workflow_mode"] == "Validate Product Passport Sources"
+    _open_workflow(app, "product_passport_builder")
+    assert app.session_state["workflow_mode"] == "Build Product Passport Prototype"
+
+
+def test_explore_and_standards_open_via_route():
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_route(app, "vocabulary_mapping")
+    _open_workflow(app, "explore")
+    assert app.session_state["workflow_mode"] == "Explore GS1 Web Vocabulary"
+    assert any(
+        metric.label == "WebVoc version" and metric.value == "1.17"
+        for metric in app.metric
+    )
     assert any(metric.label == "Classes" for metric in app.metric)
     assert any(metric.label == "Properties" for metric in app.metric)
     assert any("Class reference" in expander.label for expander in app.expander)
     assert any(selector.label == "Group" for selector in app.selectbox)
     assert any(selector.label == "Coverage status" for selector in app.selectbox)
     assert app.text_input[0].label == "Search properties"
-    assert any(
-        "Manual JSON-LD Builder" in markdown.value
-        for markdown in app.markdown
-    )
 
-    app.button[_button_index(app, "Open", occurrence=2)].click().run(timeout=20)
-
+    _open_workflow(app, "standards")
     assert app.session_state["workflow_mode"] == "Standards Review"
     assert any(metric.label == "Open SDRs" and metric.value == "6" for metric in app.metric)
     assert any("docs/standards-decisions/index.md" in code.value for code in app.code)
@@ -180,9 +266,8 @@ def test_streamlit_workflow_modes_and_bulk_tab_are_visible():
 def test_streamlit_manual_builder_card_and_live_jsonld_update():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
 
-    # Grouped overview "Open" order: 0=explore(VOC), 1=candidates(MAP),
-    # 2=standards(SDR), 3=prototype(LD), 4=product_passport(PP), 5=builder(PB).
-    app.button[_button_index(app, "Open", occurrence=3)].click().run(timeout=20)
+    # Create JSON-LD Prototype is a child of the default route.
+    _open_workflow(app, "prototype")
 
     assert app.session_state["workflow_mode"] == "Create JSON-LD Prototype"
     rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
@@ -283,22 +368,20 @@ def test_streamlit_profile_change_clears_results(example_xml_path):
     assert "conversion_result" not in app.session_state
 
 
-def test_generate_mapping_candidates_workflow_card_exists():
+def test_generate_mapping_candidates_card_visible_in_route():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_route(app, "vocabulary_mapping")
     rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
 
     assert "Generate Mapping Candidates" in rendered_markdown
-    assert "MAP" in rendered_markdown
     assert "Review-only candidate report" in rendered_markdown
 
 
 def test_mapping_candidate_warning_text_appears():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
 
-    # Navigate to the Generate Mapping Candidates workflow.
-    # Grouped overview "Open" order: 0=explore(VOC), 1=candidates(MAP),
-    # 2=standards(SDR), 3=prototype(LD), 4=product_passport(PP), 5=builder(PB).
-    app.button[_button_index(app, "Open", occurrence=1)].click().run(timeout=20)
+    _open_route(app, "vocabulary_mapping")
+    _open_workflow(app, "candidates")
 
     assert app.session_state["workflow_mode"] == "Generate Mapping Candidates"
     assert any(
@@ -310,28 +393,22 @@ def test_mapping_candidate_warning_text_appears():
     assert "Generate Mapping Candidates" in rendered_markdown
 
 
-def test_validate_product_passport_sources_workflow_card_exists():
-    """PP Bridge workflow card is visible in the overview."""
+def test_validate_product_passport_sources_card_visible_in_route():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_route(app, "product_passport_bridge")
     rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
 
     assert "Validate Product Passport Sources" in rendered_markdown
-    assert "PP" in rendered_markdown
-    assert "Reference-source inventory" in rendered_markdown or "structural validation" in rendered_markdown.lower()
+    assert "structural validation" in rendered_markdown.lower()
 
 
 def test_product_passport_bridge_warning_text_appears():
-    """PP Bridge prototype warning is visible when PP workflow is activated."""
+    """PP Bridge prototype warning is visible when its route/child is active."""
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
 
-    # Navigate to the Validate Product Passport Sources workflow.
-    # Grouped overview "Open" order: 0=explore(VOC), 1=candidates(MAP),
-    # 2=standards(SDR), 3=prototype(LD), 4=product_passport(PP), 5=builder(PB).
-    app.button[_button_index(app, "Open", occurrence=4)].click().run(timeout=20)
-
+    _open_route(app, "product_passport_bridge")
     assert app.session_state["workflow_mode"] == "Validate Product Passport Sources"
-    # The top banner is rendered as custom HTML (pp-prototype-warning div via st.markdown).
-    # Check the rendered markdown for the key prototype/reference governance text.
+
     rendered_markdown = "\n".join(markdown.value for markdown in app.markdown)
     prototype_keywords = [
         "prototype",
@@ -346,31 +423,11 @@ def test_product_passport_bridge_warning_text_appears():
     )
 
 
-def test_all_six_workflows_and_narrative_present():
-    """UX-1: the overview names all six workflows and the entry narrative
-    mentions Mapping Candidates and Product Passport."""
-    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
-    rendered = "\n".join(markdown.value for markdown in app.markdown)
-    for title in (
-        "Convert GDSN XML",
-        "Explore GS1 Web Vocabulary",
-        "Create JSON-LD Prototype",
-        "Generate Mapping Candidates",
-        "Validate Product Passport Sources",
-        "Standards Review",
-    ):
-        assert title in rendered, f"Workflow not represented in overview: {title}"
-
-    lowered = rendered.lower()
-    assert "mapping candidates" in lowered
-    assert "product passport" in lowered
-
-
 def test_placeholder_schemas_not_offered_as_active_choices():
-    """UX-2: placeholder schemas (no committed file) are not selectable
-    validation targets; the built-in minimal schema is always available."""
+    """Placeholder schemas (no committed file) are not selectable validation
+    targets; the built-in minimal schema is always available."""
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
-    app.button[_button_index(app, "Open", occurrence=4)].click().run(timeout=20)
+    _open_route(app, "product_passport_bridge")
     assert app.session_state["workflow_mode"] == "Validate Product Passport Sources"
 
     schema_selects = [s for s in app.selectbox if s.label == "Local schema"]
@@ -384,19 +441,20 @@ def test_placeholder_schemas_not_offered_as_active_choices():
     assert "dpp_textile_schema" not in joined
 
 
-def test_build_product_passport_workflow_card_exists():
-    """v0.13.0: Build Product Passport Prototype card is visible in overview."""
+def test_build_product_passport_card_visible_in_route():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_route(app, "product_passport_bridge")
     rendered = "\n".join(markdown.value for markdown in app.markdown)
     assert "Build Product Passport Prototype" in rendered
     assert "PB" in rendered
 
 
 def test_build_product_passport_warning_and_minimal_mode():
-    """v0.13.0: PB workflow shows prototype/minimal-schema warning, no
-    official-validation or compliance claim."""
+    """PB workflow shows prototype/minimal-schema warning, no official-validation
+    or compliance claim."""
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
-    app.button[_button_index(app, "Open", occurrence=5)].click().run(timeout=20)
+    _open_route(app, "product_passport_bridge")
+    _open_workflow(app, "product_passport_builder")
     assert app.session_state["workflow_mode"] == "Build Product Passport Prototype"
 
     rendered = "\n".join(markdown.value for markdown in app.markdown)
@@ -407,24 +465,23 @@ def test_build_product_passport_warning_and_minimal_mode():
     assert "not production-ready" in normalized
 
 
-def test_theme_group_labels_and_rail_visible():
-    """v0.13.2: landing page shows themed group headings and the labelled
-    core-conversion traceability rail."""
+def test_three_routes_and_narrative_present():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown)
-    for label in (
-        "Recommended path",
-        "Vocabulary & Mapping",
-        "JSON-LD Prototyping",
+    for route_title in (
+        "Create GS1 JSON-LD",
+        "Vocabulary &amp; Mapping",
         "Product Passport Bridge",
     ):
-        assert label in rendered, f"missing theme label: {label}"
-    assert "Core conversion traceability" in rendered
+        assert route_title in rendered, f"Route not present: {route_title}"
+    lowered = rendered.lower()
+    assert "product passport" in lowered
+    assert "mapping" in lowered
 
 
 def test_convert_active_by_default_with_progress():
-    """v0.13.2: Convert is the recommended default and shows the guided
-    Upload -> Mapping -> Validate -> Export progress steps."""
+    """Convert is the recommended default and shows the guided Upload -> Mapping
+    -> Validate -> Export progress steps."""
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     assert app.session_state["workflow_mode"] == "Convert GDSN XML"
     rendered = "\n".join(markdown.value for markdown in app.markdown)
@@ -433,12 +490,11 @@ def test_convert_active_by_default_with_progress():
 
 
 def test_sidebar_workspace_status_version_and_no_positive_compliance():
-    """v0.13.2: sidebar is reframed as compact workspace status/context with
-    the current version and governance negations (no positive compliance)."""
+    """Sidebar is a compact workspace status/context with the current version and
+    governance negations (no positive compliance claim)."""
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.13.2" in rendered
-    # Compliance is only ever stated as a negation.
+    assert "app version: v0.13.3" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

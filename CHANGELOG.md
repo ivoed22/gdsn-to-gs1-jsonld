@@ -1,5 +1,39 @@
 # Changelog
 
+## v0.13.3 — Guided Route Navigation
+
+UI/UX navigation polish. No behaviour changes, no new features, no mock data,
+no fabricated coverage or compliance claims.
+
+### Changed
+
+- **Two-stage guided route navigation.** The landing page now starts with three
+  primary route cards instead of seven workflow cards:
+  - **Create GS1 JSON-LD** → Convert GDSN XML, Create JSON-LD Prototype
+  - **Vocabulary & Mapping** → Explore GS1 Web Vocabulary, Generate Mapping
+    Candidates, Standards Review
+  - **Product Passport Bridge** → Validate Product Passport Sources, Build
+    Product Passport Prototype
+- Selecting a route reveals only its child workflows (progressive disclosure)
+  under a context heading ("Choose how to create JSON-LD", "Choose a review
+  tool", "Choose a Product Passport tool").
+- Route cards are visually heavier than child cards, with a clear active-state
+  indicator and monospace route markers (JSON-LD / MAP / PASS).
+- Default route is **Create GS1 JSON-LD**; **Convert GDSN XML** remains the
+  default active workflow. Selecting a route opens its first child as the active
+  workflow without clearing any conversion results.
+
+### Preserved
+
+- All seven workflows remain reachable; every workflow key is unchanged.
+- Convert guided four-step flow, sidebar workspace status/context, compact hero,
+  and the "Core conversion traceability" rail from v0.13.2 are preserved.
+- Converter logic, batch behavior, and single-file output are unchanged.
+- Mapping YAML, catalog data, and Web Vocabulary snapshots are unchanged.
+- No warnings suppressed; no mock data; no fabricated coverage/compliance.
+- No Crosswalk, SHACL execution, VC, or signed credentials. No official GS1
+  validation or production compliance claimed.
+
 ## v0.13.2 — Workspace Layout & Theme Navigation Polish
 
 UI/UX and information-architecture polish. No behaviour changes, no new

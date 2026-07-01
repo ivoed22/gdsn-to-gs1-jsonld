@@ -95,6 +95,7 @@ from app.ui import (
     render_status_card,
     render_standards_backlog_status,
     render_convert_progress,
+    render_route_card,
     render_vocabulary_status,
     render_workflow_entry_intro,
     render_workflow_mode_card,
@@ -175,26 +176,48 @@ DEFAULT_WORKFLOW_MODE = WORKFLOW_MODES[0]["title"]
 
 # Information-architecture grouping for the workflow overview (v0.13.0).
 # Cards are rendered under these group headings, in this order, so seven
-# workflows read as themed intents rather than one dense grid. Convert leads as
-# the recommended path; supporting thematic tools follow.
-WORKFLOW_GROUPS = (
+# Guided route navigation (v0.13.3): three primary routes group the seven
+# workflows. Stage 1 shows the route cards; stage 2 shows only the child
+# workflow cards for the selected route (progressive disclosure). The routes are
+# a UI grouping layer only — every workflow key is unchanged and reachable.
+ROUTES = (
     {
-        "label": "Recommended path",
-        "keys": ("convert",),
+        "key": "jsonld_creation",
+        "title": "Create GS1 JSON-LD",
+        "marker": "JSON-LD",
+        "description": (
+            "Create GS1 Web Vocabulary JSON-LD from product XML or manual "
+            "prototype input."
+        ),
+        "outcome": "GS1 JSON-LD output.",
+        "children": ("convert", "prototype"),
+        "child_heading": "Choose how to create JSON-LD",
     },
     {
-        "label": "Vocabulary & Mapping",
-        "keys": ("explore", "candidates", "standards"),
+        "key": "vocabulary_mapping",
+        "title": "Vocabulary & Mapping",
+        "marker": "MAP",
+        "description": (
+            "Review vocabulary, mappings, candidate sources and standards "
+            "decisions."
+        ),
+        "outcome": "Review evidence and governance context.",
+        "children": ("explore", "candidates", "standards"),
+        "child_heading": "Choose a review tool",
     },
     {
-        "label": "JSON-LD Prototyping",
-        "keys": ("prototype",),
-    },
-    {
-        "label": "Product Passport Bridge",
-        "keys": ("product_passport", "product_passport_builder"),
+        "key": "product_passport_bridge",
+        "title": "Product Passport Bridge",
+        "marker": "PASS",
+        "description": (
+            "Work with Product Passport sources and prototype passport output."
+        ),
+        "outcome": "Source validation or Passport JSON-LD.",
+        "children": ("product_passport", "product_passport_builder"),
+        "child_heading": "Choose a Product Passport tool",
     },
 )
+DEFAULT_ROUTE = ROUTES[0]["key"]
 
 
 def clear_results() -> None:
@@ -214,6 +237,24 @@ def clear_all_results() -> None:
 
 def set_workflow_mode(mode: str) -> None:
     st.session_state["workflow_mode"] = mode
+
+
+def set_route(route_key: str) -> None:
+    """Select a primary route and open its first child workflow.
+
+    This is a UI navigation grouping only. It changes which child workflow cards
+    are shown and makes the route's first child the active workflow, without
+    clearing any conversion or result state.
+    """
+    st.session_state["selected_route"] = route_key
+    for route in ROUTES:
+        if route["key"] == route_key:
+            first_child_key = route["children"][0]
+            for mode in WORKFLOW_MODES:
+                if mode["key"] == first_child_key:
+                    st.session_state["workflow_mode"] = mode["title"]
+                    return
+            return
 
 
 def _load_webvoc_metadata() -> dict:
@@ -2205,6 +2246,10 @@ def main() -> None:
         mode["title"] for mode in WORKFLOW_MODES
     }:
         st.session_state["workflow_mode"] = DEFAULT_WORKFLOW_MODE
+    if st.session_state.get("selected_route") not in {
+        route["key"] for route in ROUTES
+    }:
+        st.session_state["selected_route"] = DEFAULT_ROUTE
 
     mapping_profiles = {
         "Certifications & Documents v0.3.0": (
@@ -2309,43 +2354,66 @@ def main() -> None:
             unsafe_allow_html=True,
         )
 
+    modes_by_key = {mode["key"]: mode for mode in WORKFLOW_MODES}
+    routes_by_key = {route["key"]: route for route in ROUTES}
+
     with st.container(border=True):
         render_workflow_entry_intro()
-        # Seven workflows rendered as three labelled groups (max three cards
-        # per row) so the overview reads as intents, not one dense grid.
-        modes_by_key = {mode["key"]: mode for mode in WORKFLOW_MODES}
-        for group in WORKFLOW_GROUPS:
-            st.markdown(
-                f'<p class="workflow-group-label">{group["label"]}</p>',
-                unsafe_allow_html=True,
-            )
-            group_columns = st.columns(3)
-            for index, key in enumerate(group["keys"]):
-                mode = modes_by_key[key]
-                with group_columns[index]:
-                    selected = st.session_state["workflow_mode"] == mode["title"]
-                    render_workflow_mode_card(
-                        mode["title"],
-                        mode["description"],
-                        mode["outcome"],
-                        mode["marker"],
-                        selected,
-                    )
-                    st.button(
-                        "Active" if selected else "Open",
-                        key=f"workflow_mode_{mode['key']}",
-                        type="primary" if selected else "secondary",
-                        disabled=selected,
-                        on_click=set_workflow_mode,
-                        args=(mode["title"],),
-                        use_container_width=True,
-                    )
-            if group["keys"] == ("convert",):
-                with group_columns[1]:
-                    st.caption(
-                        "Recommended starting point. Convert product XML first, "
-                        "then explore, review, and prototype from the output."
-                    )
+
+        # Stage 1 — three primary route cards (progressive disclosure).
+        st.markdown(
+            '<p class="workflow-group-label">Choose a route</p>',
+            unsafe_allow_html=True,
+        )
+        route_columns = st.columns(len(ROUTES))
+        for column, route in zip(route_columns, ROUTES, strict=True):
+            with column:
+                route_selected = st.session_state["selected_route"] == route["key"]
+                render_route_card(
+                    route["title"],
+                    route["description"],
+                    route["outcome"],
+                    route["marker"],
+                    route_selected,
+                )
+                st.button(
+                    "Active" if route_selected else "Open",
+                    key=f"route_{route['key']}",
+                    type="primary" if route_selected else "secondary",
+                    disabled=route_selected,
+                    on_click=set_route,
+                    args=(route["key"],),
+                    use_container_width=True,
+                )
+
+        # Stage 2 — only the child workflow cards for the selected route.
+        active_route = routes_by_key[st.session_state["selected_route"]]
+        st.markdown(
+            f'<p class="route-child-heading">{active_route["child_heading"]}</p>',
+            unsafe_allow_html=True,
+        )
+        child_keys = active_route["children"]
+        child_columns = st.columns(len(child_keys))
+        for column, key in zip(child_columns, child_keys, strict=True):
+            mode = modes_by_key[key]
+            with column:
+                selected = st.session_state["workflow_mode"] == mode["title"]
+                render_workflow_mode_card(
+                    mode["title"],
+                    mode["description"],
+                    mode["outcome"],
+                    mode["marker"],
+                    selected,
+                )
+                st.button(
+                    "Active" if selected else "Open",
+                    key=f"workflow_mode_{mode['key']}",
+                    type="primary" if selected else "secondary",
+                    disabled=selected,
+                    on_click=set_workflow_mode,
+                    args=(mode["title"],),
+                    use_container_width=True,
+                )
 
     workflow_mode = st.session_state["workflow_mode"]
     if workflow_mode == "Convert GDSN XML":
