@@ -56,6 +56,13 @@ from .product_passport_sources import (
     write_product_passport_inventory_reports,
     write_schema_validation_report,
 )
+from .product_passport_builder import (
+    DEFAULT_SCHEMA_PATH as PP_BUILDER_DEFAULT_SCHEMA,
+    build_minimal_product_passport,
+    load_gs1_jsonld,
+    validate_built_product_passport,
+    write_product_passport_outputs,
+)
 
 app = typer.Typer(
     help="Convert GDSN product XML to GS1 Web Vocabulary JSON-LD.",
@@ -959,6 +966,105 @@ def validate_product_passport_command(
             typer.echo(f"  Error: {err}")
     typer.echo(f"  - {report_path}")
     typer.echo(f"Note: {report.get('prototype_warning', '')}")
+
+
+@app.command("build-product-passport")
+def build_product_passport_command(
+    input_file: Path = typer.Option(
+        ...,
+        "--input",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="GS1 Web Vocabulary JSON-LD file to wrap into a Product Passport.",
+    ),
+    schema_file: Path = typer.Option(
+        Path(PP_BUILDER_DEFAULT_SCHEMA),
+        "--schema",
+        help="Local structural JSON Schema (default: built-in minimal schema).",
+    ),
+    output_dir: Path = typer.Option(
+        Path("product_passport/builder_outputs/"),
+        "--output-dir",
+        "-o",
+        help="Directory for Product Passport Builder outputs.",
+    ),
+    passport_id: Optional[str] = typer.Option(
+        None,
+        "--passport-id",
+        help="Optional Product Passport identifier (default derived from GTIN).",
+    ),
+    default_language: str = typer.Option(
+        "en",
+        "--default-language",
+        help="Default language tag recorded in the passport envelope.",
+    ),
+    include_source_gs1_jsonld: bool = typer.Option(
+        True,
+        "--include-source-gs1-jsonld/--no-include-source-gs1-jsonld",
+        help="Embed the source GS1 JSON-LD inside the passport envelope.",
+    ),
+    output_format: str = typer.Option(
+        "json",
+        "--format",
+        help="Output format: json.",
+    ),
+) -> None:
+    """Wrap GS1 JSON-LD into a prototype Product Passport and validate it.
+
+    Minimal-schema prototype mode. Prototype/reference only. Structural
+    validation only. Not official GS1 validation, not EU DPP regulatory
+    compliance, and not production-ready. Exit 0 on success; non-zero only on
+    tool error.
+    """
+    typer.echo(
+        "Product Passport Builder: minimal-schema prototype mode — "
+        "prototype/reference only."
+    )
+    typer.echo(
+        "Structural validation only. Not official GS1 validation, not EU DPP "
+        "regulatory compliance, and not production-ready."
+    )
+    try:
+        gs1_jsonld = load_gs1_jsonld(str(input_file))
+        product_passport = build_minimal_product_passport(
+            gs1_jsonld,
+            {
+                "passport_id": passport_id,
+                "default_language": default_language,
+                "include_source_gs1_jsonld": include_source_gs1_jsonld,
+                "validation_schema": str(schema_file),
+            },
+        )
+        report = validate_built_product_passport(
+            product_passport, str(schema_file)
+        )
+        paths = write_product_passport_outputs(
+            product_passport, report, str(output_dir)
+        )
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        typer.echo(f"Product Passport Builder tool error: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    typer.echo(f"Schema: {schema_file}")
+    typer.echo(f"Validator mode: {report.get('validator_mode', 'unknown')}")
+    if report.get("validator_mode") == "minimal_fallback":
+        typer.echo(
+            "WARNING: jsonschema not available — fallback validator used "
+            "(required-field presence only, not full Draft7 structural validation).",
+            err=True,
+        )
+    typer.echo(f"Structural validation status: {report.get('validation_status')}")
+    for err in report.get("errors", []):
+        typer.echo(f"  Error: {err}")
+    for path in paths.values():
+        typer.echo(f"  - {path}")
+    typer.echo(
+        "Note: passing structural validation means only that the JSON matches "
+        "the selected local schema. Not official GS1 validation or production "
+        "compliance."
+    )
 
 
 if __name__ == "__main__":

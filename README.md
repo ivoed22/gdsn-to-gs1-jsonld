@@ -3,6 +3,13 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.13.0 adds the Product Passport Builder in minimal-schema prototype
+mode: it wraps GS1 Web Vocabulary JSON-LD (from the converter, the Manual
+JSON-LD Prototype Builder, or pasted/uploaded input) into a prototype Product
+Passport JSON-LD envelope and validates it against the built-in minimal schema.
+Prototype/reference only; structural validation only; not official GS1
+validation, not EU DPP regulatory compliance, and not production-ready.
+
 Version 0.12.1 hardens the Product Passport Bridge: `jsonschema` is now an
 explicit dependency (with a clearly-flagged fallback), the source manifest is
 enforced against its JSON Schema, the workflow narrative covers all six

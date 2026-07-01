@@ -1,0 +1,15 @@
+{
+  "@context": "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
+  "@type": "gs1:Product",
+  "@id": "https://id.gs1.org/01/09521234543213",
+  "gtin": "09521234543213",
+  "productName": [
+    { "@value": "Prototype Apple Juice 1L", "@language": "en" }
+  ],
+  "productDescription": [
+    { "@value": "Prototype/example product for the Product Passport Builder.", "@language": "en" }
+  ],
+  "brand": "Prototype Brand",
+  "netContent": { "value": "1", "unitCode": "LTR" },
+  "_note": "Prototype/example only. Not official GS1 production data."
+}

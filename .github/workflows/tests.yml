@@ -48,3 +48,10 @@ jobs:
           --mapping mapping/mapping_v0_3.yaml
           --standards-backlog docs/standards-decisions/standards_review_backlog.json
           --output-dir /tmp/mapping_candidate_gtin
+
+      - name: CLI smoke — Product Passport Builder
+        run: >-
+          gdsn-to-gs1-jsonld build-product-passport
+          --input product_passport/examples/gs1_product_for_passport_builder.jsonld
+          --schema product_passport/reference_sources/raw_public/schemas/dpp_minimal.schema.json
+          --output-dir /tmp/product_passport_builder

@@ -6,25 +6,7 @@ production compliance, and it is not full GDSN coverage.
 
 ## Planned
 
-### v0.12.1 — Product Passport Bridge Hardening (this line of work)
-
-Hardening, consistency, CI, and UI/UX polish. No new features. `jsonschema`
-becomes an explicit dependency with a clearly-flagged fallback; the source
-manifest is enforced against its JSON Schema; the workflow narrative covers all
-six workflows; placeholder schemas are not offered as selectable validation
-targets; structural-check wording avoids implying compliance; CI runs
-`compileall` and a CLI smoke matrix.
-
-### v0.13.0 — Product Passport Builder (next feature release)
-
-Wrap existing GS1 JSON-LD — from the converter or the Manual JSON-LD Builder —
-into a DPP-shaped **prototype** envelope, validated (encouraged, not mandatory)
-against a local schema. Clearly prototype/reference. No VC, no signing, no SHACL
-execution, no crosswalk, no regulatory-grade guarantees. Requires at least one
-real, license-cleared general-product DPP schema and example, or an explicit
-decision to validate only against the built-in minimal schema.
-
-### v0.14.0 — GS1 ↔ Product Passport Crosswalk
+### v0.14.0 — GS1 ↔ Product Passport Crosswalk (next feature release)
 
 Map GS1 Web Vocabulary properties to Product Passport fields as review-only
 crosswalk evidence. No automatic acceptance.
@@ -54,6 +36,15 @@ crosswalk evidence. No automatic acceptance.
 
 ## Released
 
+- **v0.13.0 — Product Passport Builder.** Wraps GS1 Web Vocabulary JSON-LD into
+  a prototype Product Passport JSON-LD envelope in minimal-schema prototype
+  mode, validated against the committed built-in minimal schema. Prototype/
+  reference only; structural validation only; not official GS1 validation, not
+  EU DPP regulatory compliance, and not production-ready.
+- **v0.12.1 — Product Passport Bridge Hardening.** `jsonschema` declared as an
+  explicit dependency with a flagged fallback; source manifest enforced against
+  its JSON Schema; six-workflow narrative; placeholder schemas not selectable;
+  structural-check wording; CI runs compileall and a CLI smoke matrix.
 - **v0.12.0 — Product Passport Bridge.** Inventory public DPP reference sources
   and validate prototype Product Passport JSON against local JSON Schemas.
   Source inventory and structural schema validation only. SHACL execution,

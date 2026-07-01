@@ -1,5 +1,21 @@
 # UI Changes
 
+## v0.13.0 Build Product Passport Prototype workflow checklist
+
+- [x] `Build Product Passport Prototype` workflow card is visible (marker: PB).
+- [x] Overview grid is a 4+3 layout for seven workflows.
+- [x] Top prototype/reference, minimal-schema-mode warning is shown.
+- [x] Input GS1 JSON-LD tab: upload / paste / use-example; parsed summary.
+- [x] Builder Settings tab: passport id, default language, include-source
+      checkbox; built-in minimal schema active; placeholders shown unavailable.
+- [x] Product Passport Output tab: build button, JSON preview, summary metrics,
+      download Product Passport JSON-LD.
+- [x] Validation Report tab: structural schema check status, validator mode,
+      errors, download report; explicit "not official GS1 validation" caveat.
+- [x] No official GS1 validation or production/EU DPP compliance claim.
+- [x] No Crosswalk, SHACL execution, or VC UI.
+- [x] Existing six workflows remain available.
+
 ## v0.12.1 Product Passport Bridge hardening checklist
 
 - [x] Workflow-entry narrative names all six workflows (Convert, Explore,

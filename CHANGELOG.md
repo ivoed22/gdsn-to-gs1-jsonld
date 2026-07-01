@@ -1,5 +1,47 @@
 # Changelog
 
+## v0.13.0 — Product Passport Builder
+
+Adds the Product Passport Builder in **minimal-schema prototype mode**. Wraps
+GS1 Web Vocabulary JSON-LD (from the converter, the Manual JSON-LD Prototype
+Builder, or pasted/uploaded input) into a prototype Product Passport JSON-LD
+envelope and validates it against the committed built-in minimal schema.
+Prototype/reference only. Structural validation only. Not official GS1
+validation, not EU DPP regulatory compliance, and not production-ready.
+
+### Added
+
+- `src/gdsn_to_gs1_jsonld/product_passport_builder.py` — deterministic, offline
+  builder: input loading/normalization, GTIN/name/brand extraction, envelope
+  construction, validation (reusing the v0.12.x validator — no duplicated
+  logic), summary, and output writers.
+- `gdsn-to-gs1-jsonld build-product-passport` CLI command.
+- "Build Product Passport Prototype" Streamlit workflow (marker: PB) with Input,
+  Builder Settings, Product Passport Output, and Validation Report tabs. The
+  overview grid is now a 4+3 layout for seven workflows.
+- `product_passport/examples/gs1_product_for_passport_builder.jsonld` — a
+  prototype/example GS1 JSON-LD input (not production data).
+- `docs/product-passport-builder.md` and `docs/releases/v0.13.0.md`.
+- `tests/test_product_passport_builder.py` and Streamlit tests for the new
+  workflow.
+- CI runs a `build-product-passport` smoke command.
+
+### Notes
+
+- Minimal-schema prototype mode only: the external DPP schemas in the source
+  manifest remain placeholders and are not selectable build targets.
+- Default output is deterministic; `generatedAt` is omitted unless explicitly
+  supplied.
+
+### Preserved
+
+- Converter logic, batch behavior, and single-file output are unchanged.
+- Mapping YAML files, catalog data, and Web Vocabulary snapshots are unchanged.
+- No warnings were suppressed.
+- No GS1 ↔ Product Passport Crosswalk, SHACL execution, VC envelope, or signed
+  credentials were created.
+- No tag or release v0.13.0 was created.
+
 ## v0.12.1 — Product Passport Bridge Hardening
 
 Hardening, consistency, CI, and UI/UX polish release. No new features; no

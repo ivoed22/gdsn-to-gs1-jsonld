@@ -23,7 +23,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.12.1"
+    assert ui.APP_VERSION == "v0.13.0"
     assert callable(ui.render_page_header)
 
 
@@ -99,7 +99,7 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
     ]
     assert selector.value == "Certifications & Documents v0.3.0"
     assert any(
-        "App version: v0.12.1" in markdown.value
+        "App version: v0.13.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -371,3 +371,26 @@ def test_placeholder_schemas_not_offered_as_active_choices():
     assert "dpp_general_product_schema" not in joined
     assert "dpp_battery_schema" not in joined
     assert "dpp_textile_schema" not in joined
+
+
+def test_build_product_passport_workflow_card_exists():
+    """v0.13.0: Build Product Passport Prototype card is visible in overview."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    assert "Build Product Passport Prototype" in rendered
+    assert "PB" in rendered
+
+
+def test_build_product_passport_warning_and_minimal_mode():
+    """v0.13.0: PB workflow shows prototype/minimal-schema warning, no
+    official-validation or compliance claim."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    app.button[_button_index(app, "Open", occurrence=5)].click().run(timeout=20)
+    assert app.session_state["workflow_mode"] == "Build Product Passport Prototype"
+
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    normalized = " ".join(rendered.split()).lower()
+    assert "minimal-schema mode" in normalized
+    assert "prototype" in normalized
+    assert "not official gs1 validation" in normalized
+    assert "not production-ready" in normalized
