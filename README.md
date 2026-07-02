@@ -3,6 +3,13 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.13.5 is release-hygiene and developer-environment maintenance: it
+adopts a tag-per-meaningful-change release cadence (with an `## Unreleased`
+CHANGELOG section and a documented "Release process"), re-sequences the roadmap
+foundation-first, and routes pytest's temp directory to a git-ignored repo-local
+path so local test runs are clean (`197 passed`). No user-facing behavior
+changes; converter, mapping YAML, catalog, and WebVoc snapshots are untouched.
+
 Version 0.13.4 bundles workspace UI fixes (wider workspace, equal-size cards,
 readable active button) with a large expansion of the Manual JSON-LD Prototype
 Builder — from ~40 to 183 fields across 19 groups, including nested objects,

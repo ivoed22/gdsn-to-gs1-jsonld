@@ -1,5 +1,38 @@
 # Changelog
 
+Releases follow a tag-per-meaningful-change cadence: each notable change is cut
+as its own CI-gated tag + GitHub Release rather than bundled into periodic
+drops. Work in progress accumulates under `## Unreleased` below and is renamed
+to its version heading when released. See `docs/roadmap.md` → "Release process".
+
+## Unreleased
+
+_Nothing yet._
+
+## v0.13.5 — Release Hygiene & Test Environment Fix
+
+Process and developer-environment maintenance only. No user-facing behavior
+change: the converter, batch behavior, single-file output, mapping YAML, mapping
+catalog, Web Vocabulary snapshots, the Streamlit workflows, and the Manual
+Builder output are all unchanged.
+
+- **Tighter release cadence, documented.** Adds this `## Unreleased` section and
+  a "Release process" section to `docs/roadmap.md` so each meaningful change is
+  tagged and released on its own, keeping "what is released" unambiguous.
+- **Deterministic local test runs.** Tests now direct pytest's temporary-file
+  root to a git-ignored, repo-local `.pytest-tmp` directory (via
+  `tests/conftest.py`). This removes the ~34 `PermissionError: [WinError 5]`
+  setup errors seen on machines whose default `pytest-of-<user>` temp directory
+  is not writable; CI was already green and stays green. Full suite now reports
+  `197 passed` locally with no errors.
+- **Foundation-first roadmap.** `docs/roadmap.md` re-sequences the next feature
+  releases (app modularization → visual smoke → Builder UX) ahead of the GS1 ↔
+  Product Passport Crosswalk, which remains planned but moves behind the
+  foundation work.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims. No official GS1 validation or production compliance is claimed.
+
 ## v0.13.4 — Workspace Polish & Manual Builder Coverage
 
 Bundles the post-v0.13.3 workspace UI fixes and a large expansion of the Manual

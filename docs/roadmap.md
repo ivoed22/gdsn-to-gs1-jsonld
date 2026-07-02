@@ -4,9 +4,42 @@ All work is versioned in the v0.x series. The project is prototype/reference
 tooling for standards discussion: it does not claim official GS1 validation or
 production compliance, and it is not full GDSN coverage.
 
-## Planned
+## Release process
 
-### v0.14.0 — GS1 ↔ Product Passport Crosswalk (next feature release)
+The project releases on a **tag-per-meaningful-change** cadence: each notable
+change is cut as its own CI-gated annotated tag plus GitHub Release, rather than
+bundled into periodic drops, so "what is released" is always unambiguous.
+
+- Work in progress accumulates under `## Unreleased` in `CHANGELOG.md`.
+- A release renames that section to its `vX.Y.Z` heading, adds
+  `docs/releases/vX.Y.Z.md`, and bumps the version in `pyproject.toml`, the
+  `app/ui.py` `APP_VERSION`, and the README. `tests/test_version_consistency.py`
+  enforces these stay in sync.
+- Tag and Release are created only after CI is green on the release commit.
+
+## Planned (foundation-first)
+
+The near-term sequence prioritises product-readiness foundations before the next
+big feature. The Crosswalk remains planned but moves behind this work.
+
+### v0.14.0 — App modularization
+
+Split the large `app/streamlit_app.py` into `app/workflows/*.py` behind a thin
+router. Strictly no behavior change; navigation tests stay green. Enabler for
+faster, lower-risk feature work.
+
+### v0.15.0 — Visual smoke tests
+
+A browser-based smoke (e.g. Playwright/preview) that boots the app, asserts each
+route/workflow renders, and captures screenshots to catch CSS/layout regressions
+that the AppTest harness cannot see.
+
+### v0.16.0 — Manual Builder UX at scale
+
+With the Builder now at 183 fields, add a coverage indicator ("X of 553
+authorable"), group search/filter, and a per-field "sourced from snapshot" note.
+
+### v0.17.0 — GS1 ↔ Product Passport Crosswalk (deferred behind foundation)
 
 Map GS1 Web Vocabulary properties to Product Passport fields as review-only
 crosswalk evidence. No automatic acceptance.
