@@ -3,6 +3,12 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.14.0 splits `app/streamlit_app.py` (2,500 lines) into
+`app/workflow_shared.py` plus one `app/workflows/*.py` module per workflow
+behind a thin router. Strictly no user-facing behavior change: converter,
+mapping YAML, catalog, and WebVoc snapshots are untouched, and all 197 tests
+(including AppTest navigation) stay green.
+
 Version 0.13.5 is release-hygiene and developer-environment maintenance: it
 adopts a tag-per-meaningful-change release cadence (with an `## Unreleased`
 CHANGELOG section and a documented "Release process"), re-sequences the roadmap

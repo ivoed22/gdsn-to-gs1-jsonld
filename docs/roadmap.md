@@ -22,12 +22,6 @@ bundled into periodic drops, so "what is released" is always unambiguous.
 The near-term sequence prioritises product-readiness foundations before the next
 big feature. The Crosswalk remains planned but moves behind this work.
 
-### v0.14.0 — App modularization
-
-Split the large `app/streamlit_app.py` into `app/workflows/*.py` behind a thin
-router. Strictly no behavior change; navigation tests stay green. Enabler for
-faster, lower-risk feature work.
-
 ### v0.15.0 — Visual smoke tests
 
 A browser-based smoke (e.g. Playwright/preview) that boots the app, asserts each
@@ -69,6 +63,11 @@ crosswalk evidence. No automatic acceptance.
 
 ## Released
 
+- **v0.14.0 — App modularization.** Splits the large `app/streamlit_app.py`
+  into `app/workflow_shared.py` and `app/workflows/*.py` behind a thin
+  router. Strictly no behavior change; all 197 tests, including navigation
+  tests, stay green. Enabler for faster, lower-risk feature work — starting
+  with v0.15.0.
 - **v0.13.0 — Product Passport Builder.** Wraps GS1 Web Vocabulary JSON-LD into
   a prototype Product Passport JSON-LD envelope in minimal-schema prototype
   mode, validated against the committed built-in minimal schema. Prototype/

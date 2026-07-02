@@ -9,6 +9,30 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.14.0 — App Modularization
+
+Strictly no user-facing behavior change: the converter, batch behavior,
+single-file output, mapping YAML, mapping catalog, Web Vocabulary snapshots,
+and every workflow's rendered output are all unchanged. All 197 tests
+(including the 24 AppTest navigation/workflow tests) stay green.
+
+- **`app/streamlit_app.py` split into `app/workflows/*.py` behind a thin
+  router.** The single 2,500-line file is now a ~240-line router
+  (`app/streamlit_app.py`) plus one module per workflow: `convert.py`,
+  `explore.py`, `candidates.py`, `standards.py`, `prototype.py`,
+  `product_passport.py`, `product_passport_builder.py`. Shared
+  route/workflow-mode registry, session-state helpers, and sidebar loaders
+  move to `app/workflow_shared.py`.
+- **Enabler for lower-risk feature work.** Each workflow can now be read,
+  tested, and changed in isolation instead of navigating one large file.
+  First planned beneficiary: v0.15.0 browser-based visual smoke tests.
+- Widget navigation in AppTest continues to select buttons by key
+  (`route_<key>`, `workflow_mode_<key>`), so this refactor is invisible to the
+  test suite by construction.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims. No official GS1 validation or production compliance is claimed.
+
 ## v0.13.5 — Release Hygiene & Test Environment Fix
 
 Process and developer-environment maintenance only. No user-facing behavior
