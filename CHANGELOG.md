@@ -1,5 +1,48 @@
 # Changelog
 
+## v0.13.4 — Workspace Polish & Manual Builder Coverage
+
+Bundles the post-v0.13.3 workspace UI fixes and a large expansion of the Manual
+JSON-LD Prototype Builder's property coverage. All changes are UI/config plus
+the manual Builder serializer; the converter, batch behavior, single-file
+output, mapping YAML, mapping catalog, and Web Vocabulary snapshots are
+unchanged.
+
+### Workspace UI
+
+- Wider main workspace (~92rem via both the container hook and the stable
+  `.block-container` class) so content fills the space next to the sidebar.
+- Equal-height route and workflow cards (flex column pinning the outcome line);
+  card-row buttons share a min-height.
+- The active ("Active") button stays fully readable — Streamlit's disabled
+  dimming is overridden with full opacity and white label text.
+
+### Manual JSON-LD Builder — property coverage (~40 → 183 fields, 10 → 19 groups)
+
+- **Breadth:** many more simple/"flat" `gs1:Product` / `gs1:FoodBeverageTobacco`
+  fields — descriptions & marketing, consumer information, lifecycle dates,
+  additional measurements, identifiers & variants, serving details, and
+  consumer/DPP link types.
+- **Nested objects:** a generic `object` input type; brand → `gs1:Brand`,
+  image/referencedFile/instructions/handling/audio → `gs1:ReferencedFileDetails`,
+  certification → `gs1:CertificationDetails`, packagingMaterial →
+  `gs1:PackagingMaterial`, allergen → `gs1:AllergenDetails`.
+- **Controlled codes:** a generic `code` input type emitting `{"@id": "gs1:…"}`;
+  allergen types & containment, nutritional claim, preservation technique,
+  growing method, source animal, packaging accreditation/free-from/diet-allergen,
+  and more — all sourced from the local `webvoc/current` snapshot.
+- **Nutrition:** all 43 per-nutrient measurements plus the nutrient basis
+  quantity, emitted as `value` + `unitCode` quantities.
+
+### Preserved
+
+- Converter logic, batch behavior, and single-file output are unchanged.
+- Mapping YAML, mapping catalog, and Web Vocabulary snapshots are unchanged.
+- No warnings suppressed; no mock data; no fabricated coverage/compliance.
+- All manual Builder output stays prototype and is not BMS/XPath traceable.
+- No Crosswalk, SHACL execution, VC, or signed credentials. No official GS1
+  validation or production compliance claimed.
+
 ## v0.13.3 — Guided Route Navigation
 
 UI/UX navigation polish. No behaviour changes, no new features, no mock data,

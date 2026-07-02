@@ -3,6 +3,14 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.13.4 bundles workspace UI fixes (wider workspace, equal-size cards,
+readable active button) with a large expansion of the Manual JSON-LD Prototype
+Builder — from ~40 to 183 fields across 19 groups, including nested objects,
+controlled-code dropdowns, and full nutrition, all sourced from the local Web
+Vocabulary snapshot. UI/config and the manual Builder serializer only; the
+converter, mapping YAML, catalog, and WebVoc snapshots are unchanged, and manual
+output stays prototype (not BMS/XPath traceable).
+
 Version 0.13.3 adds guided route navigation: the landing page starts with three
 primary routes — Create GS1 JSON-LD, Vocabulary & Mapping, and the Product
 Passport Bridge — and reveals only the child workflows for the chosen route
