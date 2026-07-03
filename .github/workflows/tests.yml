@@ -61,3 +61,31 @@ jobs:
           --input product_passport/examples/gs1_product_for_passport_builder.jsonld
           --schema product_passport/reference_sources/raw_public/schemas/dpp_minimal.schema.json
           --output-dir /tmp/product_passport_builder
+
+  visual-smoke:
+    # Browser-based smoke (v0.17.0): catches CSS/layout regressions the
+    # AppTest harness above cannot see. Non-blocking until stable — see
+    # docs/visual-smoke.md. No app behavior changes; read-only browsing.
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install -e ".[visual]"
+      - run: playwright install --with-deps chromium
+
+      - name: Run visual smoke
+        run: python scripts/visual_smoke.py --output-dir tests/visual/baselines
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-smoke-screenshots
+          path: tests/visual/baselines/
+          if-no-files-found: ignore

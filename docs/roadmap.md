@@ -27,13 +27,6 @@ semantic authority: generated/recommended output must not contain dppk terms
 prioritises the mapping foundation and UX/test hardening before the
 Crosswalk.
 
-### v0.17.0 — Visual smoke tests
-
-A browser-based smoke (e.g. Playwright) that boots the app, asserts each
-route/workflow renders, checks active-state readability and layout, and
-captures screenshots to catch CSS/layout regressions that the AppTest
-harness cannot see.
-
 ### v0.18.0 — Manual Builder UX at scale
 
 With the Builder now at 183 fields, add section navigation, search/filter,
@@ -87,6 +80,11 @@ separately scoped versions.
 
 ## Released
 
+- **v0.17.0 — Visual smoke tests.** Browser-based smoke
+  (`scripts/visual_smoke.py`, Playwright + Chromium) walks the landing page
+  and all seven workflows, asserting no viewport overflow, readable active
+  buttons, visible warnings, and no compliance claims without negation. No
+  app behavior changes; non-blocking CI job while it stabilizes.
 - **v0.16.0 — Full-scope mapping scoring & promotion lanes (Track B).**
   Every candidate carries a deterministic `hard_mapping` flag and
   `review_lane`; both lanes reach the same `accepted` terminal status via

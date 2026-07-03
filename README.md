@@ -3,6 +3,14 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.17.0 adds a browser-based visual smoke test
+(`scripts/visual_smoke.py`, Playwright + Chromium): boots the app headless,
+walks the landing page and all seven workflows, and asserts no viewport
+overflow, readable active buttons, visible warnings, and no compliance
+claims without negation — catching the CSS/layout regressions the
+AppTest-based test suite can't see. No app behavior changes; new `visual`
+optional dependency group; non-blocking CI job while it stabilizes.
+
 Version 0.16.0 extends the Mapping Candidate Generator with full-scope
 scoring and review lanes: every candidate now carries a deterministic
 `hard_mapping` flag (cross-references reaching outside the current product

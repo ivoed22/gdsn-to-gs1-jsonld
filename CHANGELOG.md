@@ -9,6 +9,31 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.17.0 — Visual Smoke Tests
+
+No app behavior changes. This is read-only browsing plus assertions.
+
+- **Browser-based visual smoke.** `scripts/visual_smoke.py` boots the app
+  headless (Playwright + Chromium) and walks the landing page plus all seven
+  workflows via the guided-route navigation, asserting: no horizontal
+  overflow at a 1280px viewport, the active route/workflow button is
+  readable, no positive compliance claim appears without negation (same
+  check as `tests/test_no_claims.py`, on rendered page text), at least one
+  warning/info alert visible per workflow, and the version + all three
+  routes are visible on the landing page. Each screen is captured as a
+  full-page screenshot.
+- **New `visual` optional dependency group** (`pip install -e ".[visual]"`)
+  adds `playwright` without touching the default `dev` install.
+- **New CI job `visual-smoke`**, `continue-on-error: true` while the harness
+  stabilizes; uploads screenshots as a build artifact rather than failing
+  the run. Deliberately separate from the blocking `test` job.
+- Screenshots are git-ignored (`tests/visual/baselines/`) — this version
+  captures and asserts on live layout, not pixel-diff regression against a
+  committed baseline; see `docs/visual-smoke.md`.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims. No official GS1 validation or production compliance is claimed.
+
 ## v0.16.0 — Full-Scope Mapping Scoring & Review Lanes
 
 Review-only, as always: no mapping YAML, mapping registry, or mapping

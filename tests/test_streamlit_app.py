@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.16.0"
+    assert ui.APP_VERSION == "v0.17.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -150,7 +150,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.16.0" in markdown.value
+        "App version: v0.17.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -574,6 +574,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.16.0" in rendered
+    assert "app version: v0.17.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

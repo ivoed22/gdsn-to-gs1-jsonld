@@ -1,5 +1,16 @@
 # UI Changes
 
+## v0.17.0 Visual smoke tests checklist
+
+- [x] No UI/UX changes — this version adds a browser-based test harness
+      (`scripts/visual_smoke.py`) that asserts against the existing UI, it
+      does not modify it.
+- [x] Confirmed programmatically: no horizontal overflow at 1280px, active
+      route/workflow buttons remain readable, every workflow shows at least
+      one warning/info alert, no positive compliance claim without negation.
+- [x] Screenshots captured for the landing page and all seven workflows as
+      a visual record (git-ignored, uploaded as a CI artifact).
+
 ## v0.16.0 Full-scope mapping scoring & review lanes checklist
 
 - [x] Generate Mapping Candidates gains a "Review lane" selector (all /
