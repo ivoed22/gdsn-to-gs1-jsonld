@@ -39,6 +39,7 @@ from app.workflow_shared import (
     set_route,
     set_workflow_mode,
 )
+from app.workflows.builder_expansion import render_builder_expansion_analysis
 from app.workflows.candidates import render_mapping_candidates_workflow
 from app.workflows.convert import render_bulk_zip_workflow, render_single_xml_workflow
 from app.workflows.explore import render_webvoc_explorer
@@ -283,6 +284,8 @@ def main() -> None:
         render_manual_jsonld_builder()
     elif workflow_mode == "Generate Mapping Candidates":
         render_mapping_candidates_workflow()
+    elif workflow_mode == "Builder Manifest Expansion Analysis":
+        render_builder_expansion_analysis()
     elif workflow_mode == "Validate Product Passport Sources":
         render_validate_product_passport_workflow()
     elif workflow_mode == "Build Product Passport Prototype":

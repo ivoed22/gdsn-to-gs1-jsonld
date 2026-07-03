@@ -27,20 +27,17 @@ semantic authority: generated/recommended output must not contain dppk terms
 prioritises the mapping foundation and UX/test hardening before the
 Crosswalk.
 
-### Later — Track C: Builder manifest expansion analysis
-
-Read-only analysis of which fields are mature enough to add to the builder
-manifest, fed by Track B accepted mappings and hard-mapping review results.
-No automatic manifest expansion.
-
 ### Later — Track D: Codelist import & enforcement
 
 Import actual GDSN codelist value enumerations (source/licensing decision
 first) into a versioned, committed registry, then validate codelist-backed
 fields (valid/unknown/deprecated/missing) as configurable warnings or
 blocks. Scheduled after Track B grows the codelist-backed accepted set.
+**Blocked** on a sourcing/licensing decision: the committed reference data
+has 507 codelist names but zero value enumerations, and this project does
+not fetch online or fabricate codelist values.
 
-### v0.19.0+ — GS1-first DPP Crosswalk (deferred behind foundation)
+### v0.20.0+ — GS1-first DPP Crosswalk (deferred behind foundation)
 
 Map DPP fields to GS1-first semantics (GS1 Web Vocabulary → GS1 Digital
 Link → CIRPASS/DPP core → sector vocabularies → schema.org fallback → local
@@ -74,6 +71,14 @@ separately scoped versions.
 
 ## Released
 
+- **v0.19.0 — Builder manifest expansion analysis (Track C).** Read-only
+  "Builder Manifest Expansion Analysis" workflow classifies the 371
+  not-yet-authorable WebVoc properties into `ready_now` /
+  `needs_codelist_curation` / `needs_hard_mapping_review` /
+  `not_ready_no_evidence`, using the mapping registry catalog and Track B's
+  hard-mapping detection. DPP relevance is reported as not-yet-assessed for
+  every candidate (the Crosswalk's job, now v0.20.0+). No automatic
+  manifest expansion.
 - **v0.18.0 — Builder UX at scale.** Coverage overview across manifest
   groups, per-field status chips (`builder_status.py`, reusing Track B's
   hard-mapping detection), search/filter, evidence expanders, clearer

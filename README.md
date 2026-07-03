@@ -3,6 +3,15 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.19.0 adds a read-only "Builder Manifest Expansion Analysis"
+workflow (Track C): classifies the 371 WebVoc properties not yet authorable
+in the Manual Builder manifest into `ready_now` / `needs_codelist_curation`
+/ `needs_hard_mapping_review` / `not_ready_no_evidence`, using the mapping
+registry's governance catalog and Track B's hard-mapping detection. DPP
+relevance is reported as not-yet-assessed for every candidate — that
+judgment is the Crosswalk's job (now v0.20.0+). No automatic manifest
+expansion; the builder manifest is unchanged.
+
 Version 0.18.0 adds navigation and status aids to the Manual JSON-LD
 Prototype Builder (183 fields / 19 groups): a coverage overview across
 groups, per-field status chips (filled/missing/review-required/

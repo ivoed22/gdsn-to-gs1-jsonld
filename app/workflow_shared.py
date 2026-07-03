@@ -72,6 +72,16 @@ WORKFLOW_MODES = (
         "outcome": "Read-only SDR context.",
     },
     {
+        "key": "builder_expansion",
+        "title": "Builder Manifest Expansion Analysis",
+        "marker": "EXP",
+        "description": (
+            "Review which not-yet-authorable WebVoc properties are mature "
+            "enough to add to the Manual Builder manifest next."
+        ),
+        "outcome": "Read-only readiness analysis; no manifest changes.",
+    },
+    {
         "key": "prototype",
         "title": "Create JSON-LD Prototype",
         "marker": "LD",
@@ -128,7 +138,7 @@ ROUTES = (
             "decisions."
         ),
         "outcome": "Review evidence and governance context.",
-        "children": ("explore", "candidates", "standards"),
+        "children": ("explore", "candidates", "standards", "builder_expansion"),
         "child_heading": "Choose a review tool",
     },
     {

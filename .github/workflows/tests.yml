@@ -62,6 +62,15 @@ jobs:
           --schema product_passport/reference_sources/raw_public/schemas/dpp_minimal.schema.json
           --output-dir /tmp/product_passport_builder
 
+      - name: CLI smoke — Builder manifest expansion analysis
+        run: >-
+          gdsn-to-gs1-jsonld analyze-builder-expansion
+          --webvoc-properties reference_data/normalized/webvoc_properties_1_17.csv
+          --builder-manifest builder_manifest/product_builder_v0_10.yaml
+          --mapping-registry mapping/mapping_registry.yaml
+          --gdsn-reference reference_data/normalized/gdsn_attributes_bms_xpath_3_1_36.csv
+          --output-dir /tmp/builder_expansion_analysis
+
   visual-smoke:
     # Browser-based smoke (v0.17.0): catches CSS/layout regressions the
     # AppTest harness above cannot see. Non-blocking until stable — see

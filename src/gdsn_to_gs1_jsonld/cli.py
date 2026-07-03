@@ -45,6 +45,7 @@ from .mapping_candidate_generator import (
     generate_all_candidates,
     generate_candidates_for_property,
     generate_candidate_summary,
+    load_webvoc_properties,
     write_candidate_reports,
 )
 from .mapping_promotion import (
@@ -52,6 +53,12 @@ from .mapping_promotion import (
     load_reviewed_hard_mappings,
     write_promotion_artifact,
 )
+from .builder_expansion_analysis import (
+    build_expansion_analysis,
+    load_catalog_rows_from_registry,
+    write_expansion_analysis,
+)
+from .jsonld_builder import load_builder_manifest
 from .product_passport_sources import (
     build_product_passport_source_inventory,
     load_json_schema,
@@ -1126,6 +1133,90 @@ def build_product_passport_command(
         "the selected local schema. Not official GS1 validation or production "
         "compliance."
     )
+
+
+@app.command("analyze-builder-expansion")
+def analyze_builder_expansion_command(
+    webvoc_properties: Path = typer.Option(
+        ...,
+        "--webvoc-properties",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Normalized WebVoc properties CSV.",
+    ),
+    builder_manifest: Path = typer.Option(
+        ...,
+        "--builder-manifest",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Manual JSON-LD Builder manifest YAML.",
+    ),
+    mapping_registry: Path = typer.Option(
+        ...,
+        "--mapping-registry",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Consolidated mapping registry YAML.",
+    ),
+    gdsn_reference: Path = typer.Option(
+        ...,
+        "--gdsn-reference",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Normalized GDSN attributes CSV (for hard-mapping detection).",
+    ),
+    output_dir: Path = typer.Option(
+        ...,
+        "--output-dir",
+        "-o",
+        help="Directory for the expansion analysis JSON output.",
+    ),
+) -> None:
+    """Analyze which not-yet-authorable WebVoc properties are candidates
+    for the Manual JSON-LD Builder manifest (Track C).
+
+    Read-only analysis support. Does not modify the builder manifest. DPP
+    relevance is reported as not-yet-assessed for every candidate: that
+    judgment belongs to the GS1-first DPP Crosswalk, not this analysis.
+    """
+    typer.echo(
+        "Builder manifest expansion analysis: review support only. "
+        "The builder manifest is never modified automatically."
+    )
+    try:
+        webvoc_rows = load_webvoc_properties(str(webvoc_properties))
+        manifest = load_builder_manifest(str(builder_manifest))
+        catalog_rows = load_catalog_rows_from_registry(str(mapping_registry))
+        analysis = build_expansion_analysis(
+            webvoc_rows, manifest, catalog_rows, str(gdsn_reference)
+        )
+        paths = write_expansion_analysis(analysis, str(output_dir))
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        typer.echo(f"Builder expansion analysis failed: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    typer.echo(
+        f"Authored: {analysis['authored_property_count']} / "
+        f"{analysis['total_webvoc_property_count']} WebVoc properties; "
+        f"{analysis['not_yet_authorable_count']} not yet authorable."
+    )
+    by_phase = analysis["by_readiness_phase"]
+    typer.echo(
+        f"Readiness: ready_now={by_phase['ready_now']}, "
+        f"needs_codelist_curation={by_phase['needs_codelist_curation']}, "
+        f"needs_hard_mapping_review={by_phase['needs_hard_mapping_review']}, "
+        f"not_ready_no_evidence={by_phase['not_ready_no_evidence']}"
+    )
+    for path in paths.values():
+        typer.echo(f"  - {path}")
 
 
 if __name__ == "__main__":

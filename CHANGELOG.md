@@ -9,6 +9,36 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.19.0 — Builder Manifest Expansion Analysis (Track C)
+
+Read-only analysis; the builder manifest, mapping registry, mapping
+catalog, and Web Vocabulary snapshots are all unchanged.
+
+- **New workflow: Builder Manifest Expansion Analysis** (marker EXP), added
+  under the Vocabulary & Mapping route. Shows which of the 371 WebVoc
+  properties not yet authorable in the Manual JSON-LD Builder manifest
+  (183 of 553 authored) are mature enough to add next, and why.
+- **New module** `src/gdsn_to_gs1_jsonld/builder_expansion_analysis.py`
+  classifies each not-yet-authorable property into a fixed readiness
+  vocabulary — `ready_now` / `needs_codelist_curation` /
+  `needs_hard_mapping_review` / `not_ready_no_evidence` — using the
+  consolidated mapping registry's governance catalog (v0.15.0) and reusing
+  Track B's exact `detect_hard_mapping` rules (v0.16.0) against linked GDSN
+  evidence. On current data: 5 ready_now, 366 not_ready_no_evidence — a
+  small ready count that honestly reflects how small the governed mapping
+  registry still is.
+- **DPP relevance is never assessed.** Every candidate reports
+  `dpp_relevance: "not_yet_assessed_pending_crosswalk"` — that judgment
+  belongs to the GS1-first DPP Crosswalk (now sequenced as v0.20.0+, moved
+  back one slot to make room for this track), not fabricated here.
+- **New CLI command** `analyze-builder-expansion` writes
+  `builder_manifest_expansion_analysis.json`.
+- No "add to manifest" action exists anywhere in the new workflow —
+  approving an addition remains a separate, deliberate decision.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims. No official GS1 validation or production compliance is claimed.
+
 ## v0.18.0 — Builder UX at Scale
 
 The manual builder's state model, serializer, and validator are unchanged;

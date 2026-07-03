@@ -1,5 +1,21 @@
 # UI Changes
 
+## v0.19.0 Builder manifest expansion analysis checklist
+
+- [x] New read-only workflow "Builder Manifest Expansion Analysis" (marker
+      EXP) added as a 4th child of the Vocabulary & Mapping route.
+- [x] Coverage summary (authored/total/not-yet-authorable + per-phase
+      counts), a readiness-phase filter (defaults to "Ready now"), a
+      candidate table, and a per-candidate detail panel with a status badge
+      and reasons.
+- [x] No "add to manifest" control anywhere in the workflow — a top warning
+      states the manifest is never modified automatically and that DPP
+      relevance is not yet assessed for any candidate.
+- [x] `scripts/visual_smoke.py` extended with a screen for the new
+      workflow, following its own documented extension pattern.
+- [x] No governance warnings removed; no compliance claims added; no DPP
+      relevance claimed for any property.
+
 ## v0.18.0 Builder UX at scale checklist
 
 - [x] Coverage overview table across every group in the selected category

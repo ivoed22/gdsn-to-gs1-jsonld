@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.18.0"
+    assert ui.APP_VERSION == "v0.19.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -150,7 +150,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.18.0" in markdown.value
+        "App version: v0.19.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -224,6 +224,7 @@ def test_route_switching_reveals_child_workflows():
         "Explore GS1 Web Vocabulary",
         "Generate Mapping Candidates",
         "Standards Review",
+        "Builder Manifest Expansion Analysis",
     ):
         assert title in rendered
     assert app.session_state["workflow_mode"] == "Explore GS1 Web Vocabulary"
@@ -256,6 +257,8 @@ def test_each_workflow_opens_via_route_then_child():
     assert app.session_state["workflow_mode"] == "Generate Mapping Candidates"
     _open_workflow(app, "standards")
     assert app.session_state["workflow_mode"] == "Standards Review"
+    _open_workflow(app, "builder_expansion")
+    assert app.session_state["workflow_mode"] == "Builder Manifest Expansion Analysis"
 
     # Product Passport Bridge route.
     _open_route(app, "product_passport_bridge")
@@ -284,6 +287,31 @@ def test_explore_and_standards_open_via_route():
     assert app.session_state["workflow_mode"] == "Standards Review"
     assert any(metric.label == "Open SDRs" and metric.value == "6" for metric in app.metric)
     assert any("docs/standards-decisions/index.md" in code.value for code in app.code)
+
+
+def test_builder_expansion_analysis_opens_via_route_and_is_read_only():
+    """Track C (v0.19.0): read-only analysis, never claims DPP relevance,
+    never touches the builder manifest, and reports real coverage numbers."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_route(app, "vocabulary_mapping")
+    _open_workflow(app, "builder_expansion")
+
+    assert app.session_state["workflow_mode"] == "Builder Manifest Expansion Analysis"
+    assert not app.exception
+
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    assert "never modifies the builder manifest" in rendered.lower() or any(
+        "never modif" in warning.value.lower() for warning in app.warning
+    )
+    assert any(
+        "not yet assessed" in warning.value.lower() for warning in app.warning
+    )
+
+    metrics_by_label = {metric.label: metric.value for metric in app.metric}
+    assert metrics_by_label.get("Authored in manifest") == "183"
+    assert metrics_by_label.get("Total WebVoc properties") == "553"
+    assert metrics_by_label.get("Not yet authorable") == "371"
+    assert "Ready now" in metrics_by_label
 
 
 def test_streamlit_manual_builder_card_and_live_jsonld_update():
@@ -621,6 +649,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.18.0" in rendered
+    assert "app version: v0.19.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered
