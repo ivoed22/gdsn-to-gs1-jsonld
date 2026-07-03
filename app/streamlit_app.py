@@ -1,5 +1,16 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+SRC_DIRECTORY = REPOSITORY_ROOT / "src"
+
+for directory in (REPOSITORY_ROOT, SRC_DIRECTORY):
+    directory_path = str(directory)
+    if directory_path not in sys.path:
+        sys.path.insert(0, directory_path)
+
 import streamlit as st
 
 from app.ui import (
