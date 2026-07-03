@@ -9,6 +9,7 @@ from typing import Any
 from lxml import etree
 
 from .canonical_model import CanonicalProduct, LanguageValue
+from .codelist_registry import CODELIST_DEPENDENCIES, validate_canonical_product_codelists
 from .jsonld_builder import build_jsonld
 from .mapping_loader import (
     MappingConfig,
@@ -50,6 +51,11 @@ class ConversionResult:
     validation_report: dict[str, Any]
     unmapped_fields: dict[str, Any]
     output_file_paths: dict[str, Path] = field(default_factory=dict)
+    # Track D (v0.20.0): populated only when convert_xml_to_jsonld is called
+    # with codelist_registry=<loaded registry>. Empty by default so existing
+    # callers see no change. Never blocks conversion by itself — warning vs.
+    # blocking is entirely the caller's decision.
+    codelist_validation: list[dict[str, Any]] = field(default_factory=list)
 
 
 def _xpath_scalar(element: etree._Element, xpath: str) -> str | None:
@@ -394,7 +400,18 @@ def convert_xml_to_jsonld(
     mapping_path: str | Path,
     output_dir: str | Path | None = None,
     write_files: bool = False,
+    codelist_registry: dict[str, Any] | None = None,
 ) -> ConversionResult:
+    """Convert one GDSN XML product message to GS1 Web Vocabulary JSON-LD.
+
+    ``codelist_registry`` is optional and opt-in (Track D, v0.20.0): pass a
+    registry loaded via ``codelist_registry.load_codelist_registry()`` to
+    populate ``ConversionResult.codelist_validation`` with per-field
+    valid/unknown/deprecated/missing/source_unavailable results. Leave it
+    ``None`` (the default) for byte-identical behavior to versions before
+    v0.20.0 — codelist validation never runs, never blocks, and never
+    changes ``jsonld_data`` either way.
+    """
     mapping: MappingConfig = load_mapping(mapping_path)
     root = parse_xml(xml_input)
     product_values: dict[str, Any] = {}
@@ -454,12 +471,19 @@ def convert_xml_to_jsonld(
         root,
         selected_paths,
     )
+    codelist_validation: list[dict[str, Any]] = []
+    if codelist_registry is not None:
+        codelist_validation = validate_canonical_product_codelists(
+            product.model_dump(), CODELIST_DEPENDENCIES, codelist_registry
+        )
+
     result = ConversionResult(
         jsonld_data=jsonld_data,
         canonical_product=product,
         mapping_report_rows=mapping_rows,
         validation_report=validation_report,
         unmapped_fields=unmapped_fields,
+        codelist_validation=codelist_validation,
     )
 
     if write_files:

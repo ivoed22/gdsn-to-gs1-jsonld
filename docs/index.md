@@ -15,6 +15,7 @@ Web Vocabulary JSON-LD.
 - [Mapping profile consolidation](mapping-consolidation.md)
 - [Visual smoke tests](visual-smoke.md)
 - [Builder manifest expansion analysis](builder-manifest-expansion-analysis.md)
+- [Codelist registry & validation](codelist-registry.md)
 - [Mapping catalog](mapping-catalog.md)
 - [Mapping quality checks](mapping-quality-checks.md)
 - [Bulk XML batch conversion](bulk-xml-batch-conversion.md)
@@ -66,6 +67,7 @@ Web Vocabulary JSON-LD.
 - [v0.17.0 release notes](releases/v0.17.0.md)
 - [v0.18.0 release notes](releases/v0.18.0.md)
 - [v0.19.0 release notes](releases/v0.19.0.md)
+- [v0.20.0 release notes](releases/v0.20.0.md)
 
 The MVP is experimental and does not implement full GDSN XSD validation or
 complete GDSN coverage.

@@ -395,7 +395,9 @@ def test_committed_source_manifest_and_schema_have_required_fields():
     )
     schema_required = set(schema["properties"]["sources"]["items"]["required"])
 
-    assert len(manifest["sources"]) == 2
+    # 2 original sources (GDSN BMS/XPath workbook, WebVoc JSON-LD) plus the
+    # v0.20.0 Track D codelist workbook.
+    assert len(manifest["sources"]) == 3
     assert set(SOURCE_MANIFEST_REQUIRED_FIELDS).issubset(schema_required)
     for source in manifest["sources"]:
         assert set(SOURCE_MANIFEST_REQUIRED_FIELDS).issubset(source)

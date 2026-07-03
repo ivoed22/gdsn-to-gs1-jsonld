@@ -71,6 +71,11 @@ jobs:
           --gdsn-reference reference_data/normalized/gdsn_attributes_bms_xpath_3_1_36.csv
           --output-dir /tmp/builder_expansion_analysis
 
+      - name: CLI smoke — Codelist import (Track D)
+        run: >-
+          gdsn-to-gs1-jsonld import-codelists
+          --output-dir /tmp/codelist_import
+
   visual-smoke:
     # Browser-based smoke (v0.17.0): catches CSS/layout regressions the
     # AppTest harness above cannot see. Non-blocking until stable — see

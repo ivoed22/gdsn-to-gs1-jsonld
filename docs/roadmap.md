@@ -27,24 +27,17 @@ semantic authority: generated/recommended output must not contain dppk terms
 prioritises the mapping foundation and UX/test hardening before the
 Crosswalk.
 
-### Later — Track D: Codelist import & enforcement
-
-Import actual GDSN codelist value enumerations (source/licensing decision
-first) into a versioned, committed registry, then validate codelist-backed
-fields (valid/unknown/deprecated/missing) as configurable warnings or
-blocks. Scheduled after Track B grows the codelist-backed accepted set.
-**Blocked** on a sourcing/licensing decision: the committed reference data
-has 507 codelist names but zero value enumerations, and this project does
-not fetch online or fabricate codelist values.
-
-### v0.20.0+ — GS1-first DPP Crosswalk (deferred behind foundation)
+### v0.21.0+ — GS1-first DPP Crosswalk (deferred behind foundation)
 
 Map DPP fields to GS1-first semantics (GS1 Web Vocabulary → GS1 Digital
 Link → CIRPASS/DPP core → sector vocabularies → schema.org fallback → local
 extension) as review-only crosswalk evidence with explicit source priority.
 No automatic acceptance. Broader DPP toolkit modules (JSON-LD Reviewer, DPP
 Wizard, CSV DPP Adapter, Coverage Dashboard) phase in afterwards as
-separately scoped versions.
+separately scoped versions. **Blocked** on sourcing specific CIRPASS/
+CIRPASS-2/sector-vocabulary versions as pinned local sources — the user is
+researching how to retrieve these; this project does not fetch online or
+guess source URLs.
 
 ### Later (still v0.x)
 
@@ -71,6 +64,16 @@ separately scoped versions.
 
 ## Released
 
+- **v0.20.0 — Codelist import & enforcement (Track D).** User-provided
+  official public GDSN and Shared Common Code Lists workbook (595
+  codelists, 14,564 values) imported into a committed, deterministic
+  registry (`codelist_importer.py`). New `codelist_registry.py` validates
+  codelist-backed fields (valid/unknown/deprecated/missing/
+  source_unavailable) against a curated, independently verified
+  field-to-codelist table. `convert_xml_to_jsonld` gains a fully opt-in
+  `codelist_registry` parameter — default `None` is byte-identical to every
+  prior version; passing a registry only adds a diagnostic
+  `codelist_validation` list, never blocking conversion.
 - **v0.19.0 — Builder manifest expansion analysis (Track C).** Read-only
   "Builder Manifest Expansion Analysis" workflow classifies the 371
   not-yet-authorable WebVoc properties into `ready_now` /

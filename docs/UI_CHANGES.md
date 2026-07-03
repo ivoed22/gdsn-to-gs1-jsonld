@@ -1,5 +1,12 @@
 # UI Changes
 
+## v0.20.0 Codelist import & enforcement (Track D)
+
+- [x] No UI changes in this version — Track D adds an offline import
+      pipeline, a validation module, and a fully opt-in converter
+      parameter. Streamlit wiring for codelist validation results is a
+      natural next step, not built here.
+
 ## v0.19.0 Builder manifest expansion analysis checklist
 
 - [x] New read-only workflow "Builder Manifest Expansion Analysis" (marker

@@ -9,6 +9,50 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.20.0 — Codelist Import & Enforcement (Track D)
+
+Unblocked this session: the user provided the official public GDSN and
+Shared Common Code Lists workbook for release 3.1.36 (595 codelists,
+14,564 values, 509 deprecated values) — previously the reference data had
+507 codelist *names* but zero value enumerations.
+
+- **New source, committed with provenance.**
+  `reference_data/raw_public/GDSN_and_Shared_Code_Lists_r3p1p36_i6_8May2026.xlsx`,
+  inventoried in `reference_data/source_manifest.json` with checksum and
+  license/rights note, following the same pattern as the existing GDSN
+  BMS/XPath workbook. `source_url` is a project-internal URN rather than a
+  guessed public link, since the exact GS1 download URL was not
+  independently confirmed.
+- **New importer** `src/gdsn_to_gs1_jsonld/codelist_importer.py` and CLI
+  command `import-codelists` produce a deterministic, versioned registry
+  (`reference_data/normalized/gdsn_codelists_r3_1_36.json`, committed):
+  codelist values, labels, definitions, status, and deprecated values with
+  sunset release.
+- **New validation module** `src/gdsn_to_gs1_jsonld/codelist_registry.py`:
+  `validate_code_value` classifies a value as `valid` / `unknown` /
+  `deprecated` / `missing` / `source_unavailable`. `CODELIST_DEPENDENCIES`
+  is a curated, independently verified table (not derived from the mapping
+  registry catalog's `code_list` column, which predates several field
+  renames and contains at least one clearly incorrect entry).
+- **Converter integration is fully opt-in.** `convert_xml_to_jsonld` gains
+  an optional `codelist_registry` parameter, default `None`. Not passing it
+  is byte-identical to every prior version. Passing a loaded registry only
+  adds a new `ConversionResult.codelist_validation` list — `jsonld_data`
+  and every other field stay identical either way. Codelist validation
+  never blocks conversion by itself; warning vs. blocking is entirely a
+  caller decision built on top of this data.
+- On the committed example fixture, two `referenced_file_type` values come
+  back `unknown` (`DPP_DOCUMENT`, `CERTIFICATION_DOCUMENT`) — a genuine,
+  expected finding: they are project-defined sentinel values for the
+  already-documented experimental `referencedDocument` mapping, not real
+  GS1 codes.
+- Not done in this version: Streamlit UI wiring (natural next step, not
+  built here), and enforcement for fields outside the six verified
+  dependencies.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims. No official GS1 validation or production compliance is claimed.
+
 ## v0.19.0 — Builder Manifest Expansion Analysis (Track C)
 
 Read-only analysis; the builder manifest, mapping registry, mapping

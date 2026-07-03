@@ -11,6 +11,12 @@ from .batch_converter import (
     convert_batch_zip,
 )
 from .catalog_quality import check_catalog, check_mapping, write_quality_reports
+from .codelist_importer import (
+    DEFAULT_CODELIST_XLSX,
+    DEFAULT_OUTPUT_DIR as CODELIST_DEFAULT_OUTPUT_DIR,
+    build_codelist_registry,
+    write_codelist_registry,
+)
 from .catalog_revalidation import (
     revalidate_mapping_catalog,
     write_catalog_revalidation_outputs,
@@ -1214,6 +1220,51 @@ def analyze_builder_expansion_command(
         f"needs_codelist_curation={by_phase['needs_codelist_curation']}, "
         f"needs_hard_mapping_review={by_phase['needs_hard_mapping_review']}, "
         f"not_ready_no_evidence={by_phase['not_ready_no_evidence']}"
+    )
+    for path in paths.values():
+        typer.echo(f"  - {path}")
+
+
+@app.command("import-codelists")
+def import_codelists_command(
+    codelist_xlsx: Path = typer.Option(
+        DEFAULT_CODELIST_XLSX,
+        "--codelist-xlsx",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help="Public GDSN and Shared Common Code Lists workbook.",
+    ),
+    output_dir: Path = typer.Option(
+        CODELIST_DEFAULT_OUTPUT_DIR,
+        "--output-dir",
+        "-o",
+        help="Directory for the normalized codelist registry JSON.",
+    ),
+) -> None:
+    """Import the public GDSN codelist workbook into a normalized,
+    versioned registry (Track D, v0.20.0).
+
+    Offline only. Does not validate anything by itself — see
+    gdsn_to_gs1_jsonld.codelist_registry for runtime validation, which the
+    converter only performs when a caller explicitly passes a loaded
+    registry (opt-in; never blocking by default).
+    """
+    try:
+        result = build_codelist_registry(codelist_xlsx)
+        paths = write_codelist_registry(
+            result, source_path=codelist_xlsx, output_dir=output_dir
+        )
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        typer.echo(f"Codelist import failed: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    typer.echo(
+        f"Codelist import: {result.codelist_count} codelist(s), "
+        f"{result.value_count} value(s), "
+        f"{result.deprecated_value_count} deprecated value(s) "
+        f"({result.unmatched_deprecated_count} deprecated-only codelist(s))."
     )
     for path in paths.values():
         typer.echo(f"  - {path}")

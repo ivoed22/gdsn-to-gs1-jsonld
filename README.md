@@ -3,6 +3,18 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.20.0 unblocks Track D: the user provided the official public GDSN
+and Shared Common Code Lists workbook (595 codelists, 14,564 values),
+imported via new `codelist_importer.py` into a committed, deterministic
+registry. New `codelist_registry.py` validates a code value as
+valid/unknown/deprecated/missing/source_unavailable against a curated,
+independently verified field-to-codelist table (not the mapping catalog's
+`code_list` column, which has pre-existing data-entry inconsistencies).
+`convert_xml_to_jsonld` gains a fully opt-in `codelist_registry` parameter
+— not passing it is byte-identical to every prior version; passing one only
+adds a new diagnostic `codelist_validation` list, never blocking
+conversion.
+
 Version 0.19.0 adds a read-only "Builder Manifest Expansion Analysis"
 workflow (Track C): classifies the 371 WebVoc properties not yet authorable
 in the Manual Builder manifest into `ready_now` / `needs_codelist_curation`
