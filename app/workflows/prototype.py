@@ -6,11 +6,17 @@ import json
 from dataclasses import asdict
 from typing import Any
 
+import pandas as pd
 import streamlit as st
 
-from app.ui import render_section_header
+from app.ui import render_section_header, render_status_badge
 from app.workflow_shared import REPOSITORY_ROOT
 from app.workflows.explore import load_webvoc_explorer_dataset
+from gdsn_to_gs1_jsonld.builder_status import (
+    build_hard_mapping_index,
+    compute_field_status,
+    summarize_field_statuses,
+)
 from gdsn_to_gs1_jsonld.jsonld_builder import (
     build_empty_builder_state,
     get_builder_fields,
@@ -24,11 +30,45 @@ from gdsn_to_gs1_jsonld.jsonld_builder import (
     validate_builder_state,
 )
 
+# Status-badge tone per builder field status (see builder_status.STATUS_VALUES).
+_FIELD_STATUS_TONES = {
+    "filled": "accepted",
+    "missing": "blocked",
+    "review_required": "review",
+    "hard_mapping_review": "review",
+    "codelist_pending": "archived",
+    "external_source_required": "archived",
+    "extension_candidate": "archived",
+    "blocked": "blocked",
+    "optional_empty": "archived",
+}
+_FIELD_STATUS_LABELS = {
+    "filled": "Filled",
+    "missing": "Missing (required)",
+    "review_required": "Review required",
+    "hard_mapping_review": "Hard-mapping review",
+    "codelist_pending": "Codelist pending",
+    "external_source_required": "External source required",
+    "extension_candidate": "Extension candidate",
+    "blocked": "Blocked",
+    "optional_empty": "Not filled",
+}
+
 
 @st.cache_data(show_spinner=False)
 def _load_builder_manifest() -> dict:
     return load_builder_manifest(
         REPOSITORY_ROOT / "builder_manifest" / "product_builder_v0_10.yaml"
+    )
+
+
+@st.cache_data(show_spinner=False)
+def _load_hard_mapping_index() -> dict[str, tuple[bool, list[str]]]:
+    return build_hard_mapping_index(
+        REPOSITORY_ROOT
+        / "reference_data"
+        / "normalized"
+        / "gdsn_attributes_bms_xpath_3_1_36.csv"
     )
 
 
@@ -90,6 +130,7 @@ def _property_metadata_index(dataset: object, manifest: dict) -> dict[str, dict[
                     "planned_reason": field.get("planned_reason", ""),
                     "object_type": field.get("object_type"),
                     "object_fields": field.get("object_fields"),
+                    "options": field.get("options"),
                 }
             )
             index[property_id] = metadata
@@ -116,7 +157,26 @@ def _metadata_for_field(
     return metadata
 
 
-def _render_field_header(metadata: dict[str, Any]) -> None:
+def _value_present(state: dict[str, Any], metadata: dict[str, Any]) -> bool:
+    """True if this field (or, for objects, any sub-field) has a value."""
+    property_id = metadata["term_id"]
+    values = state.get("values", {})
+    object_fields = metadata.get("object_fields") or []
+    if object_fields:
+        return any(
+            object_subfield_key(property_id, sub.get("property_id")) in values
+            for sub in object_fields
+            if sub.get("property_id")
+        )
+    return property_id in values
+
+
+def _render_field_header(
+    metadata: dict[str, Any],
+    *,
+    status: str,
+    status_reasons: list[str],
+) -> None:
     property_id = metadata["term_id"]
     label = metadata.get("label") or property_id.split(":", 1)[-1]
     requirement = str(metadata.get("requirement") or "optional").title()
@@ -127,12 +187,40 @@ def _render_field_header(metadata: dict[str, Any]) -> None:
         if evidence
         else "No catalog evidence linked"
     )
-    st.markdown(f"**{label}** — {requirement}")
+    header_col, badge_col = st.columns([3, 1])
+    with header_col:
+        st.markdown(f"**{label}** — {requirement}")
+    with badge_col:
+        render_status_badge(
+            _FIELD_STATUS_LABELS.get(status, status),
+            _FIELD_STATUS_TONES.get(status, "archived"),
+        )
     st.caption(f"`{property_id}` · Range: {ranges} · {evidence_hint}")
     if metadata.get("help_text"):
         st.caption(str(metadata["help_text"]))
     if metadata.get("example_value"):
         st.caption(f"Example: `{metadata['example_value']}`")
+    if status_reasons:
+        st.caption(" · ".join(status_reasons))
+    if evidence:
+        with st.expander(f"Evidence ({len(evidence)})", expanded=False):
+            evidence_df = pd.DataFrame(evidence)
+            display_columns = [
+                col
+                for col in (
+                    "source_attribute_name",
+                    "bms_id",
+                    "gdsn_xpath",
+                    "mapping_status",
+                    "confidence",
+                )
+                if col in evidence_df.columns
+            ]
+            st.dataframe(
+                evidence_df[display_columns] if display_columns else evidence_df,
+                hide_index=True,
+                use_container_width=True,
+            )
 
 
 def _coerce_builder_widget_value(value: Any, input_type: str) -> Any:
@@ -244,25 +332,31 @@ def _render_manual_field(
     metadata: dict[str, Any],
     *,
     default_language: str,
-) -> dict[str, Any]:
+    hard_mapping_index: dict[str, tuple[bool, list[str]]],
+) -> tuple[dict[str, Any], str]:
     property_id = metadata["term_id"]
     input_type = infer_input_type(
         metadata,
         metadata.get("input_type_override"),
     )
-    _render_field_header(metadata)
+    status, status_reasons = compute_field_status(
+        metadata,
+        value_present=_value_present(state, metadata),
+        hard_mapping_index=hard_mapping_index,
+    )
+    _render_field_header(metadata, status=status, status_reasons=status_reasons)
     if not metadata.get("supported_in_v0_10", True):
         st.info(
             "Planned for a later release: "
             + str(metadata.get("planned_reason") or "requires governed modelling")
         )
-        return state
+        return state, status
 
     if input_type == "object":
         object_fields = metadata.get("object_fields") or []
         if not object_fields:
             st.info("This object has no simple sub-fields available to author.")
-            return state
+            return state, status
         object_type = metadata.get("object_type") or "object"
         st.caption(
             f"Nested {object_type} object — fill any sub-field to include it in "
@@ -283,15 +377,16 @@ def _render_manual_field(
                 sub,
                 default_language=default_language,
             )
-        return state
+        return state, status
 
-    return _render_field_widget(
+    state = _render_field_widget(
         state,
         property_id,
         input_type,
         metadata,
         default_language=default_language,
     )
+    return state, status
 
 
 def render_manual_jsonld_builder() -> None:
@@ -377,22 +472,107 @@ def render_manual_jsonld_builder() -> None:
     state["default_language"] = default_language
     state["selected_groups"] = [selected_group["key"]]
     state["values"] = dict(st.session_state.get("manual_builder_values", {}))
+    hard_mapping_index = _load_hard_mapping_index()
+
+    # Section navigation: a coverage overview across every group in the
+    # selected category, using already-persisted values, so the reviewer can
+    # see where required fields are still missing before switching groups.
+    with st.container(border=True):
+        render_section_header(
+            3,
+            "Coverage overview",
+            "Field status by thematic group in the selected category. "
+            "Switch groups with the selector above.",
+        )
+        overview_rows = []
+        for group in groups:
+            group_fields = get_builder_fields(manifest, group)
+            group_statuses = []
+            for field in group_fields:
+                metadata = _metadata_for_field(field, property_metadata)
+                status, _ = compute_field_status(
+                    metadata,
+                    value_present=_value_present(state, metadata),
+                    hard_mapping_index=hard_mapping_index,
+                )
+                group_statuses.append(status)
+            counts = summarize_field_statuses(group_statuses)
+            overview_rows.append(
+                {
+                    "Group": group["label"],
+                    "Fields": len(group_fields),
+                    "Filled": counts["filled"],
+                    "Missing (required)": counts["missing"],
+                    "Flagged for review": (
+                        counts["review_required"] + counts["hard_mapping_review"]
+                    ),
+                    "Active": "→" if group["key"] == selected_group["key"] else "",
+                }
+            )
+        st.dataframe(
+            pd.DataFrame(overview_rows),
+            hide_index=True,
+            use_container_width=True,
+        )
+
     fields = get_builder_fields(manifest, selected_group)
+    field_metadata = [
+        _metadata_for_field(field, property_metadata) for field in fields
+    ]
+    field_statuses = [
+        compute_field_status(
+            metadata,
+            value_present=_value_present(state, metadata),
+            hard_mapping_index=hard_mapping_index,
+        )[0]
+        for metadata in field_metadata
+    ]
+    group_counts = summarize_field_statuses(field_statuses)
 
     with form_column:
         with st.container(border=True):
             render_section_header(
-                3,
+                4,
                 selected_group["label"],
                 selected_group.get("description", "Enter values for this group."),
             )
-            for field in fields:
-                metadata = _metadata_for_field(field, property_metadata)
+            st.caption(
+                f"{group_counts['filled']} filled · "
+                f"{group_counts['missing']} missing (required) · "
+                f"{group_counts['review_required'] + group_counts['hard_mapping_review']} "
+                "flagged for review · "
+                f"{len(fields)} field(s) in this group."
+            )
+            search_col, status_col = st.columns([1.3, 1])
+            with search_col:
+                search_term = st.text_input(
+                    "Search fields in this group",
+                    placeholder="Search by label, property, or help text",
+                ).strip().lower()
+            with status_col:
+                status_filter = st.multiselect(
+                    "Show only status",
+                    options=list(_FIELD_STATUS_LABELS),
+                    format_func=lambda s: _FIELD_STATUS_LABELS[s],
+                    help="Leave empty to show all fields in this group.",
+                )
+
+            for metadata, status in zip(field_metadata, field_statuses):
+                if status_filter and status not in status_filter:
+                    continue
+                if search_term:
+                    haystack = " ".join(
+                        str(metadata.get(key) or "")
+                        for key in ("term_id", "label", "help_text")
+                    ).lower()
+                    if search_term not in haystack:
+                        continue
                 with st.container(border=True):
-                    state = _render_manual_field(
+                    state, _ = _render_manual_field(
                         state,
                         metadata,
                         default_language=default_language,
+                        hard_mapping_index=hard_mapping_index,
                     )
 
     jsonld_data = serialize_builder_state_to_jsonld(state, property_metadata)
@@ -403,7 +583,7 @@ def render_manual_jsonld_builder() -> None:
     with output_column:
         with st.container(border=True):
             render_section_header(
-                4,
+                5,
                 "Prototype JSON-LD Preview",
                 "Live preview of the manually entered prototype. "
                 "This is not converter output.",
@@ -418,6 +598,20 @@ def render_manual_jsonld_builder() -> None:
                 ensure_ascii=False,
             )
             st.code(formatted_jsonld, language="json")
+
+        with st.container(border=True):
+            render_section_header(
+                6,
+                "Export",
+                "Download the prototype, or clear the builder to start over.",
+            )
+            st.caption(
+                f"Current group ({selected_group['label']}): "
+                f"{group_counts['filled']} filled, "
+                f"{group_counts['missing']} missing (required), "
+                f"{group_counts['review_required'] + group_counts['hard_mapping_review']} "
+                "flagged for review."
+            )
             gtin = jsonld_data.get("gtin") or "manual-prototype"
             st.download_button(
                 "Download prototype JSON-LD",

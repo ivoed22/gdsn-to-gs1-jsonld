@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.17.0"
+    assert ui.APP_VERSION == "v0.18.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -150,7 +150,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.17.0" in markdown.value
+        "App version: v0.18.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -345,6 +345,53 @@ def test_streamlit_manual_builder_card_and_live_jsonld_update():
     assert '"@id": "https://id.gs1.org/01/09501234567890"' not in generated_json
     assert '"productName": [' not in generated_json
     assert '"netContent": {' not in generated_json
+
+
+def test_builder_coverage_overview_and_status_badges(example_xml_path):
+    """v0.18.0: the coverage overview table renders and per-field status
+    badges reflect filled state without changing serializer output."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_workflow(app, "prototype")
+
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    assert "Coverage overview" in rendered
+    assert "status-badge-" in rendered
+    # Untouched required field starts as "missing", not silently "filled".
+    assert "Missing (required)" in rendered or "status-badge-blocked" in rendered
+
+    text_inputs = {t.label: i for i, t in enumerate(app.text_input)}
+    app.text_input[text_inputs["gs1:gtin value"]].set_value("09501234567890").run(
+        timeout=20
+    )
+    rendered_after_fill = "\n".join(markdown.value for markdown in app.markdown)
+    assert "status-badge-accepted" in rendered_after_fill
+
+
+def test_builder_search_filters_fields_without_breaking_serializer():
+    """The search box narrows which fields render but never changes the
+    live JSON-LD preview logic itself."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_workflow(app, "prototype")
+
+    # Unfiltered: both fields render.
+    field_labels_default = {t.label for t in app.text_input}
+    assert "gs1:gtin value" in field_labels_default
+    assert "gs1:productName value" in field_labels_default
+
+    search_input = next(
+        t for t in app.text_input if t.label == "Search fields in this group"
+    )
+    search_input.set_value("gtin").run(timeout=20)
+
+    field_labels_filtered = {t.label for t in app.text_input}
+    assert "gs1:gtin value" in field_labels_filtered
+    assert "gs1:productName value" not in field_labels_filtered
+
+
+def test_builder_evidence_expander_present_for_mapped_field():
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_workflow(app, "prototype")
+    assert any("Evidence" in expander.label for expander in app.expander)
 
 
 def test_streamlit_bulk_zip_conversion_produces_batch_result(sample_dir):
@@ -574,6 +621,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.17.0" in rendered
+    assert "app version: v0.18.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

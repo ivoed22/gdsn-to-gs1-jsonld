@@ -6,6 +6,54 @@ JSON-LD live.
 
 This is prototype authoring, not GDSN XML conversion.
 
+## v0.18.0 — Builder UX at scale
+
+With the manifest at 183 fields across 19 groups, the Builder gained
+navigation and status aids so a reviewer can work at that scale without
+losing track of what's filled, missing, or flagged:
+
+- **Coverage overview.** A table across every group in the selected product
+  category (field count, filled, missing-required, flagged-for-review),
+  computed from the same persisted values as the live preview, so switching
+  groups doesn't lose sight of the rest of the form.
+- **Per-field status chip.** Every field header shows a status badge —
+  `Filled`, `Missing (required)`, `Review required`, `Hard-mapping review`,
+  `Codelist pending`, `Blocked`, or `Not filled` — derived by
+  `src/gdsn_to_gs1_jsonld/builder_status.py` (pure functions, unit-tested,
+  no change to the serializer). Two vocabulary values,
+  `external_source_required` and `extension_candidate`, are reserved and
+  never triggered today — they need data that doesn't exist yet (a promoted
+  hard mapping; a Crosswalk gap), and this project does not fabricate data
+  to fill a status.
+- **Hard-mapping review status.** Reuses the exact same deterministic
+  detection rules as the v0.16.0 Mapping Candidate Generator
+  (`detect_hard_mapping`), applied to whatever GDSN evidence is already
+  linked to a WebVoc property, so a field backed by a cross-reference
+  (organization/party, country, cross-item product reference) is visibly
+  flagged for extra review before it's treated as routine.
+- **Search and status filter.** A text search (label/property/help text) and
+  a status multiselect narrow the current group's fields without touching
+  which group is selected or the underlying state.
+- **Evidence expander.** Each field with catalog evidence gets an expander
+  showing the GDSN attribute name, BMS ID, XPath, mapping status, and
+  confidence — the same evidence data the header's "N mapping evidence
+  row(s)" hint already summarized, now inspectable.
+- **Clearer export area.** The download/clear controls now sit under an
+  explicit "Export" section with the current group's fill/missing/flagged
+  counts shown alongside the download button.
+- **Bug fix: controlled-vocabulary (`code`) fields now show their real
+  options.** Before v0.18.0, every `code`-type field's dropdown silently
+  showed only the "— none —" placeholder — the manifest's per-field
+  `options` list was parsed but never threaded through to the render layer.
+  Fields like `gs1:packagingMarkedLabelAccreditation` (30+ real controlled
+  values) were effectively unusable. Fixed by carrying `options` through
+  `_property_metadata_index`; regression-tested.
+
+The manual builder's state model, serializer (`serialize_builder_state_to_jsonld`),
+and validator (`validate_builder_state`) are unchanged — status derivation
+reads the same persisted values, it does not compute or store anything new
+in builder state.
+
 ## Property coverage
 
 The Builder exposes a curated subset of the ~553 GS1 Web Vocabulary properties,

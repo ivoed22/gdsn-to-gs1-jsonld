@@ -1,5 +1,26 @@
 # UI Changes
 
+## v0.18.0 Builder UX at scale checklist
+
+- [x] Coverage overview table across every group in the selected category
+      (fields, filled, missing, flagged), computed from persisted values.
+- [x] Per-field status badge in the field header
+      (filled=green/accepted, missing/blocked=red, review_required and
+      hard_mapping_review=amber, codelist_pending=grey), reusing the
+      v0.15.0 status-badge tokens; text label always present.
+- [x] Search box + status multiselect scoped to the current group.
+- [x] Evidence expander per field with linked catalog evidence.
+- [x] Explicit "Export" section: download + clear controls with current
+      group's fill/missing/flagged counts.
+- [x] Fixed: controlled-vocabulary (`code`) field dropdowns now show their
+      real manifest-defined options instead of only "— none —".
+- [x] No governance warnings removed; no compliance claims added; builder
+      serializer/validator/state model unchanged (regression-tested).
+
+**Accessibility:** status badges pair color with text labels; search/filter
+are standard labeled Streamlit inputs; evidence tables use full container
+width for scannability.
+
 ## v0.17.0 Visual smoke tests checklist
 
 - [x] No UI/UX changes — this version adds a browser-based test harness

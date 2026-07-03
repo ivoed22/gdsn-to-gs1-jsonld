@@ -27,12 +27,6 @@ semantic authority: generated/recommended output must not contain dppk terms
 prioritises the mapping foundation and UX/test hardening before the
 Crosswalk.
 
-### v0.18.0 — Manual Builder UX at scale
-
-With the Builder now at 183 fields, add section navigation, search/filter,
-per-field status chips and evidence, a coverage indicator ("X of 553
-authorable"), and a clear export area.
-
 ### Later — Track C: Builder manifest expansion analysis
 
 Read-only analysis of which fields are mature enough to add to the builder
@@ -80,6 +74,11 @@ separately scoped versions.
 
 ## Released
 
+- **v0.18.0 — Builder UX at scale.** Coverage overview across manifest
+  groups, per-field status chips (`builder_status.py`, reusing Track B's
+  hard-mapping detection), search/filter, evidence expanders, clearer
+  export area. Fixes controlled-vocabulary (`code`) fields that silently
+  showed no real options. Serializer/validator/state model unchanged.
 - **v0.17.0 — Visual smoke tests.** Browser-based smoke
   (`scripts/visual_smoke.py`, Playwright + Chromium) walks the landing page
   and all seven workflows, asserting no viewport overflow, readable active

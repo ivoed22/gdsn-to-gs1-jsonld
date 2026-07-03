@@ -9,6 +9,37 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.18.0 — Builder UX at Scale
+
+The manual builder's state model, serializer, and validator are unchanged;
+this version adds navigation/status aids and fixes a real defect.
+
+- **Coverage overview.** A table across every group in the selected product
+  category (fields, filled, missing-required, flagged-for-review), computed
+  from the same persisted values as the live preview.
+- **Per-field status chips.** New `src/gdsn_to_gs1_jsonld/builder_status.py`
+  (pure, unit-tested) derives one of `filled` / `missing` / `review_required`
+  / `hard_mapping_review` / `codelist_pending` / `blocked` per field, shown
+  as a status badge in the field header. `external_source_required` and
+  `extension_candidate` are reserved vocabulary values, never triggered
+  today — they need data (a promoted hard mapping; a Crosswalk gap) that
+  doesn't exist yet, and no fabricated status is emitted in their place.
+- **Hard-mapping review reuses Track B's detection.** The same deterministic
+  `detect_hard_mapping` rules from the v0.16.0 Mapping Candidate Generator
+  are applied to a field's linked GDSN evidence, flagging fields backed by a
+  cross-reference (organization/party, country, cross-item product
+  reference) for extra review.
+- **Search, status filter, evidence expander, clearer export area** added to
+  the Create JSON-LD Prototype workflow.
+- **Bug fix: controlled-vocabulary (`code`) fields now show their real
+  options.** The manifest's per-field `options` were parsed but never
+  reached the render layer, so every code-type dropdown silently showed
+  only "— none —" — e.g. `gs1:packagingMarkedLabelAccreditation`'s 30+ real
+  values were unreachable. Fixed and regression-tested.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims. No official GS1 validation or production compliance is claimed.
+
 ## v0.17.0 — Visual Smoke Tests
 
 No app behavior changes. This is read-only browsing plus assertions.

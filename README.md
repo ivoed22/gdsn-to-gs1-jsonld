@@ -3,6 +3,15 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.18.0 adds navigation and status aids to the Manual JSON-LD
+Prototype Builder (183 fields / 19 groups): a coverage overview across
+groups, per-field status chips (filled/missing/review-required/
+hard-mapping-review/codelist-pending/blocked, via new
+`builder_status.py`), search/filter, evidence expanders, and a clearer
+export area. Also fixes a real defect: controlled-vocabulary (`code`)
+fields were silently showing only "— none —" instead of their real
+manifest-defined options. Serializer/validator/state model unchanged.
+
 Version 0.17.0 adds a browser-based visual smoke test
 (`scripts/visual_smoke.py`, Playwright + Chromium): boots the app headless,
 walks the landing page and all seven workflows, and asserts no viewport
