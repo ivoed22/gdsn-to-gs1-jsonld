@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.15.0"
+    assert ui.APP_VERSION == "v0.16.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -150,7 +150,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.15.0" in markdown.value
+        "App version: v0.16.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -432,6 +432,46 @@ def test_mapping_candidate_warning_text_appears():
     assert "Generate Mapping Candidates" in rendered_markdown
 
 
+def test_mapping_candidates_promotion_lanes_appear_after_generate():
+    """Generating candidates shows promotion-lane metrics and lets the
+    reviewer filter by lane; hard-mapping candidates start ineligible."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_route(app, "vocabulary_mapping")
+    _open_workflow(app, "candidates")
+
+    property_selector = next(
+        s for s in app.selectbox if s.label == "WebVoc property"
+    )
+    property_selector.select("gs1:gtin").run(timeout=20)
+
+    lane_selector = next(s for s in app.selectbox if s.label == "Review lane")
+    assert lane_selector.options == ["All lanes", "standard", "hard_mapping"]
+
+    generate_button = next(
+        b for b in app.button if b.label == "Generate Candidates"
+    )
+    generate_button.click().run(timeout=30)
+
+    metric_labels = {m.label for m in app.metric}
+    for expected in (
+        "Standard lane",
+        "Hard-mapping lane",
+        "Eligible for promotion",
+        "Hard-mapping reviews recorded",
+    ):
+        assert expected in metric_labels
+
+    hard_mapping_metric = next(
+        m for m in app.metric if m.label == "Hard-mapping lane"
+    )
+    assert int(hard_mapping_metric.value) > 0
+
+    reviewed_metric = next(
+        m for m in app.metric if m.label == "Hard-mapping reviews recorded"
+    )
+    assert reviewed_metric.value == "0"
+
+
 def test_validate_product_passport_sources_card_visible_in_route():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     _open_route(app, "product_passport_bridge")
@@ -534,6 +574,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.15.0" in rendered
+    assert "app version: v0.16.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

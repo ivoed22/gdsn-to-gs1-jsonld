@@ -28,6 +28,7 @@ from gdsn_to_gs1_jsonld.mapping_candidate_generator import (
     candidate_report_bytes_csv,
     candidate_report_bytes_json,
     classify_confidence,
+    detect_hard_mapping,
     filter_candidates,
     generate_all_candidates,
     generate_candidate_summary,
@@ -399,3 +400,87 @@ def test_classify_confidence_thresholds():
     assert classify_confidence(0.05, []) == "review_required"
     # review_required forced if SDR linked regardless of score.
     assert classify_confidence(0.10, ["standards_review_linked"]) == "review_required"
+
+
+# ---------------------------------------------------------------------------
+# Hard-mapping detection (v0.16.0 Track B)
+# ---------------------------------------------------------------------------
+
+
+def test_detect_hard_mapping_flags_cross_class_reference():
+    row = {
+        "attribute_name": "gln",
+        "named_association": "Yes",
+        "class_associated_to": "PartyIdentification",
+    }
+    is_hard, reasons = detect_hard_mapping(row)
+    assert is_hard is True
+    assert any("PartyIdentification" in r for r in reasons)
+
+
+def test_detect_hard_mapping_flags_country_reference():
+    row = {
+        "attribute_name": "countryCode",
+        "named_association": "Yes",
+        "class_associated_to": "Country",
+    }
+    is_hard, reasons = detect_hard_mapping(row)
+    assert is_hard is True
+    assert any("Country" in r for r in reasons)
+
+
+def test_detect_hard_mapping_ignores_embedded_value_objects():
+    """named_association=Yes into a value object (not an external entity
+    identity) is not a hard mapping — nesting alone isn't the signal."""
+    row = {
+        "attribute_name": "effectiveDate",
+        "named_association": "Yes",
+        "class_associated_to": "DateOptionalTime",
+    }
+    is_hard, reasons = detect_hard_mapping(row)
+    assert is_hard is False
+    assert reasons == []
+
+
+def test_detect_hard_mapping_excludes_the_products_own_gtin():
+    """The product's own gtin identifies the item itself, not a reference to
+    another entity, so it must never be flagged as a hard mapping."""
+    row = {"attribute_name": "gtin", "named_association": "", "class_associated_to": ""}
+    is_hard, reasons = detect_hard_mapping(row)
+    assert is_hard is False
+    assert reasons == []
+
+
+def test_detect_hard_mapping_flags_gln_name_pattern():
+    row = {"attribute_name": "tradeItemLicenseOwnerGLN"}
+    is_hard, reasons = detect_hard_mapping(row)
+    assert is_hard is True
+    assert any("gln_identifier_reference" in r for r in reasons)
+
+
+def test_detect_hard_mapping_flags_cross_item_gtin_reference():
+    row = {"attribute_name": "NonGTINReferencedItem"}
+    is_hard, reasons = detect_hard_mapping(row)
+    assert is_hard is True
+    assert any("cross_item_gtin_reference" in r for r in reasons)
+
+
+def test_candidates_carry_hard_mapping_fields():
+    inputs = build_candidate_inputs(
+        webvoc_path=str(WEBVOC_CSV),
+        gdsn_path=str(GDSN_CSV),
+        catalog_path=str(CATALOG_CSV),
+        mapping_path=str(MAPPING_YAML),
+        backlog_path=str(BACKLOG_JSON),
+    )
+    candidates = generate_candidates_for_property("gs1:gtin", inputs, limit=20)
+    assert candidates, "Expected candidates for gs1:gtin"
+    for candidate in candidates:
+        assert "hard_mapping" in candidate
+        assert "hard_mapping_reasons" in candidate
+        assert candidate["review_lane"] in {"standard", "hard_mapping"}
+        assert candidate["hard_mapping"] == (candidate["review_lane"] == "hard_mapping")
+    assert any(c["hard_mapping"] for c in candidates), (
+        "Expected at least one hard-mapping candidate among gs1:gtin candidates "
+        "(GLN-named-associated attributes score against gtin via token overlap)."
+    )

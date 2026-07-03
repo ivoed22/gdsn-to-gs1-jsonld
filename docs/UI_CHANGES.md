@@ -1,5 +1,32 @@
 # UI Changes
 
+## v0.16.0 Full-scope mapping scoring & review lanes checklist
+
+- [x] Generate Mapping Candidates gains a "Review lane" selector (all /
+      standard / hard_mapping) alongside the existing property/confidence
+      filters.
+- [x] Optional hard-mapping review sign-off JSON upload; parsed client-side,
+      never written back to any file.
+- [x] Promotion-lane metrics row (standard lane, hard-mapping lane, eligible
+      for promotion, hard-mapping reviews recorded) using the same metric
+      style as the existing candidate metrics.
+- [x] Candidate table gains Lane / Status / Eligible-for-promotion columns.
+- [x] Candidate detail panel gains status/lane/promotion-eligibility badges
+      (reusing the v0.15.0 status-badge tokens: accepted=green,
+      review=amber, blocked=red) and a hard-mapping reasons list when
+      applicable — badges always carry a text label, never color-only.
+- [x] "All properties" selection shows a caption noting the true full-scope
+      sweep (measured ~7 minutes) is a CLI/local operation
+      (`--full-scope`), not something to run interactively for the whole
+      reference set.
+- [x] No governance warnings removed; no compliance claims added;
+      `promotion_eligible: true` is clearly review-support only, never an
+      "apply" action — the workflow still has no accept/apply button.
+
+**Accessibility:** status/lane/eligibility badges pair color with text
+labels; the review-lane and promotion-eligibility state is also visible in
+the candidate table for scanning without opening the detail panel.
+
 ## v0.15.0 Mapping profile consolidation checklist
 
 - [x] Sidebar shows a calm "Active mapping profile" panel with the profile

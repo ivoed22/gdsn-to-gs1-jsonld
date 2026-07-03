@@ -3,6 +3,17 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.16.0 extends the Mapping Candidate Generator with full-scope
+scoring and review lanes: every candidate now carries a deterministic
+`hard_mapping` flag (cross-references reaching outside the current product
+message — organization/party, country, or cross-item product references)
+and a `review_lane`. Both lanes reach the same `accepted` terminal status —
+hard-mapping candidates just need a dedicated extra review sign-off first,
+never a permanent block. `--full-scope` scores all 553 WebVoc properties
+against the full ~6,067-attribute GDSN reference (~7 minutes; local/offline,
+not part of CI). Still fully review-only: nothing writes mapping YAML, the
+registry, or the catalog.
+
 Version 0.15.0 consolidates the mapping foundation: one authoritative
 artifact, `mapping/mapping_registry.yaml`, merges the executable mapping
 profile with the governance review catalog (per-field governance blocks +

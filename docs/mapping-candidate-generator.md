@@ -25,7 +25,7 @@ produce the same outputs.
 | `reference_data/normalized/webvoc_properties_1_17.csv` | GS1 Web Vocabulary properties (v1.17 snapshot) |
 | `reference_data/normalized/gdsn_attributes_bms_xpath_3_1_36.csv` | GDSN BMS/XPath attribute reference (v3.1.36) |
 | `mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv` | Existing mapping catalog |
-| `mapping/mapping_v0_3.yaml` | Active YAML mapping profile |
+| `mapping/mapping_registry.yaml` | Active YAML mapping profile |
 | `docs/standards-decisions/standards_review_backlog.json` | Standards review backlog (optional) |
 
 ## Scoring Signals
@@ -75,6 +75,59 @@ Scoring combines 11 positive signals and 3 negative signals into a score in
 | `not_recommended` | Deleted attribute or incompatible type |
 | `proposed` | Passes confidence threshold with no disqualifying signal |
 
+## Hard-mapping detection and promotion lanes (v0.16.0 Track B)
+
+Every candidate additionally carries a **review lane**, independent of
+confidence and review status:
+
+| Field | Meaning |
+|---|---|
+| `hard_mapping` | `true` if the GDSN attribute is a cross-reference or identifier that reaches outside the current product XML message (organization/party, country, or cross-item product reference) rather than data fully contained in the message |
+| `hard_mapping_reasons` | Human-readable reasons the detection rules fired |
+| `review_lane` | `"standard"` or `"hard_mapping"` |
+
+Detection is deterministic, from the reference-data `class_associated_to` /
+`named_association` columns and attribute-name patterns — never a semantic
+guess:
+
+| Signal | Example |
+|---|---|
+| Cross-class reference to an external entity class (`Country`, `PartyIdentification`, `PartyInRole`, `EntityIdentification`, `TradeItemIdentification`, `CatalogueItemReference`) with `named_association: Yes` | `gln` under `ContentOwner`/`PartyIdentification` |
+| Attribute name references a GLN (excluding the product's own `gtin`) | `tradeItemLicenseOwnerGLN` |
+| Attribute name references another trade item's GTIN | `NonGTINReferencedItem` |
+
+Embedded value objects fully contained in the message (`Address`,
+`DateOptionalTime`, `NonPackagedSizeDimension`, and similar) are **not**
+flagged — nesting alone does not make a mapping hard; only reaching outside
+the message for identity resolution does.
+
+**Both lanes reach the same terminal status.** `hard_mapping` is a flag with
+a dedicated extra review gate, never a separate or permanent status:
+
+- **Standard lane**: score -> review -> `accepted`.
+- **Hard-mapping lane**: score -> dedicated extra review -> `accepted`.
+
+`status` (one of the fixed registry vocabulary — `proposed` /
+`review_required` / `accepted` / `rejected` / `deprecated` / `blocked`; see
+[`mapping-consolidation.md`](mapping-consolidation.md)) and
+`promotion_eligible` are computed by
+`src/gdsn_to_gs1_jsonld/mapping_promotion.py`:
+
+- A standard-lane candidate is `promotion_eligible` once its own
+  `review_status` carries no blocker (not `review_required`, not
+  `not_recommended`).
+- A hard-mapping-lane candidate is **never** eligible from scoring alone. It
+  additionally requires its `candidate_id` to appear in a human-curated
+  **hard-mapping review sign-off** file — a JSON list (or
+  `{"reviewed_candidate_ids": [...]}`) of candidate_ids that already passed
+  dedicated review of the cross-reference. Without that file, every
+  hard-mapping candidate shows `promotion_eligible: false` with a note
+  explaining why.
+
+Reaching `promotion_eligible: true` still does not write anything —
+promoting a candidate into a governed mapping entry (the mapping registry)
+remains a separate, deliberate standards decision.
+
 ## Reason Codes Reference
 
 | Code | Meaning |
@@ -102,7 +155,7 @@ gdsn-to-gs1-jsonld generate-mapping-candidates \
   --webvoc-properties reference_data/normalized/webvoc_properties_1_17.csv \
   --gdsn-reference reference_data/normalized/gdsn_attributes_bms_xpath_3_1_36.csv \
   --catalog mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv \
-  --mapping mapping/mapping_v0_3.yaml \
+  --mapping mapping/mapping_registry.yaml \
   --standards-backlog docs/standards-decisions/standards_review_backlog.json \
   --output-dir mapping_candidate_reports/
 
@@ -112,7 +165,7 @@ gdsn-to-gs1-jsonld generate-mapping-candidates \
   --webvoc-properties reference_data/normalized/webvoc_properties_1_17.csv \
   --gdsn-reference reference_data/normalized/gdsn_attributes_bms_xpath_3_1_36.csv \
   --catalog mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv \
-  --mapping mapping/mapping_v0_3.yaml \
+  --mapping mapping/mapping_registry.yaml \
   --output-dir mapping_candidate_reports_gtin/
 
 # High-confidence only
@@ -122,9 +175,39 @@ gdsn-to-gs1-jsonld generate-mapping-candidates \
   --webvoc-properties reference_data/normalized/webvoc_properties_1_17.csv \
   --gdsn-reference reference_data/normalized/gdsn_attributes_bms_xpath_3_1_36.csv \
   --catalog mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv \
-  --mapping mapping/mapping_v0_3.yaml \
+  --mapping mapping/mapping_registry.yaml \
   --output-dir mapping_candidate_reports_high/
+
+# Full-scope sweep: every WebVoc property against the full GDSN reference
+# (553 properties x ~6,067 attributes). Measured at ~7 minutes on the
+# committed reference data — local/offline use, not part of CI, and cannot
+# be combined with --property.
+gdsn-to-gs1-jsonld generate-mapping-candidates \
+  --full-scope \
+  --webvoc-properties reference_data/normalized/webvoc_properties_1_17.csv \
+  --gdsn-reference reference_data/normalized/gdsn_attributes_bms_xpath_3_1_36.csv \
+  --catalog mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv \
+  --mapping mapping/mapping_registry.yaml \
+  --output-dir mapping_candidate_reports_full/
+
+# With a hard-mapping review sign-off file, so previously-reviewed hard
+# mappings show as eligible for promotion.
+gdsn-to-gs1-jsonld generate-mapping-candidates \
+  --property gs1:brandOwner \
+  --webvoc-properties reference_data/normalized/webvoc_properties_1_17.csv \
+  --gdsn-reference reference_data/normalized/gdsn_attributes_bms_xpath_3_1_36.csv \
+  --catalog mapping_catalog/gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv \
+  --mapping mapping/mapping_registry.yaml \
+  --reviewed-hard-mappings mapping_review/hard_mapping_reviews.json \
+  --output-dir mapping_candidate_reports_brand_owner/
 ```
+
+Every run also writes a `promotion/` subdirectory under `--output-dir`:
+`promotion_summary.json`, `promotion_standard_lane.{json,csv}`,
+`promotion_hard_mapping_lane.{json,csv}`, and
+`promotion_eligible.{json,csv}` — the reviewable promotion artifact from
+`mapping_promotion.py`. None of these files are ever read back by the
+converter or written to automatically from a review decision.
 
 ## Streamlit Workflow Description
 
@@ -132,18 +215,26 @@ The "Generate Mapping Candidates" workflow card (marker: MAP) in the Streamlit
 app provides:
 
 1. A top-level warning noting candidates are review-only.
-2. A controls section: property selector, confidence filter, review status
-   filter, include-already-mapped checkbox, include-low-confidence checkbox,
-   limit per property input.
+2. A controls section: property selector, review-lane selector (all/standard/
+   hard_mapping), an optional hard-mapping review sign-off JSON upload,
+   confidence filter, review status filter, include-already-mapped checkbox,
+   include-low-confidence checkbox, limit per property input.
 3. A "Generate Candidates" button.
-4. After generation: metrics (total, high/medium/low/review_required/already_mapped).
+4. After generation: candidate metrics (total, high/medium/low/
+   review_required/already_mapped) and promotion-lane metrics (standard
+   lane count, hard-mapping lane count, eligible-for-promotion count,
+   hard-mapping reviews recorded).
 5. A candidate table with columns: WebVoc property, GDSN attribute name, BMS ID,
-   score, confidence, review status, top reason, SDR linked.
-6. A detail expander for the selected candidate.
+   score, confidence, review status, lane, status, eligible for promotion,
+   top reason, SDR linked.
+6. A detail expander for the selected candidate, including status/lane/
+   promotion-eligibility badges and hard-mapping reasons when applicable.
 7. Downloads: JSON, CSV, optional XLSX.
 
 The workflow never provides an "accept" or "apply" button.  No mapping YAML
-is editable in this workflow.
+or mapping registry is editable in this workflow. `promotion_eligible: true`
+means a candidate is ready for a human promotion decision, not that it has
+been applied.
 
 ## Report Output Format
 
@@ -152,8 +243,8 @@ Array of candidate objects, each containing all fields documented in
 `mapping_candidate_generator.py`.
 
 ### CSV (`mapping_candidates.csv`)
-Flat CSV with the same fields.  List fields (reasons, warnings, linked_sdr_ids)
-are joined with `; ` delimiter.
+Flat CSV with the same fields.  List fields (reasons, warnings,
+linked_sdr_ids, hard_mapping_reasons) are joined with `; ` delimiter.
 
 ### XLSX (`mapping_candidates.xlsx`)
 Excel workbook with the same data as CSV.  Requires `openpyxl`.
@@ -180,9 +271,16 @@ Aggregated counts:
 ## What It Does NOT Do
 
 - Does NOT accept, write, or apply any mapping.
-- Does NOT modify mapping YAML files.
+- Does NOT modify mapping YAML files or the mapping registry.
 - Does NOT modify the mapping catalog CSV.
 - Does NOT change converter output or batch behavior.
+- Does NOT treat `promotion_eligible: true` as an applied mapping — it is a
+  review-support signal only.
+- Does NOT permanently block a hard-mapping candidate: passing dedicated
+  review makes it eligible for the same `accepted` status as any other
+  candidate.
+- Does NOT invent a separate "hard mapping" status; `hard_mapping` is a flag,
+  `status` always uses the fixed registry vocabulary.
 - Does NOT fetch anything online.
 - Does NOT use external APIs.
 - Does NOT claim official GS1 validation.

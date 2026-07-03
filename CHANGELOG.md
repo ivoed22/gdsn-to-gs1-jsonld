@@ -9,6 +9,50 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.16.0 — Full-Scope Mapping Scoring & Review Lanes
+
+Review-only, as always: no mapping YAML, mapping registry, or mapping
+catalog is written by this release. Converter behavior, batch behavior, and
+single-file output are unchanged.
+
+- **Every candidate now carries a review lane.** `hard_mapping` (bool) +
+  `hard_mapping_reasons` are computed deterministically from the GDSN
+  reference data (`class_associated_to`/`named_association` cross-class
+  references to `Country`/`PartyIdentification`/`PartyInRole`/
+  `EntityIdentification`/`TradeItemIdentification`/`CatalogueItemReference`,
+  plus GLN/cross-item-GTIN attribute-name patterns). Embedded value objects
+  fully contained in the product message are not flagged — nesting alone
+  is not "hard." `review_lane` is `"standard"` or `"hard_mapping"`.
+- **Both lanes reach the same terminal status.** New
+  `src/gdsn_to_gs1_jsonld/mapping_promotion.py` computes `status` (fixed
+  registry vocabulary) and `promotion_eligible`: standard-lane candidates
+  are eligible once their own review_status carries no blocker; hard-mapping
+  candidates are **never** eligible from scoring alone — they additionally
+  require a human-curated hard-mapping review sign-off file
+  (`--reviewed-hard-mappings`) before becoming eligible for the same
+  `accepted` status as any other candidate. There is no
+  `hard_mapping_candidate` status and no permanent block.
+- **Promotion artifact.** Every `generate-mapping-candidates` run now also
+  writes a reviewable `promotion/` report (summary + standard-lane +
+  hard-mapping-lane + eligible-for-promotion, JSON and CSV). Nothing writes
+  mapping YAML or the registry automatically.
+- **`--full-scope` CLI flag.** Scores all 553 WebVoc properties against the
+  full ~6,067-row GDSN attribute reference in one run (measured ~7 minutes
+  on the committed reference data). Documented as local/offline use;
+  intentionally not part of the CI-blocking smoke, which stays scoped to a
+  single property for speed.
+- **UI**: the Generate Mapping Candidates workflow gained a review-lane
+  filter, an optional hard-mapping review sign-off upload, promotion-lane
+  metrics, and per-candidate status/lane/eligibility badges + hard-mapping
+  reasons in the detail panel. The candidate generator's cached inputs now
+  read the consolidated mapping registry (`mapping/mapping_registry.yaml`)
+  instead of the archived `mapping_v0_3.yaml`.
+- Docs: `docs/mapping-candidate-generator.md` documents the detection rules,
+  lane/promotion fields, and the new CLI options.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims. No official GS1 validation or production compliance is claimed.
+
 ## v0.15.0 — Mapping Profile Consolidation
 
 Converter behavior is unchanged and test-proven: converting the example

@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import json
+
 import streamlit as st
 
-from app.ui import render_download_intro, render_section_header
+from app.ui import render_download_intro, render_section_header, render_status_badge
 from app.workflow_shared import REPOSITORY_ROOT
 from gdsn_to_gs1_jsonld.mapping_candidate_generator import (
     build_candidate_inputs,
@@ -16,6 +18,17 @@ from gdsn_to_gs1_jsonld.mapping_candidate_generator import (
     generate_candidate_summary,
     generate_candidates_for_property,
 )
+from gdsn_to_gs1_jsonld.mapping_promotion import build_promotion_artifact
+
+# Status-badge tone per fixed registry status (mapping_registry.STATUS_VOCABULARY).
+_STATUS_BADGE_TONES = {
+    "accepted": "accepted",
+    "proposed": "current",
+    "review_required": "review",
+    "rejected": "blocked",
+    "deprecated": "blocked",
+    "blocked": "blocked",
+}
 
 
 @st.cache_data(show_spinner=False)
@@ -37,7 +50,7 @@ def load_candidate_inputs() -> object:
             / "gdsn_to_gs1_web_vocabulary_mapping_catalog_v0_3_webvoc_validated.csv"
         ),
         mapping_path=str(
-            REPOSITORY_ROOT / "mapping" / "mapping_v0_3.yaml"
+            REPOSITORY_ROOT / "mapping" / "mapping_registry.yaml"
         ),
         backlog_path=str(
             REPOSITORY_ROOT
@@ -46,6 +59,22 @@ def load_candidate_inputs() -> object:
             / "standards_review_backlog.json"
         ),
     )
+
+
+def _parse_reviewed_hard_mapping_ids(uploaded_file) -> set[str]:
+    """Parse an uploaded hard-mapping review sign-off JSON into candidate_ids."""
+    if uploaded_file is None:
+        return set()
+    try:
+        raw = json.loads(uploaded_file.getvalue().decode("utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        st.warning(f"Could not parse hard-mapping review file: {exc}")
+        return set()
+    if isinstance(raw, dict):
+        raw = raw.get("reviewed_candidate_ids", [])
+    if not isinstance(raw, list):
+        return set()
+    return {str(item).strip() for item in raw if str(item).strip()}
 
 
 def render_mapping_candidates_workflow() -> None:
@@ -89,6 +118,33 @@ def render_mapping_candidates_workflow() -> None:
             "WebVoc property",
             property_options,
             help="Select a specific property or 'All properties'.",
+        )
+        if selected_property == all_props_option:
+            st.caption(
+                "All properties scores every WebVoc property in this "
+                "session; a true full-scope sweep against all GDSN "
+                "attributes can take several minutes. For the full offline "
+                "sweep use the CLI: "
+                "`gdsn-to-gs1-jsonld generate-mapping-candidates --full-scope`."
+            )
+        lane_options = ["All lanes", "standard", "hard_mapping"]
+        selected_lane = st.selectbox(
+            "Review lane",
+            lane_options,
+            help=(
+                "Standard lane: score -> review -> accepted. Hard-mapping "
+                "lane: score -> dedicated extra review -> accepted (never a "
+                "permanent block)."
+            ),
+        )
+        reviewed_hard_mappings_file = st.file_uploader(
+            "Hard-mapping review sign-off (optional JSON)",
+            type=["json"],
+            help=(
+                "A JSON file listing candidate_ids that already passed "
+                "dedicated hard-mapping review. Without it, no hard-mapping "
+                "candidate shows as eligible for promotion."
+            ),
         )
         confidence_options = ["high", "medium", "low", "review_required"]
         selected_confidence = st.multiselect(
@@ -162,8 +218,22 @@ def render_mapping_candidates_workflow() -> None:
                     c for c in candidates
                     if c.get("review_status") in selected_review_statuses
                 ]
+            # Apply review-lane filter.
+            if selected_lane != "All lanes":
+                candidates = [
+                    c for c in candidates if c.get("review_lane") == selected_lane
+                ]
+
+            reviewed_hard_mapping_ids = _parse_reviewed_hard_mapping_ids(
+                reviewed_hard_mappings_file
+            )
+            promotion_artifact = build_promotion_artifact(
+                candidates, reviewed_hard_mapping_ids
+            )
+            candidates = promotion_artifact["all_candidates"]
 
             st.session_state["candidate_results"] = candidates
+            st.session_state["promotion_summary"] = promotion_artifact["summary"]
             st.session_state["candidate_json_bytes"] = candidate_report_bytes_json(candidates)
             st.session_state["candidate_csv_bytes"] = candidate_report_bytes_csv(candidates)
             xlsx_b = candidate_report_bytes_xlsx(candidates)
@@ -173,6 +243,7 @@ def render_mapping_candidates_workflow() -> None:
     candidates_result = st.session_state.get("candidate_results")
     if candidates_result is not None:
         summary = generate_candidate_summary(candidates_result)
+        promotion_summary = st.session_state.get("promotion_summary", {})
         with st.container(border=True):
             render_section_header(
                 3,
@@ -186,6 +257,25 @@ def render_mapping_candidates_workflow() -> None:
             m4.metric("Low confidence", summary["by_confidence"].get("low", 0))
             m5.metric("Review required", summary["by_confidence"].get("review_required", 0))
             m6.metric("Already mapped", summary["by_review_status"].get("already_mapped", 0))
+
+            st.caption(
+                "Promotion lanes — standard: score → review → accepted. "
+                "Hard-mapping: score → dedicated extra review → accepted "
+                "(never a permanent block)."
+            )
+            p1, p2, p3, p4 = st.columns(4)
+            p1.metric("Standard lane", promotion_summary.get("standard_lane_count", 0))
+            p2.metric(
+                "Hard-mapping lane", promotion_summary.get("hard_mapping_lane_count", 0)
+            )
+            p3.metric(
+                "Eligible for promotion",
+                promotion_summary.get("eligible_for_promotion_count", 0),
+            )
+            p4.metric(
+                "Hard-mapping reviews recorded",
+                promotion_summary.get("hard_mapping_reviewed_count", 0),
+            )
 
         with st.container(border=True):
             render_section_header(
@@ -205,6 +295,9 @@ def render_mapping_candidates_workflow() -> None:
                         "Score": c.get("score", 0.0),
                         "Confidence": c.get("confidence_level", ""),
                         "Review status": c.get("review_status", ""),
+                        "Lane": c.get("review_lane", "standard"),
+                        "Status": c.get("status", ""),
+                        "Eligible for promotion": c.get("promotion_eligible", False),
                         "Top reason": (c.get("reasons") or [""])[0],
                         "SDR linked": "; ".join(str(s) for s in (c.get("linked_sdr_ids") or [])),
                     }
@@ -225,6 +318,34 @@ def render_mapping_candidates_workflow() -> None:
                     )
                     with st.expander("Candidate detail", expanded=False):
                         selected_cand = candidates_result[selected_idx]
+                        status = selected_cand.get("status", "")
+                        st.markdown("**Status / Review lane / Promotion eligibility**")
+                        badge_col1, badge_col2, badge_col3 = st.columns(3)
+                        with badge_col1:
+                            render_status_badge(
+                                status or "unknown",
+                                _STATUS_BADGE_TONES.get(status, "archived"),
+                            )
+                        with badge_col2:
+                            lane = selected_cand.get("review_lane", "standard")
+                            render_status_badge(
+                                "Hard-mapping lane" if lane == "hard_mapping"
+                                else "Standard lane",
+                                "review" if lane == "hard_mapping" else "current",
+                            )
+                        with badge_col3:
+                            eligible = selected_cand.get("promotion_eligible", False)
+                            render_status_badge(
+                                "Eligible for promotion" if eligible
+                                else "Not yet eligible",
+                                "accepted" if eligible else "blocked",
+                            )
+                        st.caption(selected_cand.get("review_notes", ""))
+                        if selected_cand.get("hard_mapping"):
+                            st.markdown("**Hard-mapping reasons**")
+                            for reason in selected_cand.get("hard_mapping_reasons") or []:
+                                st.write(f"- {reason}")
+
                         col_a, col_b = st.columns(2)
                         with col_a:
                             st.markdown("**WebVoc property**")

@@ -27,15 +27,6 @@ semantic authority: generated/recommended output must not contain dppk terms
 prioritises the mapping foundation and UX/test hardening before the
 Crosswalk.
 
-### v0.16.0 — Track B: Full-scope mapping scoring & promotion lanes
-
-Score all WebVoc properties against the full GDSN attribute reference with
-two review lanes: a standard lane (score → review → accepted) and a
-hard-mapping lane (score → dedicated extra review → eligible for accepted).
-`hard_mapping` is a flag with reasons, never a status. Review-only; no
-mapping YAML is written automatically; promotions export as a reviewable
-artifact.
-
 ### v0.17.0 — Visual smoke tests
 
 A browser-based smoke (e.g. Playwright) that boots the app, asserts each
@@ -96,6 +87,14 @@ separately scoped versions.
 
 ## Released
 
+- **v0.16.0 — Full-scope mapping scoring & promotion lanes (Track B).**
+  Every candidate carries a deterministic `hard_mapping` flag and
+  `review_lane`; both lanes reach the same `accepted` terminal status via
+  `mapping_promotion.py` (standard: score → review → accepted; hard-mapping:
+  score → dedicated extra review sign-off → accepted). `--full-scope` scores
+  all 553 WebVoc properties against the full ~6,067-attribute GDSN
+  reference (~7 min; local/offline, not in CI). Review-only throughout; no
+  mapping YAML/registry/catalog is written automatically.
 - **v0.15.0 — Mapping profile consolidation (Track A).** One authoritative
   artifact, `mapping/mapping_registry.yaml`, merges the executable mapping
   profile with the governance review catalog; old profiles archived (kept on

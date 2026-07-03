@@ -104,6 +104,75 @@ _RANGE_DATATYPE_INCOMPAT: dict[str, set[str]] = {
     "rdf:langstring": {"boolean", "integer", "decimal"},
 }
 
+# Hard-mapping detection (v0.16.0 Track B): GDSN classes that represent an
+# external entity identity — party/organization, country, or a cross-item
+# product reference — rather than a value object fully contained within the
+# current product message (Address, Contact, DateOptionalTime, and similar
+# embedded sub-structures are not hard mappings by this rule; nesting alone
+# does not make a mapping "hard"). Deterministic, from the reference-data
+# `class_associated_to` column, matched only when `named_association` is Yes.
+_HARD_MAPPING_TARGET_CLASSES: dict[str, str] = {
+    "Country": "Country reference (lookup outside the current product message).",
+    "PartyIdentification": "Organization/party reference (GLN lookup outside the current product message).",
+    "PartyInRole": "Organization/party-role reference (GLN lookup outside the current product message).",
+    "EntityIdentification": "Entity identifier reference outside the current product message.",
+    "TradeItemIdentification": "Cross-item trade item (GTIN) reference outside the current product message.",
+    "CatalogueItemReference": "Catalogue item cross-reference outside the current product message.",
+}
+
+# Attribute-name patterns for GLN/cross-item-GTIN references that are not
+# captured by class_associated_to (e.g. message-header identifiers). The bare
+# top-level "gtin" attribute is excluded: it identifies the product itself,
+# not a reference to another entity.
+_GLN_NAME_PATTERN = re.compile(r"gln", re.IGNORECASE)
+_CROSS_ITEM_GTIN_NAME_PATTERN = re.compile(
+    r"(childTradeItem|NonGTINReferencedItem|numberOfPackagesForSetPiecesGTIN|"
+    r"tradeItemIdentificationOf\w*Level)",
+    re.IGNORECASE,
+)
+
+
+def detect_hard_mapping(gdsn_attribute: dict) -> tuple[bool, list[str]]:
+    """Deterministically flag a GDSN attribute as a hard mapping.
+
+    Hard mappings touch cross-references or identifiers that reach outside a
+    single product XML message (organization/party, country, or product
+    cross-references) rather than data fully contained in the message. This
+    is a flag with reasons, never a status: hard-mapping candidates route to
+    a dedicated extra review lane in :mod:`mapping_promotion` and remain
+    eligible for the same ``accepted`` terminal status as any other
+    candidate once that review passes.
+
+    Returns
+    -------
+    tuple[bool, list[str]]
+        (is_hard_mapping, human-readable reasons).
+    """
+    reasons: list[str] = []
+
+    named_association = str(gdsn_attribute.get("named_association") or "").strip().lower()
+    class_associated_to = str(gdsn_attribute.get("class_associated_to") or "").strip()
+    if named_association == "yes" and class_associated_to in _HARD_MAPPING_TARGET_CLASSES:
+        reasons.append(
+            f"cross_class_reference_to_{class_associated_to}: "
+            f"{_HARD_MAPPING_TARGET_CLASSES[class_associated_to]}"
+        )
+
+    attr_name = str(gdsn_attribute.get("attribute_name") or "").strip()
+    if attr_name.lower() != "gtin" and _GLN_NAME_PATTERN.search(attr_name):
+        reasons.append(
+            "gln_identifier_reference: attribute name references a GLN "
+            "(organization identifier outside the current product message)."
+        )
+    if _CROSS_ITEM_GTIN_NAME_PATTERN.search(attr_name):
+        reasons.append(
+            "cross_item_gtin_reference: attribute name references another "
+            "trade item's GTIN outside the current product message."
+        )
+
+    return bool(reasons), reasons
+
+
 # Words to exclude from token matching (stopwords).
 _STOPWORDS = frozenset({
     "a", "an", "the", "of", "in", "for", "to", "and", "or", "is", "are",
@@ -654,6 +723,9 @@ def _build_candidate_dict(
 
     source_message = str(gdsn_attribute.get("message") or "").strip()
 
+    is_hard_mapping, hard_mapping_reasons = detect_hard_mapping(gdsn_attribute)
+    review_lane = "hard_mapping" if is_hard_mapping else "standard"
+
     return {
         "candidate_id": _make_candidate_id(prop_id, bms_id),
         "webvoc_property_id": prop_id,
@@ -689,6 +761,9 @@ def _build_candidate_dict(
         "reasons": reasons,
         "warnings": warnings,
         "blocking_notes": blocking_notes,
+        "hard_mapping": is_hard_mapping,
+        "hard_mapping_reasons": hard_mapping_reasons,
+        "review_lane": review_lane,
         "created_by_version": CREATED_BY_VERSION,
     }
 
@@ -892,6 +967,7 @@ def candidate_to_dict(candidate: dict) -> dict:
     flat["warnings"] = "; ".join(candidate.get("warnings") or [])
     flat["blocking_notes"] = "; ".join(candidate.get("blocking_notes") or [])
     flat["linked_sdr_ids"] = "; ".join(str(s) for s in (candidate.get("linked_sdr_ids") or []))
+    flat["hard_mapping_reasons"] = "; ".join(candidate.get("hard_mapping_reasons") or [])
     return flat
 
 

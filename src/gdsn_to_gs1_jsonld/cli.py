@@ -47,6 +47,11 @@ from .mapping_candidate_generator import (
     generate_candidate_summary,
     write_candidate_reports,
 )
+from .mapping_promotion import (
+    build_promotion_artifact,
+    load_reviewed_hard_mappings,
+    write_promotion_artifact,
+)
 from .product_passport_sources import (
     build_product_passport_source_inventory,
     load_json_schema,
@@ -734,16 +739,48 @@ def generate_mapping_candidates_command(
         "--format",
         help="Output formats: comma-separated combination of json, csv, xlsx.",
     ),
+    full_scope: bool = typer.Option(
+        False,
+        "--full-scope",
+        help=(
+            "Score every WebVoc property against the full GDSN attribute "
+            "reference (553 properties x ~6,067 attributes). Takes several "
+            "minutes; intended for local/offline runs, not CI. Cannot be "
+            "combined with --property."
+        ),
+    ),
+    reviewed_hard_mappings: Optional[Path] = typer.Option(
+        None,
+        "--reviewed-hard-mappings",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        help=(
+            "Optional JSON file of candidate_ids that already passed "
+            "dedicated hard-mapping review (see docs/mapping-candidate-"
+            "generator.md). Without it, no hard-mapping candidate is "
+            "eligible for promotion."
+        ),
+    ),
 ) -> None:
     """Propose GDSN/BMS/XPath source fields for GS1 Web Vocabulary properties.
 
-    Candidates are review support only. They do not update mapping YAML or
-    converter behavior.  No mappings are automatically accepted or written.
+    Candidates are review support only. They do not update mapping YAML,
+    the mapping registry, or converter behavior. No mappings are
+    automatically accepted or written. Every candidate is also routed
+    through a promotion review lane (standard or hard-mapping); hard-mapping
+    candidates require a dedicated extra review before they are eligible for
+    the same accepted status as any other candidate — never a permanent
+    block, never written automatically.
     """
     typer.echo(
         "Mapping Candidate Generator: candidates are review support only. "
         "No mappings are automatically accepted or written."
     )
+    if full_scope and property_filter:
+        typer.echo("--full-scope cannot be combined with --property.", err=True)
+        raise typer.Exit(code=1)
     try:
         backlog_path = str(standards_backlog) if standards_backlog else None
         inputs = build_candidate_inputs(
@@ -760,6 +797,12 @@ def generate_mapping_candidates_command(
                 limit=limit_per_property,
             )
         else:
+            if full_scope:
+                typer.echo(
+                    "Full-scope run: scoring all WebVoc properties against "
+                    "the full GDSN attribute reference. This can take "
+                    "several minutes."
+                )
             candidates = generate_all_candidates(
                 inputs,
                 limit_per_property=limit_per_property,
@@ -775,6 +818,14 @@ def generate_mapping_candidates_command(
 
         formats = [f.strip().lower() for f in output_format.split(",") if f.strip()]
         paths = write_candidate_reports(candidates, str(output_dir), formats=formats)
+
+        reviewed_ids = load_reviewed_hard_mappings(
+            str(reviewed_hard_mappings) if reviewed_hard_mappings else None
+        )
+        promotion_artifact = build_promotion_artifact(candidates, reviewed_ids)
+        promotion_paths = write_promotion_artifact(
+            promotion_artifact, str(Path(output_dir) / "promotion")
+        )
     except (FileNotFoundError, OSError, ValueError) as exc:
         typer.echo(f"Mapping candidate generation failed: {exc}", err=True)
         raise typer.Exit(code=1) from exc
@@ -798,7 +849,17 @@ def generate_mapping_candidates_command(
         f"review_required={by_status.get('review_required', 0)}, "
         f"not_recommended={by_status.get('not_recommended', 0)}"
     )
+    promo_summary = promotion_artifact["summary"]
+    typer.echo(
+        f"Promotion lanes: standard={promo_summary['standard_lane_count']}, "
+        f"hard_mapping={promo_summary['hard_mapping_lane_count']}, "
+        f"eligible_for_promotion={promo_summary['eligible_for_promotion_count']} "
+        f"(hard-mapping reviews recorded: "
+        f"{promo_summary['hard_mapping_reviewed_count']})"
+    )
     for path in paths.values():
+        typer.echo(f"  - {path}")
+    for path in promotion_paths.values():
         typer.echo(f"  - {path}")
 
 
