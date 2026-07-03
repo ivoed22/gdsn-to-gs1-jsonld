@@ -3,6 +3,15 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.15.0 consolidates the mapping foundation: one authoritative
+artifact, `mapping/mapping_registry.yaml`, merges the executable mapping
+profile with the governance review catalog (per-field governance blocks +
+a full catalog review list). The three older profiles are archived — kept on
+disk, selectable only for reference/comparison behind a warning. Converter
+output is unchanged and test-proven byte-identical. New policy test suites
+enforce that no compliance claims and no DPP Keystone (dppk) terms ever
+appear in generated or recommended output.
+
 Version 0.14.0 splits `app/streamlit_app.py` (2,500 lines) into
 `app/workflow_shared.py` plus one `app/workflows/*.py` module per workflow
 behind a thin router. Strictly no user-facing behavior change: converter,

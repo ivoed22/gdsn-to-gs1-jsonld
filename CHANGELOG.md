@@ -9,6 +9,50 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.15.0 — Mapping Profile Consolidation
+
+Converter behavior is unchanged and test-proven: converting the example
+corpus with the new registry produces byte-identical JSON-LD, mapping
+reports, validation reports, and unmapped-field reports compared to
+`mapping_v0_3.yaml`. Mapping catalog CSV, Web Vocabulary snapshots, and all
+existing mapping YAML files are untouched.
+
+- **One consolidated mapping artifact.** `mapping/mapping_registry.yaml`
+  merges the executable mapping profile (structurally identical to
+  `mapping_v0_3.yaml`) with the governance review catalog. Fields carry
+  `governance` blocks (status, original catalog status, confidence, review
+  flags) that the converter ignores; the full 29-row review catalog is
+  preserved under a top-level `catalog` list. Statuses use a fixed vocabulary
+  (proposed / review_required / accepted / rejected / deprecated / blocked);
+  original catalog statuses are preserved verbatim as `catalog_status`.
+  Generated deterministically by `scripts/build_mapping_registry.py`.
+- **Old profiles archived, not deleted.** The sidebar now shows a calm
+  "Active mapping profile" panel with a `Current` status badge; the registry
+  is the default. `mapping_v0_3.yaml`, `mapping_v0_2.yaml`, and
+  `mapping_mvp.yaml` remain on disk and selectable for reference/comparison
+  only, inside an "Archived mapping profiles" expander; selecting one shows a
+  visible warning and an `Archived` badge.
+- **New registry loader.** `src/gdsn_to_gs1_jsonld/mapping_registry.py`
+  exposes the governance view (per-field governance, catalog rows, summary
+  counts) for review tooling; the converter keeps using the unchanged
+  `mapping_loader`.
+- **Design tokens & status badges.** `app/ui.py` gains a reusable status
+  badge (current/accepted/review/blocked/archived) built on the existing
+  semantic color tokens; badges always carry a text label (never color-only).
+- **New policy test suites.** `tests/test_no_claims.py` asserts claim-shaped
+  phrases (official GS1 validation, EU DPP compliance, production readiness)
+  appear only in negated form across compliance-sensitive routes.
+  `tests/test_no_dppk.py` asserts DPP Keystone terms/namespaces never appear
+  in generated or recommended output (mapping, app, src, examples, builder
+  manifest, product passport). `tests/test_mapping_registry.py` proves
+  registry/converter equivalence and enforces the status vocabulary,
+  including that no `hard_mapping_candidate` status exists.
+- CI: the mapping-candidates smoke now uses the registry; a new
+  `check-mapping` smoke guards registry/catalog consistency.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims. No official GS1 validation or production compliance is claimed.
+
 ## v0.14.0 — App Modularization
 
 Strictly no user-facing behavior change: the converter, batch behavior,

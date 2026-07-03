@@ -5,6 +5,7 @@ import streamlit as st
 from app.ui import (
     APP_VERSION,
     apply_page_styles,
+    render_mapping_profile_status,
     render_page_header,
     render_route_card,
     render_standards_backlog_status,
@@ -54,13 +55,25 @@ def main() -> None:
     }:
         st.session_state["selected_route"] = DEFAULT_ROUTE
 
-    mapping_profiles = {
-        "Certifications & Documents v0.3.0": (
+    # Mapping profile consolidation (v0.15.0): the consolidated registry is
+    # the single current mapping artifact. Old profiles are archived — kept on
+    # disk and selectable for reference/comparison only, behind an expander
+    # with an explicit warning. Registry fields are structurally identical to
+    # mapping_v0_3.yaml, so converter behavior is unchanged (test-proven).
+    current_profile_label = "Consolidated mapping registry (current)"
+    current_mapping_path = REPOSITORY_ROOT / "mapping" / "mapping_registry.yaml"
+    archived_profiles = {
+        "Certifications & Documents v0.3.0 (archived)": (
             REPOSITORY_ROOT / "mapping" / "mapping_v0_3.yaml"
         ),
-        "Food v0.2.0 mapping": REPOSITORY_ROOT / "mapping" / "mapping_v0_2.yaml",
-        "MVP v0.1.0 mapping": REPOSITORY_ROOT / "mapping" / "mapping_mvp.yaml",
+        "Food v0.2.0 mapping (archived)": (
+            REPOSITORY_ROOT / "mapping" / "mapping_v0_2.yaml"
+        ),
+        "MVP v0.1.0 mapping (archived)": (
+            REPOSITORY_ROOT / "mapping" / "mapping_mvp.yaml"
+        ),
     }
+    no_archived_option = "None — use current registry"
 
     with st.sidebar:
         st.markdown(
@@ -85,23 +98,51 @@ def main() -> None:
             unsafe_allow_html=True,
         )
 
+        # The archived-profile widget state is read before the expander
+        # renders; callbacks update session state before the rerun, so this
+        # reflects the latest selection.
+        archived_choice = st.session_state.get(
+            "archived_profile_choice", no_archived_option
+        )
+        archived_active = archived_choice in archived_profiles
+        if archived_active:
+            selected_profile = archived_choice
+            mapping_path = archived_profiles[archived_choice]
+            profile_badge = ("Archived", "archived")
+        else:
+            selected_profile = current_profile_label
+            mapping_path = current_mapping_path
+            profile_badge = ("Current", "current")
+
         with st.container(border=True):
             st.markdown(
                 '<p class="sidebar-label">Current context</p>',
                 unsafe_allow_html=True,
             )
-            selected_profile = st.selectbox(
-                "Mapping profile",
-                list(mapping_profiles),
-                on_change=clear_all_results,
-                help=(
-                    "Active mapping profile. It also applies inside Convert "
-                    "GDSN XML. Changing it clears current conversion results."
-                ),
-            )
-            mapping_path = mapping_profiles[selected_profile]
+            render_mapping_profile_status(selected_profile, *profile_badge)
+            if archived_active:
+                st.warning(
+                    "Archived profile — for reference/comparison only. The "
+                    "consolidated registry is the current mapping artifact."
+                )
             st.markdown("**Active mapping file**")
             st.code(mapping_path.relative_to(REPOSITORY_ROOT).as_posix())
+
+        with st.expander("Archived mapping profiles", expanded=False):
+            st.selectbox(
+                "Archived profile",
+                [no_archived_option, *archived_profiles],
+                key="archived_profile_choice",
+                on_change=clear_all_results,
+                help=(
+                    "Archived profiles are retained for reference and "
+                    "comparison only. Selecting one switches conversion to "
+                    "that profile and clears current results."
+                ),
+            )
+            st.caption(
+                "Archived: superseded by the consolidated mapping registry."
+            )
 
         with st.expander("Profile coverage & supported groups", expanded=False):
             st.markdown(

@@ -1,5 +1,30 @@
 # UI Changes
 
+## v0.15.0 Mapping profile consolidation checklist
+
+- [x] Sidebar shows a calm "Active mapping profile" panel with the profile
+      name and a status badge; the consolidated registry is the default with
+      a `Current` badge (blue/neutral — green stays reserved for
+      pass/accepted states).
+- [x] Old profiles (v0.3.0, v0.2.0, MVP) moved out of the primary flow into
+      an "Archived mapping profiles" expander, labeled `(archived)` and
+      muted; files kept on disk.
+- [x] Selecting an archived profile shows a visible `st.warning` ("Archived
+      profile — for reference/comparison only…"), switches the badge to
+      `Archived` (grey), and clears current conversion results — same
+      clearing behavior as the old profile selector.
+- [x] New reusable status-badge component in `app/ui.py`
+      (current/accepted/review/blocked/archived) built on the existing
+      semantic color tokens; every badge carries a text label, never
+      color-only.
+- [x] Users no longer need to understand old profile history to start
+      converting: the registry is active by default with no action needed.
+- [x] No governance warnings removed; no compliance claims added; converter
+      output unchanged (test-proven byte-identical).
+
+**Accessibility:** badges pair color with uppercase text labels; the archived
+warning is a standard Streamlit warning block (icon + text), not color-only.
+
 ## v0.13.3 Guided route navigation checklist
 
 - [x] Landing page starts with three primary route cards: Create GS1 JSON-LD,

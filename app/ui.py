@@ -2,7 +2,7 @@ from html import escape
 
 import streamlit as st
 
-APP_VERSION = "v0.14.0"
+APP_VERSION = "v0.15.0"
 
 
 def apply_page_styles() -> None:
@@ -826,6 +826,72 @@ def apply_page_styles() -> None:
             padding: 0.42rem 0.58rem;
         }
 
+        .status-badge {
+            border: 1px solid var(--border-default);
+            border-radius: 999px;
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            line-height: 1;
+            padding: 0.32rem 0.55rem;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+
+        .status-badge-current {
+            background: var(--surface-accent);
+            border-color: #bcd7ef;
+            color: var(--accent-strong);
+        }
+
+        .status-badge-accepted {
+            background: #f0faf4;
+            border-color: #bfe3cd;
+            color: var(--state-success);
+        }
+
+        .status-badge-review {
+            background: #fff8ec;
+            border-color: #ead9b8;
+            color: var(--state-warning);
+        }
+
+        .status-badge-blocked {
+            background: #fdf1f0;
+            border-color: #ecc2bd;
+            color: var(--state-error);
+        }
+
+        .status-badge-archived {
+            background: var(--surface-muted);
+            border-color: var(--border-default);
+            color: var(--text-secondary);
+        }
+
+        .mapping-profile-status {
+            background: #f8fbfe;
+            border: 1px solid #d8e7f2;
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            line-height: 1.5;
+            padding: 0.75rem 0.85rem;
+        }
+
+        .mapping-profile-status strong {
+            color: var(--text-primary);
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .mapping-profile-status .profile-name {
+            color: var(--text-primary);
+            display: inline-block;
+            margin-right: 0.45rem;
+        }
+
         .vocabulary-status {
             background: #f8fbfe;
             border: 1px solid #d8e7f2;
@@ -1380,6 +1446,44 @@ def render_empty_upload_state() -> None:
             <strong>Ready for one product message</strong>
             <span>Accepted format: .xml. Processing starts after Convert.</span>
           </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+STATUS_BADGE_TONES = ("current", "accepted", "review", "blocked", "archived")
+
+
+def status_badge_html(label: str, tone: str) -> str:
+    """Return status-badge HTML with a text label (never color-only).
+
+    Tones: current (blue), accepted (green), review (amber), blocked (red),
+    archived (grey). Unknown tones fall back to archived/grey.
+    """
+    safe_tone = tone if tone in STATUS_BADGE_TONES else "archived"
+    return (
+        f'<span class="status-badge status-badge-{safe_tone}">'
+        f"{escape(label)}</span>"
+    )
+
+
+def render_status_badge(label: str, tone: str) -> None:
+    st.markdown(status_badge_html(label, tone), unsafe_allow_html=True)
+
+
+def render_mapping_profile_status(
+    profile_label: str,
+    badge_label: str,
+    tone: str,
+) -> None:
+    """Sidebar panel showing the active mapping profile and its status."""
+    st.markdown(
+        f"""
+        <div class="mapping-profile-status">
+          <strong>Active mapping profile</strong>
+          <span class="profile-name">{escape(profile_label)}</span>
+          {status_badge_html(badge_label, tone)}
         </div>
         """,
         unsafe_allow_html=True,

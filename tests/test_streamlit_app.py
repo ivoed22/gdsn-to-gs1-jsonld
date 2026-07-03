@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.14.0"
+    assert ui.APP_VERSION == "v0.15.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -116,17 +116,41 @@ def test_streamlit_clear_results_removes_persisted_result(example_xml_path):
     assert len(app.get("download_button")) == 0
 
 
-def test_streamlit_mapping_selector_defaults_to_v0_3():
+def _archived_profile_selectbox(app: AppTest):
+    for selector in app.selectbox:
+        if getattr(selector, "key", None) == "archived_profile_choice":
+            return selector
+    raise AssertionError("archived_profile_choice selectbox not found")
+
+
+def test_streamlit_mapping_registry_is_default_profile():
+    """The consolidated registry is the current/default mapping artifact;
+    old profiles are archived behind an expander (reference only)."""
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
-    selector = app.selectbox[0]
+
+    selector = _archived_profile_selectbox(app)
     assert selector.options == [
-        "Certifications & Documents v0.3.0",
-        "Food v0.2.0 mapping",
-        "MVP v0.1.0 mapping",
+        "None — use current registry",
+        "Certifications & Documents v0.3.0 (archived)",
+        "Food v0.2.0 mapping (archived)",
+        "MVP v0.1.0 mapping (archived)",
     ]
-    assert selector.value == "Certifications & Documents v0.3.0"
+    assert selector.value == "None — use current registry"
+
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    assert "Active mapping profile" in rendered
+    assert "Consolidated mapping registry (current)" in rendered
+    assert "status-badge-current" in rendered
     assert any(
-        "App version: v0.14.0" in markdown.value
+        "mapping/mapping_registry.yaml" in code.value for code in app.code
+    )
+    # No archived-profile warning while the registry is active.
+    assert not any(
+        "Archived profile" in warning.value for warning in app.warning
+    )
+
+    assert any(
+        "App version: v0.15.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -139,7 +163,6 @@ def test_streamlit_mapping_selector_defaults_to_v0_3():
         and "not runtime converter failures" in markdown.value
         for markdown in app.markdown
     )
-    assert any("mapping/mapping_v0_3.yaml" in code.value for code in app.code)
 
 
 # ---------------------------------------------------------------------------
@@ -354,7 +377,11 @@ def test_streamlit_bulk_zip_conversion_produces_batch_result(sample_dir):
     )
 
 
-def test_streamlit_profile_change_clears_results(example_xml_path):
+def test_streamlit_archived_profile_selection_warns_and_clears_results(
+    example_xml_path,
+):
+    """Selecting an archived profile clears results, shows a visible warning,
+    and switches the active mapping file (reference/comparison only)."""
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     app.get("file_uploader")[0].set_value(
         ("example_product.xml", example_xml_path.read_bytes(), "application/xml")
@@ -363,9 +390,21 @@ def test_streamlit_profile_change_clears_results(example_xml_path):
     app.button[_button_index(app, "Convert product to JSON-LD")].click().run(timeout=20)
     assert "conversion_result" in app.session_state
 
-    app.selectbox[0].select("Food v0.2.0 mapping").run(timeout=20)
+    _archived_profile_selectbox(app).select(
+        "Food v0.2.0 mapping (archived)"
+    ).run(timeout=20)
 
     assert "conversion_result" not in app.session_state
+    assert any(
+        "Archived profile" in warning.value
+        and "reference/comparison only" in warning.value
+        for warning in app.warning
+    )
+    assert any(
+        "mapping/mapping_v0_2.yaml" in code.value for code in app.code
+    )
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    assert "status-badge-archived" in rendered
 
 
 def test_generate_mapping_candidates_card_visible_in_route():
@@ -495,6 +534,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.14.0" in rendered
+    assert "app version: v0.15.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

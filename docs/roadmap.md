@@ -6,37 +6,70 @@ production compliance, and it is not full GDSN coverage.
 
 ## Release process
 
-The project releases on a **tag-per-meaningful-change** cadence: each notable
-change is cut as its own CI-gated annotated tag plus GitHub Release, rather than
-bundled into periodic drops, so "what is released" is always unambiguous.
+Each version lands as one CI-gated commit on main with its own CHANGELOG
+heading and `docs/releases/vX.Y.Z.md`, so "what is released" stays
+unambiguous.
 
 - Work in progress accumulates under `## Unreleased` in `CHANGELOG.md`.
-- A release renames that section to its `vX.Y.Z` heading, adds
+- A version commit renames that section to its `vX.Y.Z` heading, adds
   `docs/releases/vX.Y.Z.md`, and bumps the version in `pyproject.toml`, the
   `app/ui.py` `APP_VERSION`, and the README. `tests/test_version_consistency.py`
   enforces these stay in sync.
-- Tag and Release are created only after CI is green on the release commit.
+- Annotated tags and GitHub Releases are created only when explicitly
+  requested, and only after CI is green on the version commit.
 
-## Planned (foundation-first)
+## Planned (GS1-first DPP workbench, foundation-first)
 
-The near-term sequence prioritises product-readiness foundations before the next
-big feature. The Crosswalk remains planned but moves behind this work.
+The direction is a GS1-first Digital Product Passport and JSON-LD standards
+workbench. DPP Keystone is tooling-pattern inspiration only and is never a
+semantic authority: generated/recommended output must not contain dppk terms
+(no-dppk policy, test-enforced since v0.15.0). The near-term sequence
+prioritises the mapping foundation and UX/test hardening before the
+Crosswalk.
 
-### v0.15.0 — Visual smoke tests
+### v0.16.0 — Track B: Full-scope mapping scoring & promotion lanes
 
-A browser-based smoke (e.g. Playwright/preview) that boots the app, asserts each
-route/workflow renders, and captures screenshots to catch CSS/layout regressions
-that the AppTest harness cannot see.
+Score all WebVoc properties against the full GDSN attribute reference with
+two review lanes: a standard lane (score → review → accepted) and a
+hard-mapping lane (score → dedicated extra review → eligible for accepted).
+`hard_mapping` is a flag with reasons, never a status. Review-only; no
+mapping YAML is written automatically; promotions export as a reviewable
+artifact.
 
-### v0.16.0 — Manual Builder UX at scale
+### v0.17.0 — Visual smoke tests
 
-With the Builder now at 183 fields, add a coverage indicator ("X of 553
-authorable"), group search/filter, and a per-field "sourced from snapshot" note.
+A browser-based smoke (e.g. Playwright) that boots the app, asserts each
+route/workflow renders, checks active-state readability and layout, and
+captures screenshots to catch CSS/layout regressions that the AppTest
+harness cannot see.
 
-### v0.17.0 — GS1 ↔ Product Passport Crosswalk (deferred behind foundation)
+### v0.18.0 — Manual Builder UX at scale
 
-Map GS1 Web Vocabulary properties to Product Passport fields as review-only
-crosswalk evidence. No automatic acceptance.
+With the Builder now at 183 fields, add section navigation, search/filter,
+per-field status chips and evidence, a coverage indicator ("X of 553
+authorable"), and a clear export area.
+
+### Later — Track C: Builder manifest expansion analysis
+
+Read-only analysis of which fields are mature enough to add to the builder
+manifest, fed by Track B accepted mappings and hard-mapping review results.
+No automatic manifest expansion.
+
+### Later — Track D: Codelist import & enforcement
+
+Import actual GDSN codelist value enumerations (source/licensing decision
+first) into a versioned, committed registry, then validate codelist-backed
+fields (valid/unknown/deprecated/missing) as configurable warnings or
+blocks. Scheduled after Track B grows the codelist-backed accepted set.
+
+### v0.19.0+ — GS1-first DPP Crosswalk (deferred behind foundation)
+
+Map DPP fields to GS1-first semantics (GS1 Web Vocabulary → GS1 Digital
+Link → CIRPASS/DPP core → sector vocabularies → schema.org fallback → local
+extension) as review-only crosswalk evidence with explicit source priority.
+No automatic acceptance. Broader DPP toolkit modules (JSON-LD Reviewer, DPP
+Wizard, CSV DPP Adapter, Coverage Dashboard) phase in afterwards as
+separately scoped versions.
 
 ### Later (still v0.x)
 
@@ -63,6 +96,12 @@ crosswalk evidence. No automatic acceptance.
 
 ## Released
 
+- **v0.15.0 — Mapping profile consolidation (Track A).** One authoritative
+  artifact, `mapping/mapping_registry.yaml`, merges the executable mapping
+  profile with the governance review catalog; old profiles archived (kept on
+  disk, reference/comparison only, behind a warning). Converter output
+  unchanged, test-proven byte-identical. Adds no-claim and no-dppk policy
+  test suites and the reusable status-badge design tokens.
 - **v0.14.0 — App modularization.** Splits the large `app/streamlit_app.py`
   into `app/workflow_shared.py` and `app/workflows/*.py` behind a thin
   router. Strictly no behavior change; all 197 tests, including navigation
