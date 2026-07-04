@@ -3,6 +3,14 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.28.0 lets Generate Mapping Candidates load a previously
+generated candidate report (from this workflow's own download, or the
+CLI's `--full-scope` sweep) instead of re-running the ~7-minute scan.
+Course-corrected after investigation found `--full-scope` isn't actually
+a separate, more-expensive code path from the UI's existing "All
+properties" option — both call the same function. See
+`docs/releases/v0.28.0.md`.
+
 Version 0.27.0 adds a "Workbench status" panel to the landing page — the
 first of three "bigger scope" versions in this batch: six at-a-glance
 metrics (WebVoc coverage, registry accepted count, open SDRs, codelists

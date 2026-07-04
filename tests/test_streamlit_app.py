@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.27.0"
+    assert ui.APP_VERSION == "v0.28.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -211,7 +211,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.27.0" in markdown.value
+        "App version: v0.28.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -804,6 +804,75 @@ def test_view_in_explorer_deep_link_from_candidate_detail():
     assert "gs1:gtin" in [code.value for code in app.code]
 
 
+def test_load_previously_generated_candidate_report():
+    """v0.28.0: uploading a previously generated candidate report (e.g.
+    from the CLI's --full-scope sweep) renders through the exact same
+    metrics/table UI as a live "Generate Candidates" run, without
+    re-running the expensive scoring."""
+    import json as json_module
+
+    fake_report = [
+        {
+            "candidate_id": "cand_a",
+            "webvoc_property_id": "gs1:gtin",
+            "gdsn_attribute_name": "gtin",
+            "gdsn_bms_id": "1",
+            "score": 0.9,
+            "confidence_level": "high",
+            "review_status": "already_mapped",
+            "review_lane": "standard",
+            "hard_mapping": False,
+            "hard_mapping_reasons": [],
+            "reasons": [],
+            "warnings": [],
+            "blocking_notes": [],
+            "linked_sdr_ids": [],
+        },
+        {
+            "candidate_id": "cand_b",
+            "webvoc_property_id": "gs1:brandOwner",
+            "gdsn_attribute_name": "brandOwnerGln",
+            "gdsn_bms_id": "2",
+            "score": 0.5,
+            "confidence_level": "medium",
+            "review_status": "proposed",
+            "review_lane": "hard_mapping",
+            "hard_mapping": True,
+            "hard_mapping_reasons": ["cross-reference"],
+            "reasons": [],
+            "warnings": [],
+            "blocking_notes": [],
+            "linked_sdr_ids": [],
+        },
+    ]
+    report_bytes = json_module.dumps(fake_report).encode("utf-8")
+
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_route(app, "vocabulary_mapping")
+    _open_workflow(app, "candidates")
+
+    report_uploader = next(
+        u
+        for u in app.get("file_uploader")
+        if "previously generated candidate report" in u.label
+    )
+    report_uploader.set_value(
+        ("mapping_candidates.json", report_bytes, "application/json")
+    ).run(timeout=20)
+    load_button = next(b for b in app.button if b.label == "Load report")
+    load_button.click().run(timeout=20)
+
+    assert not app.exception
+    assert any(
+        "Loaded 2 candidate(s)" in success.value for success in app.success
+    )
+    metric_labels = {m.label: m.value for m in app.metric}
+    assert metric_labels["Total candidates"] == "2"
+    assert metric_labels["Standard lane"] == "1"
+    assert metric_labels["Hard-mapping lane"] == "1"
+    assert metric_labels["Eligible for promotion"] == "1"
+
+
 def test_validate_product_passport_sources_card_visible_in_route():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     _open_route(app, "product_passport_bridge")
@@ -906,6 +975,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.27.0" in rendered
+    assert "app version: v0.28.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

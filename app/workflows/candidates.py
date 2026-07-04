@@ -172,6 +172,62 @@ def _render_hard_mapping_signoff_authoring(
         )
 
 
+def _store_candidate_results(
+    candidates: list[dict], reviewed_hard_mapping_ids: set[str]
+) -> None:
+    """Annotate candidates with promotion fields and persist for rendering.
+
+    Shared by both the live "Generate Candidates" path and the v0.28.0
+    "Load a previously generated report" path, so both end up rendered by
+    the exact same downstream UI (metrics, table, detail, sign-off
+    authoring, downloads) with no duplicated logic.
+    """
+    promotion_artifact = build_promotion_artifact(candidates, reviewed_hard_mapping_ids)
+    candidates = promotion_artifact["all_candidates"]
+    st.session_state["candidate_results"] = candidates
+    st.session_state["promotion_summary"] = promotion_artifact["summary"]
+    st.session_state["candidate_json_bytes"] = candidate_report_bytes_json(candidates)
+    st.session_state["candidate_csv_bytes"] = candidate_report_bytes_csv(candidates)
+    xlsx_bytes = candidate_report_bytes_xlsx(candidates)
+    if xlsx_bytes:
+        st.session_state["candidate_xlsx_bytes"] = xlsx_bytes
+
+
+def parse_uploaded_candidate_report(raw_bytes: bytes) -> list[dict]:
+    """Parse and validate an uploaded candidate report JSON (v0.28.0).
+
+    Accepts the same shape ``candidate_report_bytes_json`` produces: a flat
+    JSON array of candidate dicts. This is how a reviewer loads a report
+    from a previous session, or from the CLI's ``--full-scope`` sweep (all
+    553 WebVoc properties x ~6,067 GDSN attributes, ~7 minutes offline --
+    too slow to re-run inside a single Streamlit interaction), instead of
+    regenerating it live.
+
+    Raises ``ValueError`` with a human-readable message on anything that
+    isn't a JSON array of candidate-shaped objects (each must at least have
+    ``candidate_id`` and ``webvoc_property_id``). Returns only the valid
+    entries; the caller is responsible for warning about any skipped ones.
+    """
+    try:
+        raw = json.loads(raw_bytes.decode("utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        raise ValueError(f"Could not parse candidate report: {exc}") from exc
+    if not isinstance(raw, list):
+        raise ValueError("Candidate report must be a JSON array of candidate objects.")
+    required_keys = {"candidate_id", "webvoc_property_id"}
+    valid = [
+        item
+        for item in raw
+        if isinstance(item, dict) and required_keys.issubset(item)
+    ]
+    if not valid:
+        raise ValueError(
+            "No recognizable candidate objects found (each needs at least "
+            "'candidate_id' and 'webvoc_property_id')."
+        )
+    return valid
+
+
 def render_mapping_candidates_workflow() -> None:
     """Render the Generate Mapping Candidates workflow page."""
     with st.container(border=True):
@@ -279,6 +335,46 @@ def render_mapping_candidates_workflow() -> None:
             use_container_width=True,
         )
 
+        st.markdown("---")
+        st.caption(
+            "Already have a report from a previous session, or from the "
+            "CLI's `generate-mapping-candidates --full-scope` sweep (all "
+            "553 properties x ~6,067 GDSN attributes, ~7 min offline -- too "
+            "slow to run inside one Streamlit interaction)? Load it instead "
+            "of regenerating."
+        )
+        uploaded_report_file = st.file_uploader(
+            "Load a previously generated candidate report (JSON)",
+            type=["json"],
+            key="candidate_report_uploader",
+            help=(
+                "Accepts the JSON candidate report downloaded from this "
+                "workflow, or the `mapping_candidates.json` the CLI writes "
+                "(with or without --full-scope). Promotion eligibility is "
+                "recomputed using the hard-mapping sign-off file above, if "
+                "any."
+            ),
+        )
+        load_report_button = st.button(
+            "Load report",
+            disabled=uploaded_report_file is None,
+            use_container_width=True,
+        )
+
+    if load_report_button and uploaded_report_file is not None:
+        try:
+            loaded_candidates = parse_uploaded_candidate_report(
+                uploaded_report_file.getvalue()
+            )
+        except ValueError as exc:
+            st.error(str(exc))
+        else:
+            reviewed_hard_mapping_ids = _parse_reviewed_hard_mapping_ids(
+                reviewed_hard_mappings_file
+            )
+            _store_candidate_results(loaded_candidates, reviewed_hard_mapping_ids)
+            st.success(f"Loaded {len(loaded_candidates)} candidate(s) from the report.")
+
     if generate_button:
         with st.spinner("Generating mapping candidates..."):
             if selected_property == all_props_option:
@@ -322,18 +418,7 @@ def render_mapping_candidates_workflow() -> None:
             reviewed_hard_mapping_ids = _parse_reviewed_hard_mapping_ids(
                 reviewed_hard_mappings_file
             )
-            promotion_artifact = build_promotion_artifact(
-                candidates, reviewed_hard_mapping_ids
-            )
-            candidates = promotion_artifact["all_candidates"]
-
-            st.session_state["candidate_results"] = candidates
-            st.session_state["promotion_summary"] = promotion_artifact["summary"]
-            st.session_state["candidate_json_bytes"] = candidate_report_bytes_json(candidates)
-            st.session_state["candidate_csv_bytes"] = candidate_report_bytes_csv(candidates)
-            xlsx_b = candidate_report_bytes_xlsx(candidates)
-            if xlsx_b:
-                st.session_state["candidate_xlsx_bytes"] = xlsx_b
+            _store_candidate_results(candidates, reviewed_hard_mapping_ids)
 
     candidates_result = st.session_state.get("candidate_results")
     if candidates_result is not None:

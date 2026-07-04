@@ -64,6 +64,14 @@ guess source URLs.
 
 ## Released
 
+- **v0.28.0 — Load a previously generated candidate report.** Corrected
+  course after investigation: `--full-scope` isn't a separate,
+  more-expensive code path from the UI's existing "All properties"
+  option — both call `generate_all_candidates`. The real, honest gap was
+  Streamlit's lack of session persistence across restarts. Generate
+  Mapping Candidates now has a "Load report" uploader that re-runs only
+  promotion annotation (cheap) on an already-scored report, rendering
+  through the exact same metrics/table/detail UI as a live run.
 - **v0.27.0 — Workbench status dashboard.** First of three "bigger
   scope" versions. Landing page gains a "Workbench status" panel with
   six at-a-glance metrics (WebVoc coverage, registry accepted count,

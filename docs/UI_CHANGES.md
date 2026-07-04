@@ -1,5 +1,20 @@
 # UI Changes
 
+## v0.28.0 Load a previously generated candidate report checklist
+
+- [x] Generate Mapping Candidates gains a "Load a previously generated
+      candidate report" uploader and "Load report" button, below the
+      existing "Generate Candidates" button.
+- [x] Accepts the same JSON shape this workflow's own download and the
+      CLI's `mapping_candidates.json` (with or without `--full-scope`)
+      both already produce.
+- [x] Loading re-runs only promotion annotation (cheap, deterministic),
+      not scoring (expensive) — renders through the exact same metrics/
+      table/detail/sign-off/download UI as a live run.
+- [x] New `_store_candidate_results` helper removes duplication between
+      the live-generation and load-report paths.
+- [x] No governance warnings removed; no compliance claims added.
+
 ## v0.27.0 Workbench status dashboard checklist
 
 - [x] New "Workbench status" panel on the landing page, right after the

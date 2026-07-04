@@ -183,7 +183,12 @@ gdsn-to-gs1-jsonld generate-mapping-candidates \
 # Full-scope sweep: every WebVoc property against the full GDSN reference
 # (553 properties x ~6,067 attributes). Measured at ~7 minutes on the
 # committed reference data — local/offline use, not part of CI, and cannot
-# be combined with --property.
+# be combined with --property. Note: --full-scope calls the exact same
+# generate_all_candidates function as the Streamlit UI's "All properties"
+# option (see "Streamlit Workflow Description" below) -- there is no
+# separate, more-expensive code path, just no --property filter. Once
+# generated, the JSON report can be loaded back into the Streamlit UI
+# without re-running the scan (v0.28.0).
 gdsn-to-gs1-jsonld generate-mapping-candidates \
   --full-scope \
   --webvoc-properties reference_data/normalized/webvoc_properties_1_17.csv \
@@ -221,7 +226,13 @@ app provides:
    hard_mapping), an optional hard-mapping review sign-off JSON upload,
    confidence filter, review status filter, include-already-mapped checkbox,
    include-low-confidence checkbox, limit per property input.
-3. A "Generate Candidates" button.
+3. A "Generate Candidates" button. **(v0.28.0)** Below it, a "Load a
+   previously generated candidate report" uploader and "Load report"
+   button — for a report already produced by this workflow or by the
+   CLI's `generate-mapping-candidates` (with or without `--full-scope`).
+   Loading re-runs only the (cheap) promotion-annotation step, not the
+   (expensive) scoring, and renders through the exact same metrics/table/
+   detail UI as a live run.
 4. After generation: candidate metrics (total, high/medium/low/
    review_required/already_mapped) and promotion-lane metrics (standard
    lane count, hard-mapping lane count, eligible-for-promotion count,

@@ -9,6 +9,41 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.28.0 — Load a Previously Generated Candidate Report
+
+Corrects course from the originally planned scope after investigation:
+the premise "the CLI's `--full-scope` sweep is too slow to run live in
+Streamlit, so build a separate viewer for its output" doesn't hold —
+`--full-scope` calls the exact same `generate_all_candidates` function
+the UI's existing "All properties" option already calls; there is no
+separate full-scope code path to view differently. The genuinely useful
+and honest version of this feature: let a reviewer load a report they
+already generated (via the CLI or a previous UI session) instead of
+re-running an expensive multi-minute scan.
+
+- New `app.workflows.candidates.parse_uploaded_candidate_report(raw_bytes)`
+  — a pure function validating an uploaded JSON file matches the same
+  shape `candidate_report_bytes_json` produces (a flat array of candidate
+  dicts, each needing at least `candidate_id` and `webvoc_property_id`).
+- **Generate Mapping Candidates gains a "Load a previously generated
+  candidate report" uploader and "Load report" button.** Loading a report
+  runs it through the exact same `build_promotion_artifact` annotation
+  step as a live "Generate Candidates" run (recomputing eligibility using
+  whatever hard-mapping sign-off file is currently uploaded), then
+  populates the exact same session-state keys — so the existing metrics,
+  table, detail expander, sign-off authoring, and downloads all work
+  identically on a loaded report with no duplicated rendering code.
+- New shared `_store_candidate_results` helper factors out the
+  annotate-and-persist step previously duplicated only in the live-
+  generation path.
+- Accepts reports from either source: this workflow's own downloaded
+  `mapping_candidates.json`, or the CLI's (with or without
+  `--full-scope`) — both are the same JSON shape.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims — nothing here re-scores or invents candidate data; it only
+re-renders and re-annotates what was already computed.
+
 ## v0.27.0 — Workbench Status Dashboard
 
 First of three "bigger scope" versions in this batch. Every module already
