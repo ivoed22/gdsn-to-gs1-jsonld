@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.26.0"
+    assert ui.APP_VERSION == "v0.27.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -133,6 +133,36 @@ def test_convert_wizard_progress_indicator_present():
         assert label in rendered
 
 
+def test_workbench_status_dashboard_appears_on_landing_page():
+    """v0.27.0: the landing page shows an at-a-glance workbench status
+    panel aggregating metrics already computed by existing workflows --
+    no new data, no new computation."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+
+    assert not app.exception
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    assert "Workbench status" in rendered
+
+    metrics_by_label = {m.label: m.value for m in app.metric}
+    for expected_label in (
+        "WebVoc coverage",
+        "Registry accepted",
+        "Open SDRs",
+        "Codelists imported",
+        "Builder fields authored",
+        "Hard-mapping reviews (session)",
+    ):
+        assert expected_label in metrics_by_label
+
+    # Cross-check against the same real local data other workflows already
+    # display, so the aggregation is verified, not just "some value".
+    assert metrics_by_label["Open SDRs"] == "6"
+    assert metrics_by_label["Codelists imported"] == "595"
+    assert metrics_by_label["Builder fields authored"] == "183"
+    # Session-only metric with no candidates generated yet this run.
+    assert metrics_by_label["Hard-mapping reviews (session)"] == "—"
+
+
 def test_streamlit_clear_results_removes_persisted_result(example_xml_path):
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     app.get("file_uploader")[0].set_value(
@@ -181,7 +211,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.26.0" in markdown.value
+        "App version: v0.27.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -876,6 +906,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.26.0" in rendered
+    assert "app version: v0.27.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

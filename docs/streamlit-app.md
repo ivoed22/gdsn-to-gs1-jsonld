@@ -43,3 +43,10 @@ expander, aggregated across the whole batch: five status metrics summed
 over every file, plus a table of files that had at least one non-valid
 codelist entry. Diagnostic only — never blocks a file or changes the
 export ZIP.
+
+**v0.27.0**: The landing page (shown before any workflow is opened) gains
+a "Workbench status" panel with six at-a-glance metrics — WebVoc
+coverage, registry accepted count, open SDRs, codelists imported, builder
+fields authored, and hard-mapping reviews recorded this session. Every
+number is read from an existing workflow's own data source; see
+`docs/releases/v0.27.0.md`.

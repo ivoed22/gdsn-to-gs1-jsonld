@@ -3,6 +3,13 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.27.0 adds a "Workbench status" panel to the landing page — the
+first of three "bigger scope" versions in this batch: six at-a-glance
+metrics (WebVoc coverage, registry accepted count, open SDRs, codelists
+imported, builder fields authored, session hard-mapping reviews), each
+read from an existing workflow's own data source. No new data or
+computation. See `docs/releases/v0.27.0.md`.
+
 Version 0.26.0 adds a cross-workflow deep link — the last of five "quick
 win" versions in this batch: Generate Mapping Candidates' candidate detail
 gains a "View in Explorer" button that jumps straight to that WebVoc

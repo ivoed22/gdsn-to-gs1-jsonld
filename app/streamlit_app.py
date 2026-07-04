@@ -42,6 +42,7 @@ from app.workflow_shared import (
 from app.workflows.builder_expansion import render_builder_expansion_analysis
 from app.workflows.candidates import render_mapping_candidates_workflow
 from app.workflows.convert import render_bulk_zip_workflow, render_single_xml_workflow
+from app.workflows.dashboard import render_workbench_status_dashboard
 from app.workflows.explore import render_webvoc_explorer
 from app.workflows.product_passport import render_validate_product_passport_workflow
 from app.workflows.product_passport_builder import render_build_product_passport_workflow
@@ -57,6 +58,7 @@ def main() -> None:
     )
     apply_page_styles()
     render_page_header()
+    render_workbench_status_dashboard(len(_load_open_standards_backlog()))
     render_workflow_overview()
     if st.session_state.get("workflow_mode") not in {
         mode["title"] for mode in WORKFLOW_MODES

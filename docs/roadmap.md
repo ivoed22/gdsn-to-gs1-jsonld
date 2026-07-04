@@ -64,6 +64,12 @@ guess source URLs.
 
 ## Released
 
+- **v0.27.0 — Workbench status dashboard.** First of three "bigger
+  scope" versions. Landing page gains a "Workbench status" panel with
+  six at-a-glance metrics (WebVoc coverage, registry accepted count,
+  open SDRs, codelists imported, builder fields authored, session
+  hard-mapping reviews), each reusing an existing workflow's own
+  loader/function. No new data source or computation.
 - **v0.26.0 — Cross-workflow deep links.** Last of five "quick win"
   versions. Generate Mapping Candidates' candidate detail gains a "View
   in Explorer" button (new `workflow_shared.navigate_to_webvoc_property`

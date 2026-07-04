@@ -1,5 +1,20 @@
 # UI Changes
 
+## v0.27.0 Workbench status dashboard checklist
+
+- [x] New "Workbench status" panel on the landing page, right after the
+      page header, before route/workflow selection.
+- [x] Six metrics: WebVoc coverage, Registry accepted, Open SDRs,
+      Codelists imported, Builder fields authored, Hard-mapping reviews
+      (session).
+- [x] Every metric reuses an existing workflow's own loader/function —
+      no new data source, no new computation.
+- [x] "Hard-mapping reviews (session)" is distinctly labeled from
+      Generate Mapping Candidates' own "Hard-mapping reviews recorded"
+      metric to avoid confusion (this panel can show one-rerun-stale
+      session data; a test failure during development caught this).
+- [x] No governance warnings removed; no compliance claims added.
+
 ## v0.26.0 Cross-workflow deep links checklist
 
 - [x] Generate Mapping Candidates' candidate detail expander gains a

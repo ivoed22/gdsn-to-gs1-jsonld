@@ -9,6 +9,37 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.27.0 — Workbench Status Dashboard
+
+First of three "bigger scope" versions in this batch. Every module already
+computes read-only health metrics, but each only ever surfaced inside its
+own workflow. This adds a consolidated "at a glance" view.
+
+- New `app/workflows/dashboard.py` and `render_workbench_status_dashboard`,
+  shown on the landing page right after the page header. Six metrics, each
+  read via the same loader/function an existing workflow already uses —
+  no new data source, no new computation:
+  - **WebVoc coverage** — `webvoc_explorer.build_explorer_dataset`'s
+    summary (same numbers Explore shows).
+  - **Registry accepted** — `mapping_registry.registry_summary`'s
+    `catalog_by_status["accepted"]`.
+  - **Open SDRs** — the same standards backlog count already loaded for
+    the sidebar (passed in, not reloaded).
+  - **Codelists imported** — the committed, tiny Track D summary JSON
+    (`gdsn_codelists_r3_1_36_summary.json`), not the full 4.5MB registry.
+  - **Builder fields authored** — `builder_expansion_analysis.
+    authored_property_ids` against the builder manifest (the same count
+    Track C's analysis uses).
+  - **Hard-mapping reviews (session)** — opportunistic: reads
+    `st.session_state["promotion_summary"]` if the reviewer has already
+    generated candidates this session, otherwise shows "—". Distinctly
+    labeled from Generate Mapping Candidates' own "Hard-mapping reviews
+    recorded" metric to avoid confusion, since this panel renders earlier
+    in the script and can show one-rerun-stale session data.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims.
+
 ## v0.26.0 — Cross-Workflow Deep Links
 
 The last of the five "quick win" versions in this batch. Reduces
