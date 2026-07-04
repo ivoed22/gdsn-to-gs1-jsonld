@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.24.0"
+    assert ui.APP_VERSION == "v0.25.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -181,7 +181,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.24.0" in markdown.value
+        "App version: v0.25.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -698,6 +698,48 @@ def test_mapping_candidates_promotion_lanes_appear_after_generate():
     assert reviewed_metric.value == "0"
 
 
+def test_hard_mapping_signoff_authoring_produces_downloadable_json():
+    """v0.25.0: in-UI authoring for the hard-mapping review sign-off file.
+    Setting a Decision to Approved should surface a download button; the
+    downloaded JSON must match mapping_promotion.load_reviewed_hard_mappings'
+    expected schema. This is authoring convenience only -- it does not
+    itself change promotion eligibility in the same run."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_route(app, "vocabulary_mapping")
+    _open_workflow(app, "candidates")
+
+    property_selector = next(
+        s for s in app.selectbox if s.label == "WebVoc property"
+    )
+    property_selector.select("gs1:gtin").run(timeout=20)
+    generate_button = next(
+        b for b in app.button if b.label == "Generate Candidates"
+    )
+    generate_button.click().run(timeout=30)
+
+    assert not app.exception
+    assert any(
+        "Author hard-mapping review sign-off" in markdown.value
+        for markdown in app.markdown
+    )
+    decision_selectors = [s for s in app.selectbox if s.label == "Decision"]
+    assert len(decision_selectors) > 0
+
+    reviewer_inputs = [t for t in app.text_input if t.label == "Reviewer"]
+    decision_selectors[0].select("Approved").run(timeout=20)
+    reviewer_inputs = [t for t in app.text_input if t.label == "Reviewer"]
+    reviewer_inputs[0].set_value("Alice").run(timeout=20)
+
+    assert not app.exception
+    assert any(
+        "1 approved, 0 rejected" in caption.value for caption in app.caption
+    )
+    signoff_downloads = [
+        d for d in app.get("download_button") if "sign-off" in d.label.lower()
+    ]
+    assert len(signoff_downloads) == 1
+
+
 def test_validate_product_passport_sources_card_visible_in_route():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     _open_route(app, "product_passport_bridge")
@@ -800,6 +842,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.24.0" in rendered
+    assert "app version: v0.25.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

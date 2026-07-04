@@ -16,6 +16,7 @@ from gdsn_to_gs1_jsonld.mapping_registry import STATUS_VOCABULARY
 from gdsn_to_gs1_jsonld.mapping_promotion import (
     REVIEW_LANES,
     annotate_promotion_fields,
+    build_hard_mapping_signoff,
     build_promotion_artifact,
     compute_promotion_eligibility,
     derive_status,
@@ -168,6 +169,63 @@ def test_load_reviewed_hard_mappings_accepts_list_or_object(tmp_path):
         json.dumps({"reviewed_candidate_ids": ["c"]}), encoding="utf-8"
     )
     assert load_reviewed_hard_mappings(object_path) == {"c"}
+
+
+def test_build_hard_mapping_signoff_includes_only_approved_in_reviewed_ids():
+    """v0.25.0: in-UI sign-off authoring. Only 'approved' decisions land in
+    reviewed_candidate_ids -- the only key load_reviewed_hard_mappings
+    actually reads; 'reviews' is additive audit metadata it ignores."""
+    reviews = [
+        {
+            "candidate_id": "hard_1",
+            "reviewer": "Alice",
+            "date": "2026-07-04",
+            "decision": "Approved",
+            "notes": "Cross-reference confirmed against party master data.",
+        },
+        {
+            "candidate_id": "hard_2",
+            "reviewer": "Alice",
+            "date": "2026-07-04",
+            "decision": "Rejected",
+            "notes": "Not a real cross-reference.",
+        },
+    ]
+
+    signoff = build_hard_mapping_signoff(reviews)
+
+    assert signoff["reviewed_candidate_ids"] == ["hard_1"]
+    assert len(signoff["reviews"]) == 2
+    assert signoff["reviews"][0]["decision"] == "approved"
+    assert signoff["reviews"][1]["decision"] == "rejected"
+
+
+def test_build_hard_mapping_signoff_ignores_blank_and_unreviewed_entries():
+    reviews = [
+        {"candidate_id": "hard_1", "decision": "Not reviewed"},
+        {"candidate_id": "", "decision": "Approved"},
+        {"candidate_id": "hard_2", "decision": "approved"},
+    ]
+
+    signoff = build_hard_mapping_signoff(reviews)
+
+    assert signoff["reviewed_candidate_ids"] == ["hard_2"]
+
+
+def test_build_hard_mapping_signoff_round_trips_through_load_reviewed_hard_mappings(
+    tmp_path,
+):
+    """The authored file must be readable by the exact same loader used by
+    both the CLI and the promotion pipeline -- no schema drift."""
+    reviews = [
+        {"candidate_id": "hard_1", "reviewer": "Alice", "decision": "approved"},
+        {"candidate_id": "hard_2", "reviewer": "Alice", "decision": "rejected"},
+    ]
+    signoff = build_hard_mapping_signoff(reviews)
+    path = tmp_path / "authored_signoff.json"
+    path.write_text(json.dumps(signoff), encoding="utf-8")
+
+    assert load_reviewed_hard_mappings(path) == {"hard_1"}
 
 
 def test_write_promotion_artifact_writes_expected_files(tmp_path):

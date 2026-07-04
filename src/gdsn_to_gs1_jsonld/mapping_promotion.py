@@ -63,6 +63,46 @@ def load_reviewed_hard_mappings(path: str | Path | None) -> set[str]:
     return {str(item).strip() for item in raw if str(item).strip()}
 
 
+def build_hard_mapping_signoff(reviews: list[dict[str, Any]]) -> dict[str, Any]:
+    """Build a hard-mapping review sign-off artifact from authored reviews.
+
+    Each entry in *reviews* is expected to look like ``{"candidate_id",
+    "reviewer", "date", "decision", "notes"}`` with ``decision`` one of
+    ``"approved"``/``"rejected"``. Only ``"approved"`` entries are included
+    in ``reviewed_candidate_ids`` -- the only key
+    :func:`load_reviewed_hard_mappings` actually reads. ``reviews`` is
+    additive audit metadata that loader ignores, so a file built here stays
+    fully compatible with the existing sign-off schema and with files
+    someone still prefers to hand-edit.
+
+    This is UI-authoring convenience only: it never changes promotion
+    eligibility by itself. A caller (e.g. the Streamlit workflow) still
+    downloads the resulting JSON and uploads it back through the normal
+    ``reviewed_hard_mappings_file`` path to actually affect eligibility.
+    """
+    reviewed_candidate_ids = sorted(
+        {
+            str(review.get("candidate_id", "")).strip()
+            for review in reviews
+            if str(review.get("decision", "")).strip().lower() == "approved"
+            and str(review.get("candidate_id", "")).strip()
+        }
+    )
+    return {
+        "reviewed_candidate_ids": reviewed_candidate_ids,
+        "reviews": [
+            {
+                "candidate_id": str(review.get("candidate_id", "")).strip(),
+                "reviewer": str(review.get("reviewer", "")).strip(),
+                "date": str(review.get("date", "")).strip(),
+                "decision": str(review.get("decision", "")).strip().lower(),
+                "notes": str(review.get("notes", "")).strip(),
+            }
+            for review in reviews
+        ],
+    }
+
+
 def derive_status(candidate: dict[str, Any]) -> str:
     """Map a candidate's review_status onto the fixed registry status
     vocabulary (proposed/review_required/accepted/rejected/deprecated/blocked).

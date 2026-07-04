@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 
 import streamlit as st
 
@@ -18,7 +19,12 @@ from gdsn_to_gs1_jsonld.mapping_candidate_generator import (
     generate_candidate_summary,
     generate_candidates_for_property,
 )
-from gdsn_to_gs1_jsonld.mapping_promotion import build_promotion_artifact
+from gdsn_to_gs1_jsonld.mapping_promotion import (
+    build_hard_mapping_signoff,
+    build_promotion_artifact,
+)
+
+_SIGNOFF_DECISIONS = ("Not reviewed", "Approved", "Rejected")
 
 # Status-badge tone per fixed registry status (mapping_registry.STATUS_VOCABULARY).
 _STATUS_BADGE_TONES = {
@@ -75,6 +81,95 @@ def _parse_reviewed_hard_mapping_ids(uploaded_file) -> set[str]:
     if not isinstance(raw, list):
         return set()
     return {str(item).strip() for item in raw if str(item).strip()}
+
+
+def _signoff_key(candidate_id: str, suffix: str) -> str:
+    safe = re.sub(r"[^A-Za-z0-9_]+", "_", candidate_id).strip("_") or "candidate"
+    return f"hard_mapping_signoff_{safe}_{suffix}"
+
+
+def _render_hard_mapping_signoff_authoring(
+    hard_mapping_candidates: list[dict],
+) -> None:
+    """In-UI authoring for the hard-mapping review sign-off file (v0.25.0).
+
+    Convenience only: builds a JSON file matching exactly the schema
+    ``mapping_promotion.load_reviewed_hard_mappings`` already reads, so a
+    reviewer no longer has to hand-edit that file externally. This does
+    not change promotion eligibility by itself, and does not write to any
+    governed file -- the reviewer downloads the file and uploads it back
+    through the existing "Hard-mapping review sign-off" uploader above to
+    see updated eligibility.
+    """
+    if not hard_mapping_candidates:
+        return
+
+    with st.container(border=True):
+        render_section_header(
+            5,
+            "Author hard-mapping review sign-off",
+            "Record a dedicated review decision for each hard-mapping-lane "
+            "candidate below, then download a sign-off file. Upload it back "
+            "through the sign-off field above and regenerate candidates to "
+            "see updated promotion eligibility.",
+        )
+        reviews: list[dict] = []
+        for candidate in hard_mapping_candidates:
+            candidate_id = str(candidate.get("candidate_id") or "")
+            if not candidate_id:
+                continue
+            with st.container(border=True):
+                st.caption(
+                    f"`{candidate.get('webvoc_property_id', '')}` / "
+                    f"`{candidate.get('gdsn_attribute_name', '')}` "
+                    f"(candidate_id: `{candidate_id}`)"
+                )
+                reviewer_col, date_col, decision_col, notes_col = st.columns(
+                    [1.2, 1, 1, 1.6]
+                )
+                reviewer = reviewer_col.text_input(
+                    "Reviewer",
+                    key=_signoff_key(candidate_id, "reviewer"),
+                )
+                review_date = date_col.date_input(
+                    "Date",
+                    key=_signoff_key(candidate_id, "date"),
+                )
+                decision = decision_col.selectbox(
+                    "Decision",
+                    _SIGNOFF_DECISIONS,
+                    key=_signoff_key(candidate_id, "decision"),
+                )
+                notes = notes_col.text_input(
+                    "Notes",
+                    key=_signoff_key(candidate_id, "notes"),
+                )
+            if decision != "Not reviewed":
+                reviews.append(
+                    {
+                        "candidate_id": candidate_id,
+                        "reviewer": reviewer,
+                        "date": str(review_date),
+                        "decision": decision,
+                        "notes": notes,
+                    }
+                )
+
+        if not reviews:
+            st.caption("Set a Decision for at least one candidate to enable download.")
+            return
+
+        signoff = build_hard_mapping_signoff(reviews)
+        approved_count = len(signoff["reviewed_candidate_ids"])
+        rejected_count = len(reviews) - approved_count
+        st.caption(f"{approved_count} approved, {rejected_count} rejected.")
+        st.download_button(
+            "Download hard-mapping review sign-off JSON",
+            data=json.dumps(signoff, indent=2, ensure_ascii=False).encode("utf-8"),
+            file_name="hard_mapping_review_signoff.json",
+            mime="application/json",
+            use_container_width=True,
+        )
 
 
 def render_mapping_candidates_workflow() -> None:
@@ -397,9 +492,13 @@ def render_mapping_candidates_workflow() -> None:
             else:
                 st.info("No candidates match the selected filters.")
 
+        _render_hard_mapping_signoff_authoring(
+            [c for c in candidates_result if c.get("review_lane") == "hard_mapping"]
+        )
+
         with st.container(border=True):
             render_section_header(
-                5,
+                6,
                 "Download Reports",
                 "Download the candidate report for offline review. "
                 "These reports do not modify any mapping file.",

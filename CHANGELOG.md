@@ -9,6 +9,35 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.25.0 — In-UI Hard-Mapping Review Sign-Off Authoring
+
+Removes the last hand-edit-JSON-externally step from the Mapping
+Candidates workflow: authoring the hard-mapping review sign-off file
+directly in the UI.
+
+- New `mapping_promotion.build_hard_mapping_signoff(reviews)`: builds a
+  sign-off JSON from authored `{candidate_id, reviewer, date, decision,
+  notes}` entries. Only `"approved"` entries land in
+  `reviewed_candidate_ids` — the one key `load_reviewed_hard_mappings`
+  actually reads — so the file stays byte-compatible with hand-edited
+  files and the existing loader/promotion pipeline is untouched.
+  `reviews` is additive audit metadata the loader ignores.
+- **Generate Mapping Candidates gains an "Author hard-mapping review
+  sign-off" section**, shown whenever the current results include
+  hard-mapping-lane candidates: a reviewer/date/decision/notes row per
+  candidate, and a "Download hard-mapping review sign-off JSON" button
+  once at least one decision is set. Convenience only — it does not
+  change eligibility in the same run; upload the downloaded file through
+  the existing sign-off uploader and regenerate to see updated
+  eligibility.
+- No changes to `mapping_promotion.py`'s promotion logic, the sign-off
+  file's schema, or any governed file. The UI never auto-applies a
+  sign-off; the reviewer still explicitly downloads and would separately
+  commit/apply it.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims.
+
 ## v0.24.0 — Offline Vocabulary Freshness Check
 
 Surfaces the previously CLI-only `check-webvoc-updates` capability in the

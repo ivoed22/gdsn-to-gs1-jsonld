@@ -122,7 +122,9 @@ a dedicated extra review gate, never a separate or permanent status:
   `{"reviewed_candidate_ids": [...]}`) of candidate_ids that already passed
   dedicated review of the cross-reference. Without that file, every
   hard-mapping candidate shows `promotion_eligible: false` with a note
-  explaining why.
+  explaining why. Since v0.25.0, this file can be authored directly in the
+  Streamlit workflow (`mapping_promotion.build_hard_mapping_signoff`)
+  instead of hand-edited — see "Streamlit Workflow Description" below.
 
 Reaching `promotion_eligible: true` still does not write anything —
 promoting a candidate into a governed mapping entry (the mapping registry)
@@ -229,7 +231,16 @@ app provides:
    top reason, SDR linked.
 6. A detail expander for the selected candidate, including status/lane/
    promotion-eligibility badges and hard-mapping reasons when applicable.
-7. Downloads: JSON, CSV, optional XLSX.
+7. **(v0.25.0)** If the current results include hard-mapping-lane
+   candidates: an "Author hard-mapping review sign-off" section — one
+   Reviewer/Date/Decision/Notes row per hard-mapping candidate, and a
+   "Download hard-mapping review sign-off JSON" button once at least one
+   Decision is set to Approved or Rejected. The downloaded file matches
+   `load_reviewed_hard_mappings`' expected schema exactly. This is
+   authoring convenience only: it does not change eligibility in the
+   same run — upload the downloaded file through step 2's sign-off
+   uploader and regenerate to see updated eligibility.
+8. Downloads: JSON, CSV, optional XLSX.
 
 The workflow never provides an "accept" or "apply" button.  No mapping YAML
 or mapping registry is editable in this workflow. `promotion_eligible: true`

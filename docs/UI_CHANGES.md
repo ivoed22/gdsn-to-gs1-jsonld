@@ -1,5 +1,20 @@
 # UI Changes
 
+## v0.25.0 In-UI hard-mapping review sign-off authoring checklist
+
+- [x] Generate Mapping Candidates gains an "Author hard-mapping review
+      sign-off" section whenever results include hard-mapping-lane
+      candidates: Reviewer/Date/Decision/Notes per candidate.
+- [x] "Download hard-mapping review sign-off JSON" button appears once at
+      least one Decision is set; file matches
+      `load_reviewed_hard_mappings`' expected schema exactly.
+- [x] New `mapping_promotion.build_hard_mapping_signoff` — pure function,
+      unit-tested including a round-trip through the existing loader.
+- [x] Does not change `mapping_promotion.py`'s promotion logic or the
+      sign-off file's schema; does not auto-apply eligibility in the same
+      run; does not write to any governed file.
+- [x] No governance warnings removed; no compliance claims added.
+
 ## v0.24.0 Offline vocabulary freshness check checklist
 
 - [x] Standards Review workflow gains a "Vocabulary freshness check"

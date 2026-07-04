@@ -2,7 +2,7 @@ from html import escape
 
 import streamlit as st
 
-APP_VERSION = "v0.24.0"
+APP_VERSION = "v0.25.0"
 
 
 def apply_page_styles() -> None:

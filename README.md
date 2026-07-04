@@ -3,6 +3,14 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.25.0 removes the last hand-edit-JSON-externally step from the
+Mapping Candidates workflow: a new "Author hard-mapping review sign-off"
+section lets a reviewer set a Reviewer/Date/Decision/Notes per
+hard-mapping-lane candidate and download a sign-off file matching
+`load_reviewed_hard_mappings`' schema exactly, via a new
+`mapping_promotion.build_hard_mapping_signoff` helper. Convenience only —
+promotion logic, the sign-off schema, and governed files are untouched.
+
 Version 0.24.0 surfaces the previously CLI-only `check-webvoc-updates`
 capability in the UI, but strictly offline: Standards Review gains a
 "Vocabulary freshness check" section where a reviewer uploads a candidate

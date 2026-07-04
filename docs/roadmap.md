@@ -64,6 +64,13 @@ guess source URLs.
 
 ## Released
 
+- **v0.25.0 — In-UI hard-mapping review sign-off authoring.** Generate
+  Mapping Candidates gains a Reviewer/Date/Decision/Notes form per
+  hard-mapping-lane candidate and a download button for the resulting
+  sign-off JSON, via a new `mapping_promotion.build_hard_mapping_signoff`
+  helper that produces a file byte-compatible with the existing
+  hand-edited schema. Removes the last hand-edit-JSON-externally step in
+  that workflow; promotion logic and governed files are untouched.
 - **v0.24.0 — Offline vocabulary freshness check.** Surfaces the
   previously CLI-only `check-webvoc-updates` capability in the UI, built
   on a new `compare_webvoc_snapshot_bytes` function with no network code
