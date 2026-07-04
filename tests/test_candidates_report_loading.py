@@ -8,10 +8,23 @@ button is covered separately in tests/test_streamlit_app.py via AppTest.
 from __future__ import annotations
 
 import json
+import sys
+from pathlib import Path
 
 import pytest
 
-from app.workflows.candidates import parse_uploaded_candidate_report
+# pyproject.toml's pytest pythonpath only covers src/ (gdsn_to_gs1_jsonld),
+# not the repo root -- app/ is normally only ever loaded via
+# streamlit.testing.v1.AppTest.from_file, which handles its own sys.path
+# setup (see app/workflow_shared.py's _ensure_import_paths). A plain import
+# needs the repo root on sys.path explicitly; this worked locally by
+# accident (running `python -m pytest` from the repo root implicitly adds
+# cwd to sys.path) but not in CI, which runs plain `pytest`.
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from app.workflows.candidates import parse_uploaded_candidate_report  # noqa: E402
 
 
 def _candidate(**overrides) -> dict:
