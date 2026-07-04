@@ -9,6 +9,51 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.23.0 — Full WebVoc Codelist Option in Manual Builder
+
+Corrects course from the originally planned scope after investigation: the
+6 canonical fields tracked by Track D's `CODELIST_DEPENDENCIES` turned out
+to already have real options where they're authorable in the builder, or
+aren't authorable as `code`-type fields at all yet (see "What we found"
+below). The genuinely valuable, verified gap was different — implemented
+instead.
+
+- **`gs1:allergenType`'s manifest options were a hand-curated 14-value EU
+  subset of the 385 individuals the local Web Vocabulary snapshot actually
+  defines for `gs1:AllergenTypeCode`.** The Manual JSON-LD Builder now
+  offers a "Show full code list (385 total) instead of the curated 14"
+  checkbox next to this field; checking it swaps the dropdown to the full,
+  real WebVoc-defined set. Unchecked (default), behavior is unchanged.
+- New `webvoc_explorer.group_individuals_by_class(data)`: groups every
+  WebVoc-defined named individual (e.g. `gs1:AllergenTypeCode-AM`) by its
+  class, generically, from the already-committed local snapshot. No new
+  data source, no fabricated values — only individuals the vocabulary
+  itself defines.
+- `builder_status.compute_field_status` now also accepts an optional
+  `metadata["full_codelist_options"]` fallback: a field is `codelist_pending`
+  only if both the curated `options` and this fallback are empty. No field
+  is affected today (every current `code` field already has curated
+  options), but this keeps the status correct if a future manifest field
+  ships with `options: []`.
+- The mechanism is generic (keyed off each property's own WebVoc `range`
+  class), so it applies automatically to any current or future builder
+  `code` field — not just this one.
+
+**What we found (why the plan changed):** all 6 `CODELIST_DEPENDENCIES`
+canonical fields were checked against the builder manifest.
+`gs1:allergenLevelOfContainmentCode` already has all 3 real
+`LevelOfContainmentCode` values curated (no gap). `net_content_unit` is a
+`quantity`-type sub-field, not a `code`-type field. `nutrient_type_code`/
+`preparation_state_code` live under `gs1:nutrientDetail`, which is not yet
+authorable in the builder (`supported_in_v0_10: false`). No authorable
+`code` field maps to `ReferencedFileTypeCode`. Every *other* existing
+`code`-type field in the manifest already had manifest-curated options.
+`gs1:allergenType` was the one concrete, verified gap.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims — every added option is a real WebVoc-defined individual, not an
+invented value.
+
 ## v0.22.0 — Bulk ZIP Codelist Validation
 
 Extends v0.21.0's codelist validation panel to the Bulk ZIP workflow.

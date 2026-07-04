@@ -64,6 +64,15 @@ guess source URLs.
 
 ## Released
 
+- **v0.23.0 — Full WebVoc codelist option in Manual Builder.** Corrected
+  course after investigation: the originally planned "6 codelist_pending
+  fields" premise didn't hold (all already had options, weren't
+  authorable as `code` fields, or already had a complete curated set).
+  The one verified gap — `gs1:allergenType`'s 14-value EU subset versus
+  WebVoc's 385 defined `AllergenTypeCode` individuals — got a "show full
+  code list" checkbox via a new generic `webvoc_explorer.
+  group_individuals_by_class`, keyed off each property's own WebVoc range
+  class. Default behavior unchanged; no fabricated values.
 - **v0.22.0 — Bulk ZIP codelist validation.** Extends v0.21.0's codelist
   validation panel to the Bulk ZIP workflow: `convert_batch_zip` gains the
   same fully opt-in `codelist_registry` parameter, and the workflow shows

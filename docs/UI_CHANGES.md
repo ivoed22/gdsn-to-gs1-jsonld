@@ -1,5 +1,21 @@
 # UI Changes
 
+## v0.23.0 Full WebVoc codelist option checklist
+
+- [x] `gs1:allergenType` gains a "Show full code list (385 total) instead
+      of the curated 14" checkbox; checked, the dropdown switches from the
+      manifest's hand-curated EU-14 subset to every WebVoc-defined
+      `AllergenTypeCode` individual. Unchecked (default) is unchanged.
+- [x] Mechanism is generic (keyed off each property's own WebVoc `range`
+      class) — applies automatically to any current/future `code` field
+      with a smaller curated subset than WebVoc defines.
+- [x] `gs1:allergenLevelOfContainmentCode` correctly gets no checkbox —
+      its curated 3 values already equal WebVoc's full set.
+- [x] No fabricated values: every "full list" option is a real,
+      locally-committed WebVoc-defined individual.
+- [x] No governance warnings removed; no compliance claims added;
+      builder serializer/validator/state model unchanged (test-proven).
+
 ## v0.22.0 Bulk ZIP codelist validation checklist
 
 - [x] Bulk ZIP workflow gains the same "Open codelist validation (Track

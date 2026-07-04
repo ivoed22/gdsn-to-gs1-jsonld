@@ -17,6 +17,11 @@ from gdsn_to_gs1_jsonld.builder_status import (
     compute_field_status,
     summarize_field_statuses,
 )
+from gdsn_to_gs1_jsonld.webvoc_explorer import (
+    DEFAULT_WEBVOC_PATH,
+    group_individuals_by_class,
+    load_webvoc_jsonld,
+)
 from gdsn_to_gs1_jsonld.jsonld_builder import (
     build_empty_builder_state,
     get_builder_fields,
@@ -72,6 +77,19 @@ def _load_hard_mapping_index() -> dict[str, tuple[bool, list[str]]]:
     )
 
 
+@st.cache_data(show_spinner=False)
+def _load_webvoc_individuals_by_class() -> dict[str, list[dict[str, str]]]:
+    """WebVoc-defined named individuals grouped by class (v0.23.0).
+
+    Lets controlled-vocabulary (``code``) builder fields offer the full,
+    real set of values the local Web Vocabulary snapshot defines for a
+    property's range class, alongside the manifest's hand-curated subset.
+    """
+    return group_individuals_by_class(
+        load_webvoc_jsonld(REPOSITORY_ROOT / DEFAULT_WEBVOC_PATH)
+    )
+
+
 def _builder_key(property_id: str, suffix: str = "value") -> str:
     safe_property = (
         property_id.replace(":", "_")
@@ -92,7 +110,30 @@ def reset_manual_builder() -> None:
     )
 
 
-def _property_metadata_index(dataset: object, manifest: dict) -> dict[str, dict[str, Any]]:
+def _full_codelist_options(
+    range_classes: list[str],
+    individuals_by_class: dict[str, list[dict[str, str]]],
+) -> list[dict[str, str]]:
+    """Every WebVoc-defined individual across a property's range classes.
+
+    De-duplicated by value, sorted (each per-class list is already sorted
+    by label; a stable overall sort keeps multi-range fields tidy too).
+    """
+    seen: set[str] = set()
+    options: list[dict[str, str]] = []
+    for range_class in range_classes:
+        for option in individuals_by_class.get(range_class, []):
+            if option["value"] not in seen:
+                seen.add(option["value"])
+                options.append(option)
+    return sorted(options, key=lambda entry: entry["label"].lower())
+
+
+def _property_metadata_index(
+    dataset: object,
+    manifest: dict,
+    individuals_by_class: dict[str, list[dict[str, str]]] | None = None,
+) -> dict[str, dict[str, Any]]:
     index: dict[str, dict[str, Any]] = {}
     for property_item in getattr(dataset, "properties", []):
         evidence = [
@@ -112,6 +153,9 @@ def _property_metadata_index(dataset: object, manifest: dict) -> dict[str, dict[
             "coverage_status": property_item.coverage_status,
             "evidence": evidence,
             "supported_in_v0_10": True,
+            "full_codelist_options": _full_codelist_options(
+                list(property_item.range), individuals_by_class or {}
+            ),
         }
     for group in manifest.get("groups", []):
         for field in group.get("properties", []):
@@ -298,7 +342,24 @@ def _render_field_widget(
         else:
             state = update_builder_value(state, state_id, "")
     elif input_type == "code":
-        options = metadata.get("options") or []
+        curated_options = metadata.get("options") or []
+        full_options = metadata.get("full_codelist_options") or []
+        options = curated_options
+        if curated_options and len(full_options) > len(curated_options):
+            show_full = st.checkbox(
+                f"Show full code list ({len(full_options)} total) instead of the "
+                f"curated {len(curated_options)}",
+                key=_builder_key(state_id, "show_full_codelist"),
+                help=(
+                    "Curated list is a practical subset. The full list is every "
+                    "value the local Web Vocabulary snapshot defines for this "
+                    "field's code type."
+                ),
+            )
+            if show_full:
+                options = full_options
+        elif not curated_options and full_options:
+            options = full_options
         labels = ["— none —"] + [str(opt.get("label") or opt.get("value")) for opt in options]
         values = [""] + [str(opt.get("value")) for opt in options]
         selected_label = st.selectbox(
@@ -333,6 +394,7 @@ def _render_manual_field(
     *,
     default_language: str,
     hard_mapping_index: dict[str, tuple[bool, list[str]]],
+    property_metadata: dict[str, dict[str, Any]],
 ) -> tuple[dict[str, Any], str]:
     property_id = metadata["term_id"]
     input_type = infer_input_type(
@@ -366,15 +428,23 @@ def _render_manual_field(
             sub_id = sub.get("property_id")
             if not sub_id:
                 continue
-            sub_type = sub.get("input_type_override") or sub.get("input_type") or "text"
+            sub_metadata = dict(sub)
+            sub_metadata["full_codelist_options"] = (
+                property_metadata.get(sub_id, {}).get("full_codelist_options") or []
+            )
+            sub_type = (
+                sub_metadata.get("input_type_override")
+                or sub_metadata.get("input_type")
+                or "text"
+            )
             compound_id = object_subfield_key(property_id, sub_id)
-            help_text = sub.get("help_text") or ""
+            help_text = sub_metadata.get("help_text") or ""
             st.markdown(f"**{sub_id}**" + (f" — {help_text}" if help_text else ""))
             state = _render_field_widget(
                 state,
                 compound_id,
                 sub_type,
-                sub,
+                sub_metadata,
                 default_language=default_language,
             )
         return state, status
@@ -397,7 +467,9 @@ def render_manual_jsonld_builder() -> None:
         st.error(f"Manual JSON-LD Builder could not load local sources: {exc}")
         return
 
-    property_metadata = _property_metadata_index(dataset, manifest)
+    property_metadata = _property_metadata_index(
+        dataset, manifest, _load_webvoc_individuals_by_class()
+    )
     categories = [
         item["label"]
         for item in manifest.get("product_categories", [])
@@ -573,6 +645,7 @@ def render_manual_jsonld_builder() -> None:
                         metadata,
                         default_language=default_language,
                         hard_mapping_index=hard_mapping_index,
+                        property_metadata=property_metadata,
                     )
 
     jsonld_data = serialize_builder_state_to_jsonld(state, property_metadata)

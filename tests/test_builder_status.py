@@ -82,6 +82,30 @@ def test_code_field_with_options_is_not_codelist_pending():
     assert status == "optional_empty"
 
 
+def test_codelist_pending_falls_back_to_full_codelist_options():
+    """v0.23.0: a field is only codelist_pending if BOTH the manifest's
+    curated options AND the WebVoc-derived full_codelist_options fallback
+    are empty."""
+    metadata = {
+        "requirement": "optional",
+        "input_type_override": "code",
+        "options": [],
+        "full_codelist_options": [{"value": "gs1:X-A", "label": "A"}],
+    }
+    status, _ = compute_field_status(metadata, value_present=False)
+    assert status != "codelist_pending"
+
+    metadata_no_fallback = {
+        "requirement": "optional",
+        "input_type_override": "code",
+        "options": [],
+        "full_codelist_options": [],
+    }
+    status, reasons = compute_field_status(metadata_no_fallback, value_present=False)
+    assert status == "codelist_pending"
+    assert reasons
+
+
 def test_review_required_from_coverage_status():
     status, _ = compute_field_status(
         {"requirement": "optional", "coverage_status": "standards_review_required"},

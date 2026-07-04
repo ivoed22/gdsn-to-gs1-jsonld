@@ -6,6 +6,22 @@ JSON-LD live.
 
 This is prototype authoring, not GDSN XML conversion.
 
+## v0.23.0 — Full WebVoc codelist option
+
+`gs1:allergenType`'s manifest options were a hand-curated 14-value EU
+subset of the 385 individuals the local Web Vocabulary snapshot actually
+defines for `gs1:AllergenTypeCode`. The field now shows a "Show full code
+list (385 total) instead of the curated 14" checkbox; checking it swaps
+the dropdown to the full, real WebVoc-defined set (default view is
+unchanged). The mechanism (`webvoc_explorer.group_individuals_by_class`)
+is generic — keyed off each property's own WebVoc `range` class, not a
+per-field table — so it applies automatically to any current or future
+`code`-type field where the manifest's curated subset is smaller than
+what WebVoc actually defines. See `docs/releases/v0.23.0.md` for what was
+checked and found not to need a change (`allergenLevelOfContainmentCode`
+already has its full 3-value set; several other candidate fields aren't
+authorable `code`-type fields yet).
+
 ## v0.18.0 — Builder UX at scale
 
 With the manifest at 183 fields across 19 groups, the Builder gained
@@ -104,8 +120,10 @@ and emitted as JSON-LD node references, e.g.:
 ```
 
 - `gs1:hasAllergen` → `gs1:AllergenDetails` with `allergenType` (curated EU-14
-  allergen codes from the local snapshot) and `allergenLevelOfContainmentCode`
-  (Contains / Free from / May contain).
+  allergen codes from the local snapshot, with a "show full code list"
+  checkbox to switch to all 385 WebVoc-defined `AllergenTypeCode` values —
+  v0.23.0) and `allergenLevelOfContainmentCode` (Contains / Free from / May
+  contain — already the full WebVoc-defined set, no toggle needed).
 
 Sub-fields whose range is a nested *object* (e.g. an agency
 `gs1:Organization`) are intentionally omitted. Objects with no sub-value entered

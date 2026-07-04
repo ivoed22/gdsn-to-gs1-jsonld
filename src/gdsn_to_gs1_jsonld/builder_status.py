@@ -93,6 +93,13 @@ def compute_field_status(
     as "filled" is false, so callers treat it as the neutral/untouched case
     -- not part of STATUS_VALUES, filtered out by callers that only display
     filled/flagged fields).
+
+    ``metadata["full_codelist_options"]`` (v0.23.0) is an optional fallback
+    option list -- e.g. every WebVoc-defined individual of a code field's
+    range class, not just the manifest's hand-curated subset in
+    ``metadata["options"]``. A field only becomes ``codelist_pending`` if
+    both are empty; callers use the fallback to avoid flagging a field as
+    pending when a fuller, real (not fabricated) option set is available.
     """
     if not metadata.get("supported_in_v0_10", True):
         reason = str(metadata.get("planned_reason") or "Requires governed modelling.")
@@ -109,7 +116,9 @@ def compute_field_status(
         return "hard_mapping_review", hard_reasons
 
     input_type_override = metadata.get("input_type_override")
-    if input_type_override == "code" and not (metadata.get("options") or []):
+    if input_type_override == "code" and not (
+        metadata.get("options") or metadata.get("full_codelist_options") or []
+    ):
         return "codelist_pending", [
             "Controlled-vocabulary options are not yet populated for this field."
         ]

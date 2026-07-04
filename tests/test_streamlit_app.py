@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.22.0"
+    assert ui.APP_VERSION == "v0.23.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -181,7 +181,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.22.0" in markdown.value
+        "App version: v0.23.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -453,6 +453,48 @@ def test_builder_evidence_expander_present_for_mapped_field():
     assert any("Evidence" in expander.label for expander in app.expander)
 
 
+def test_builder_allergen_type_offers_full_codelist_toggle():
+    """v0.23.0: gs1:allergenType's manifest options are a hand-curated
+    14-value EU subset; the WebVoc snapshot defines far more individuals
+    for gs1:AllergenTypeCode, so a 'show full code list' checkbox should
+    appear and expand the dropdown when checked. gs1:allergenLevelOf
+    ContainmentCode's curated 3 already matches WebVoc's full set, so no
+    checkbox should appear for it."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_workflow(app, "prototype")
+
+    category_select = next(
+        sb for sb in app.selectbox if sb.label == "Product category"
+    )
+    category_select.set_value("Food / Beverage / Tobacco").run(timeout=20)
+    group_select = next(sb for sb in app.selectbox if sb.label == "Thematic group")
+    group_select.set_value("Allergens").run(timeout=20)
+
+    assert not app.exception
+    toggle_checkboxes = [c for c in app.checkbox if "full code list" in c.label]
+    assert len(toggle_checkboxes) == 1
+    assert "curated 14" in toggle_checkboxes[0].label
+
+    allergen_type_select = next(
+        sb for sb in app.selectbox if sb.label == "gs1:hasAllergen#gs1:allergenType code"
+    )
+    curated_option_count = len(allergen_type_select.options)
+
+    toggle_checkboxes[0].set_value(True).run(timeout=20)
+
+    expanded_select = next(
+        sb for sb in app.selectbox if sb.label == "gs1:hasAllergen#gs1:allergenType code"
+    )
+    assert len(expanded_select.options) > curated_option_count
+
+    level_select = next(
+        sb
+        for sb in app.selectbox
+        if sb.label == "gs1:hasAllergen#gs1:allergenLevelOfContainmentCode code"
+    )
+    assert len(level_select.options) == 4  # 3 curated values + "— none —"
+
+
 def test_streamlit_bulk_zip_conversion_produces_batch_result(sample_dir):
     buffer = BytesIO()
     with zipfile.ZipFile(buffer, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:
@@ -710,6 +752,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.22.0" in rendered
+    assert "app version: v0.23.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

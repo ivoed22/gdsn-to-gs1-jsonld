@@ -241,6 +241,38 @@ def _is_property(item: dict[str, Any]) -> bool:
     return bool({"rdf:Property", "owl:ObjectProperty", "owl:DatatypeProperty"} & item_types)
 
 
+def group_individuals_by_class(data: dict[str, Any]) -> dict[str, list[dict[str, str]]]:
+    """Group WebVoc-defined named individuals by their class (v0.23.0).
+
+    An "individual" here is any ``@graph`` item that is neither a class nor
+    a property definition -- e.g. ``gs1:AllergenTypeCode-AM``, a controlled
+    codelist value the vocabulary defines as a named instance of
+    ``gs1:AllergenTypeCode``. Used by the Manual JSON-LD Builder to offer
+    the full, real set of WebVoc-defined values for a controlled-vocabulary
+    (``code``) property's range class, instead of only the manifest's
+    hand-curated subset. Deterministic and offline: reads only the already
+    -committed local snapshot, never fabricates a value.
+    """
+    grouped: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for item in _graph(data):
+        if _is_class(item) or _is_property(item):
+            continue
+        term_id = item.get("@id")
+        if not isinstance(term_id, str):
+            continue
+        label = (
+            _text(item.get("rdfs:label"))
+            or _text(item.get("skos:prefLabel"))
+            or term_id
+        )
+        for type_id in _types(item):
+            grouped[type_id].append({"value": term_id, "label": label})
+    return {
+        class_id: sorted(options, key=lambda entry: entry["label"].lower())
+        for class_id, options in grouped.items()
+    }
+
+
 def extract_classes(data: dict[str, Any]) -> list[VocabularyClass]:
     """Extract Web Vocabulary classes from the JSON-LD graph."""
     classes: list[VocabularyClass] = []

@@ -10,6 +10,7 @@ from gdsn_to_gs1_jsonld.webvoc_explorer import (
     extract_classes,
     extract_properties,
     filter_properties,
+    group_individuals_by_class,
     group_property,
     load_mapping_catalog,
     load_sdr_backlog,
@@ -40,6 +41,37 @@ def test_loads_local_webvoc_and_extracts_classes_and_properties():
     assert gtin.label == "GTIN"
     assert "gs1:Product" in gtin.domain
     assert "xsd:string" in gtin.range
+
+
+def test_group_individuals_by_class_finds_allergen_type_code_individuals():
+    """v0.23.0: powers the Manual Builder's 'show full code list' option --
+    the WebVoc snapshot defines far more AllergenTypeCode individuals than
+    the manifest's hand-curated 14-value EU subset."""
+    data = load_webvoc_jsonld(WEBVOC)
+    grouped = group_individuals_by_class(data)
+
+    allergen_options = grouped["gs1:AllergenTypeCode"]
+    assert len(allergen_options) > 100
+    values = {option["value"] for option in allergen_options}
+    assert "gs1:AllergenTypeCode-AM" in values
+    milk = next(o for o in allergen_options if o["value"] == "gs1:AllergenTypeCode-AM")
+    assert milk["label"]
+
+    # Sorted by label for a stable dropdown order.
+    labels = [option["label"].lower() for option in allergen_options]
+    assert labels == sorted(labels)
+
+
+def test_group_individuals_by_class_excludes_classes_and_properties():
+    data = load_webvoc_jsonld(WEBVOC)
+    grouped = group_individuals_by_class(data)
+    all_values = {
+        option["value"] for options in grouped.values() for option in options
+    }
+    # gs1:Product is a class, gs1:gtin is a property -- neither is a named
+    # individual and must not leak into any group.
+    assert "gs1:Product" not in all_values
+    assert "gs1:gtin" not in all_values
 
 
 def test_grouping_heuristics_cover_common_review_areas():

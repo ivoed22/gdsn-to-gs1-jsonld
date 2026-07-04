@@ -3,6 +3,15 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.23.0 lets the Manual JSON-LD Builder's `gs1:allergenType` field
+switch from its hand-curated 14-value EU subset to the full 385 values the
+local Web Vocabulary snapshot defines for `AllergenTypeCode`, via a "show
+full code list" checkbox (default view unchanged). The mechanism is
+generic (`webvoc_explorer.group_individuals_by_class`, keyed off each
+property's own WebVoc range class), so it applies to any current/future
+`code` field with a smaller curated subset. See `docs/releases/v0.23.0.md`
+for what else was checked (and found not to need a change).
+
 Version 0.22.0 extends v0.21.0's codelist validation to the Bulk ZIP
 workflow: the same "Open codelist validation (Track D)" panel now
 appears after a batch conversion, aggregating status counts across every
