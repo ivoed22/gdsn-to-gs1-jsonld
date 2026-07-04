@@ -106,12 +106,20 @@ project-defined sentinel values for the already-documented experimental
 `referencedDocument` mapping (see `docs/v0.3.0-design.md`), not real GS1
 `ReferencedFileTypeCode` values — a genuine, expected finding, not a bug.
 
+## UI (v0.21.0)
+
+The Convert GDSN XML workflow shows codelist validation in an "Open
+codelist validation (Track D)" expander inside Step 2 (Review mapping &
+evidence): status counts, a table, and a per-entry detail view with a
+status badge. See `docs/streamlit-app.md`. It never adds a 5th download —
+codelist validation stays diagnostic, not part of the exported files.
+
 ## What this does NOT do
 
 - Does NOT change `jsonld_data` output, ever.
 - Does NOT block conversion by default, or at all unless a caller builds
   that behavior on top of `codelist_validation`.
-- Does NOT wire codelist validation into the Streamlit UI yet — that's a
-  natural next step, not built in this version.
 - Does NOT claim official GS1 validation or production compliance.
 - Does NOT enforce codelists for fields outside `CODELIST_DEPENDENCIES`.
+- Does NOT add codelist validation results to any of the four existing
+  downloadable reports.

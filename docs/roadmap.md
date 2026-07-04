@@ -27,7 +27,7 @@ semantic authority: generated/recommended output must not contain dppk terms
 prioritises the mapping foundation and UX/test hardening before the
 Crosswalk.
 
-### v0.21.0+ — GS1-first DPP Crosswalk (deferred behind foundation)
+### v0.22.0+ — GS1-first DPP Crosswalk (deferred behind foundation)
 
 Map DPP fields to GS1-first semantics (GS1 Web Vocabulary → GS1 Digital
 Link → CIRPASS/DPP core → sector vocabularies → schema.org fallback → local
@@ -64,6 +64,10 @@ guess source URLs.
 
 ## Released
 
+- **v0.21.0 — Codelist validation UI (Track D UI wiring).** Convert GDSN
+  XML's Review-mapping step gains a read-only codelist validation panel
+  (status counts, table, per-entry detail with a status badge). No
+  converter behavior change; still exactly 4 downloads.
 - **v0.20.0 — Codelist import & enforcement (Track D).** User-provided
   official public GDSN and Shared Common Code Lists workbook (595
   codelists, 14,564 values) imported into a committed, deterministic
@@ -80,7 +84,7 @@ guess source URLs.
   `needs_codelist_curation` / `needs_hard_mapping_review` /
   `not_ready_no_evidence`, using the mapping registry catalog and Track B's
   hard-mapping detection. DPP relevance is reported as not-yet-assessed for
-  every candidate (the Crosswalk's job, now v0.20.0+). No automatic
+  every candidate (the Crosswalk's job, now v0.22.0+). No automatic
   manifest expansion.
 - **v0.18.0 — Builder UX at scale.** Coverage overview across manifest
   groups, per-field status chips (`builder_status.py`, reusing Track B's

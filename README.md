@@ -3,6 +3,12 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.21.0 wires v0.20.0's codelist validation into the UI: the
+Convert GDSN XML workflow shows a read-only "Open codelist validation
+(Track D)" panel (status counts, table, per-entry detail with a status
+badge) inside the existing Review-mapping step. No converter behavior
+change; still exactly 4 downloads.
+
 Version 0.20.0 unblocks Track D: the user provided the official public GDSN
 and Shared Common Code Lists workbook (595 codelists, 14,564 values),
 imported via new `codelist_importer.py` into a committed, deterministic
@@ -21,7 +27,7 @@ in the Manual Builder manifest into `ready_now` / `needs_codelist_curation`
 / `needs_hard_mapping_review` / `not_ready_no_evidence`, using the mapping
 registry's governance catalog and Track B's hard-mapping detection. DPP
 relevance is reported as not-yet-assessed for every candidate — that
-judgment is the Crosswalk's job (now v0.20.0+). No automatic manifest
+judgment is the Crosswalk's job (now v0.22.0+). No automatic manifest
 expansion; the builder manifest is unchanged.
 
 Version 0.18.0 adds navigation and status aids to the Manual JSON-LD

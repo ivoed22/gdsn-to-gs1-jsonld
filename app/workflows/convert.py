@@ -17,17 +17,105 @@ from app.ui import (
     render_result_summary,
     render_review_guidance,
     render_section_header,
+    render_status_badge,
     render_status_card,
 )
-from app.workflow_shared import clear_batch_results, clear_results
+from app.workflow_shared import REPOSITORY_ROOT, clear_batch_results, clear_results
 from gdsn_to_gs1_jsonld.batch_converter import (
     BatchConversionError,
     BatchConversionLimits,
     convert_batch_zip,
 )
+from gdsn_to_gs1_jsonld.codelist_registry import (
+    CodelistRegistryError,
+    load_codelist_registry,
+)
 from gdsn_to_gs1_jsonld.converter import convert_xml_to_jsonld
 from gdsn_to_gs1_jsonld.reporter import json_bytes, mapping_report_xlsx_bytes
 from gdsn_to_gs1_jsonld.xml_parser import XMLParseError
+
+# Status-badge tone per codelist validation status (v0.20.0 Track D).
+_CODELIST_STATUS_TONES = {
+    "valid": "accepted",
+    "unknown": "review",
+    "deprecated": "review",
+    "missing": "archived",
+    "source_unavailable": "archived",
+}
+
+
+@st.cache_data(show_spinner=False)
+def _load_codelist_registry_cached() -> dict | None:
+    """Load the committed codelist registry (v0.20.0), or None if missing.
+
+    Codelist validation stays fully opt-in: if the registry can't be
+    loaded, the workflow simply skips it — conversion is never affected.
+    """
+    try:
+        return load_codelist_registry(
+            REPOSITORY_ROOT
+            / "reference_data"
+            / "normalized"
+            / "gdsn_codelists_r3_1_36.json"
+        )
+    except CodelistRegistryError:
+        return None
+
+
+def _render_codelist_validation_panel(codelist_validation: list[dict]) -> None:
+    """Read-only codelist validation panel (v0.21.0, Track D UI wiring).
+
+    Diagnostic only: never blocks conversion, never changes the four
+    existing downloads. Skipped entirely if the codelist registry could
+    not be loaded (codelist_validation is then an empty list).
+    """
+    with st.expander("Open codelist validation (Track D)", expanded=False):
+        if not codelist_validation:
+            st.info(
+                "Codelist registry not available for this run, or no "
+                "codelist-backed fields were present. See "
+                "docs/codelist-registry.md."
+            )
+            return
+
+        st.caption(
+            "Structural check against the imported GDSN codelist registry "
+            "(v0.20.0). Diagnostic only — a non-valid status never blocks "
+            "conversion or changes the downloadable output."
+        )
+        counts: dict[str, int] = {}
+        for entry in codelist_validation:
+            counts[entry["status"]] = counts.get(entry["status"], 0) + 1
+        metric_columns = st.columns(len(_CODELIST_STATUS_TONES))
+        for column, status in zip(metric_columns, _CODELIST_STATUS_TONES, strict=True):
+            column.metric(status.replace("_", " ").title(), counts.get(status, 0))
+
+        table_rows = [
+            {
+                "Canonical field": entry["canonical_field"],
+                "Codelist": entry["code_list"],
+                "Value": entry["value"],
+                "Status": entry["status"],
+            }
+            for entry in codelist_validation
+        ]
+        st.dataframe(pd.DataFrame(table_rows), hide_index=True, use_container_width=True)
+
+        selected_idx = st.selectbox(
+            "Select entry for detail",
+            range(len(codelist_validation)),
+            format_func=lambda i: (
+                f"{codelist_validation[i]['canonical_field']} "
+                f"({codelist_validation[i]['status']})"
+            ),
+            key="codelist_validation_detail_select",
+        )
+        selected = codelist_validation[selected_idx]
+        render_status_badge(
+            selected["status"].replace("_", " ").title(),
+            _CODELIST_STATUS_TONES.get(selected["status"], "archived"),
+        )
+        st.caption(selected["detail"])
 
 
 def render_single_xml_workflow(mapping_path: Path) -> None:
@@ -66,6 +154,7 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                         uploaded_file.getvalue(),
                         mapping_path,
                         write_files=False,
+                        codelist_registry=_load_codelist_registry_cached(),
                     )
             except (XMLParseError, FileNotFoundError, ValueError) as exc:
                 st.error(f"Conversion failed: {exc}")
@@ -135,6 +224,8 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                     pd.DataFrame(result.mapping_report_rows),
                     use_container_width=True,
                 )
+
+            _render_codelist_validation_panel(result.codelist_validation)
 
         # Step 3 — Generate & validate output
         with st.container(border=True):

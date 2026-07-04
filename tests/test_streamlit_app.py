@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.20.0"
+    assert ui.APP_VERSION == "v0.21.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -91,6 +91,37 @@ def test_streamlit_result_survives_rerun(example_xml_path):
         "https://id.gs1.org/01/08712345678906" in markdown.value
         for markdown in app.markdown
     )
+
+
+def test_codelist_validation_panel_appears_after_conversion(example_xml_path):
+    """v0.21.0 (Track D UI wiring): the codelist validation panel is
+    read-only diagnostic info and must never add a 5th download or change
+    the existing conversion output."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    app.get("file_uploader")[0].set_value(
+        ("example_product.xml", example_xml_path.read_bytes(), "application/xml")
+    )
+    app.run(timeout=20)
+    app.button[_button_index(app, "Convert product to JSON-LD")].click().run(timeout=20)
+
+    assert not app.exception
+    assert any(
+        "codelist validation" in expander.label.lower() for expander in app.expander
+    )
+    # Still exactly 4 downloads — codelist validation adds no new download.
+    assert len(app.get("download_button")) == 4
+
+    metrics_by_label = {metric.label: metric.value for metric in app.metric}
+    for expected_label in ("Valid", "Unknown", "Deprecated", "Missing", "Source Unavailable"):
+        assert expected_label in metrics_by_label
+    # The example fixture has 5 valid codelist values and 2 unknown
+    # (DPP_DOCUMENT/CERTIFICATION_DOCUMENT — documented experimental
+    # sentinel values, not real GS1 ReferencedFileTypeCode values).
+    assert metrics_by_label["Valid"] == "5"
+    assert metrics_by_label["Unknown"] == "2"
+
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    assert "status-badge-" in rendered
 
 
 def test_convert_wizard_progress_indicator_present():
@@ -150,7 +181,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.20.0" in markdown.value
+        "App version: v0.21.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -649,6 +680,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.20.0" in rendered
+    assert "app version: v0.21.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

@@ -9,6 +9,29 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.21.0 — Codelist Validation UI (Track D UI Wiring)
+
+Read-only diagnostic panel; no converter behavior change and no new
+download.
+
+- **Convert GDSN XML now shows codelist validation.** A new "Open codelist
+  validation (Track D)" expander inside the existing Step 2 (Review mapping
+  & evidence) shows per-field status (valid/unknown/deprecated/missing/
+  source_unavailable) against the v0.20.0 codelist registry, with counts,
+  a table, and a per-entry detail view with a status badge.
+  `render_single_xml_workflow` now passes a cached, loaded codelist
+  registry into `convert_xml_to_jsonld` — still fully consistent with the
+  opt-in design: if the registry can't load, the panel says so and nothing
+  else changes.
+- Still exactly 4 downloads; no new file is added. Codelist validation
+  results are diagnostic only, never blocking conversion or changing
+  `jsonld_data`.
+- On the example fixture: 5 valid, 2 unknown (the already-documented
+  `DPP_DOCUMENT`/`CERTIFICATION_DOCUMENT` sentinel values).
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims. No official GS1 validation or production compliance is claimed.
+
 ## v0.20.0 — Codelist Import & Enforcement (Track D)
 
 Unblocked this session: the user provided the official public GDSN and

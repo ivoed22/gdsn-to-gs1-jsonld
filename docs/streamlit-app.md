@@ -31,3 +31,9 @@ The Bulk ZIP tab ignores non-XML files and uses the shared batch converter to
 produce `batch_summary.json`, `batch_summary.xlsx`, and a batch export ZIP.
 The Web Vocabulary mode is a placeholder for a later Explorer release. The
 Standards Review mode shows compact read-only SDR/backlog status.
+
+**v0.21.0**: Single XML conversion's "Review mapping & evidence" step gained
+an "Open codelist validation (Track D)" expander showing per-field
+valid/unknown/deprecated/missing/source_unavailable status against the
+v0.20.0 codelist registry. Diagnostic only — it never blocks conversion and
+adds no new download. See `docs/codelist-registry.md`.

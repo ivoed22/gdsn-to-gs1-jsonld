@@ -1,5 +1,21 @@
 # UI Changes
 
+## v0.21.0 Codelist validation UI (Track D UI wiring) checklist
+
+- [x] Convert GDSN XML's Step 2 (Review mapping & evidence) gains an "Open
+      codelist validation (Track D)" expander: 5 status metrics, a table,
+      and a per-entry detail view with a status badge (reusing v0.15.0
+      tokens: valid=green, unknown/deprecated=amber, missing/
+      source_unavailable=grey).
+- [x] Lives inside the existing Step 2 — the guided four-step structure
+      (Upload/Mapping/Validate/Export) is unchanged.
+- [x] Still exactly 4 downloads; codelist validation is diagnostic only,
+      never added to an exported file.
+- [x] If the codelist registry can't load, the panel says so and
+      conversion proceeds unaffected — opt-in design preserved.
+- [x] No governance warnings removed; no compliance claims added;
+      converter output unchanged (test-proven).
+
 ## v0.20.0 Codelist import & enforcement (Track D)
 
 - [x] No UI changes in this version — Track D adds an offline import
