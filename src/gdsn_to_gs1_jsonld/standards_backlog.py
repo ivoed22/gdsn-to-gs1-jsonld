@@ -167,6 +167,38 @@ CSV_COLUMNS = (
 )
 
 
+def build_sdr_review_annotation(annotations: list[dict[str, Any]]) -> dict[str, Any]:
+    """Build a reviewable SDR review-annotation artifact (v0.29.0).
+
+    First slice of the "Standards-review workflow (future)" roadmap item:
+    lets a human record a proposed reviewer, decision date, and target
+    status for an open SDR (each entry: ``{"sdr_id", "reviewer",
+    "decision_date", "proposed_status", "notes"}``), without building the
+    full state machine described in the roadmap (named-reviewer assignment,
+    moving records through Proposed/Accepted/Rejected/Deferred, versioned
+    mapping changes for accepted decisions). No status transition is
+    applied here, and ``docs/standards-decisions/standards_review_backlog
+    .json`` -- governed data -- is never written to by this function or by
+    the Streamlit workflow that calls it. A human still carries out any
+    accepted decision through the existing SDR/decision-file process.
+
+    Entries with a blank ``sdr_id`` are dropped.
+    """
+    return {
+        "annotations": [
+            {
+                "sdr_id": str(item.get("sdr_id", "")).strip(),
+                "reviewer": str(item.get("reviewer", "")).strip(),
+                "decision_date": str(item.get("decision_date", "")).strip(),
+                "proposed_status": str(item.get("proposed_status", "")).strip(),
+                "notes": str(item.get("notes", "")).strip(),
+            }
+            for item in annotations
+            if str(item.get("sdr_id", "")).strip()
+        ]
+    }
+
+
 def validate_backlog(backlog: tuple[dict[str, Any], ...] = BACKLOG) -> None:
     ids = [item["id"] for item in backlog]
     if len(ids) != len(set(ids)):

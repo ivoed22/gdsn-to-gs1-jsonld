@@ -9,6 +9,37 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.29.0 — First Slice of the Standards Review Workflow
+
+Last of eight versions in this batch (v0.22.0–v0.29.0). Adds the smallest
+useful slice of the "Standards-review workflow (future)" roadmap item —
+deliberately not the full state machine it describes.
+
+- New `standards_backlog.build_sdr_review_annotation(annotations)`: builds
+  a review-annotation artifact from `{sdr_id, reviewer, decision_date,
+  proposed_status, notes}` entries. `proposed_status` reuses the module's
+  existing fixed `VALID_DECISION_STATUSES` vocabulary
+  (`proposed`/`accepted`/`rejected`/`deferred`) — no new vocabulary
+  invented.
+- **Standards Review gains a "Record a review annotation" section**: one
+  Reviewer/Decision-date/Proposed-status/Notes row per open SDR, and a
+  "Download review annotations JSON" button once at least one status is
+  set. This records a *proposal*, not an applied decision — it never
+  changes an SDR's actual status and never writes to
+  `docs/standards-decisions/standards_review_backlog.json` (governed
+  data), consistent with how v0.25.0's hard-mapping sign-off never
+  auto-applied either.
+- Explicitly out of scope for this slice (left for the full workflow
+  described in `docs/roadmap.md`): moving records through
+  Proposed/Accepted/Rejected/Deferred, creating versioned mapping changes
+  for accepted decisions, and any enforcement of the proposed status.
+- `docs/roadmap.md`'s Crosswalk section renumbered from `v0.22.0+` to
+  `v0.30.0+`, since this is the last version before that track resumes
+  (still blocked on the user's own CIRPASS/sector-vocabulary sourcing).
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims.
+
 ## v0.28.0 — Load a Previously Generated Candidate Report
 
 Corrects course from the originally planned scope after investigation:

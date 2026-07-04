@@ -46,7 +46,7 @@ governed.
 
 Every candidate reports `dpp_relevance: "not_yet_assessed_pending_crosswalk"`.
 Judging whether a property matters for a Digital Product Passport is the
-GS1-first DPP Crosswalk's job (v0.20.0+, not built yet — see
+GS1-first DPP Crosswalk's job (v0.30.0+, not built yet — see
 `docs/roadmap.md`). Reporting anything else here would be exactly the kind
 of invented data this project does not produce.
 

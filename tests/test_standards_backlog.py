@@ -9,6 +9,7 @@ from gdsn_to_gs1_jsonld.cli import app
 from gdsn_to_gs1_jsonld.standards_backlog import (
     CSV_COLUMNS,
     VALID_DECISION_STATUSES,
+    build_sdr_review_annotation,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -112,3 +113,58 @@ def test_export_standards_backlog_cli_is_offline_and_preserves_sdr(
     assert (tmp_path / "standards_review_backlog.json").is_file()
     assert (tmp_path / "standards_review_backlog.csv").is_file()
     assert decision.read_text(encoding="utf-8") == "human-maintained"
+
+
+def test_build_sdr_review_annotation_records_reviewer_and_decision_date():
+    """v0.29.0: first slice of the future standards-review workflow --
+    records a proposed reviewer/date/status without applying any state
+    transition or touching the governed backlog JSON."""
+    annotations = [
+        {
+            "sdr_id": "SDR-001",
+            "reviewer": "Alice",
+            "decision_date": "2026-07-04",
+            "proposed_status": "accepted",
+            "notes": "Reviewed with sector experts.",
+        },
+        {
+            "sdr_id": "SDR-002",
+            "reviewer": "Bob",
+            "decision_date": "2026-07-05",
+            "proposed_status": "deferred",
+            "notes": "",
+        },
+    ]
+
+    result = build_sdr_review_annotation(annotations)
+
+    assert len(result["annotations"]) == 2
+    assert result["annotations"][0]["sdr_id"] == "SDR-001"
+    assert result["annotations"][0]["proposed_status"] == "accepted"
+    assert result["annotations"][1]["reviewer"] == "Bob"
+
+
+def test_build_sdr_review_annotation_drops_entries_without_sdr_id():
+    annotations = [
+        {"sdr_id": "", "reviewer": "Alice", "decision_date": "", "proposed_status": ""},
+        {"sdr_id": "SDR-003", "reviewer": "Carol", "decision_date": "2026-07-06", "proposed_status": "proposed"},
+    ]
+
+    result = build_sdr_review_annotation(annotations)
+
+    assert len(result["annotations"]) == 1
+    assert result["annotations"][0]["sdr_id"] == "SDR-003"
+
+
+def test_build_sdr_review_annotation_proposed_statuses_are_from_fixed_vocabulary():
+    annotations = [
+        {"sdr_id": "SDR-001", "proposed_status": status}
+        for status in sorted(VALID_DECISION_STATUSES - {"open"})
+    ]
+
+    result = build_sdr_review_annotation(annotations)
+
+    assert all(
+        item["proposed_status"] in VALID_DECISION_STATUSES
+        for item in result["annotations"]
+    )

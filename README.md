@@ -3,6 +3,14 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.29.0 adds the smallest useful slice of the future "Standards-
+review workflow": Standards Review can record a proposed reviewer,
+decision date, and target status per open SDR and download the
+annotation, without applying any status transition or writing to the
+governed backlog JSON. Last of eight versions in this batch — see
+`docs/releases/v0.29.0.md`. The Crosswalk track (now v0.30.0+) remains
+next, blocked on CIRPASS/sector-vocabulary sourcing.
+
 Version 0.28.0 lets Generate Mapping Candidates load a previously
 generated candidate report (from this workflow's own download, or the
 CLI's `--full-scope` sweep) instead of re-running the ~7-minute scan.
@@ -83,7 +91,7 @@ in the Manual Builder manifest into `ready_now` / `needs_codelist_curation`
 / `needs_hard_mapping_review` / `not_ready_no_evidence`, using the mapping
 registry's governance catalog and Track B's hard-mapping detection. DPP
 relevance is reported as not-yet-assessed for every candidate — that
-judgment is the Crosswalk's job (now v0.22.0+). No automatic manifest
+judgment is the Crosswalk's job (now v0.30.0+). No automatic manifest
 expansion; the builder manifest is unchanged.
 
 Version 0.18.0 adds navigation and status aids to the Manual JSON-LD

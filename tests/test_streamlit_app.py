@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.28.0"
+    assert ui.APP_VERSION == "v0.29.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -211,7 +211,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.28.0" in markdown.value
+        "App version: v0.29.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -395,6 +395,44 @@ def test_standards_review_vocabulary_freshness_check_is_offline_and_diffs_terms(
     assert any(
         "1 new, 0 removed, 0 changed term(s) detected" in warning.value
         for warning in app.warning
+    )
+
+
+def test_sdr_review_annotation_records_reviewer_without_changing_status():
+    """v0.29.0: first slice of the future standards-review workflow.
+    Recording a reviewer/date/proposed-status produces a downloadable
+    annotation but never changes the SDR's actual status or writes to the
+    governed backlog file."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_route(app, "vocabulary_mapping")
+    _open_workflow(app, "standards")
+
+    assert any(
+        "Record a review annotation" in markdown.value for markdown in app.markdown
+    )
+    status_selectors = [s for s in app.selectbox if s.label == "Proposed status"]
+    assert len(status_selectors) == 6  # one per open SDR
+    assert status_selectors[0].options == [
+        "Not reviewed",
+        "accepted",
+        "deferred",
+        "proposed",
+        "rejected",
+    ]
+
+    status_selectors[0].select("accepted").run(timeout=20)
+    reviewer_inputs = [t for t in app.text_input if t.label == "Reviewer"]
+    reviewer_inputs[0].set_value("Alice").run(timeout=20)
+
+    assert not app.exception
+    assert any("1 annotation(s) recorded" in caption.value for caption in app.caption)
+    annotation_downloads = [
+        d for d in app.get("download_button") if "annotation" in d.label.lower()
+    ]
+    assert len(annotation_downloads) == 1
+    # Still 6 open SDRs -- recording a proposal never applies a transition.
+    assert any(
+        metric.label == "Open SDRs" and metric.value == "6" for metric in app.metric
     )
 
 
@@ -975,6 +1013,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.28.0" in rendered
+    assert "app version: v0.29.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

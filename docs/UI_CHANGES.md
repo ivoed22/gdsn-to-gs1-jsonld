@@ -1,5 +1,21 @@
 # UI Changes
 
+## v0.29.0 First slice of Standards Review workflow checklist
+
+- [x] Standards Review gains a "Record a review annotation" section:
+      Reviewer/Decision date/Proposed status/Notes per open SDR.
+- [x] "Download review annotations JSON" button appears once at least
+      one Proposed status is set.
+- [x] New `standards_backlog.build_sdr_review_annotation` helper reuses
+      the existing `VALID_DECISION_STATUSES` vocabulary — no new
+      vocabulary invented.
+- [x] Recording an annotation never applies a status transition and
+      never writes to the governed backlog JSON — open SDR count stays
+      unchanged (test-proven).
+- [x] Explicitly not the full state machine described in
+      docs/roadmap.md's "Standards-review workflow (future)" section.
+- [x] No governance warnings removed; no compliance claims added.
+
 ## v0.28.0 Load a previously generated candidate report checklist
 
 - [x] Generate Mapping Candidates gains a "Load a previously generated
