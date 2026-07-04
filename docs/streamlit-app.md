@@ -37,3 +37,9 @@ an "Open codelist validation (Track D)" expander showing per-field
 valid/unknown/deprecated/missing/source_unavailable status against the
 v0.20.0 codelist registry. Diagnostic only — it never blocks conversion and
 adds no new download. See `docs/codelist-registry.md`.
+
+**v0.22.0**: The Bulk ZIP workflow gained the same codelist validation
+expander, aggregated across the whole batch: five status metrics summed
+over every file, plus a table of files that had at least one non-valid
+codelist entry. Diagnostic only — never blocks a file or changes the
+export ZIP.

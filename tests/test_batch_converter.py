@@ -1,6 +1,7 @@
 import json
 import zipfile
 from io import BytesIO
+from pathlib import Path
 
 import pytest
 from openpyxl import load_workbook
@@ -193,3 +194,79 @@ def test_batch_export_zip_structure_is_correct(sample_dir, mapping_v0_3_path):
         for name in names
     )
     assert "errors/broken_error.json" in names
+
+
+# ---------------------------------------------------------------------------
+# Codelist validation integration (Track D UI wiring, v0.22.0) — must stay
+# fully opt-in, mirroring the Single XML workflow's converter integration.
+# ---------------------------------------------------------------------------
+
+
+def test_batch_zip_without_codelist_registry_has_empty_counts(
+    sample_dir, mapping_v0_3_path
+):
+    batch_zip = _zip_bytes(
+        {"minimal_product.xml": (sample_dir / "minimal_product.xml").read_bytes()}
+    )
+
+    report = convert_batch_zip(batch_zip, mapping_v0_3_path)
+
+    assert report.codelist_validation_counts == {}
+    assert all(file.codelist_status_counts == {} for file in report.files)
+
+
+def test_batch_zip_with_codelist_registry_aggregates_counts(
+    example_xml_path, mapping_v0_3_path
+):
+    from gdsn_to_gs1_jsonld.codelist_registry import load_codelist_registry
+
+    root = Path(__file__).resolve().parents[1]
+    registry = load_codelist_registry(
+        root / "reference_data" / "normalized" / "gdsn_codelists_r3_1_36.json"
+    )
+    batch_zip = _zip_bytes({"example_product.xml": example_xml_path.read_bytes()})
+
+    report = convert_batch_zip(batch_zip, mapping_v0_3_path, codelist_registry=registry)
+
+    assert report.success_count == 1
+    assert report.codelist_validation_counts.get("valid") == 5
+    assert report.codelist_validation_counts.get("unknown") == 2
+    assert report.files[0].codelist_status_counts.get("valid") == 5
+    assert report.files[0].codelist_status_counts.get("unknown") == 2
+
+
+def test_batch_zip_codelist_validation_never_blocks_batch(
+    example_xml_path, mapping_v0_3_path
+):
+    from gdsn_to_gs1_jsonld.codelist_registry import load_codelist_registry
+
+    root = Path(__file__).resolve().parents[1]
+    registry = load_codelist_registry(
+        root / "reference_data" / "normalized" / "gdsn_codelists_r3_1_36.json"
+    )
+    batch_zip = _zip_bytes({"example_product.xml": example_xml_path.read_bytes()})
+
+    report = convert_batch_zip(batch_zip, mapping_v0_3_path, codelist_registry=registry)
+
+    assert report.failure_count == 0
+    assert report.files[0].status == "success"
+
+
+def test_batch_zip_output_identical_with_and_without_codelist_registry(
+    example_xml_path, mapping_v0_3_path
+):
+    from gdsn_to_gs1_jsonld.codelist_registry import load_codelist_registry
+
+    root = Path(__file__).resolve().parents[1]
+    registry = load_codelist_registry(
+        root / "reference_data" / "normalized" / "gdsn_codelists_r3_1_36.json"
+    )
+    batch_zip = _zip_bytes({"example_product.xml": example_xml_path.read_bytes()})
+
+    without = convert_batch_zip(batch_zip, mapping_v0_3_path)
+    with_registry = convert_batch_zip(batch_zip, mapping_v0_3_path, codelist_registry=registry)
+
+    assert without.files[0].gtin == with_registry.files[0].gtin
+    assert without.files[0].mapped_count == with_registry.files[0].mapped_count
+    assert without.files[0].unmapped_count == with_registry.files[0].unmapped_count
+    assert without.files[0].validation_status == with_registry.files[0].validation_status

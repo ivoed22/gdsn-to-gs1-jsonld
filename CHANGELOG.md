@@ -9,6 +9,27 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.22.0 — Bulk ZIP Codelist Validation
+
+Extends v0.21.0's codelist validation panel to the Bulk ZIP workflow.
+Read-only diagnostic; no converter behavior change and no new download.
+
+- **`convert_batch_zip` gains a fully opt-in `codelist_registry` parameter**,
+  mirroring `convert_xml_to_jsonld`. Leaving it `None` (the default) is
+  byte-identical to every prior version. `BatchFileResult` gains a
+  `codelist_status_counts` field; the batch summary gains an aggregate
+  `codelist_validation_counts` dict.
+- **Bulk ZIP workflow shows an aggregate "Open codelist validation (Track
+  D)" expander** after conversion: five status metrics summed across the
+  whole batch, plus a table of any files that had at least one non-valid
+  codelist entry, so a user can see which files need attention without
+  scanning every field of every file.
+- Batch success/failure counts and the export ZIP contents are unaffected;
+  codelist validation never blocks a file or excludes it from the export.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims. No official GS1 validation or production compliance is claimed.
+
 ## v0.21.0 — Codelist Validation UI (Track D UI Wiring)
 
 Read-only diagnostic panel; no converter behavior change and no new

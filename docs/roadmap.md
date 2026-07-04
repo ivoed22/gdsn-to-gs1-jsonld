@@ -64,6 +64,12 @@ guess source URLs.
 
 ## Released
 
+- **v0.22.0 — Bulk ZIP codelist validation.** Extends v0.21.0's codelist
+  validation panel to the Bulk ZIP workflow: `convert_batch_zip` gains the
+  same fully opt-in `codelist_registry` parameter, and the workflow shows
+  an aggregate status-count panel plus a per-file issue table after batch
+  conversion. No converter/batch behavior change; batch success/failure
+  counts and the export ZIP are unaffected.
 - **v0.21.0 — Codelist validation UI (Track D UI wiring).** Convert GDSN
   XML's Review-mapping step gains a read-only codelist validation panel
   (status counts, table, per-entry detail with a status badge). No

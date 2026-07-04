@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.21.0"
+    assert ui.APP_VERSION == "v0.22.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -181,7 +181,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.21.0" in markdown.value
+        "App version: v0.22.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -483,6 +483,36 @@ def test_streamlit_bulk_zip_conversion_produces_batch_result(sample_dir):
     )
 
 
+def test_bulk_zip_codelist_validation_panel_appears_after_conversion(example_xml_path):
+    """v0.22.0: Bulk ZIP shows the same aggregate codelist validation panel
+    as Single XML (v0.21.0), summed across the batch. Diagnostic only —
+    adds no new download."""
+    buffer = BytesIO()
+    with zipfile.ZipFile(buffer, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr("example_product.xml", example_xml_path.read_bytes())
+
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    app.get("file_uploader")[1].set_value(
+        ("batch.zip", buffer.getvalue(), "application/zip")
+    )
+    app.run(timeout=20)
+    convert_button = next(
+        index for index, button in enumerate(app.button)
+        if button.label == "Convert ZIP batch"
+    )
+    app.button[convert_button].click().run(timeout=20)
+
+    assert not app.exception
+    assert any(
+        "codelist validation" in expander.label.lower() for expander in app.expander
+    )
+    assert len(app.get("download_button")) == 1
+
+    metrics_by_label = {metric.label: metric.value for metric in app.metric}
+    assert metrics_by_label["Valid"] == "5"
+    assert metrics_by_label["Unknown"] == "2"
+
+
 def test_streamlit_archived_profile_selection_warns_and_clears_results(
     example_xml_path,
 ):
@@ -680,6 +710,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.21.0" in rendered
+    assert "app version: v0.22.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

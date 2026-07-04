@@ -46,6 +46,7 @@ class BatchFileResult:
     validation_warning_count: int = 0
     error_type: str = ""
     error_message: str = ""
+    codelist_status_counts: dict[str, int] = field(default_factory=dict)
 
     def to_summary_row(self) -> dict[str, Any]:
         return {
@@ -61,6 +62,7 @@ class BatchFileResult:
             "validation_warning_count": self.validation_warning_count,
             "error_type": self.error_type,
             "error_message": self.error_message,
+            "codelist_status_counts": dict(self.codelist_status_counts),
         }
 
     def to_preview_row(self) -> dict[str, Any]:
@@ -70,6 +72,11 @@ class BatchFileResult:
             if self.error_type and self.error_message
             else self.error_message
         )
+        codelist_issues = sum(
+            count
+            for status, count in self.codelist_status_counts.items()
+            if status != "valid"
+        )
         return {
             "filename": self.original_filename,
             "status": self.status,
@@ -77,6 +84,7 @@ class BatchFileResult:
             "mapped count": self.mapped_count,
             "unmapped count": self.unmapped_count,
             "validation status": self.validation_status,
+            "codelist issues": codelist_issues,
             "error summary": error_summary,
         }
 
@@ -115,6 +123,10 @@ class BatchConversionReport:
     @property
     def preview_rows(self) -> list[dict[str, Any]]:
         return [result.to_preview_row() for result in self.files]
+
+    @property
+    def codelist_validation_counts(self) -> dict[str, int]:
+        return dict(self.summary["summary"]["codelist_validation_counts"])
 
 
 def _read_zip_source(zip_source: bytes | bytearray | str | Path) -> bytes | Path:
@@ -198,18 +210,28 @@ def _file_error(
     return _BatchArtifact(result=result, error_bytes=_error_artifact(result))
 
 
+def _codelist_status_counts(codelist_validation: list[dict[str, Any]]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for entry in codelist_validation:
+        status = entry["status"]
+        counts[status] = counts.get(status, 0) + 1
+    return counts
+
+
 def _convert_xml_entry(
     *,
     original_filename: str,
     xml_bytes: bytes,
     mapping_path: str | Path,
     used_output_names: set[str],
+    codelist_registry: dict[str, Any] | None,
 ) -> _BatchArtifact:
     try:
         result = convert_xml_to_jsonld(
             xml_bytes,
             mapping_path,
             write_files=False,
+            codelist_registry=codelist_registry,
         )
     except Exception as exc:  # noqa: BLE001 - per-file failures must not stop a batch.
         return _file_error(
@@ -234,6 +256,7 @@ def _convert_xml_entry(
         validation_status=_validation_status(validation_report),
         validation_error_count=len(validation_report.get("errors", [])),
         validation_warning_count=len(validation_report.get("warnings", [])),
+        codelist_status_counts=_codelist_status_counts(result.codelist_validation),
     )
     return _BatchArtifact(
         result=file_result,
@@ -242,6 +265,16 @@ def _convert_xml_entry(
         validation_report_bytes=json_bytes(result.validation_report),
         unmapped_fields_bytes=json_bytes(result.unmapped_fields),
     )
+
+
+def _aggregate_codelist_status_counts(
+    files: list[BatchFileResult],
+) -> dict[str, int]:
+    totals: dict[str, int] = {}
+    for file in files:
+        for status, count in file.codelist_status_counts.items():
+            totals[status] = totals.get(status, 0) + count
+    return totals
 
 
 def _build_summary(
@@ -259,6 +292,7 @@ def _build_summary(
             "validation_warning_count": sum(
                 file.validation_warning_count for file in files
             ),
+            "codelist_validation_counts": _aggregate_codelist_status_counts(files),
         },
         "limits": {
             "max_files": limits.max_files,
@@ -338,8 +372,17 @@ def convert_batch_zip(
     *,
     limits: BatchConversionLimits | None = None,
     output_dir: str | Path | None = None,
+    codelist_registry: dict[str, Any] | None = None,
 ) -> BatchConversionReport:
-    """Convert XML files from a ZIP and return summary plus export ZIP bytes."""
+    """Convert XML files from a ZIP and return summary plus export ZIP bytes.
+
+    ``codelist_registry`` is optional and opt-in (v0.22.0), mirroring
+    ``convert_xml_to_jsonld``'s parameter of the same name: leaving it
+    ``None`` (the default) is byte-identical to every prior version. Passing
+    a loaded registry only adds diagnostic ``codelist_status_counts`` per
+    file and an aggregate ``codelist_validation_counts`` in the summary;
+    it never blocks a batch or changes which files succeed or fail.
+    """
     active_limits = limits or BatchConversionLimits()
     if active_limits.max_files < 1:
         raise BatchConversionError("max_files must be at least 1.")
@@ -426,6 +469,7 @@ def convert_batch_zip(
                     xml_bytes=xml_bytes,
                     mapping_path=mapping_path,
                     used_output_names=used_output_names,
+                    codelist_registry=codelist_registry,
                 )
             )
 

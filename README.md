@@ -3,6 +3,14 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.22.0 extends v0.21.0's codelist validation to the Bulk ZIP
+workflow: the same "Open codelist validation (Track D)" panel now
+appears after a batch conversion, aggregating status counts across every
+file and listing which files had a non-valid entry. `convert_batch_zip`
+gains the same fully opt-in `codelist_registry` parameter as
+`convert_xml_to_jsonld`; no converter/batch behavior change, no new
+download.
+
 Version 0.21.0 wires v0.20.0's codelist validation into the UI: the
 Convert GDSN XML workflow shows a read-only "Open codelist validation
 (Track D)" panel (status counts, table, per-entry detail with a status

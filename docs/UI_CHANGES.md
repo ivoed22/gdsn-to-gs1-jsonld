@@ -1,5 +1,20 @@
 # UI Changes
 
+## v0.22.0 Bulk ZIP codelist validation checklist
+
+- [x] Bulk ZIP workflow gains the same "Open codelist validation (Track
+      D)" expander as Single XML (v0.21.0), aggregated across the batch:
+      5 status metrics summed over every file, plus a table of files with
+      at least one non-valid entry.
+- [x] Per-file preview table gains a "codelist issues" column for
+      at-a-glance triage.
+- [x] `convert_batch_zip` gains a fully opt-in `codelist_registry`
+      parameter; default `None` is byte-identical to every prior version.
+- [x] Codelist validation never excludes a file from the batch or the
+      export ZIP; batch success/failure counts unaffected.
+- [x] No governance warnings removed; no compliance claims added;
+      batch converter output unchanged for existing callers (test-proven).
+
 ## v0.21.0 Codelist validation UI (Track D UI wiring) checklist
 
 - [x] Convert GDSN XML's Step 2 (Review mapping & evidence) gains an "Open

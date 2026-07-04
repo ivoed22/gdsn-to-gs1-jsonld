@@ -24,6 +24,7 @@ from app.workflow_shared import REPOSITORY_ROOT, clear_batch_results, clear_resu
 from gdsn_to_gs1_jsonld.batch_converter import (
     BatchConversionError,
     BatchConversionLimits,
+    BatchFileResult,
     convert_batch_zip,
 )
 from gdsn_to_gs1_jsonld.codelist_registry import (
@@ -352,6 +353,65 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
             )
 
 
+def _render_batch_codelist_validation_panel(
+    codelist_validation_counts: dict[str, int],
+    files: list[BatchFileResult],
+) -> None:
+    """Aggregate, read-only codelist validation panel for the Bulk ZIP batch (v0.22.0).
+
+    Extends v0.21.0's Single XML panel to batches: sums per-file
+    diagnostic counts rather than listing every field entry (a batch can
+    span many files). Diagnostic only — never blocks a batch or changes
+    which files succeed or fail.
+    """
+    with st.expander("Open codelist validation (Track D)", expanded=False):
+        if not any(codelist_validation_counts.values()):
+            st.info(
+                "Codelist registry not available for this run, or no "
+                "codelist-backed fields were present. See "
+                "docs/codelist-registry.md."
+            )
+            return
+
+        st.caption(
+            "Structural check against the imported GDSN codelist registry "
+            "(v0.20.0), aggregated across the batch. Diagnostic only — a "
+            "non-valid status never blocks conversion or excludes a file "
+            "from the export ZIP."
+        )
+        metric_columns = st.columns(len(_CODELIST_STATUS_TONES))
+        for column, status in zip(metric_columns, _CODELIST_STATUS_TONES, strict=True):
+            column.metric(
+                status.replace("_", " ").title(),
+                codelist_validation_counts.get(status, 0),
+            )
+
+        issue_rows = [
+            {
+                "filename": result.original_filename,
+                **{
+                    status.replace("_", " ").title(): result.codelist_status_counts.get(
+                        status, 0
+                    )
+                    for status in _CODELIST_STATUS_TONES
+                    if status != "valid"
+                },
+            }
+            for result in files
+            if sum(
+                count
+                for status, count in result.codelist_status_counts.items()
+                if status != "valid"
+            )
+            > 0
+        ]
+        if issue_rows:
+            st.caption("Files with at least one non-valid codelist entry:")
+            st.dataframe(pd.DataFrame(issue_rows), hide_index=True, use_container_width=True)
+        else:
+            st.caption("No file had a non-valid codelist entry.")
+
+
 def render_bulk_zip_workflow(mapping_path: Path) -> None:
     with st.container(border=True):
         render_section_header(
@@ -381,6 +441,7 @@ def render_bulk_zip_workflow(mapping_path: Path) -> None:
                         uploaded_zip.getvalue(),
                         mapping_path,
                         limits=BatchConversionLimits(),
+                        codelist_registry=_load_codelist_registry_cached(),
                     )
             except BatchConversionError as exc:
                 st.error(f"Batch conversion failed: {exc}")
@@ -412,6 +473,11 @@ def render_bulk_zip_workflow(mapping_path: Path) -> None:
                 use_container_width=True,
                 hide_index=True,
             )
+
+            _render_batch_codelist_validation_panel(
+                report.codelist_validation_counts, report.files
+            )
+
             st.download_button(
                 "Download batch export ZIP",
                 data=st.session_state["batch_export_zip_bytes"],

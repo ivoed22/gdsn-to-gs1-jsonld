@@ -106,20 +106,30 @@ project-defined sentinel values for the already-documented experimental
 `referencedDocument` mapping (see `docs/v0.3.0-design.md`), not real GS1
 `ReferencedFileTypeCode` values — a genuine, expected finding, not a bug.
 
-## UI (v0.21.0)
+## UI (v0.21.0, extended v0.22.0)
 
-The Convert GDSN XML workflow shows codelist validation in an "Open
-codelist validation (Track D)" expander inside Step 2 (Review mapping &
-evidence): status counts, a table, and a per-entry detail view with a
-status badge. See `docs/streamlit-app.md`. It never adds a 5th download —
-codelist validation stays diagnostic, not part of the exported files.
+The Convert GDSN XML **Single XML** workflow shows codelist validation in
+an "Open codelist validation (Track D)" expander inside Step 2 (Review
+mapping & evidence): status counts, a table, and a per-entry detail view
+with a status badge. See `docs/streamlit-app.md`. It never adds a 5th
+download — codelist validation stays diagnostic, not part of the exported
+files.
+
+The **Bulk ZIP** workflow (v0.22.0) shows the same expander after batch
+conversion, aggregated across every file: `convert_batch_zip` accepts the
+same opt-in `codelist_registry` parameter, `BatchFileResult` carries a
+per-file `codelist_status_counts`, and the batch summary carries an
+aggregate `codelist_validation_counts`. The panel sums the five status
+metrics across the batch and lists which files had at least one non-valid
+entry, rather than listing every field of every file. It never excludes a
+file from the batch or the export ZIP.
 
 ## What this does NOT do
 
 - Does NOT change `jsonld_data` output, ever.
-- Does NOT block conversion by default, or at all unless a caller builds
-  that behavior on top of `codelist_validation`.
+- Does NOT block conversion (single or batch) by default, or at all unless
+  a caller builds that behavior on top of `codelist_validation`.
 - Does NOT claim official GS1 validation or production compliance.
 - Does NOT enforce codelists for fields outside `CODELIST_DEPENDENCIES`.
-- Does NOT add codelist validation results to any of the four existing
-  downloadable reports.
+- Does NOT add codelist validation results to any of the downloadable
+  reports (Single XML's four downloads, or the Bulk ZIP export ZIP).
