@@ -106,28 +106,37 @@ def render_webvoc_explorer() -> None:
             selected_group = st.selectbox(
                 "Group",
                 ["All groups", *PROPERTY_GROUPS],
+                key="webvoc_explorer_group",
                 help="Pragmatic grouping for GS1/GDSN mapping review.",
             )
         with top_mid:
             selected_domain = st.selectbox(
                 "Domain",
                 ["All domains", *all_domains],
+                key="webvoc_explorer_domain",
                 help="Optional Web Vocabulary domain/root selector.",
             )
         with top_right:
             selected_coverage = st.selectbox(
                 "Coverage status",
                 ["All statuses", *COVERAGE_STATUSES],
+                key="webvoc_explorer_coverage",
             )
         search = st.text_input(
             "Search properties",
             placeholder="Search property, label, comment, BMS field, or XPath evidence",
+            key="webvoc_explorer_search",
         )
         check_left, check_right = st.columns(2)
         with check_left:
-            only_mapped = st.checkbox("Show only mapped")
+            only_mapped = st.checkbox(
+                "Show only mapped", key="webvoc_explorer_only_mapped"
+            )
         with check_right:
-            only_standards_review = st.checkbox("Show only standards review")
+            only_standards_review = st.checkbox(
+                "Show only standards review",
+                key="webvoc_explorer_only_standards_review",
+            )
 
     filtered_properties = filter_properties(
         properties,
@@ -178,9 +187,23 @@ def render_webvoc_explorer() -> None:
         )
 
         if filtered_properties:
+            valid_property_ids = [item.term_id for item in filtered_properties]
+            if (
+                st.session_state.get("webvoc_explorer_selected_property")
+                not in valid_property_ids
+            ):
+                # Guards the explicit key (added for v0.26.0 deep links):
+                # without this, a stale selection from before a filter/search
+                # change would no longer be a valid option and Streamlit
+                # would raise, instead of the pre-v0.26.0 behavior of simply
+                # defaulting to the first match.
+                st.session_state["webvoc_explorer_selected_property"] = (
+                    valid_property_ids[0]
+                )
             selected_property_id = st.selectbox(
                 "Selected property detail",
-                [item.term_id for item in filtered_properties],
+                valid_property_ids,
+                key="webvoc_explorer_selected_property",
                 format_func=lambda term: next(
                     (
                         f"{item.term_id} - {item.label}"

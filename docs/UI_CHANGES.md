@@ -1,5 +1,19 @@
 # UI Changes
 
+## v0.26.0 Cross-workflow deep links checklist
+
+- [x] Generate Mapping Candidates' candidate detail expander gains a
+      "View in Explorer" button next to the WebVoc property code block.
+- [x] Clicking it switches to Explore GS1 Web Vocabulary, resets its
+      filters, and pre-selects the target property in the detail view.
+- [x] New `workflow_shared.navigate_to_webvoc_property` callback; no new
+      data or computation, pure session-state wiring.
+- [x] Explore's filter/search/detail widgets gained explicit `key=`
+      values; a guard resets the detail selectbox to the first match
+      whenever a stale stored value is no longer a valid option, so
+      normal (non-deep-link) filter changes behave exactly as before.
+- [x] No governance warnings removed; no compliance claims added.
+
 ## v0.25.0 In-UI hard-mapping review sign-off authoring checklist
 
 - [x] Generate Mapping Candidates gains an "Author hard-mapping review

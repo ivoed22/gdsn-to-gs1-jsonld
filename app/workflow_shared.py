@@ -175,6 +175,28 @@ def set_workflow_mode(mode: str) -> None:
     st.session_state["workflow_mode"] = mode
 
 
+def navigate_to_webvoc_property(property_id: str) -> None:
+    """Deep-link to the Explore workflow's detail view for one property (v0.26.0).
+
+    A ``st.button(on_click=...)`` callback, same pattern as
+    :func:`set_workflow_mode`/:func:`set_route`: it only sets session-state
+    keys before the rerun. It resets Explore's other filters to "show
+    everything" and pre-fills its search with *property_id* so the target
+    property is reliably the (typically only) match, then pre-selects it in
+    the detail selectbox. Explore's own render logic and data are otherwise
+    untouched -- this does not fetch or compute anything new.
+    """
+    st.session_state["selected_route"] = "vocabulary_mapping"
+    st.session_state["workflow_mode"] = "Explore GS1 Web Vocabulary"
+    st.session_state["webvoc_explorer_group"] = "All groups"
+    st.session_state["webvoc_explorer_domain"] = "All domains"
+    st.session_state["webvoc_explorer_coverage"] = "All statuses"
+    st.session_state["webvoc_explorer_only_mapped"] = False
+    st.session_state["webvoc_explorer_only_standards_review"] = False
+    st.session_state["webvoc_explorer_search"] = property_id
+    st.session_state["webvoc_explorer_selected_property"] = property_id
+
+
 def set_route(route_key: str) -> None:
     """Select a primary route and open its first child workflow.
 

@@ -64,6 +64,13 @@ guess source URLs.
 
 ## Released
 
+- **v0.26.0 — Cross-workflow deep links.** Last of five "quick win"
+  versions. Generate Mapping Candidates' candidate detail gains a "View
+  in Explorer" button (new `workflow_shared.navigate_to_webvoc_property`
+  callback) that switches to Explore, resets its filters, and pre-selects
+  the target WebVoc property — instead of a manual re-search. Pure
+  session-state wiring; a guard keeps normal (non-deep-link) filter
+  changes in Explore working exactly as before.
 - **v0.25.0 — In-UI hard-mapping review sign-off authoring.** Generate
   Mapping Candidates gains a Reviewer/Date/Decision/Notes form per
   hard-mapping-lane candidate and a download button for the resulting

@@ -199,6 +199,26 @@ The mode shows:
 - It does not prove full GS1 Web Vocabulary conformance.
 - Grouping is heuristic and intended for review navigation.
 
+## Cross-workflow deep links (v0.26.0)
+
+Generate Mapping Candidates' candidate detail expander has a "View in
+Explorer" button next to the WebVoc property code block. Clicking it
+switches to this workflow, resets the Group/Domain/Coverage filters and
+mapped-only/standards-review-only checkboxes, fills the search box with
+that property, and pre-selects it in the property detail view — so a
+reviewer doesn't have to switch tabs and re-search manually.
+
+This works because the filter/search/detail-selection widgets carry
+explicit `key=` values (`webvoc_explorer_group`, `webvoc_explorer_domain`,
+`webvoc_explorer_coverage`, `webvoc_explorer_search`,
+`webvoc_explorer_only_mapped`, `webvoc_explorer_only_standards_review`,
+`webvoc_explorer_selected_property`) that `workflow_shared.
+navigate_to_webvoc_property` sets before the rerun. A guard resets the
+detail selectbox to the first filtered match whenever its stored value is
+no longer valid (e.g. after a manual search change), preserving the
+pre-v0.26.0 default-to-first-match behavior for everyone not using the
+deep link.
+
 ## Why Read-Only In v0.9.0
 
 Manual JSON-LD authoring and mapping edits would need stronger governance.

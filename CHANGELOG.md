@@ -9,6 +9,30 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.26.0 — Cross-Workflow Deep Links
+
+The last of the five "quick win" versions in this batch. Reduces
+tab-hopping between review workflows.
+
+- New `workflow_shared.navigate_to_webvoc_property(property_id)`: an
+  `st.button(on_click=...)` callback that switches the active route/
+  workflow to Explore GS1 Web Vocabulary, resets Explore's filters to
+  "show everything," and pre-selects the given property in its detail
+  view. Pure session-state wiring — no new data, no new computation.
+- **Generate Mapping Candidates' candidate detail expander gains a "View
+  in Explorer" button** next to the WebVoc property code block. Clicking
+  it jumps straight to that property's Explorer detail view instead of
+  requiring a manual re-search.
+- Explore's filter/search/detail-selection widgets gained explicit
+  `key=` parameters so they can be pre-filled externally. A defensive
+  guard resets the detail selectbox to the first match whenever its
+  stored value is no longer among the current filtered options (e.g.
+  after a manual search change) — preserving pre-v0.26.0 behavior for
+  everyone not using the deep link.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims.
+
 ## v0.25.0 — In-UI Hard-Mapping Review Sign-Off Authoring
 
 Removes the last hand-edit-JSON-externally step from the Mapping

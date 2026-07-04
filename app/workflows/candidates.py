@@ -8,7 +8,7 @@ import re
 import streamlit as st
 
 from app.ui import render_download_intro, render_section_header, render_status_badge
-from app.workflow_shared import REPOSITORY_ROOT
+from app.workflow_shared import REPOSITORY_ROOT, navigate_to_webvoc_property
 from gdsn_to_gs1_jsonld.mapping_candidate_generator import (
     build_candidate_inputs,
     candidate_report_bytes_csv,
@@ -445,6 +445,16 @@ def render_mapping_candidates_workflow() -> None:
                         with col_a:
                             st.markdown("**WebVoc property**")
                             st.code(selected_cand.get("webvoc_property_id", ""))
+                            webvoc_property_id = selected_cand.get(
+                                "webvoc_property_id", ""
+                            )
+                            if webvoc_property_id:
+                                st.button(
+                                    "View in Explorer",
+                                    key=f"deep_link_explorer_{selected_idx}",
+                                    on_click=navigate_to_webvoc_property,
+                                    args=(webvoc_property_id,),
+                                )
                             st.markdown("**Label**")
                             st.write(selected_cand.get("webvoc_label") or "—")
                             st.markdown("**Comment**")

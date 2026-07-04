@@ -231,6 +231,9 @@ app provides:
    top reason, SDR linked.
 6. A detail expander for the selected candidate, including status/lane/
    promotion-eligibility badges and hard-mapping reasons when applicable.
+   **(v0.26.0)** A "View in Explorer" button next to the WebVoc property
+   code block jumps straight to that property's detail view in Explore
+   GS1 Web Vocabulary — see `docs/webvoc-explorer.md`.
 7. **(v0.25.0)** If the current results include hard-mapping-lane
    candidates: an "Author hard-mapping review sign-off" section — one
    Reviewer/Date/Decision/Notes row per hard-mapping candidate, and a

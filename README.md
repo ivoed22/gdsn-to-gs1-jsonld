@@ -3,6 +3,14 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.26.0 adds a cross-workflow deep link — the last of five "quick
+win" versions in this batch: Generate Mapping Candidates' candidate detail
+gains a "View in Explorer" button that jumps straight to that WebVoc
+property's Explorer detail view (filters reset, search and selection
+pre-filled), instead of requiring a manual re-search. Pure session-state
+wiring via a new `workflow_shared.navigate_to_webvoc_property` callback —
+no new data or computation.
+
 Version 0.25.0 removes the last hand-edit-JSON-externally step from the
 Mapping Candidates workflow: a new "Author hard-mapping review sign-off"
 section lets a reviewer set a Reviewer/Date/Decision/Notes per
