@@ -64,6 +64,13 @@ guess source URLs.
 
 ## Released
 
+- **v0.24.0 — Offline vocabulary freshness check.** Surfaces the
+  previously CLI-only `check-webvoc-updates` capability in the UI, built
+  on a new `compare_webvoc_snapshot_bytes` function with no network code
+  path at all (unlike the CLI command, which can optionally fetch GS1's
+  live URLs). Standards Review gains a section where a reviewer uploads a
+  candidate `gs1Voc.jsonld` and sees new/removed/changed terms against the
+  pinned local snapshot. Diagnostic only; never writes to governed data.
 - **v0.23.0 — Full WebVoc codelist option in Manual Builder.** Corrected
   course after investigation: the originally planned "6 codelist_pending
   fields" premise didn't hold (all already had options, weren't

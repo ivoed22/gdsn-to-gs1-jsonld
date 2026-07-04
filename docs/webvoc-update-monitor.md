@@ -49,6 +49,18 @@ To replace snapshots after reviewing detected changes, rerun with
 `--update-snapshot`. Snapshot replacement is explicit and cannot be combined
 with `--no-network`.
 
+## Offline UI check (v0.24.0)
+
+The Streamlit app's **Standards Review** workflow has a "Vocabulary
+freshness check" section that offers the same kind of comparison, but
+strictly offline: upload a candidate `gs1Voc.jsonld` file and see
+new/removed/changed terms against the pinned local snapshot
+(`webvoc_monitor.compare_webvoc_snapshot_bytes`). It never fetches
+anything — the comparison file must be provided by the reviewer, and
+there is no network code path to disable. Deciding whether to actually
+adopt the uploaded file into `webvoc/current/` remains a separate,
+explicit step outside the UI (use the CLI commands above).
+
 ## Revalidate the mapping catalog
 
 ```bash

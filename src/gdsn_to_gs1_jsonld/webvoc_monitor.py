@@ -309,6 +309,48 @@ def check_webvoc_updates(
     }
 
 
+def compare_webvoc_snapshot_bytes(
+    snapshot_dir: str | Path,
+    comparison_jsonld_bytes: bytes,
+) -> dict[str, Any]:
+    """Offline diff between the pinned local WebVoc snapshot and a second,
+    already-in-memory JSON-LD file (v0.24.0).
+
+    Unlike :func:`check_webvoc_updates`, this never calls the network --
+    both sides are bytes already on disk or already uploaded. Powers the
+    Streamlit "Vocabulary freshness check" panel, where a reviewer can
+    upload a candidate updated ``gs1Voc.jsonld`` and see what changed
+    without this project fetching anything itself.
+    """
+    directory = Path(snapshot_dir)
+    local_bytes = (directory / SNAPSHOT_FILES["jsonld"]).read_bytes()
+    local_terms = _jsonld_terms(local_bytes)
+    comparison_terms = _jsonld_terms(comparison_jsonld_bytes)
+    new_terms, removed_terms, changed_terms = _changed_records(
+        local_terms, comparison_terms
+    )
+    local_version, local_modified = _jsonld_metadata(local_bytes)
+    comparison_version, comparison_modified = _jsonld_metadata(
+        comparison_jsonld_bytes
+    )
+    local_hash = sha256_bytes(local_bytes)
+    comparison_hash = sha256_bytes(comparison_jsonld_bytes)
+    return {
+        "local_version": local_version,
+        "local_modified": local_modified,
+        "local_term_count": len(local_terms),
+        "local_sha256": local_hash,
+        "comparison_version": comparison_version,
+        "comparison_modified": comparison_modified,
+        "comparison_term_count": len(comparison_terms),
+        "comparison_sha256": comparison_hash,
+        "changed": local_hash != comparison_hash,
+        "new_terms": new_terms,
+        "removed_terms": removed_terms,
+        "changed_terms": changed_terms,
+    }
+
+
 def _update_report_xlsx_bytes(report: dict[str, Any]) -> bytes:
     sheets = {
         "Summary": [report["summary"]],

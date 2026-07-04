@@ -3,6 +3,14 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.24.0 surfaces the previously CLI-only `check-webvoc-updates`
+capability in the UI, but strictly offline: Standards Review gains a
+"Vocabulary freshness check" section where a reviewer uploads a candidate
+`gs1Voc.jsonld` and sees new/removed/changed terms against the pinned
+local snapshot. The new `compare_webvoc_snapshot_bytes` function has no
+network code path at all — the existing CLI command's optional live fetch
+is unchanged and stays a separate, explicit CLI operation.
+
 Version 0.23.0 lets the Manual JSON-LD Builder's `gs1:allergenType` field
 switch from its hand-curated 14-value EU subset to the full 385 values the
 local Web Vocabulary snapshot defines for `AllergenTypeCode`, via a "show

@@ -1,5 +1,20 @@
 # UI Changes
 
+## v0.24.0 Offline vocabulary freshness check checklist
+
+- [x] Standards Review workflow gains a "Vocabulary freshness check"
+      section: upload a candidate `gs1Voc.jsonld`, see local vs uploaded
+      term counts, version/modified metadata, and new/removed/changed
+      term tables.
+- [x] Strictly offline — `compare_webvoc_snapshot_bytes` has no `urlopen`
+      call anywhere in its code path; the comparison file must be
+      uploaded by the reviewer.
+- [x] Diagnostic only — never writes to `webvoc/current/`, the mapping
+      catalog, or any governed data.
+- [x] Existing CLI `check-webvoc-updates` (optional network fetch)
+      unchanged; this UI panel is a separate, always-offline capability.
+- [x] No governance warnings removed; no compliance claims added.
+
 ## v0.23.0 Full WebVoc codelist option checklist
 
 - [x] `gs1:allergenType` gains a "Show full code list (385 total) instead

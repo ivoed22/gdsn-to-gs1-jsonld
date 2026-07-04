@@ -9,6 +9,32 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.24.0 — Offline Vocabulary Freshness Check
+
+Surfaces the previously CLI-only `check-webvoc-updates` capability in the
+Streamlit UI, but as a strictly offline comparison — the existing CLI
+command can optionally fetch GS1's live vocabulary URLs, which is fine as
+an explicit, human-invoked CLI operation, but not acceptable to wire into
+the app under the project's no-online-fetching rule.
+
+- New `webvoc_monitor.compare_webvoc_snapshot_bytes(snapshot_dir,
+  comparison_jsonld_bytes)`: a pure, offline diff between the pinned local
+  WebVoc snapshot and a second, already-in-memory JSON-LD file. Contains
+  no `urlopen` call anywhere in its code path — reuses the existing
+  term-extraction/diff helpers, never reaches the network.
+- **Standards Review workflow gains a "Vocabulary freshness check"
+  section.** A reviewer uploads a candidate `gs1Voc.jsonld` (e.g. a newer
+  official export they downloaded themselves) and sees local vs. uploaded
+  term counts, version/modified metadata, and new/removed/changed term
+  tables. Diagnostic only — never updates the committed snapshot, mapping
+  catalog, or any governed data; that stays a separate, explicit step.
+- The existing CLI `check-webvoc-updates` (with its optional network
+  fetch) is unchanged and remains the way to check against GS1's live
+  URLs; this UI panel is a separate, always-offline capability.
+
+No warnings suppressed. No mock data. No fabricated coverage or compliance
+claims. No online fetching is added anywhere in the app.
+
 ## v0.23.0 — Full WebVoc Codelist Option in Manual Builder
 
 Corrects course from the originally planned scope after investigation: the

@@ -12,6 +12,7 @@ from gdsn_to_gs1_jsonld.catalog_revalidation import (
 from gdsn_to_gs1_jsonld.cli import app
 from gdsn_to_gs1_jsonld.webvoc_monitor import (
     check_webvoc_updates,
+    compare_webvoc_snapshot_bytes,
     load_linktypes,
     load_webvoc_jsonld,
     sha256_bytes,
@@ -158,6 +159,47 @@ def test_update_check_detects_changed_remote_hash(tmp_path, monkeypatch):
         item for item in report["sources"] if item["source"] == "ttl"
     )
     assert ttl_source["local_hash"] != ttl_source["remote_hash"]
+
+
+def test_compare_webvoc_snapshot_bytes_no_changes(tmp_path):
+    """v0.24.0: comparing the local snapshot to itself reports no diff and
+    never touches the network -- offline by construction (no urlopen call
+    exists in this code path)."""
+    snapshot = tmp_path / "snapshot"
+    _write_snapshot(snapshot)
+    identical_bytes = (snapshot / "gs1Voc.jsonld").read_bytes()
+
+    result = compare_webvoc_snapshot_bytes(snapshot, identical_bytes)
+
+    assert result["changed"] is False
+    assert result["new_terms"] == []
+    assert result["removed_terms"] == []
+    assert result["changed_terms"] == []
+    assert result["local_term_count"] == result["comparison_term_count"]
+
+
+def test_compare_webvoc_snapshot_bytes_detects_new_removed_changed_terms(tmp_path):
+    snapshot = tmp_path / "snapshot"
+    _write_snapshot(snapshot)
+    graph = json.loads((snapshot / "gs1Voc.jsonld").read_text(encoding="utf-8"))
+    graph["@graph"] = [
+        item
+        for item in graph["@graph"]
+        if item["@id"] != "gs1:certificationURI"  # removed in comparison
+    ]
+    graph["@graph"].append({"@id": "gs1:newTerm", "@type": "owl:DatatypeProperty"})
+    for item in graph["@graph"]:
+        if item["@id"] == "gs1:gtin":
+            item["rdfs:label"] = {"@value": "Global Trade Item Number"}  # changed
+
+    comparison_bytes = json.dumps(graph).encode("utf-8")
+
+    result = compare_webvoc_snapshot_bytes(snapshot, comparison_bytes)
+
+    assert result["changed"] is True
+    assert result["new_terms"] == ["gs1:newTerm"]
+    assert result["removed_terms"] == ["gs1:certificationURI"]
+    assert result["changed_terms"] == ["gs1:gtin"]
 
 
 def test_revalidation_recognizes_terms_linktypes_and_schema(tmp_path):

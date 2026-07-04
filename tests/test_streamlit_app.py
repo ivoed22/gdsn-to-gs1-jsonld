@@ -40,7 +40,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.23.0"
+    assert ui.APP_VERSION == "v0.24.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_route_card)
 
@@ -181,7 +181,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.23.0" in markdown.value
+        "App version: v0.24.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -318,6 +318,54 @@ def test_explore_and_standards_open_via_route():
     assert app.session_state["workflow_mode"] == "Standards Review"
     assert any(metric.label == "Open SDRs" and metric.value == "6" for metric in app.metric)
     assert any("docs/standards-decisions/index.md" in code.value for code in app.code)
+
+
+def test_standards_review_vocabulary_freshness_check_is_offline_and_diffs_terms(
+    tmp_path,
+):
+    """v0.24.0: Standards Review gains an offline vocabulary freshness
+    check -- upload a candidate WebVoc JSON-LD and see new/removed/changed
+    terms against the pinned local snapshot. Never fetches anything; the
+    comparison file is provided by the reviewer."""
+    import json as json_module
+    from pathlib import Path
+
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_route(app, "vocabulary_mapping")
+    _open_workflow(app, "standards")
+
+    assert any(
+        "Vocabulary freshness check" in markdown.value for markdown in app.markdown
+    )
+    assert any(
+        "never fetches vocabulary resources itself" in markdown.value
+        for markdown in app.markdown
+    )
+
+    root = Path(__file__).resolve().parents[1]
+    local = json_module.loads(
+        (root / "webvoc" / "current" / "gs1Voc.jsonld").read_text(
+            encoding="utf-8-sig"
+        )
+    )
+    local["@graph"].append(
+        {"@id": "gs1:brandNewTestTerm", "@type": "owl:DatatypeProperty"}
+    )
+    candidate_bytes = json_module.dumps(local).encode("utf-8")
+
+    app.get("file_uploader")[0].set_value(
+        ("candidate.jsonld", candidate_bytes, "application/ld+json")
+    )
+    app.run(timeout=20)
+
+    assert not app.exception
+    metrics_by_label = {metric.label: metric.value for metric in app.metric}
+    assert metrics_by_label["New terms"] == "1"
+    assert metrics_by_label["Changed terms"] == "0"
+    assert any(
+        "1 new, 0 removed, 0 changed term(s) detected" in warning.value
+        for warning in app.warning
+    )
 
 
 def test_builder_expansion_analysis_opens_via_route_and_is_read_only():
@@ -752,6 +800,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.23.0" in rendered
+    assert "app version: v0.24.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered
