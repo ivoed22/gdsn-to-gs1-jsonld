@@ -9,6 +9,37 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.31.0 — DPP Readiness Scorecard
+
+Second version of the end-product build path: one honest, deterministic
+readiness panel per converted product — the artifact a stakeholder demo
+ends on.
+
+- New pure module `src/gdsn_to_gs1_jsonld/readiness.py`
+  (`assess_readiness`): summarizes *traceability & structural readiness*
+  from signals the conversion already computed — structural validation
+  (errors/warnings), mapping coverage (profile rows found + unmapped
+  source elements), and codelist conformance (v0.20.0 registry counts).
+  Nothing is re-validated, re-scored, or invented.
+- **Honesty rules built in:** the DPP-relevance dimension always reports
+  `not_yet_assessed_pending_crosswalk` (the Crosswalk, v0.36.0+, is not
+  built — same pattern as `builder_expansion_analysis`); there is
+  deliberately **no single numeric score** (any weighting between
+  dimensions would be invented); the codelist dimension reports
+  `not_evaluated` when no registry was used, never a fake clean result.
+- Overall level from fixed, transparent rules: `review_required` on
+  structural errors; `attention_points` on warnings, partial coverage,
+  or codelist issues; `structurally_ready` only when every evaluated
+  dimension is clean. The not-yet-assessed dimension never affects it.
+- **Convert (Single XML) step 3 renders the scorecard**: level badge,
+  four dimension metrics with detail tooltips, and a no-claims-safe
+  scope note ("not official GS1 validation, no production compliance
+  claim, no EU DPP conformity assessment"). Still exactly 4 downloads.
+- Visual smoke: the Mapping Governance candidate-generation drive now
+  retries once with a fresh open-type-click attempt (the v0.30.0 CI run
+  showed the BaseWeb dropdown can miss the first typed filter on slow
+  runners; the blocking test job was green).
+
 ## v0.30.0 — Consolidation: Nine Workflows Become Five
 
 First version of the approved end-product build path (see

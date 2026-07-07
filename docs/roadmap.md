@@ -27,18 +27,13 @@ semantic authority: generated/recommended output must not contain dppk terms
 prioritises the mapping foundation and UX/test hardening before the
 Crosswalk.
 
-### v0.31.0–v0.35.0 — End-product build path (approved 2026-07-07)
+### v0.32.0–v0.35.0 — End-product build path (approved 2026-07-07)
 
 One product, one story: "from GDSN message to Digital Product Passport —
 traceable at every step", layered for stakeholders (showcase), standards
 experts (workbench), and data teams (operational). Sequenced so the
 Crosswalk slots in when sources arrive, without rework:
 
-- **v0.31.0 — DPP Readiness Scorecard.** One deterministic panel per
-  converted product combining existing signals (validation, codelist
-  validation, mapped/unmapped coverage, hard-mapping flags). Scores
-  *traceability & structural readiness*, never "compliance";
-  Crosswalk-dependent dimensions report as not-yet-assessed.
 - **v0.32.0 — Product Journey + Report Center.** One-click Convert →
   Passport bridge; self-contained offline HTML report per product.
 - **v0.33.0 — UI overhaul within Streamlit.** Progressive disclosure,
@@ -85,6 +80,13 @@ guess source URLs.
 
 ## Released
 
+- **v0.31.0 — DPP Readiness Scorecard.** Convert renders one
+  deterministic readiness panel per converted product from signals the
+  conversion already computed: structural validation, mapping coverage,
+  codelist conformance, plus a DPP-relevance dimension that always
+  reports not-yet-assessed pending the Crosswalk (v0.36.0+). Fixed
+  transparent level rules, deliberately no numeric score, no-claims-safe
+  scope note. Pure presentation — nothing re-scored or invented.
 - **v0.30.0 — Consolidation: nine workflows become five.** First version
   of the end-product build path. Builder Manifest Expansion Analysis is a
   tab inside Create JSON-LD Prototype; Generate Mapping Candidates +

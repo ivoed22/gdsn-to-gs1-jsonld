@@ -37,6 +37,7 @@ from gdsn_to_gs1_jsonld.codelist_registry import (
     load_codelist_registry,
 )
 from gdsn_to_gs1_jsonld.converter import convert_xml_to_jsonld
+from gdsn_to_gs1_jsonld.readiness import assess_readiness
 from gdsn_to_gs1_jsonld.reporter import json_bytes, mapping_report_xlsx_bytes
 from gdsn_to_gs1_jsonld.xml_parser import XMLParseError
 
@@ -191,6 +192,75 @@ def _render_codelist_validation_panel(codelist_validation: list[dict]) -> None:
         st.caption(selected["detail"])
 
 
+# Status-badge tone per readiness level / dimension status (v0.31.0).
+_READINESS_LEVEL_TONES = {
+    "structurally_ready": "accepted",
+    "attention_points": "review",
+    "review_required": "blocked",
+}
+_READINESS_LEVEL_LABELS = {
+    "structurally_ready": "Structurally ready",
+    "attention_points": "Attention points",
+    "review_required": "Review required",
+}
+
+
+def _render_readiness_scorecard(result) -> None:
+    """DPP readiness scorecard (v0.31.0): traceability & structural signals.
+
+    Pure presentation over :func:`readiness.assess_readiness` — every
+    number was already computed by this conversion; nothing is re-scored
+    or invented, and DPP relevance stays not-yet-assessed until the
+    Crosswalk (v0.36.0+) exists.
+    """
+    assessment = assess_readiness(
+        validation_report=result.validation_report,
+        mapping_report_rows=result.mapping_report_rows,
+        unmapped_fields=result.unmapped_fields,
+        codelist_validation=result.codelist_validation,
+    )
+    dimensions = assessment["dimensions"]
+
+    render_preview_heading(
+        "DPP readiness",
+        "Traceability & structural signals from this conversion.",
+        "Scorecard",
+    )
+    level = assessment["readiness_level"]
+    render_status_badge(
+        _READINESS_LEVEL_LABELS.get(level, level),
+        _READINESS_LEVEL_TONES.get(level, "archived"),
+    )
+
+    structural = dimensions["structural_validation"]
+    coverage = dimensions["mapping_coverage"]
+    codelist = dimensions["codelist_conformance"]
+    relevance = dimensions["dpp_relevance"]
+
+    columns = st.columns(4)
+    columns[0].metric(
+        "Structural validation",
+        structural["status"].replace("_", " "),
+        help=structural["detail"],
+    )
+    columns[1].metric(
+        "Mapping coverage",
+        f"{coverage['mapped_count']}/{coverage['profile_row_count']}",
+        help=coverage["detail"],
+    )
+    columns[2].metric(
+        "Codelist conformance",
+        codelist["status"].replace("_", " "),
+        help=codelist["detail"],
+    )
+    columns[3].metric(
+        "DPP relevance",
+        "Not yet assessed",
+        help=relevance["detail"],
+    )
+    st.caption(assessment["scope_note"])
+
+
 def render_single_xml_workflow(mapping_path: Path) -> None:
     # Guided four-step conversion flow (Upload -> Mapping -> Validate -> Export)
     # wrapped around the real converter. The progress indicator is a visual
@@ -327,6 +397,8 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
             with identity_column:
                 if product_id:
                     render_identity_card(product_id)
+
+            _render_readiness_scorecard(result)
 
             render_preview_heading(
                 "Generated JSON-LD",

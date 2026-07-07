@@ -222,25 +222,38 @@ def run_visual_smoke(output_dir: Path, port: int) -> list[str]:
                 if screen == "mapping_governance":
                     # Drive one generation so lane/status badges render, the
                     # state this workflow spends most of its time in.
-                    try:
-                        # Streamlit's selectbox is a BaseWeb combobox, not a
-                        # native <select>: open it, type to filter, and click
-                        # the option inside its virtual dropdown container.
-                        property_select = page.get_by_role(
-                            "combobox", name=re.compile("WebVoc property")
-                        )
-                        property_select.click()
-                        page.wait_for_timeout(300)
-                        property_select.type("gs1:gtin", delay=20)
-                        page.wait_for_timeout(400)
-                        page.get_by_test_id("stSelectboxVirtualDropdown").get_by_text(
-                            "gs1:gtin", exact=True
-                        ).click()
-                        page.wait_for_timeout(300)
-                        page.get_by_role("button", name="Generate Candidates").click()
-                        page.wait_for_timeout(2000)
-                    except Exception as exc:  # noqa: BLE001 - smoke test, report and continue
-                        failures.append(f"[{screen}] could not drive candidate generation: {exc}")
+                    # Retried once: on slow CI runners the BaseWeb dropdown
+                    # can miss the first typed filter (observed in the
+                    # v0.30.0 run), and a fresh open-type-click attempt
+                    # recovers where a longer single wait does not.
+                    for attempt in range(2):
+                        try:
+                            # Streamlit's selectbox is a BaseWeb combobox,
+                            # not a native <select>: open it, type to
+                            # filter, and click the option inside its
+                            # virtual dropdown container.
+                            property_select = page.get_by_role(
+                                "combobox", name=re.compile("WebVoc property")
+                            )
+                            property_select.click()
+                            page.wait_for_timeout(500)
+                            property_select.type("gs1:gtin", delay=30)
+                            page.wait_for_timeout(800)
+                            page.get_by_test_id(
+                                "stSelectboxVirtualDropdown"
+                            ).get_by_text("gs1:gtin", exact=True).click(timeout=10000)
+                            page.wait_for_timeout(300)
+                            page.get_by_role("button", name="Generate Candidates").click()
+                            page.wait_for_timeout(2000)
+                            break
+                        except Exception as exc:  # noqa: BLE001 - smoke test, report and continue
+                            if attempt == 1:
+                                failures.append(
+                                    f"[{screen}] could not drive candidate generation: {exc}"
+                                )
+                            else:
+                                page.keyboard.press("Escape")
+                                page.wait_for_timeout(1000)
 
                 body_text = page.locator("body").inner_text()
                 _assert_no_horizontal_overflow(page, screen, failures)

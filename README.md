@@ -3,6 +3,12 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.31.0 adds a per-product "DPP readiness" scorecard to Convert:
+deterministic traceability & structural signals (validation, mapping
+coverage, codelist conformance) with an honest not-yet-assessed
+DPP-relevance dimension pending the Crosswalk — no invented score, no
+compliance claim. See `docs/releases/v0.31.0.md`.
+
 Version 0.30.0 consolidates nine workflows into five (Convert, Explore,
 Create JSON-LD Prototype, Mapping Governance, Product Passport) with
 direct navigation and a lighter landing page — the first version of the

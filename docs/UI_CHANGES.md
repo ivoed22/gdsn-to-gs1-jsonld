@@ -1,5 +1,17 @@
 # UI Changes
 
+## v0.31.0 DPP Readiness Scorecard checklist
+
+- [x] Convert (Single XML) step 3 renders a "DPP readiness" panel after
+      conversion: level badge + four dimension metrics + scope note.
+- [x] Level badge uses the shared status-badge tones with a text label
+      (never color-only).
+- [x] DPP relevance always shows "Not yet assessed" (Crosswalk v0.36.0+
+      not built — no fabricated judgment).
+- [x] No numeric score shown anywhere (weights would be invented).
+- [x] Scope note wording no-claims-safe (all restricted phrases negated).
+- [x] Still exactly 4 downloads (test-enforced).
+
 ## v0.30.0 Consolidation checklist (nine workflows → five)
 
 - [x] Builder Manifest Expansion Analysis merged into Create JSON-LD

@@ -35,7 +35,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.30.0"
+    assert ui.APP_VERSION == "v0.31.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_workflow_mode_card)
 
@@ -117,6 +117,40 @@ def test_codelist_validation_panel_appears_after_conversion(example_xml_path):
 
     rendered = "\n".join(markdown.value for markdown in app.markdown)
     assert "status-badge-" in rendered
+
+
+def test_readiness_scorecard_appears_after_conversion(example_xml_path):
+    """v0.31.0: the DPP readiness scorecard renders in step 3 with real
+    per-dimension values, an honest not-yet-assessed DPP-relevance
+    dimension, and no 5th download."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    app.get("file_uploader")[0].set_value(
+        ("example_product.xml", example_xml_path.read_bytes(), "application/xml")
+    )
+    app.run(timeout=20)
+    app.button[_button_index(app, "Convert product to JSON-LD")].click().run(timeout=20)
+
+    assert not app.exception
+    rendered = "\n".join(markdown.value for markdown in app.markdown)
+    assert "DPP readiness" in rendered
+
+    metrics_by_label = {m.label: m.value for m in app.metric}
+    assert "Structural validation" in metrics_by_label
+    assert "Codelist conformance" in metrics_by_label
+    # Example fixture: 2 unknown codelist values -> issues found.
+    assert metrics_by_label["Codelist conformance"] == "issues found"
+    # DPP relevance is never fabricated pending the Crosswalk (v0.36.0+).
+    assert metrics_by_label["DPP relevance"] == "Not yet assessed"
+    # Mapping coverage renders as mapped/total from the real conversion.
+    assert "/" in metrics_by_label["Mapping coverage"]
+
+    # Scope note wording is no-claims-safe and visible.
+    captions = "\n".join(str(c.value) for c in app.caption).lower()
+    assert "not official gs1 validation" in captions
+    assert "no production compliance" in captions
+
+    # Still exactly 4 downloads -- the scorecard adds none.
+    assert len(app.get("download_button")) == 4
 
 
 def test_convert_wizard_progress_indicator_present():
@@ -206,7 +240,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.30.0" in markdown.value
+        "App version: v0.31.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -933,6 +967,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.30.0" in rendered
+    assert "app version: v0.31.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

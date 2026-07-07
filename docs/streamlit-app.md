@@ -50,3 +50,10 @@ route→child navigation replaced by direct workflow cards; landing page
 reduced to hero + workbench status + navigation; mapping-profile
 selection moved from the sidebar into Convert. Behavior-preserving; see
 `docs/releases/v0.30.0.md`.
+
+**v0.31.0**: Convert (Single XML) step 3 gains a "DPP readiness"
+scorecard — traceability & structural signals from the conversion
+(structural validation, mapping coverage, codelist conformance) plus an
+honest not-yet-assessed DPP-relevance dimension pending the Crosswalk.
+No numeric score is invented and no compliance is claimed; see
+`docs/releases/v0.31.0.md`.
