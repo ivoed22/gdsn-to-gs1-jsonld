@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+
 import pandas as pd
 import streamlit as st
 
@@ -66,13 +68,36 @@ def render_build_product_passport_workflow() -> None:
                 "validation only."
             )
 
+        # Product Journey bridge (v0.32.0): when Convert carried a product
+        # across in this session, offer it as an input mode. Transport
+        # convenience only -- the bridged payload goes through the exact
+        # same normalize_gs1_jsonld_input parsing as an uploaded file.
+        bridged_jsonld = st.session_state.get("journey_bridge_jsonld")
+        bridged_gtin = st.session_state.get("journey_bridge_gtin") or "unknown"
+        bridge_option = f"Converted in this session (GTIN {bridged_gtin})"
+        input_options = ["Upload file", "Paste JSON", "Use example"]
+        if bridged_jsonld is not None:
+            input_options.insert(0, bridge_option)
+
         input_mode = st.radio(
             "Input mode",
-            ["Upload file", "Paste JSON", "Use example"],
+            input_options,
             horizontal=True,
         )
         gs1_data: dict | None = None
-        if input_mode == "Upload file":
+        if bridged_jsonld is not None and input_mode == bridge_option:
+            try:
+                gs1_data = normalize_gs1_jsonld_input(
+                    json.dumps(bridged_jsonld, ensure_ascii=False)
+                )
+                st.success(
+                    f"Loaded the product converted in this session "
+                    f"(GTIN {bridged_gtin}) — parsed and validated exactly "
+                    "like an uploaded file."
+                )
+            except ValueError as exc:
+                st.error(f"Could not parse the bridged JSON-LD: {exc}")
+        elif input_mode == "Upload file":
             uploaded = st.file_uploader(
                 "GS1 JSON-LD file",
                 type=["json", "jsonld"],

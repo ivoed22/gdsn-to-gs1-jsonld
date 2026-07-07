@@ -79,6 +79,7 @@ Web Vocabulary JSON-LD.
 - [v0.29.0 release notes](releases/v0.29.0.md)
 - [v0.30.0 release notes](releases/v0.30.0.md)
 - [v0.31.0 release notes](releases/v0.31.0.md)
+- [v0.32.0 release notes](releases/v0.32.0.md)
 
 The MVP is experimental and does not implement full GDSN XSD validation or
 complete GDSN coverage.

@@ -25,6 +25,7 @@ from app.workflow_shared import (
     clear_all_results,
     clear_batch_results,
     clear_results,
+    continue_to_product_passport,
 )
 from gdsn_to_gs1_jsonld.batch_converter import (
     BatchConversionError,
@@ -38,6 +39,7 @@ from gdsn_to_gs1_jsonld.codelist_registry import (
 )
 from gdsn_to_gs1_jsonld.converter import convert_xml_to_jsonld
 from gdsn_to_gs1_jsonld.readiness import assess_readiness
+from gdsn_to_gs1_jsonld.report import build_product_report_html, product_report_bytes
 from gdsn_to_gs1_jsonld.reporter import json_bytes, mapping_report_xlsx_bytes
 from gdsn_to_gs1_jsonld.xml_parser import XMLParseError
 
@@ -314,6 +316,15 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                 st.session_state["unmapped_fields_bytes"] = json_bytes(
                     conversion.unmapped_fields
                 )
+                st.session_state["product_report_bytes"] = product_report_bytes(
+                    build_product_report_html(
+                        jsonld_data=conversion.jsonld_data,
+                        validation_report=conversion.validation_report,
+                        mapping_report_rows=conversion.mapping_report_rows,
+                        unmapped_fields=conversion.unmapped_fields,
+                        codelist_validation=conversion.codelist_validation,
+                    )
+                )
                 st.session_state["output_name_base"] = output_name_base
                 result = conversion
 
@@ -424,7 +435,7 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
             render_preview_heading(
                 "Export package",
                 "Download the product output and all supporting review reports.",
-                "4 files",
+                "5 files",
             )
             download_top_left, download_top_right = st.columns(2)
             with download_top_left:
@@ -489,12 +500,42 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                         use_container_width=True,
                     )
 
+            with st.container(border=True):
+                render_download_intro(
+                    "Product report HTML",
+                    "Self-contained, printable report: identity, readiness "
+                    "scorecard, mapping evidence, and the JSON-LD. Opens "
+                    "fully offline.",
+                    "HTML",
+                )
+                st.download_button(
+                    "Download product report (HTML)",
+                    data=st.session_state["product_report_bytes"],
+                    file_name=f"product_report_{output_name_base}.html",
+                    mime="text/html",
+                    use_container_width=True,
+                )
+
             render_review_guidance()
-            st.button(
-                "Clear results",
-                on_click=clear_results,
-                use_container_width=True,
-            )
+            journey_column, clear_column = st.columns(2)
+            with journey_column:
+                st.button(
+                    "Continue to Product Passport",
+                    type="primary",
+                    on_click=continue_to_product_passport,
+                    use_container_width=True,
+                    help=(
+                        "Carry this product's generated JSON-LD into the "
+                        "Product Passport builder. The builder still parses "
+                        "and validates it exactly like an uploaded file."
+                    ),
+                )
+            with clear_column:
+                st.button(
+                    "Clear results",
+                    on_click=clear_results,
+                    use_container_width=True,
+                )
 
 
 def _render_batch_codelist_validation_panel(

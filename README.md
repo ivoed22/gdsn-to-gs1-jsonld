@@ -3,6 +3,13 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.32.0 connects the story: "Continue to Product Passport" carries
+a converted product straight into the passport builder (same parser as an
+uploaded file — no validation bypass), and every conversion now offers a
+self-contained, printable HTML product report (identity + readiness +
+evidence + JSON-LD, fully offline, governance negations in the footer) as
+a 5th download. See `docs/releases/v0.32.0.md`.
+
 Version 0.31.0 adds a per-product "DPP readiness" scorecard to Convert:
 deterministic traceability & structural signals (validation, mapping
 coverage, codelist conformance) with an honest not-yet-assessed

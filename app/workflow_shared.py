@@ -34,6 +34,7 @@ RESULT_STATE_KEYS = (
     "mapping_report_bytes",
     "validation_report_bytes",
     "unmapped_fields_bytes",
+    "product_report_bytes",
     "output_name_base",
 )
 BATCH_RESULT_STATE_KEYS = (
@@ -134,6 +135,26 @@ def navigate_to_webvoc_property(property_id: str) -> None:
     st.session_state["webvoc_explorer_only_standards_review"] = False
     st.session_state["webvoc_explorer_search"] = property_id
     st.session_state["webvoc_explorer_selected_property"] = property_id
+
+
+def continue_to_product_passport() -> None:
+    """Product Journey bridge (v0.32.0): Convert → Product Passport.
+
+    A ``st.button(on_click=...)`` callback, same pattern as
+    :func:`navigate_to_webvoc_property`. Carries the converted product's
+    generated JSON-LD across in session state and switches to the Product
+    Passport workflow. Transport convenience only — the passport builder
+    still runs its normal input parsing/validation on the bridged payload,
+    exactly as it would on an uploaded file.
+    """
+    conversion = st.session_state.get("conversion_result")
+    if conversion is None:
+        return
+    st.session_state["journey_bridge_jsonld"] = dict(conversion.jsonld_data)
+    st.session_state["journey_bridge_gtin"] = (
+        conversion.canonical_product.gtin or ""
+    )
+    st.session_state["workflow_mode"] = "Product Passport"
 
 
 def _load_webvoc_metadata() -> dict:

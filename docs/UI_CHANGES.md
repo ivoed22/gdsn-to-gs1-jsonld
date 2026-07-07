@@ -1,5 +1,21 @@
 # UI Changes
 
+## v0.32.0 Product Journey bridge + Report Center checklist
+
+- [x] Convert Export step: "Continue to Product Passport" button carries
+      the converted JSON-LD across and switches workflows.
+- [x] Passport builder Input tab: bridged payload offered as pre-selected
+      "Converted in this session (GTIN …)" mode; upload/paste/example
+      paths unchanged; same parser as an uploaded file (no bypass).
+- [x] Convert Export step: 5th download "Download product report (HTML)";
+      caption updated to "5 files".
+- [x] Report is self-contained (inline CSS, no scripts/external
+      resources), printable, deterministic.
+- [x] Report footer carries the governance negations verbatim;
+      restricted claim phrases only ever appear negated (test-enforced).
+- [x] Visual smoke: property selection via keyboard (type + Enter) in
+      the Mapping Governance drive.
+
 ## v0.31.0 DPP Readiness Scorecard checklist
 
 - [x] Convert (Single XML) step 3 renders a "DPP readiness" panel after

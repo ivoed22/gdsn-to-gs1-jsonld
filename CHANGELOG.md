@@ -9,6 +9,41 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.32.0 — Product Journey Bridge + Report Center
+
+Third version of the end-product build path: the workflows start telling
+one story ("from GDSN message to Digital Product Passport"), and every
+conversion produces a shareable artifact.
+
+- **Product Journey bridge.** Convert's Export step gains "Continue to
+  Product Passport": one click carries the converted product's generated
+  JSON-LD into the Product Passport builder (session state) and switches
+  workflows. The builder offers it as a pre-selected "Converted in this
+  session (GTIN …)" input mode next to the existing upload/paste/example
+  paths — and runs the bridged payload through the exact same
+  `normalize_gs1_jsonld_input` parsing as an uploaded file. Transport
+  convenience, never a validation bypass.
+- **Report Center.** New pure module `src/gdsn_to_gs1_jsonld/report.py`
+  (`build_product_report_html`): ONE self-contained, printable HTML
+  report per converted product — identity, the v0.31.0 readiness
+  assessment rendered verbatim (including the not-yet-assessed
+  DPP-relevance dimension), mapping evidence summary, codelist counts,
+  and the generated JSON-LD. Inline CSS only (DESIGN.md color tokens),
+  no scripts, no external resources — opens identically fully offline.
+  Deterministic: same conversion in, same bytes out. Governance
+  negations render verbatim in the footer.
+- **Convert now offers 5 downloads** (was 4): the product report HTML
+  joins JSON-LD, mapping XLSX, validation JSON, and unmapped-fields
+  JSON. The three AppTests that pinned the 4-download invariant now pin
+  5.
+- Visual smoke: the Mapping Governance drive now picks the property via
+  keyboard (type + Enter) instead of clicking inside the BaseWeb virtual
+  dropdown, which kept timing out on CI runners (non-blocking failures
+  in the v0.30.0/v0.31.0 runs).
+
+No warnings suppressed; the outward-facing report repeats — not
+removes — the no-claims governance text.
+
 ## v0.31.0 — DPP Readiness Scorecard
 
 Second version of the end-product build path: one honest, deterministic

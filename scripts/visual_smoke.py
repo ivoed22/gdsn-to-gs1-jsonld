@@ -230,8 +230,11 @@ def run_visual_smoke(output_dir: Path, port: int) -> list[str]:
                         try:
                             # Streamlit's selectbox is a BaseWeb combobox,
                             # not a native <select>: open it, type to
-                            # filter, and click the option inside its
-                            # virtual dropdown container.
+                            # filter, then pick the highlighted option with
+                            # Enter. Keyboard selection is used instead of
+                            # clicking inside the virtual dropdown because
+                            # that click intermittently timed out on CI
+                            # runners (v0.30.0/v0.31.0 non-blocking runs).
                             property_select = page.get_by_role(
                                 "combobox", name=re.compile("WebVoc property")
                             )
@@ -239,10 +242,8 @@ def run_visual_smoke(output_dir: Path, port: int) -> list[str]:
                             page.wait_for_timeout(500)
                             property_select.type("gs1:gtin", delay=30)
                             page.wait_for_timeout(800)
-                            page.get_by_test_id(
-                                "stSelectboxVirtualDropdown"
-                            ).get_by_text("gs1:gtin", exact=True).click(timeout=10000)
-                            page.wait_for_timeout(300)
+                            property_select.press("Enter")
+                            page.wait_for_timeout(800)
                             page.get_by_role("button", name="Generate Candidates").click()
                             page.wait_for_timeout(2000)
                             break

@@ -35,7 +35,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.31.0"
+    assert ui.APP_VERSION == "v0.32.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_workflow_mode_card)
 
@@ -67,7 +67,7 @@ def test_streamlit_result_survives_rerun(example_xml_path):
 
     assert "conversion_result" in app.session_state
     assert app.session_state["output_name_base"] == "08712345678906"
-    assert len(app.get("download_button")) == 4
+    assert len(app.get("download_button")) == 5  # 5th = product report HTML (v0.32.0)
     assert any(
         "https://id.gs1.org/01/08712345678906" in markdown.value
         for markdown in app.markdown
@@ -81,7 +81,7 @@ def test_streamlit_result_survives_rerun(example_xml_path):
     app.run(timeout=20)
 
     assert "conversion_result" in app.session_state
-    assert len(app.get("download_button")) == 4
+    assert len(app.get("download_button")) == 5  # 5th = product report HTML (v0.32.0)
     assert any(
         "https://id.gs1.org/01/08712345678906" in markdown.value
         for markdown in app.markdown
@@ -103,8 +103,8 @@ def test_codelist_validation_panel_appears_after_conversion(example_xml_path):
     assert any(
         "codelist validation" in expander.label.lower() for expander in app.expander
     )
-    # Still exactly 4 downloads — codelist validation adds no new download.
-    assert len(app.get("download_button")) == 4
+    # Codelist validation itself adds no download (5 = the standard export set).
+    assert len(app.get("download_button")) == 5  # 5th = product report HTML (v0.32.0)
 
     metrics_by_label = {metric.label: metric.value for metric in app.metric}
     for expected_label in ("Valid", "Unknown", "Deprecated", "Missing", "Source Unavailable"):
@@ -149,8 +149,51 @@ def test_readiness_scorecard_appears_after_conversion(example_xml_path):
     assert "not official gs1 validation" in captions
     assert "no production compliance" in captions
 
-    # Still exactly 4 downloads -- the scorecard adds none.
-    assert len(app.get("download_button")) == 4
+    # The scorecard itself adds no download (5 = the standard export set).
+    assert len(app.get("download_button")) == 5  # 5th = product report HTML (v0.32.0)
+
+
+def test_product_report_download_and_journey_bridge(example_xml_path):
+    """v0.32.0: (1) Convert offers a self-contained HTML product report as
+    a 5th download; (2) "Continue to Product Passport" carries the
+    converted JSON-LD into the passport builder, which still parses it
+    through its normal input path."""
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    app.get("file_uploader")[0].set_value(
+        ("example_product.xml", example_xml_path.read_bytes(), "application/xml")
+    )
+    app.run(timeout=20)
+    app.button[_button_index(app, "Convert product to JSON-LD")].click().run(timeout=20)
+    assert not app.exception
+
+    report_downloads = [
+        d
+        for d in app.get("download_button")
+        if "product report" in d.label.lower()
+    ]
+    assert len(report_downloads) == 1
+
+    app.button[
+        _button_index(app, "Continue to Product Passport")
+    ].click().run(timeout=20)
+
+    assert not app.exception
+    assert app.session_state["workflow_mode"] == "Product Passport"
+    assert app.session_state["journey_bridge_gtin"] == "08712345678906"
+
+    # Both Product Passport tabs render an "Input mode" radio (the
+    # validator tab has its own); select the builder's by its options.
+    bridge_option = "Converted in this session (GTIN 08712345678906)"
+    bridge_radio = next(r for r in app.radio if bridge_option in r.options)
+    # The bridged option is offered first and pre-selected, and its payload
+    # goes through the same parser as an uploaded file.
+    assert bridge_radio.value == bridge_option
+    assert any(
+        "parsed and validated exactly" in success.value
+        for success in app.success
+    )
+    # Converter output uses the namespaced key.
+    assert app.session_state["pb_gs1_input"].get("gs1:gtin") == "08712345678906"
 
 
 def test_convert_wizard_progress_indicator_present():
@@ -240,7 +283,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.31.0" in markdown.value
+        "App version: v0.32.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -967,6 +1010,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.31.0" in rendered
+    assert "app version: v0.32.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

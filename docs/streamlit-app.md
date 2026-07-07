@@ -57,3 +57,10 @@ scorecard — traceability & structural signals from the conversion
 honest not-yet-assessed DPP-relevance dimension pending the Crosswalk.
 No numeric score is invented and no compliance is claimed; see
 `docs/releases/v0.31.0.md`.
+
+**v0.32.0**: Convert gains a "Continue to Product Passport" bridge (the
+converted JSON-LD is offered as a pre-selected input mode in the passport
+builder, parsed exactly like an uploaded file) and a 5th download: a
+self-contained, printable HTML product report (identity + readiness +
+evidence + JSON-LD, offline, governance negations in the footer). See
+`docs/releases/v0.32.0.md`.

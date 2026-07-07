@@ -27,15 +27,13 @@ semantic authority: generated/recommended output must not contain dppk terms
 prioritises the mapping foundation and UX/test hardening before the
 Crosswalk.
 
-### v0.32.0–v0.35.0 — End-product build path (approved 2026-07-07)
+### v0.33.0–v0.35.0 — End-product build path (approved 2026-07-07)
 
 One product, one story: "from GDSN message to Digital Product Passport —
 traceable at every step", layered for stakeholders (showcase), standards
 experts (workbench), and data teams (operational). Sequenced so the
 Crosswalk slots in when sources arrive, without rework:
 
-- **v0.32.0 — Product Journey + Report Center.** One-click Convert →
-  Passport bridge; self-contained offline HTML report per product.
 - **v0.33.0 — UI overhaul within Streamlit.** Progressive disclosure,
   grid-style annotation editing, dark mode tokens, deprecation sweep.
 - **v0.34.0 — GS1 Digital Link preview + QR.** Offline URI construction
@@ -80,6 +78,14 @@ guess source URLs.
 
 ## Released
 
+- **v0.32.0 — Product Journey bridge + Report Center.** "Continue to
+  Product Passport" carries a converted product's JSON-LD straight into
+  the passport builder as a pre-selected input mode (parsed exactly like
+  an uploaded file — transport convenience, never a validation bypass).
+  New `report.py` builds one self-contained, printable, deterministic
+  HTML report per product (identity, v0.31.0 readiness verbatim, mapping
+  evidence, codelist counts, JSON-LD; governance negations in the
+  footer), offered as Convert's 5th download.
 - **v0.31.0 — DPP Readiness Scorecard.** Convert renders one
   deterministic readiness panel per converted product from signals the
   conversion already computed: structural validation, mapping coverage,
