@@ -520,14 +520,6 @@ def render_manual_jsonld_builder() -> None:
                 language_options,
                 help="Used for language-tagged Web Vocabulary values.",
             )
-            st.checkbox(
-                "Product is for sale (form helper only — no JSON-LD emitted)",
-                help=(
-                    "This is a form-scoping helper only. v0.10 does not emit "
-                    "offer or pricing JSON-LD for this flag."
-                ),
-            )
-
             groups = get_builder_groups(manifest, product_category)
             group_labels = [group["label"] for group in groups]
             selected_group_label = st.selectbox(

@@ -20,7 +20,12 @@ from app.ui import (
     render_status_badge,
     render_status_card,
 )
-from app.workflow_shared import REPOSITORY_ROOT, clear_batch_results, clear_results
+from app.workflow_shared import (
+    REPOSITORY_ROOT,
+    clear_all_results,
+    clear_batch_results,
+    clear_results,
+)
 from gdsn_to_gs1_jsonld.batch_converter import (
     BatchConversionError,
     BatchConversionLimits,
@@ -34,6 +39,73 @@ from gdsn_to_gs1_jsonld.codelist_registry import (
 from gdsn_to_gs1_jsonld.converter import convert_xml_to_jsonld
 from gdsn_to_gs1_jsonld.reporter import json_bytes, mapping_report_xlsx_bytes
 from gdsn_to_gs1_jsonld.xml_parser import XMLParseError
+
+# Mapping profile consolidation (v0.15.0): the consolidated registry is the
+# single current mapping artifact. Old profiles are archived — kept on disk
+# and selectable for reference/comparison only, behind an expander with an
+# explicit warning. Moved from the global sidebar into this workflow in
+# v0.30.0: Convert is the only workflow that uses a mapping profile.
+_CURRENT_PROFILE_LABEL = "Consolidated mapping registry (current)"
+_CURRENT_MAPPING_PATH = REPOSITORY_ROOT / "mapping" / "mapping_registry.yaml"
+_ARCHIVED_PROFILES = {
+    "Certifications & Documents v0.3.0 (archived)": (
+        REPOSITORY_ROOT / "mapping" / "mapping_v0_3.yaml"
+    ),
+    "Food v0.2.0 mapping (archived)": (
+        REPOSITORY_ROOT / "mapping" / "mapping_v0_2.yaml"
+    ),
+    "MVP v0.1.0 mapping (archived)": (
+        REPOSITORY_ROOT / "mapping" / "mapping_mvp.yaml"
+    ),
+}
+_NO_ARCHIVED_OPTION = "None — use current registry"
+
+
+def render_mapping_profile_selector() -> Path:
+    """Render the mapping-profile context and return the active mapping path.
+
+    The archived-profile choice is read from session state before the
+    expander renders (the selectbox callback updates state before the
+    rerun), exactly as the sidebar version did pre-v0.30.0.
+    """
+    archived_choice = st.session_state.get(
+        "archived_profile_choice", _NO_ARCHIVED_OPTION
+    )
+    archived_active = archived_choice in _ARCHIVED_PROFILES
+    mapping_path = (
+        _ARCHIVED_PROFILES[archived_choice]
+        if archived_active
+        else _CURRENT_MAPPING_PATH
+    )
+
+    with st.expander("Mapping profile", expanded=False):
+        st.markdown(
+            "**Active mapping profile**: "
+            f"{archived_choice if archived_active else _CURRENT_PROFILE_LABEL}"
+        )
+        render_status_badge(
+            "Archived" if archived_active else "Current",
+            "archived" if archived_active else "current",
+        )
+        st.code(mapping_path.relative_to(REPOSITORY_ROOT).as_posix())
+        st.selectbox(
+            "Archived profile",
+            [_NO_ARCHIVED_OPTION, *_ARCHIVED_PROFILES],
+            key="archived_profile_choice",
+            on_change=clear_all_results,
+            help=(
+                "Archived profiles are retained for reference and "
+                "comparison only. Selecting one switches conversion to "
+                "that profile and clears current results."
+            ),
+        )
+    if archived_active:
+        st.warning(
+            "Archived profile — for reference/comparison only. The "
+            "consolidated registry is the current mapping artifact."
+        )
+    return mapping_path
+
 
 # Status-badge tone per codelist validation status (v0.20.0 Track D).
 _CODELIST_STATUS_TONES = {

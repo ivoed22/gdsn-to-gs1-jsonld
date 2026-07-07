@@ -1,5 +1,26 @@
 # UI Changes
 
+## v0.30.0 Consolidation checklist (nine workflows → five)
+
+- [x] Builder Manifest Expansion Analysis merged into Create JSON-LD
+      Prototype as a tab.
+- [x] Generate Mapping Candidates + Standards Review merged into a new
+      Mapping Governance workflow (tabs).
+- [x] Validate Product Passport Sources + Build Product Passport
+      Prototype merged into one Product Passport workflow (tabs).
+- [x] Two-stage route→child card navigation replaced by one "Choose a
+      workflow" row of five direct cards.
+- [x] Landing page reduced to hero → workbench status → navigation
+      (traceability strip and workflow-entry intro removed).
+- [x] Mapping-profile selection moved from sidebar into Convert (low-key
+      expander; same archived-profile warning and clear-on-switch).
+- [x] Sidebar keeps exactly one governance block (duplicate removed).
+- [x] Builder's no-op "Product is for sale" checkbox removed.
+- [x] Behavior-preserving: converter/serializer/validators untouched;
+      all scope warnings still visible (no-claims tests green).
+- [x] Visual smoke rewritten for direct navigation; baselines
+      regenerated (landing + five workflows).
+
 ## v0.29.0 First slice of Standards Review workflow checklist
 
 - [x] Standards Review gains a "Record a review annotation" section:

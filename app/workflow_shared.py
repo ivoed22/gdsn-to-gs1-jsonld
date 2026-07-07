@@ -40,6 +40,13 @@ BATCH_RESULT_STATE_KEYS = (
     "batch_conversion_report",
     "batch_export_zip_bytes",
 )
+# Consolidated navigation (v0.30.0): five workflows, direct navigation.
+# The v0.13.3 two-stage route->child card navigation was removed together
+# with the 9-workflow split it existed to manage: Builder Manifest Expansion
+# Analysis lives inside Create JSON-LD Prototype, Generate Mapping
+# Candidates + Standards Review merged into Mapping Governance, and the two
+# Product Passport workflows merged into one. Every capability remains
+# reachable; only the grouping changed.
 WORKFLOW_MODES = (
     {
         "key": "convert",
@@ -56,104 +63,37 @@ WORKFLOW_MODES = (
         "outcome": "Vocabulary evidence and coverage context (read-only).",
     },
     {
-        "key": "candidates",
-        "title": "Generate Mapping Candidates",
-        "marker": "MAP",
-        "description": (
-            "Suggest possible GDSN/BMS/XPath sources for WebVoc properties."
-        ),
-        "outcome": "Review-only candidate report; nothing is written.",
-    },
-    {
-        "key": "standards",
-        "title": "Standards Review",
-        "marker": "SDR",
-        "description": "Inspect open standards and governance decisions.",
-        "outcome": "Read-only SDR context.",
-    },
-    {
-        "key": "builder_expansion",
-        "title": "Builder Manifest Expansion Analysis",
-        "marker": "EXP",
-        "description": (
-            "Review which not-yet-authorable WebVoc properties are mature "
-            "enough to add to the Manual Builder manifest next."
-        ),
-        "outcome": "Read-only readiness analysis; no manifest changes.",
-    },
-    {
         "key": "prototype",
         "title": "Create JSON-LD Prototype",
         "marker": "LD",
-        "description": "Manually author GS1 Web Vocabulary JSON-LD.",
+        "description": (
+            "Manually author GS1 Web Vocabulary JSON-LD, with manifest "
+            "expansion analysis alongside."
+        ),
         "outcome": "Prototype JSON-LD with governance warning.",
     },
     {
-        "key": "product_passport",
-        "title": "Validate Product Passport Sources",
-        "marker": "PP",
+        "key": "governance",
+        "title": "Mapping Governance",
+        "marker": "GOV",
         "description": (
-            "Inspect local Product Passport reference sources, schemas, and "
-            "examples."
+            "Generate mapping candidates and review standards decisions "
+            "and vocabulary freshness in one place."
         ),
-        "outcome": "Source inventory + structural validation report.",
+        "outcome": "Review-only reports and sign-offs; nothing is written.",
     },
     {
-        "key": "product_passport_builder",
-        "title": "Build Product Passport Prototype",
-        "marker": "PB",
+        "key": "product_passport",
+        "title": "Product Passport",
+        "marker": "PP",
         "description": (
-            "Wrap GS1 JSON-LD into a prototype Product Passport envelope."
+            "Inspect Product Passport sources, validate prototype JSON, and "
+            "build a prototype passport envelope."
         ),
-        "outcome": "Passport JSON-LD + structural validation report.",
+        "outcome": "Source inventory, validation report, or Passport JSON-LD.",
     },
 )
 DEFAULT_WORKFLOW_MODE = WORKFLOW_MODES[0]["title"]
-
-# Information-architecture grouping for the workflow overview (v0.13.0).
-# Cards are rendered under these group headings, in this order, so seven
-# Guided route navigation (v0.13.3): three primary routes group the seven
-# workflows. Stage 1 shows the route cards; stage 2 shows only the child
-# workflow cards for the selected route (progressive disclosure). The routes are
-# a UI grouping layer only — every workflow key is unchanged and reachable.
-ROUTES = (
-    {
-        "key": "jsonld_creation",
-        "title": "Create GS1 JSON-LD",
-        "marker": "JSON-LD",
-        "description": (
-            "Create GS1 Web Vocabulary JSON-LD from product XML or manual "
-            "prototype input."
-        ),
-        "outcome": "GS1 JSON-LD output.",
-        "children": ("convert", "prototype"),
-        "child_heading": "Choose how to create JSON-LD",
-    },
-    {
-        "key": "vocabulary_mapping",
-        "title": "Vocabulary & Mapping",
-        "marker": "MAP",
-        "description": (
-            "Review vocabulary, mappings, candidate sources and standards "
-            "decisions."
-        ),
-        "outcome": "Review evidence and governance context.",
-        "children": ("explore", "candidates", "standards", "builder_expansion"),
-        "child_heading": "Choose a review tool",
-    },
-    {
-        "key": "product_passport_bridge",
-        "title": "Product Passport Bridge",
-        "marker": "PASS",
-        "description": (
-            "Work with Product Passport sources and prototype passport output."
-        ),
-        "outcome": "Source validation or Passport JSON-LD.",
-        "children": ("product_passport", "product_passport_builder"),
-        "child_heading": "Choose a Product Passport tool",
-    },
-)
-DEFAULT_ROUTE = ROUTES[0]["key"]
 
 
 def clear_results() -> None:
@@ -179,14 +119,13 @@ def navigate_to_webvoc_property(property_id: str) -> None:
     """Deep-link to the Explore workflow's detail view for one property (v0.26.0).
 
     A ``st.button(on_click=...)`` callback, same pattern as
-    :func:`set_workflow_mode`/:func:`set_route`: it only sets session-state
-    keys before the rerun. It resets Explore's other filters to "show
-    everything" and pre-fills its search with *property_id* so the target
-    property is reliably the (typically only) match, then pre-selects it in
-    the detail selectbox. Explore's own render logic and data are otherwise
-    untouched -- this does not fetch or compute anything new.
+    :func:`set_workflow_mode`: it only sets session-state keys before the
+    rerun. It resets Explore's other filters to "show everything" and
+    pre-fills its search with *property_id* so the target property is
+    reliably the (typically only) match, then pre-selects it in the detail
+    selectbox. Explore's own render logic and data are otherwise untouched
+    -- this does not fetch or compute anything new.
     """
-    st.session_state["selected_route"] = "vocabulary_mapping"
     st.session_state["workflow_mode"] = "Explore GS1 Web Vocabulary"
     st.session_state["webvoc_explorer_group"] = "All groups"
     st.session_state["webvoc_explorer_domain"] = "All domains"
@@ -195,24 +134,6 @@ def navigate_to_webvoc_property(property_id: str) -> None:
     st.session_state["webvoc_explorer_only_standards_review"] = False
     st.session_state["webvoc_explorer_search"] = property_id
     st.session_state["webvoc_explorer_selected_property"] = property_id
-
-
-def set_route(route_key: str) -> None:
-    """Select a primary route and open its first child workflow.
-
-    This is a UI navigation grouping only. It changes which child workflow cards
-    are shown and makes the route's first child the active workflow, without
-    clearing any conversion or result state.
-    """
-    st.session_state["selected_route"] = route_key
-    for route in ROUTES:
-        if route["key"] == route_key:
-            first_child_key = route["children"][0]
-            for mode in WORKFLOW_MODES:
-                if mode["key"] == first_child_key:
-                    st.session_state["workflow_mode"] = mode["title"]
-                    return
-            return
 
 
 def _load_webvoc_metadata() -> dict:

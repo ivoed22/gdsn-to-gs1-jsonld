@@ -6,31 +6,25 @@ Start the app with:
 streamlit run app/streamlit_app.py
 ```
 
-The `v0.8.0` app opens with workflow modes:
+Since v0.30.0 the app has five directly navigable workflows (landing page:
+hero → workbench status → "Choose a workflow" cards):
 
-- `Convert GDSN XML`
-- `Explore GS1 Web Vocabulary`
-- `Standards Review`
+- `Convert GDSN XML` — Single XML and Bulk ZIP tabs. A "Mapping profile"
+  expander selects the consolidated registry (default) or an archived
+  profile for reference/comparison; switching clears previous results.
+- `Explore GS1 Web Vocabulary` — read-only vocabulary/coverage explorer.
+- `Create JSON-LD Prototype` — the manual builder, with the Builder
+  Manifest Expansion Analysis (Track C) as a second tab.
+- `Mapping Governance` — Generate Mapping Candidates and Standards Review
+  (SDR annotations, vocabulary freshness) as tabs in one review lifecycle.
+- `Product Passport` — source inventory/structural validation and the
+  prototype Passport Builder as tabs.
 
-`Convert GDSN XML` contains:
-
-- `Single XML`, the existing one-product upload and export workflow
-- `Bulk ZIP`, a batch upload workflow for ZIP files containing XML products
-
-The mapping selector offers:
-
-- Certifications & Documents v0.3.0, selected by default
-- Food v0.2.0 mapping
-- MVP v0.1.0 mapping for compatibility
-
-The sidebar shows the app version, active mapping path, and supported groups.
-Changing profiles clears previous results. Uploaded XML bytes are passed
-directly to the package and are not intentionally written to disk.
-
-The Bulk ZIP tab ignores non-XML files and uses the shared batch converter to
-produce `batch_summary.json`, `batch_summary.xlsx`, and a batch export ZIP.
-The Web Vocabulary mode is a placeholder for a later Explorer release. The
-Standards Review mode shows compact read-only SDR/backlog status.
+The sidebar shows the app version, workspace status, source snapshots, and
+one governance block. Uploaded XML bytes are passed directly to the package
+and are not intentionally written to disk. The Bulk ZIP tab ignores non-XML
+files and uses the shared batch converter to produce `batch_summary.json`,
+`batch_summary.xlsx`, and a batch export ZIP.
 
 **v0.21.0**: Single XML conversion's "Review mapping & evidence" step gained
 an "Open codelist validation (Track D)" expander showing per-field
@@ -50,3 +44,9 @@ coverage, registry accepted count, open SDRs, codelists imported, builder
 fields authored, and hard-mapping reviews recorded this session. Every
 number is read from an existing workflow's own data source; see
 `docs/releases/v0.27.0.md`.
+
+**v0.30.0**: Nine workflows consolidated into the five above; two-stage
+route→child navigation replaced by direct workflow cards; landing page
+reduced to hero + workbench status + navigation; mapping-profile
+selection moved from the sidebar into Convert. Behavior-preserving; see
+`docs/releases/v0.30.0.md`.

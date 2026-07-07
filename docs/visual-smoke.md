@@ -14,22 +14,23 @@ changes.
 
 ## What it checks
 
-Boots the app and walks the guided-route navigation across all seven
-workflows plus the landing page, asserting on every screen:
+Boots the app and walks the direct navigation across all five workflows
+(v0.30.0 consolidation) plus the landing page, asserting on every screen:
 
 - No horizontal overflow at a 1280px desktop viewport.
-- The active route/workflow button is readable (text color differs from its
+- The active workflow button is readable (text color differs from its
   background, not fully transparent).
 - No positive compliance claim appears without a negation ("not official GS1
   validation", "No production compliance", etc. — same check as
   `tests/test_no_claims.py`, applied to rendered page text).
 - At least one warning/info alert is visible per workflow (every workflow
   carries a governance or scope note).
-- The app version and all three route cards are visible on the landing page.
+- The app version and all five workflow cards are visible on the landing
+  page.
 
 It also drives one real interaction (selecting `gs1:gtin` and clicking
-"Generate Candidates") so the Generate Mapping Candidates screenshot shows
-the promotion-lane state, not just the empty controls form.
+"Generate Candidates") so the Mapping Governance screenshot shows the
+promotion-lane state, not just the empty controls form.
 
 Each screen is captured as a full-page PNG screenshot.
 
@@ -68,8 +69,8 @@ it a real gate.
 ## Extending
 
 `SCREENS` in `scripts/visual_smoke.py` is a list of
-`(route_index, child_index, screen_name)` tuples, matching the order of
-`ROUTES` / each route's `children` in `app/workflow_shared.py`. Add a tuple
-there for any new workflow; no other wiring is needed unless the new screen
-needs a specific interaction first (see the `generate_mapping_candidates`
-special case in the script for the pattern).
+`(workflow_index, screen_name)` tuples, matching the order of
+`WORKFLOW_MODES` in `app/workflow_shared.py`. Add a tuple there for any new
+workflow; no other wiring is needed unless the new screen needs a specific
+interaction first (see the `mapping_governance` special case in the script
+for the pattern).

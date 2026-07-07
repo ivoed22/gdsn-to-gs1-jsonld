@@ -2,7 +2,7 @@ from html import escape
 
 import streamlit as st
 
-APP_VERSION = "v0.29.0"
+APP_VERSION = "v0.30.0"
 
 
 def apply_page_styles() -> None:
@@ -1301,96 +1301,6 @@ def render_page_header() -> None:
     )
 
 
-def render_workflow_overview() -> None:
-    st.markdown(
-        """
-        <p class="trace-rail-label">Core conversion traceability</p>
-        <div class="traceability-strip" aria-label="Core conversion traceability rail">
-          <div class="trace-node">
-            <span class="trace-label">XML</span>
-            <strong>GDSN source</strong>
-            <p>Product data enters as single XML or ZIP-contained XML files.</p>
-          </div>
-          <div class="trace-node">
-            <span class="trace-label">BMS/XPath</span>
-            <strong>Mapping evidence</strong>
-            <p>Versioned profiles preserve source-to-property traceability.</p>
-          </div>
-          <div class="trace-node">
-            <span class="trace-label">GS1 JSON-LD</span>
-            <strong>Linked data output</strong>
-            <p>GS1 Web Vocabulary-aligned product data is generated for review.</p>
-          </div>
-          <div class="trace-node">
-            <span class="trace-label">SDR</span>
-            <strong>Governance context</strong>
-            <p>Open standards decisions remain visible without changing runtime output.</p>
-          </div>
-        </div>
-        <p class="trace-note">
-          Product Passport workflows build on this GS1 JSON-LD output as
-          prototype/reference tooling &mdash; not an official traceability or
-          compliance output.
-        </p>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-def render_workflow_entry_intro() -> None:
-    st.markdown(
-        """
-        <div class="workflow-entry">
-          <p class="section-kicker">Workflow entry point</p>
-          <h2>What do you want to do?</h2>
-          <p>
-            Pick a route, then a tool. Three routes cover the work: Create GS1
-            JSON-LD (convert GDSN XML or author a prototype), Vocabulary &amp;
-            Mapping (explore the Web Vocabulary, review mapping candidates and
-            standards decisions), and the Product Passport Bridge (validate
-            sources or build a prototype passport). Choosing a route reveals
-            only its relevant workflows.
-          </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-def render_route_card(
-    title: str,
-    description: str,
-    outcome: str,
-    marker: str,
-    selected: bool,
-) -> None:
-    """Render a primary route card (stage 1 of the guided route navigation).
-
-    Route cards are visually heavier than child workflow cards and carry a
-    clear active-state indicator so the selected route reads at a glance.
-    """
-    state_class = " is-active" if selected else ""
-    state_html = (
-        '<span class="route-card-state">Active</span>' if selected else ""
-    )
-    st.markdown(
-        f"""
-        <article class="route-card{state_class}">
-          <div class="route-card-header">
-            <span class="route-card-mark">{escape(marker)}</span>
-            {state_html}
-          </div>
-          <strong class="route-card-title">{escape(title)}</strong>
-          <p class="route-card-copy">{escape(description)}</p>
-          <p class="route-card-outcome">
-            <strong>Outcome:</strong> {escape(outcome)}
-          </p>
-        </article>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
 def render_workflow_mode_card(
     title: str,
     description: str,
@@ -1470,24 +1380,6 @@ def status_badge_html(label: str, tone: str) -> str:
 
 def render_status_badge(label: str, tone: str) -> None:
     st.markdown(status_badge_html(label, tone), unsafe_allow_html=True)
-
-
-def render_mapping_profile_status(
-    profile_label: str,
-    badge_label: str,
-    tone: str,
-) -> None:
-    """Sidebar panel showing the active mapping profile and its status."""
-    st.markdown(
-        f"""
-        <div class="mapping-profile-status">
-          <strong>Active mapping profile</strong>
-          <span class="profile-name">{escape(profile_label)}</span>
-          {status_badge_html(badge_label, tone)}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
 
 
 def render_vocabulary_status(

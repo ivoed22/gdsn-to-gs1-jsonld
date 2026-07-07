@@ -27,7 +27,28 @@ semantic authority: generated/recommended output must not contain dppk terms
 prioritises the mapping foundation and UX/test hardening before the
 Crosswalk.
 
-### v0.30.0+ — GS1-first DPP Crosswalk (deferred behind foundation)
+### v0.31.0–v0.35.0 — End-product build path (approved 2026-07-07)
+
+One product, one story: "from GDSN message to Digital Product Passport —
+traceable at every step", layered for stakeholders (showcase), standards
+experts (workbench), and data teams (operational). Sequenced so the
+Crosswalk slots in when sources arrive, without rework:
+
+- **v0.31.0 — DPP Readiness Scorecard.** One deterministic panel per
+  converted product combining existing signals (validation, codelist
+  validation, mapped/unmapped coverage, hard-mapping flags). Scores
+  *traceability & structural readiness*, never "compliance";
+  Crosswalk-dependent dimensions report as not-yet-assessed.
+- **v0.32.0 — Product Journey + Report Center.** One-click Convert →
+  Passport bridge; self-contained offline HTML report per product.
+- **v0.33.0 — UI overhaul within Streamlit.** Progressive disclosure,
+  grid-style annotation editing, dark mode tokens, deprecation sweep.
+- **v0.34.0 — GS1 Digital Link preview + QR.** Offline URI construction
+  from the GTIN with a locally rendered QR code.
+- **v0.35.0 — Workspace persistence (light).** Save/load reviewer
+  artifacts to a git-ignored local `workspace/` directory.
+
+### v0.36.0+ — GS1-first DPP Crosswalk (deferred behind foundation)
 
 Map DPP fields to GS1-first semantics (GS1 Web Vocabulary → GS1 Digital
 Link → CIRPASS/DPP core → sector vocabularies → schema.org fallback → local
@@ -64,6 +85,16 @@ guess source URLs.
 
 ## Released
 
+- **v0.30.0 — Consolidation: nine workflows become five.** First version
+  of the end-product build path. Builder Manifest Expansion Analysis is a
+  tab inside Create JSON-LD Prototype; Generate Mapping Candidates +
+  Standards Review merged into Mapping Governance; the two Product
+  Passport workflows merged into one. Two-stage route→child navigation
+  replaced by five direct workflow cards; landing page reduced to hero +
+  workbench status + navigation; mapping-profile selection moved from the
+  sidebar into Convert; dead UI removed (no-op "for sale" checkbox,
+  duplicate sidebar governance block). Behavior-preserving: converter,
+  serializer, and validators untouched. Crosswalk renumbered to v0.36.0+.
 - **v0.29.0 — First slice of the Standards Review workflow.** Last of
   eight versions in this batch. Standards Review gains a "Record a review
   annotation" section (reviewer, decision date, proposed status, notes
@@ -142,7 +173,7 @@ guess source URLs.
   `needs_codelist_curation` / `needs_hard_mapping_review` /
   `not_ready_no_evidence`, using the mapping registry catalog and Track B's
   hard-mapping detection. DPP relevance is reported as not-yet-assessed for
-  every candidate (the Crosswalk's job, now v0.30.0+). No automatic
+  every candidate (the Crosswalk's job, now v0.36.0+). No automatic
   manifest expansion.
 - **v0.18.0 — Builder UX at scale.** Coverage overview across manifest
   groups, per-field status chips (`builder_status.py`, reusing Track B's

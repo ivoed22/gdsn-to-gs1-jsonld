@@ -49,12 +49,13 @@ def _assert_no_positive_claims(text: str) -> None:
             )
 
 
-def _open_route(app: AppTest, route_key: str) -> None:
+def _open_workflow(app: AppTest, workflow_key: str) -> None:
+    """Direct navigation (v0.30.0): open one of the five workflows."""
     for button in app.button:
-        if getattr(button, "key", None) == f"route_{route_key}":
+        if getattr(button, "key", None) == f"workflow_mode_{workflow_key}":
             button.click().run(timeout=20)
             return
-    raise AssertionError(f"route button route_{route_key} not found")
+    raise AssertionError(f"workflow button workflow_mode_{workflow_key} not found")
 
 
 def test_landing_page_makes_no_positive_claims() -> None:
@@ -66,13 +67,13 @@ def test_landing_page_makes_no_positive_claims() -> None:
         assert required in lowered, f"Required negation missing: {required!r}"
 
 
-def test_product_passport_route_makes_no_positive_claims() -> None:
+def test_product_passport_workflow_makes_no_positive_claims() -> None:
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
-    _open_route(app, "product_passport_bridge")
+    _open_workflow(app, "product_passport")
     _assert_no_positive_claims(_rendered_text(app))
 
 
-def test_vocabulary_route_makes_no_positive_claims() -> None:
+def test_mapping_governance_workflow_makes_no_positive_claims() -> None:
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
-    _open_route(app, "vocabulary_mapping")
+    _open_workflow(app, "governance")
     _assert_no_positive_claims(_rendered_text(app))

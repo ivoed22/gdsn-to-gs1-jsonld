@@ -9,6 +9,46 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.30.0 — Consolidation: Nine Workflows Become Five
+
+First version of the approved end-product build path (see
+`docs/roadmap.md` → "End-product build path"): the app moves from a
+toolbox of nine separate workflows toward one product with a spine.
+Behavior-preserving — the converter, serializer, and validators are
+untouched; only navigation, grouping, and dead UI changed.
+
+- **Nine workflows consolidated into five:**
+  - *Convert GDSN XML* (unchanged: Single XML / Bulk ZIP tabs).
+  - *Explore GS1 Web Vocabulary* (unchanged).
+  - *Create JSON-LD Prototype* — Builder Manifest Expansion Analysis is
+    now a tab inside it (it is analysis *about* the builder manifest).
+  - *Mapping Governance* (new) — Generate Mapping Candidates + Standards
+    Review (SDR annotations, vocabulary freshness) merged into one
+    review lifecycle.
+  - *Product Passport* — the Sources/Validation workflow and the
+    prototype Passport Builder merged into one workflow with tabs.
+- **Direct navigation replaces the two-stage route→child cards** (they
+  existed to manage nine destinations; with five they only cost clicks
+  and screen height). One "Choose a workflow" row with five cards.
+- **Landing page reduced** to hero → workbench status → navigation: the
+  traceability strip and "workflow entry" intro sections were removed.
+- **Mapping-profile selection moved from the sidebar into Convert**
+  (the only workflow that uses a mapping profile), behind a low-key
+  "Mapping profile" expander with the same archived-profile warning.
+- **Dead UI removed:** the Builder's no-op "Product is for sale"
+  checkbox (form helper that emitted nothing) and the duplicate
+  governance status block in the sidebar.
+- `set_route`/`ROUTES` removed from `app/workflow_shared.py`;
+  `navigate_to_webvoc_property` (v0.26.0 deep link) no longer needs to
+  set a route. Dead UI component helpers removed from `app/ui.py`.
+- Visual smoke walks the five workflows directly; the per-screen alert
+  check now retries briefly (Explore's first render builds its dataset
+  and could race the assertion).
+
+No warnings suppressed; no governance/no-claims text removed (the
+sidebar keeps exactly one governance block; every workflow keeps its
+scope warnings — test-enforced).
+
 ## v0.29.0 — First Slice of the Standards Review Workflow
 
 Last of eight versions in this batch (v0.22.0–v0.29.0). Adds the smallest

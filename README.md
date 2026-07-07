@@ -3,13 +3,19 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.30.0 consolidates nine workflows into five (Convert, Explore,
+Create JSON-LD Prototype, Mapping Governance, Product Passport) with
+direct navigation and a lighter landing page — the first version of the
+approved end-product build path toward "from GDSN message to Digital
+Product Passport, traceable at every step". Behavior-preserving; see
+`docs/releases/v0.30.0.md`. The Crosswalk track (now v0.36.0+) remains
+blocked on CIRPASS/sector-vocabulary sourcing.
+
 Version 0.29.0 adds the smallest useful slice of the future "Standards-
 review workflow": Standards Review can record a proposed reviewer,
 decision date, and target status per open SDR and download the
 annotation, without applying any status transition or writing to the
-governed backlog JSON. Last of eight versions in this batch — see
-`docs/releases/v0.29.0.md`. The Crosswalk track (now v0.30.0+) remains
-next, blocked on CIRPASS/sector-vocabulary sourcing.
+governed backlog JSON. See `docs/releases/v0.29.0.md`.
 
 Version 0.28.0 lets Generate Mapping Candidates load a previously
 generated candidate report (from this workflow's own download, or the

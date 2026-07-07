@@ -48,19 +48,16 @@ NAV_BUTTON_SELECTOR = (
     "button[data-testid='stBaseButton-secondary']"
 )
 
-# (route_index, child_index, screen_name) for every one of the seven
-# workflows, reached through the guided route navigation. Route child counts
-# come from app/workflow_shared.py ROUTES and must be kept in sync if that
-# structure changes.
+# (workflow_index, screen_name) for every one of the five workflows,
+# reached through direct navigation (v0.30.0). Indexes follow
+# app/workflow_shared.py WORKFLOW_MODES order and must be kept in sync if
+# that structure changes.
 SCREENS = [
-    (0, 0, "convert_gdsn_xml"),
-    (0, 1, "create_jsonld_prototype"),
-    (1, 0, "explore_webvoc"),
-    (1, 1, "generate_mapping_candidates"),
-    (1, 2, "standards_review"),
-    (1, 3, "builder_manifest_expansion_analysis"),
-    (2, 0, "validate_product_passport_sources"),
-    (2, 1, "build_product_passport_prototype"),
+    (0, "convert_gdsn_xml"),
+    (1, "explore_webvoc"),
+    (2, "create_jsonld_prototype"),
+    (3, "mapping_governance"),
+    (4, "product_passport"),
 ]
 
 
@@ -153,11 +150,17 @@ def _assert_version_visible(page, expected_version: str, screen: str, failures: 
         failures.append(f"[{screen}] version string 'App version: {expected_version}' not visible")
 
 
-def _assert_three_routes_visible(page, screen: str, failures: list[str]) -> None:
+def _assert_five_workflows_visible(page, screen: str, failures: list[str]) -> None:
     body_text = page.locator("body").inner_text()
-    for route_title in ("Create GS1 JSON-LD", "Vocabulary & Mapping", "Product Passport Bridge"):
-        if route_title not in body_text:
-            failures.append(f"[{screen}] route card {route_title!r} not visible")
+    for workflow_title in (
+        "Convert GDSN XML",
+        "Explore GS1 Web Vocabulary",
+        "Create JSON-LD Prototype",
+        "Mapping Governance",
+        "Product Passport",
+    ):
+        if workflow_title not in body_text:
+            failures.append(f"[{screen}] workflow card {workflow_title!r} not visible")
 
 
 def run_visual_smoke(output_dir: Path, port: int) -> list[str]:
@@ -204,20 +207,19 @@ def run_visual_smoke(output_dir: Path, port: int) -> list[str]:
             page.wait_for_selector(NAV_BUTTON_SELECTOR, timeout=30000)
             page.wait_for_timeout(1500)
 
-            # Screen 0: landing page (default route/workflow, no clicks yet).
+            # Screen 0: landing page (default workflow, no clicks yet).
             screen = "landing_page"
             _assert_version_visible(page, APP_VERSION, screen, failures)
-            _assert_three_routes_visible(page, screen, failures)
+            _assert_five_workflows_visible(page, screen, failures)
             _assert_no_horizontal_overflow(page, screen, failures)
             _assert_active_button_readable(page, screen, failures)
             _assert_no_positive_claims(page.locator("body").inner_text(), screen, failures)
             page.screenshot(path=str(output_dir / f"{screen}.png"), full_page=True)
 
-            for route_index, child_index, screen in SCREENS:
-                _click_nav_button_if_open(page, route_index, screen, failures)
-                _click_nav_button_if_open(page, 3 + child_index, screen, failures)
+            for workflow_index, screen in SCREENS:
+                _click_nav_button_if_open(page, workflow_index, screen, failures)
 
-                if screen == "generate_mapping_candidates":
+                if screen == "mapping_governance":
                     # Drive one generation so lane/status badges render, the
                     # state this workflow spends most of its time in.
                     try:
@@ -245,9 +247,17 @@ def run_visual_smoke(output_dir: Path, port: int) -> list[str]:
                 _assert_active_button_readable(page, screen, failures)
                 _assert_no_positive_claims(body_text, screen, failures)
 
-                warnings_present = page.locator("[data-testid='stAlert']").count() > 0
                 # Every workflow carries at least one governance/warning
                 # note (prototype/review-only, structural-only, etc.).
+                # Retry briefly: heavier workflows (e.g. Explore's dataset
+                # build on first render) can still be streaming content when
+                # the click settles.
+                warnings_present = False
+                for _ in range(6):
+                    if page.locator("[data-testid='stAlert']").count() > 0:
+                        warnings_present = True
+                        break
+                    page.wait_for_timeout(500)
                 if not warnings_present:
                     failures.append(f"[{screen}] no warning/info alert visible")
 
