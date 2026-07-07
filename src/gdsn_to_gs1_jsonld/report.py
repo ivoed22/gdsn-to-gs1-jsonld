@@ -19,6 +19,12 @@ import json
 from html import escape
 from typing import Any
 
+from .digital_link import (
+    DIGITAL_LINK_CAVEAT,
+    DigitalLinkError,
+    build_digital_link_uri,
+    digital_link_qr_svg,
+)
 from .product_passport_builder import extract_gtin, extract_product_name
 from .readiness import assess_readiness
 
@@ -166,6 +172,20 @@ def build_product_report_html(
         )
         or "<tr><td colspan='2'>Not evaluated in this conversion.</td></tr>"
     )
+
+    # GS1 Digital Link (v0.34.0): URI form + QR, both constructed offline.
+    # The SVG embeds inline, keeping the report self-contained. Skipped
+    # entirely when the GTIN is unusable — never a placeholder QR.
+    try:
+        digital_link_uri = build_digital_link_uri(gtin)
+        digital_link_section = f"""
+<h2>GS1 Digital Link</h2>
+<p><code>{escape(digital_link_uri)}</code></p>
+<div style="max-width: 10rem;">{digital_link_qr_svg(digital_link_uri)}</div>
+<p class="muted">{escape(DIGITAL_LINK_CAVEAT)}</p>
+"""
+    except DigitalLinkError:
+        digital_link_section = ""
     formatted_jsonld = json.dumps(jsonld_data, indent=2, ensure_ascii=False)
     generated_html = (
         f"<p class='muted'>{escape(generated_note)}</p>" if generated_note else ""
@@ -199,6 +219,7 @@ def build_product_report_html(
 </table>
 <p class="muted">{escape(assessment['scope_note'])}</p>
 
+{digital_link_section}
 <h2>Mapping evidence summary</h2>
 <table>
   <tbody>

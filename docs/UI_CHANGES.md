@@ -1,5 +1,16 @@
 # UI Changes
 
+## v0.34.0 GS1 Digital Link preview + QR checklist
+
+- [x] Convert step 3: "GS1 Digital Link" panel after the readiness
+      scorecard — URI code block, locally rendered QR SVG, caveat.
+- [x] Caveat wording shared via DIGITAL_LINK_CAVEAT and test-enforced:
+      never claims registered/resolvable/live.
+- [x] Panel skipped cleanly for an unusable GTIN (no placeholder QR).
+- [x] HTML product report embeds the same section; stays
+      self-contained and deterministic.
+- [x] Fully offline; no network call anywhere in the new module.
+
 ## v0.33.0 UI overhaul checklist
 
 - [x] Mapping Governance: five filter controls behind a collapsed

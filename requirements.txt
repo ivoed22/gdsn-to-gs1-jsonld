@@ -7,10 +7,4 @@ openpyxl
 typer
 pyld
 jsonschema>=4
-lxml
-pydantic>=2
-pyyaml
-pandas
-openpyxl
-typer
-pyld
+qrcode

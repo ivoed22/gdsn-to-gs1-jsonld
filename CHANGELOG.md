@@ -9,6 +9,33 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.34.0 — GS1 Digital Link Preview + QR
+
+Fifth version of the end-product build path: the story now ends with
+"and this is the URI form this product resolves under in the Digital
+Link world" — honestly framed.
+
+- New pure module `src/gdsn_to_gs1_jsonld/digital_link.py`:
+  `build_digital_link_uri(gtin)` returns the GS1 Digital Link URI form
+  (`https://id.gs1.org/01/{gtin}` — the exact form the converter
+  already emits as `@id`), and `digital_link_qr_svg(uri)` renders it as
+  a QR code SVG locally via the `qrcode` package's SVG path factory (no
+  raster imaging dependency, no network, deterministic).
+- **Honesty constraint built into the wording** (shared
+  `DIGITAL_LINK_CAVEAT` constant, test-enforced): constructing the URI
+  is offline string formatting; nothing checks or claims that the link
+  is registered, resolvable, or live.
+- **Convert step 3 gains a "GS1 Digital Link" panel** (after the
+  readiness scorecard): the URI in a code block, the QR beside it, the
+  caveat underneath. Skipped cleanly when the GTIN is unusable — never
+  a placeholder QR.
+- **The HTML product report embeds the same section** (URI + inline
+  SVG + caveat); the report stays fully self-contained and
+  deterministic.
+- New dependency `qrcode` (pure Python) added to `pyproject.toml`
+  dependencies and `requirements.txt` (which also lost its accidental
+  duplicate entries).
+
 ## v0.33.0 — UI Overhaul Within Streamlit
 
 Fourth version of the end-product build path: the interaction layer

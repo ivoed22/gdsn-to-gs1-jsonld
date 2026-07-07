@@ -3,6 +3,12 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.34.0 adds a "GS1 Digital Link" panel to Convert and the HTML
+product report: the Digital Link URI form for the GTIN plus a locally
+rendered QR code, constructed fully offline — explicitly without
+checking or claiming that the link is registered, resolvable, or live.
+See `docs/releases/v0.34.0.md`.
+
 Version 0.33.0 overhauls the interaction layer within Streamlit:
 candidate filters behind progressive disclosure, SDR annotations as a
 data-editor grid, column-configured tables, a dark-mode token set for

@@ -38,6 +38,12 @@ from gdsn_to_gs1_jsonld.codelist_registry import (
     load_codelist_registry,
 )
 from gdsn_to_gs1_jsonld.converter import convert_xml_to_jsonld
+from gdsn_to_gs1_jsonld.digital_link import (
+    DIGITAL_LINK_CAVEAT,
+    DigitalLinkError,
+    build_digital_link_uri,
+    digital_link_qr_svg,
+)
 from gdsn_to_gs1_jsonld.readiness import assess_readiness
 from gdsn_to_gs1_jsonld.report import build_product_report_html, product_report_bytes
 from gdsn_to_gs1_jsonld.reporter import json_bytes, mapping_report_xlsx_bytes
@@ -263,6 +269,37 @@ def _render_readiness_scorecard(result) -> None:
     st.caption(assessment["scope_note"])
 
 
+def _render_digital_link_panel(gtin: str | None) -> None:
+    """GS1 Digital Link URI form + locally rendered QR (v0.34.0).
+
+    Constructed offline from the GTIN only. The caveat wording comes from
+    digital_link.DIGITAL_LINK_CAVEAT: nothing here checks or claims that
+    the link is registered, resolvable, or live.
+    """
+    try:
+        uri = build_digital_link_uri(gtin or "")
+        qr_svg = digital_link_qr_svg(uri)
+    except DigitalLinkError:
+        return
+
+    render_preview_heading(
+        "GS1 Digital Link",
+        "The Digital Link URI form for this GTIN, with a locally "
+        "rendered QR code.",
+        "URI + QR",
+    )
+    uri_column, qr_column = st.columns([1.6, 1])
+    with uri_column:
+        st.code(uri)
+        st.caption(DIGITAL_LINK_CAVEAT)
+    with qr_column:
+        # Locally generated, trusted SVG (qrcode SvgPathImage output).
+        st.markdown(
+            f'<div style="max-width: 10rem;">{qr_svg}</div>',
+            unsafe_allow_html=True,
+        )
+
+
 def render_single_xml_workflow(mapping_path: Path) -> None:
     # Guided four-step conversion flow (Upload -> Mapping -> Validate -> Export)
     # wrapped around the real converter. The progress indicator is a visual
@@ -410,6 +447,8 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                     render_identity_card(product_id)
 
             _render_readiness_scorecard(result)
+
+            _render_digital_link_panel(result.canonical_product.gtin)
 
             render_preview_heading(
                 "Generated JSON-LD",

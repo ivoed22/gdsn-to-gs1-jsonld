@@ -120,6 +120,17 @@ def test_report_is_deterministic_and_bytes_roundtrip():
     assert product_report_bytes(first) == first.encode("utf-8")
 
 
+def test_report_embeds_digital_link_uri_and_qr_with_caveat():
+    """v0.34.0: the report carries the Digital Link URI form and an
+    inline QR SVG (self-contained), plus the no-resolution caveat."""
+    html = _real_report()
+
+    assert "GS1 Digital Link" in html
+    assert "https://id.gs1.org/01/08712345678906" in html
+    assert "<svg" in html and "</svg>" in html
+    assert "does not check or claim" in html
+
+
 def test_report_without_codelist_registry_says_not_evaluated():
     result = convert_xml_to_jsonld(
         EXAMPLE_XML.read_bytes(), MAPPING_REGISTRY, write_files=False

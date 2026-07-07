@@ -70,3 +70,9 @@ collapsed "Filters" expander, SDR annotations as a data-editor grid,
 column config on the big tables, a prefers-color-scheme dark token set
 for the custom CSS layer, and the `use_container_width` deprecation
 sweep. No behavior changes; see `docs/releases/v0.33.0.md`.
+
+**v0.34.0**: Convert step 3 gains a "GS1 Digital Link" panel — the URI
+form for the GTIN plus a locally rendered QR code, both constructed
+offline, with an explicit caveat that nothing is checked or claimed
+about the link being registered, resolvable, or live. The HTML product
+report embeds the same section. See `docs/releases/v0.34.0.md`.

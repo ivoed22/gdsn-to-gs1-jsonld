@@ -35,7 +35,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.33.0"
+    assert ui.APP_VERSION == "v0.34.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_workflow_mode_card)
 
@@ -173,6 +173,17 @@ def test_product_report_download_and_journey_bridge(example_xml_path):
     ]
     assert len(report_downloads) == 1
 
+    # v0.34.0: the GS1 Digital Link panel shows the URI form for the
+    # example GTIN with the no-resolution caveat (constructed offline).
+    assert any(
+        code.value == "https://id.gs1.org/01/08712345678906"
+        for code in app.code
+    )
+    assert any(
+        "does not check or claim" in str(caption.value)
+        for caption in app.caption
+    )
+
     app.button[
         _button_index(app, "Continue to Product Passport")
     ].click().run(timeout=20)
@@ -283,7 +294,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.33.0" in markdown.value
+        "App version: v0.34.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -1001,6 +1012,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.33.0" in rendered
+    assert "app version: v0.34.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

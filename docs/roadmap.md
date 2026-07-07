@@ -27,15 +27,13 @@ semantic authority: generated/recommended output must not contain dppk terms
 prioritises the mapping foundation and UX/test hardening before the
 Crosswalk.
 
-### v0.34.0–v0.35.0 — End-product build path (approved 2026-07-07)
+### v0.35.0 — End-product build path (approved 2026-07-07)
 
 One product, one story: "from GDSN message to Digital Product Passport —
 traceable at every step", layered for stakeholders (showcase), standards
 experts (workbench), and data teams (operational). Sequenced so the
 Crosswalk slots in when sources arrive, without rework:
 
-- **v0.34.0 — GS1 Digital Link preview + QR.** Offline URI construction
-  from the GTIN with a locally rendered QR code.
 - **v0.35.0 — Workspace persistence (light).** Save/load reviewer
   artifacts to a git-ignored local `workspace/` directory.
 
@@ -54,7 +52,9 @@ guess source URLs.
 ### Later (still v0.x)
 
 - SHACL shape execution against prototype Product Passport data.
-- GS1 Digital Link / EPCIS publication previews.
+- EPCIS publication previews; richer GS1 Digital Link support beyond the
+  v0.34.0 GTIN-only URI form (additional application identifiers such as
+  batch/serial, and resolver-aware workflows).
 - Verifiable Credentials / trust layer (envelope and proofs).
 - Resolve catalog warnings through standards and project review.
 - Connect manual JSON-LD prototypes to governed BMS/XPath evidence where
@@ -76,6 +76,13 @@ guess source URLs.
 
 ## Released
 
+- **v0.34.0 — GS1 Digital Link preview + QR.** New `digital_link.py`
+  constructs the Digital Link URI form (`https://id.gs1.org/01/{gtin}`,
+  the converter's existing `@id` form) and renders a QR code SVG
+  locally (pure-Python `qrcode`, no network, deterministic). Shown in
+  Convert step 3 and embedded in the HTML product report, always with
+  the test-enforced caveat that nothing is checked or claimed about the
+  link being registered, resolvable, or live.
 - **v0.33.0 — UI overhaul within Streamlit.** Candidate filters behind a
   collapsed expander (progressive disclosure), SDR annotations as one
   data-editor grid feeding the unchanged annotation helper, column
