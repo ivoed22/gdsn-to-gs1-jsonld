@@ -1,5 +1,24 @@
 # UI Changes
 
+## v0.33.0 UI overhaul checklist
+
+- [x] Mapping Governance: five filter controls behind a collapsed
+      "Filters" expander; defaults unchanged; property/lane/sign-off and
+      one primary action lead the page.
+- [x] Standards Review: SDR annotation section is a data-editor grid
+      (read-only SDR/Title, editable Reviewer/Date/Status/Notes, fixed
+      status vocabulary), same helper + download.
+- [x] Hard-mapping sign-off form deliberately kept as-is (AppTest
+      interaction coverage; data_editor has no AppTest accessor).
+- [x] Explore + candidate tables: pinned key columns, %.3f scores,
+      checkbox eligibility, compact status columns.
+- [x] Dark mode token set (prefers-color-scheme) for the custom CSS
+      layer; contrast verified per theme with a dark-emulated
+      screenshot; borders visible in both themes.
+- [x] use_container_width → width="stretch" sweep (48 occurrences);
+      deprecation warnings gone.
+- [x] Visual smoke baselines regenerated; 315 tests green.
+
 ## v0.32.0 Product Journey bridge + Report Center checklist
 
 - [x] Convert Export step: "Continue to Product Passport" button carries

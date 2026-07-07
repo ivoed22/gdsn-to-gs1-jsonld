@@ -59,6 +59,29 @@ a small token set and native Streamlit components.
 | `state-warning` | `#9a6700` |
 | `state-error` | `#b42318` |
 
+## Dark color tokens (v0.33.0)
+
+Applied via `@media (prefers-color-scheme: dark)` in `app/ui.py`.
+Desaturated, lightened tonal variants of the light tokens — never
+inverted colors. Contrast is verified per theme (text ≥ 4.5:1 on
+surfaces); borders stay visible in both themes. This covers the custom
+CSS layer only: Streamlit's own widgets follow the user's Streamlit
+theme setting.
+
+| Token | Dark value |
+| --- | --- |
+| `surface-default` | `#16202e` |
+| `surface-muted` | `#0f1722` |
+| `surface-accent` | `#14263a` |
+| `border-default` | `#2c3c50` |
+| `text-primary` | `#e6edf7` |
+| `text-secondary` | `#9fb0c7` |
+| `accent-primary` | `#6db3e8` |
+| `accent-strong` | `#8fc4ee` |
+| `state-success` | `#63c78f` |
+| `state-warning` | `#dcb45c` |
+| `state-error` | `#ee8f83` |
+
 ## Surface and card rules
 
 - Use a quiet border and subtle shadow, never heavy elevation.

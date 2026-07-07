@@ -64,3 +64,9 @@ builder, parsed exactly like an uploaded file) and a 5th download: a
 self-contained, printable HTML product report (identity + readiness +
 evidence + JSON-LD, offline, governance negations in the footer). See
 `docs/releases/v0.32.0.md`.
+
+**v0.33.0**: UI overhaul within Streamlit — candidate filters behind a
+collapsed "Filters" expander, SDR annotations as a data-editor grid,
+column config on the big tables, a prefers-color-scheme dark token set
+for the custom CSS layer, and the `use_container_width` deprecation
+sweep. No behavior changes; see `docs/releases/v0.33.0.md`.

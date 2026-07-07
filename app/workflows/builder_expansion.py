@@ -145,7 +145,7 @@ def render_builder_expansion_analysis() -> None:
             st.dataframe(
                 pd.DataFrame(table_rows),
                 hide_index=True,
-                use_container_width=True,
+                width="stretch",
             )
 
             selected_idx = st.selectbox(
@@ -189,5 +189,5 @@ def render_builder_expansion_analysis() -> None:
             data=json.dumps(analysis, indent=2, ensure_ascii=False).encode("utf-8"),
             file_name="builder_manifest_expansion_analysis.json",
             mime="application/json",
-            use_container_width=True,
+            width="stretch",
         )

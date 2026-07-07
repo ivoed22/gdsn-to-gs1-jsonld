@@ -35,7 +35,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.32.0"
+    assert ui.APP_VERSION == "v0.33.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_workflow_mode_card)
 
@@ -283,7 +283,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.32.0" in markdown.value
+        "App version: v0.33.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -418,38 +418,29 @@ def test_standards_review_vocabulary_freshness_check_is_offline_and_diffs_terms(
     )
 
 
-def test_sdr_review_annotation_records_reviewer_without_changing_status():
-    """v0.29.0: first slice of the future standards-review workflow.
-    Recording a reviewer/date/proposed-status produces a downloadable
-    annotation but never changes the SDR's actual status or writes to the
-    governed backlog file."""
+def test_sdr_review_annotation_grid_renders_without_changing_status():
+    """v0.29.0 slice, v0.33.0 presentation: the annotation section renders
+    as a data-editor grid (one row per open SDR). AppTest cannot interact
+    with st.data_editor (no accessor), so this asserts the section renders
+    cleanly and applies no status transition; the annotation-building logic
+    itself is covered by the pure build_sdr_review_annotation unit tests in
+    tests/test_standards_backlog.py."""
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     _open_workflow(app, "governance")
 
+    assert not app.exception
     assert any(
         "Record a review annotation" in markdown.value for markdown in app.markdown
     )
-    status_selectors = [s for s in app.selectbox if s.label == "Proposed status"]
-    assert len(status_selectors) == 6  # one per open SDR
-    assert status_selectors[0].options == [
-        "Not reviewed",
-        "accepted",
-        "deferred",
-        "proposed",
-        "rejected",
-    ]
-
-    status_selectors[0].select("accepted").run(timeout=20)
-    reviewer_inputs = [t for t in app.text_input if t.label == "Reviewer"]
-    reviewer_inputs[0].set_value("Alice").run(timeout=20)
-
-    assert not app.exception
-    assert any("1 annotation(s) recorded" in caption.value for caption in app.caption)
-    annotation_downloads = [
+    # No annotation authored yet in a fresh session -> download hidden,
+    # nudge caption shown instead.
+    assert any(
+        "Set a Proposed status" in caption.value for caption in app.caption
+    )
+    assert not [
         d for d in app.get("download_button") if "annotation" in d.label.lower()
     ]
-    assert len(annotation_downloads) == 1
-    # Still 6 open SDRs -- recording a proposal never applies a transition.
+    # Still 6 open SDRs -- the grid never applies a transition.
     assert any(
         metric.label == "Open SDRs" and metric.value == "6" for metric in app.metric
     )
@@ -1010,6 +1001,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.32.0" in rendered
+    assert "app version: v0.33.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

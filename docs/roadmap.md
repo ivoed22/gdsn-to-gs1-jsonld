@@ -27,15 +27,13 @@ semantic authority: generated/recommended output must not contain dppk terms
 prioritises the mapping foundation and UX/test hardening before the
 Crosswalk.
 
-### v0.33.0–v0.35.0 — End-product build path (approved 2026-07-07)
+### v0.34.0–v0.35.0 — End-product build path (approved 2026-07-07)
 
 One product, one story: "from GDSN message to Digital Product Passport —
 traceable at every step", layered for stakeholders (showcase), standards
 experts (workbench), and data teams (operational). Sequenced so the
 Crosswalk slots in when sources arrive, without rework:
 
-- **v0.33.0 — UI overhaul within Streamlit.** Progressive disclosure,
-  grid-style annotation editing, dark mode tokens, deprecation sweep.
 - **v0.34.0 — GS1 Digital Link preview + QR.** Offline URI construction
   from the GTIN with a locally rendered QR code.
 - **v0.35.0 — Workspace persistence (light).** Save/load reviewer
@@ -78,6 +76,14 @@ guess source URLs.
 
 ## Released
 
+- **v0.33.0 — UI overhaul within Streamlit.** Candidate filters behind a
+  collapsed expander (progressive disclosure), SDR annotations as one
+  data-editor grid feeding the unchanged annotation helper, column
+  config on the largest tables, a prefers-color-scheme dark token set
+  (desaturated tonal variants; custom CSS layer only), and the full
+  `use_container_width` → `width="stretch"` deprecation sweep. No
+  behavior changes; visual smoke baselines regenerated and dark theme
+  verified with an emulated-dark browser screenshot.
 - **v0.32.0 — Product Journey bridge + Report Center.** "Continue to
   Product Passport" carries a converted product's JSON-LD straight into
   the passport builder as a pre-selected input mode (parsed exactly like

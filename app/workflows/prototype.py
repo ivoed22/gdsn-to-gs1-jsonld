@@ -263,7 +263,7 @@ def _render_field_header(
             st.dataframe(
                 evidence_df[display_columns] if display_columns else evidence_df,
                 hide_index=True,
-                use_container_width=True,
+                width="stretch",
             )
 
 
@@ -576,7 +576,7 @@ def render_manual_jsonld_builder() -> None:
         st.dataframe(
             pd.DataFrame(overview_rows),
             hide_index=True,
-            use_container_width=True,
+            width="stretch",
         )
 
     fields = get_builder_fields(manifest, selected_group)
@@ -683,10 +683,10 @@ def render_manual_jsonld_builder() -> None:
                 data=prototype_jsonld_bytes(jsonld_data),
                 file_name=f"manual_jsonld_prototype_{gtin}.jsonld",
                 mime="application/ld+json",
-                use_container_width=True,
+                width="stretch",
             )
             st.button(
                 "Clear builder",
                 on_click=reset_manual_builder,
-                use_container_width=True,
+                width="stretch",
             )

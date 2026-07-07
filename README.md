@@ -3,6 +3,12 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.33.0 overhauls the interaction layer within Streamlit:
+candidate filters behind progressive disclosure, SDR annotations as a
+data-editor grid, column-configured tables, a dark-mode token set for
+the custom CSS layer, and the `use_container_width` deprecation sweep.
+No behavior changes. See `docs/releases/v0.33.0.md`.
+
 Version 0.32.0 connects the story: "Continue to Product Passport" carries
 a converted product straight into the passport builder (same parser as an
 uploaded file — no validation bypass), and every conversion now offers a

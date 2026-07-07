@@ -168,7 +168,7 @@ def _render_hard_mapping_signoff_authoring(
             data=json.dumps(signoff, indent=2, ensure_ascii=False).encode("utf-8"),
             file_name="hard_mapping_review_signoff.json",
             mime="application/json",
-            use_container_width=True,
+            width="stretch",
         )
 
 
@@ -297,42 +297,47 @@ def render_mapping_candidates_workflow() -> None:
                 "candidate shows as eligible for promotion."
             ),
         )
-        confidence_options = ["high", "medium", "low", "review_required"]
-        selected_confidence = st.multiselect(
-            "Confidence levels to include",
-            confidence_options,
-            default=["high", "medium", "low"],
-            help="Filter candidates by confidence level.",
-        )
-        review_status_options = ["proposed", "already_mapped", "review_required", "not_recommended"]
-        selected_review_statuses = st.multiselect(
-            "Review statuses to include",
-            review_status_options,
-            default=["proposed", "already_mapped", "review_required"],
-            help="Filter candidates by review status.",
-        )
-        include_already_mapped = st.checkbox(
-            "Include already mapped",
-            value=True,
-            help="Include candidates where this property is already in the mapping catalog.",
-        )
-        include_low_conf = st.checkbox(
-            "Include low confidence",
-            value=True,
-            help="Include candidates scored below medium confidence threshold.",
-        )
-        limit_per_prop = st.number_input(
-            "Limit per property",
-            min_value=1,
-            max_value=50,
-            value=20,
-            step=1,
-            help="Maximum candidate GDSN attributes per WebVoc property.",
-        )
+        # Progressive disclosure (v0.33.0): the five filter controls sit in
+        # a collapsed expander so the page leads with the two decisions
+        # that matter (property, lane) and its one primary action. All
+        # defaults are unchanged — expanding is optional.
+        with st.expander("Filters", expanded=False):
+            confidence_options = ["high", "medium", "low", "review_required"]
+            selected_confidence = st.multiselect(
+                "Confidence levels to include",
+                confidence_options,
+                default=["high", "medium", "low"],
+                help="Filter candidates by confidence level.",
+            )
+            review_status_options = ["proposed", "already_mapped", "review_required", "not_recommended"]
+            selected_review_statuses = st.multiselect(
+                "Review statuses to include",
+                review_status_options,
+                default=["proposed", "already_mapped", "review_required"],
+                help="Filter candidates by review status.",
+            )
+            include_already_mapped = st.checkbox(
+                "Include already mapped",
+                value=True,
+                help="Include candidates where this property is already in the mapping catalog.",
+            )
+            include_low_conf = st.checkbox(
+                "Include low confidence",
+                value=True,
+                help="Include candidates scored below medium confidence threshold.",
+            )
+            limit_per_prop = st.number_input(
+                "Limit per property",
+                min_value=1,
+                max_value=50,
+                value=20,
+                step=1,
+                help="Maximum candidate GDSN attributes per WebVoc property.",
+            )
         generate_button = st.button(
             "Generate Candidates",
             type="primary",
-            use_container_width=True,
+            width="stretch",
         )
 
         st.markdown("---")
@@ -358,7 +363,7 @@ def render_mapping_candidates_workflow() -> None:
         load_report_button = st.button(
             "Load report",
             disabled=uploaded_report_file is None,
-            use_container_width=True,
+            width="stretch",
         )
 
     if load_report_button and uploaded_report_file is not None:
@@ -484,7 +489,22 @@ def render_mapping_candidates_workflow() -> None:
                     for c in candidates_result
                 ]
                 df = pd.DataFrame(table_rows)
-                st.dataframe(df, hide_index=True, use_container_width=True)
+                st.dataframe(
+                    df,
+                    hide_index=True,
+                    width="stretch",
+                    column_config={
+                        "WebVoc property": st.column_config.TextColumn(
+                            "WebVoc property", pinned=True
+                        ),
+                        "Score": st.column_config.NumberColumn(
+                            "Score", format="%.3f"
+                        ),
+                        "Eligible for promotion": st.column_config.CheckboxColumn(
+                            "Eligible for promotion"
+                        ),
+                    },
+                )
 
                 if candidates_result:
                     selected_idx = st.selectbox(
@@ -612,7 +632,7 @@ def render_mapping_candidates_workflow() -> None:
                         data=json_bytes_data,
                         file_name="mapping_candidates.json",
                         mime="application/json",
-                        use_container_width=True,
+                        width="stretch",
                     )
             with dl_col2:
                 with st.container(border=True):
@@ -627,7 +647,7 @@ def render_mapping_candidates_workflow() -> None:
                         data=csv_bytes_data,
                         file_name="mapping_candidates.csv",
                         mime="text/csv",
-                        use_container_width=True,
+                        width="stretch",
                     )
             with dl_col3:
                 with st.container(border=True):
@@ -646,7 +666,7 @@ def render_mapping_candidates_workflow() -> None:
                                 "application/vnd.openxmlformats-officedocument"
                                 ".spreadsheetml.sheet"
                             ),
-                            use_container_width=True,
+                            width="stretch",
                         )
                     else:
                         st.info("XLSX generation requires openpyxl.")

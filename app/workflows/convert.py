@@ -175,7 +175,7 @@ def _render_codelist_validation_panel(codelist_validation: list[dict]) -> None:
             }
             for entry in codelist_validation
         ]
-        st.dataframe(pd.DataFrame(table_rows), hide_index=True, use_container_width=True)
+        st.dataframe(pd.DataFrame(table_rows), hide_index=True, width="stretch")
 
         selected_idx = st.selectbox(
             "Select entry for detail",
@@ -290,7 +290,7 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
         if uploaded_file is not None and st.button(
             "Convert product to JSON-LD",
             type="primary",
-            use_container_width=True,
+            width="stretch",
         ):
             clear_results()
             try:
@@ -376,7 +376,7 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
             with st.expander("Open mapping trace preview"):
                 st.dataframe(
                     pd.DataFrame(result.mapping_report_rows),
-                    use_container_width=True,
+                    width="stretch",
                 )
 
             _render_codelist_validation_panel(result.codelist_validation)
@@ -450,7 +450,7 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                         data=st.session_state["jsonld_bytes"],
                         file_name=f"product_{output_name_base}.jsonld",
                         mime="application/ld+json",
-                        use_container_width=True,
+                        width="stretch",
                     )
             with download_top_right:
                 with st.container(border=True):
@@ -467,7 +467,7 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                             "application/vnd.openxmlformats-officedocument."
                             "spreadsheetml.sheet"
                         ),
-                        use_container_width=True,
+                        width="stretch",
                     )
 
             download_bottom_left, download_bottom_right = st.columns(2)
@@ -483,7 +483,7 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                         data=st.session_state["validation_report_bytes"],
                         file_name=f"validation_report_{output_name_base}.json",
                         mime="application/json",
-                        use_container_width=True,
+                        width="stretch",
                     )
             with download_bottom_right:
                 with st.container(border=True):
@@ -497,7 +497,7 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                         data=st.session_state["unmapped_fields_bytes"],
                         file_name=f"unmapped_fields_{output_name_base}.json",
                         mime="application/json",
-                        use_container_width=True,
+                        width="stretch",
                     )
 
             with st.container(border=True):
@@ -513,7 +513,7 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                     data=st.session_state["product_report_bytes"],
                     file_name=f"product_report_{output_name_base}.html",
                     mime="text/html",
-                    use_container_width=True,
+                    width="stretch",
                 )
 
             render_review_guidance()
@@ -523,7 +523,7 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                     "Continue to Product Passport",
                     type="primary",
                     on_click=continue_to_product_passport,
-                    use_container_width=True,
+                    width="stretch",
                     help=(
                         "Carry this product's generated JSON-LD into the "
                         "Product Passport builder. The builder still parses "
@@ -534,7 +534,7 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                 st.button(
                     "Clear results",
                     on_click=clear_results,
-                    use_container_width=True,
+                    width="stretch",
                 )
 
 
@@ -592,7 +592,7 @@ def _render_batch_codelist_validation_panel(
         ]
         if issue_rows:
             st.caption("Files with at least one non-valid codelist entry:")
-            st.dataframe(pd.DataFrame(issue_rows), hide_index=True, use_container_width=True)
+            st.dataframe(pd.DataFrame(issue_rows), hide_index=True, width="stretch")
         else:
             st.caption("No file had a non-valid codelist entry.")
 
@@ -617,7 +617,7 @@ def render_bulk_zip_workflow(mapping_path: Path) -> None:
         if uploaded_zip is not None and st.button(
             "Convert ZIP batch",
             type="primary",
-            use_container_width=True,
+            width="stretch",
         ):
             clear_batch_results()
             try:
@@ -655,7 +655,7 @@ def render_bulk_zip_workflow(mapping_path: Path) -> None:
             )
             st.dataframe(
                 pd.DataFrame(report.preview_rows),
-                use_container_width=True,
+                width="stretch",
                 hide_index=True,
             )
 
@@ -668,5 +668,5 @@ def render_bulk_zip_workflow(mapping_path: Path) -> None:
                 data=st.session_state["batch_export_zip_bytes"],
                 file_name="gdsn_batch_export.zip",
                 mime="application/zip",
-                use_container_width=True,
+                width="stretch",
             )

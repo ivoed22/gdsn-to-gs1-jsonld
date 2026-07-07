@@ -145,7 +145,7 @@ def main() -> None:
                     disabled=selected,
                     on_click=set_workflow_mode,
                     args=(mode["title"],),
-                    use_container_width=True,
+                    width="stretch",
                 )
 
     workflow_mode = st.session_state["workflow_mode"]

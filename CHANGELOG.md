@@ -9,6 +9,46 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.33.0 — UI Overhaul Within Streamlit
+
+Fourth version of the end-product build path: the interaction layer
+catches up with the consolidated structure. Five changes, guided by the
+ui-ux-pro-max design guidance (dark tokens as desaturated tonal variants,
+progressive disclosure, one primary action per screen, tabular data
+presentation) applied within the existing DESIGN.md token system:
+
+- **Progressive disclosure in Mapping Governance:** the five candidate
+  filter controls (confidence, review status, two include-checkboxes,
+  limit per property) now sit in a collapsed "Filters" expander, so the
+  page leads with the property/lane choice and its one primary action.
+  All defaults unchanged.
+- **Grid-style SDR annotation editing:** the six stacked four-column
+  forms in Standards Review became one `st.data_editor` grid (read-only
+  SDR/Title columns, editable Reviewer/Decision date/Proposed status/
+  Notes, fixed status vocabulary via SelectboxColumn), feeding the same
+  `build_sdr_review_annotation` helper and download. The hard-mapping
+  sign-off form was deliberately left as-is this version (its AppTest
+  drives real widget interactions; `st.data_editor` has no AppTest
+  accessor).
+- **Table presentation:** Explore's property table and the candidate
+  results table gain column config — pinned key column, `%.3f` score
+  formatting, checkbox rendering for promotion eligibility, compact
+  status columns.
+- **Dark mode (custom CSS layer):** a `prefers-color-scheme: dark`
+  token set — desaturated, lightened tonal variants of the light
+  tokens, not inverted colors — plus targeted overrides for the
+  hardcoded light surfaces (sidebar panels, status cards, badges,
+  warning boxes). Borders stay visible and text contrast holds in both
+  themes; verified with a dark-emulated browser screenshot. Streamlit's
+  own widgets continue to follow the user's Streamlit theme setting.
+- **Deprecation sweep:** all 48 `use_container_width=True` occurrences
+  replaced with `width="stretch"` (upstream removal deadline had
+  passed); the per-run deprecation warnings are gone.
+
+Visual smoke baselines regenerated (light theme). No behavior changes:
+converter, serializer, validators, and all download/report outputs are
+untouched.
+
 ## v0.32.0 — Product Journey Bridge + Report Center
 
 Third version of the end-product build path: the workflows start telling

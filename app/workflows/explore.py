@@ -81,7 +81,7 @@ def render_webvoc_explorer() -> None:
                     ]
                 ),
                 hide_index=True,
-                use_container_width=True,
+                width="stretch",
             )
 
     properties = list(dataset.properties)
@@ -183,7 +183,14 @@ def render_webvoc_explorer() -> None:
         st.dataframe(
             pd.DataFrame(table_rows),
             hide_index=True,
-            use_container_width=True,
+            width="stretch",
+            column_config={
+                "Property": st.column_config.TextColumn("Property", pinned=True),
+                "Coverage": st.column_config.TextColumn("Coverage", width="small"),
+                "SDR indicator": st.column_config.TextColumn(
+                    "SDR indicator", width="small"
+                ),
+            },
         )
 
         if filtered_properties:
@@ -253,7 +260,7 @@ def render_webvoc_explorer() -> None:
                             ]
                         ),
                         hide_index=True,
-                        use_container_width=True,
+                        width="stretch",
                     )
                 else:
                     st.info("No mapping catalog evidence is linked to this property.")
@@ -268,7 +275,7 @@ def render_webvoc_explorer() -> None:
                             ]
                         ),
                         hide_index=True,
-                        use_container_width=True,
+                        width="stretch",
                     )
                 else:
                     st.info("No open SDR reference is linked to this property.")

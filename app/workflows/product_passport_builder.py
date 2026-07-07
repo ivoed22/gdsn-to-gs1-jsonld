@@ -159,7 +159,7 @@ def render_build_product_passport_workflow() -> None:
                 st.dataframe(
                     pd.DataFrame(summary_rows),
                     hide_index=True,
-                    use_container_width=True,
+                    width="stretch",
                 )
 
     with tab_settings:
@@ -215,7 +215,7 @@ def render_build_product_passport_workflow() -> None:
         build_clicked = st.button(
             "Build Product Passport Prototype",
             type="primary",
-            use_container_width=True,
+            width="stretch",
             disabled=(current_gs1 is None),
         )
         if current_gs1 is None:
@@ -278,7 +278,7 @@ def render_build_product_passport_workflow() -> None:
                     data=product_passport_to_json_bytes(built_passport),
                     file_name="product_passport.jsonld",
                     mime="application/ld+json",
-                    use_container_width=True,
+                    width="stretch",
                 )
 
     with tab_report:
@@ -320,7 +320,7 @@ def render_build_product_passport_workflow() -> None:
                 st.dataframe(
                     pd.DataFrame(error_rows),
                     hide_index=True,
-                    use_container_width=True,
+                    width="stretch",
                 )
 
             for warn in report.get("warnings", []):
@@ -342,5 +342,5 @@ def render_build_product_passport_workflow() -> None:
                 data=product_passport_report_bytes_json(report),
                 file_name="product_passport_validation_report.json",
                 mime="application/json",
-                use_container_width=True,
+                width="stretch",
             )

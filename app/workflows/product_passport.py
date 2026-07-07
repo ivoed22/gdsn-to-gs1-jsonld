@@ -55,7 +55,7 @@ def render_validate_product_passport_workflow() -> None:
                 "tracking only. No official GS1 validation or production compliance claimed."
             )
 
-        if st.button("Load Source Manifest", type="primary", use_container_width=True):
+        if st.button("Load Source Manifest", type="primary", width="stretch"):
             try:
                 pp_manifest = load_product_passport_source_manifest(str(manifest_path))
                 manifest_schema = None
@@ -145,7 +145,7 @@ def render_validate_product_passport_workflow() -> None:
                     st.dataframe(
                         pd.DataFrame(table_rows),
                         hide_index=True,
-                        use_container_width=True,
+                        width="stretch",
                     )
 
             with st.container(border=True):
@@ -166,7 +166,7 @@ def render_validate_product_passport_workflow() -> None:
                         data=inventory_report_bytes_json(inventory),
                         file_name="product_passport_source_inventory.json",
                         mime="application/json",
-                        use_container_width=True,
+                        width="stretch",
                     )
                 with dl_csv_col:
                     render_download_intro(
@@ -179,7 +179,7 @@ def render_validate_product_passport_workflow() -> None:
                         data=inventory_report_bytes_csv(inventory),
                         file_name="product_passport_source_inventory.csv",
                         mime="text/csv",
-                        use_container_width=True,
+                        width="stretch",
                     )
 
     with tab_validator:
@@ -285,7 +285,7 @@ def render_validate_product_passport_workflow() -> None:
             validate_button = st.button(
                 "Validate",
                 type="primary",
-                use_container_width=True,
+                width="stretch",
                 disabled=(instance_data is None),
             )
 
@@ -325,7 +325,7 @@ def render_validate_product_passport_workflow() -> None:
                 if val_report.get("errors"):
                     st.markdown("**Schema validation errors**")
                     error_rows = [{"#": i + 1, "error": e} for i, e in enumerate(val_report["errors"])]
-                    st.dataframe(pd.DataFrame(error_rows), hide_index=True, use_container_width=True)
+                    st.dataframe(pd.DataFrame(error_rows), hide_index=True, width="stretch")
 
                 if val_report.get("validator_mode") == "minimal_fallback":
                     st.warning(
@@ -351,7 +351,7 @@ def render_validate_product_passport_workflow() -> None:
                     data=json.dumps(val_report, indent=2, ensure_ascii=False).encode("utf-8"),
                     file_name="product_passport_validation_report.json",
                     mime="application/json",
-                    use_container_width=True,
+                    width="stretch",
                 )
 
     with tab_examples:
@@ -387,7 +387,7 @@ def render_validate_product_passport_workflow() -> None:
                 st.dataframe(
                     pd.DataFrame(example_rows),
                     hide_index=True,
-                    use_container_width=True,
+                    width="stretch",
                 )
 
                 selected_example_id = st.selectbox(

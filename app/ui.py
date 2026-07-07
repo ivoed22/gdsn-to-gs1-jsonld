@@ -2,7 +2,7 @@ from html import escape
 
 import streamlit as st
 
-APP_VERSION = "v0.32.0"
+APP_VERSION = "v0.33.0"
 
 
 def apply_page_styles() -> None:
@@ -1243,6 +1243,80 @@ def apply_page_styles() -> None:
                 transition: none;
             }
         }
+        /* Dark token set (v0.33.0): desaturated, lightened tonal variants
+           of the light tokens -- not inverted colors -- per the dark-mode
+           pairing guidance. Applies to the custom CSS layer; Streamlit's
+           own widgets follow the user's Streamlit theme setting. Contrast
+           targets hold in both themes (text >= 4.5:1 on surfaces). */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --surface-default: #16202e;
+                --surface-muted: #0f1722;
+                --surface-accent: #14263a;
+                --surface-active: #17293e;
+                --border-default: #2c3c50;
+                --text-primary: #e6edf7;
+                --text-secondary: #9fb0c7;
+                --accent-primary: #6db3e8;
+                --accent-strong: #8fc4ee;
+                --accent-bright: #4aa3df;
+                --accent-rail: #4d90bd;
+                --state-success: #63c78f;
+                --state-warning: #dcb45c;
+                --state-error: #ee8f83;
+            }
+
+            /* Hardcoded light surfaces that sit outside the token set. */
+            .sidebar-brand,
+            .mapping-profile-status,
+            .vocabulary-status,
+            .empty-state,
+            .identity-card,
+            .result-summary-card,
+            .review-guide,
+            .privacy-note {
+                background: #16202e;
+                border-color: #2c3c50;
+                color: #e6edf7;
+            }
+            .standards-backlog-status,
+            .pp-prototype-warning {
+                background: #2a2410;
+                border-color: #6b5620;
+                color: #e9d9a5;
+            }
+            .pp-prototype-warning strong { color: #f0e4b8; }
+            .privacy-note { color: #b7d3ea; }
+            .status-success { background: #10281c; border-color: #2a5c40; color: #8fd6ad; }
+            .status-warning { background: #2a2410; border-color: #6b5620; color: #e3c27a; }
+            .status-error { background: #2e1512; border-color: #6e2c22; color: #f0a196; }
+            .status-badge-accepted { background: #10281c; border-color: #2a5c40; }
+            .status-badge-review { background: #2a2410; border-color: #6b5620; }
+            .status-badge-blocked { background: #2e1512; border-color: #6e2c22; }
+            .status-badge-current { border-color: #2d5a80; }
+            .route-card-state,
+            .workflow-mode-state { background: #14263a; border-color: #2d5a80; }
+            .app-chip,
+            .file-type-badge,
+            .preview-heading .preview-badge,
+            .workflow-mode-mark { border-color: #2c3c50; }
+            .workflow-mode-card.mode-xml .workflow-mode-mark,
+            .workflow-mode-card.mode-voc .workflow-mode-mark,
+            .workflow-mode-card.mode-sdr .workflow-mode-mark,
+            .workflow-mode-card.mode-ld .workflow-mode-mark,
+            .workflow-mode-card.mode-map .workflow-mode-mark,
+            .workflow-mode-card.mode-pp .workflow-mode-mark,
+            .workflow-mode-card.mode-pb .workflow-mode-mark {
+                background: #1b2a3a;
+            }
+            .stDownloadButton > button {
+                background: #14263a;
+                border-color: #2c3c50;
+            }
+            .stButton > button,
+            .stDownloadButton > button { border-color: #3a4c63; }
+        }
+
         </style>
         """,
         unsafe_allow_html=True,

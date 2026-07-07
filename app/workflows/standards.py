@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import re
 
 import pandas as pd
 import streamlit as st
@@ -112,17 +111,12 @@ def _render_vocabulary_freshness_check() -> None:
                     }
                 ),
                 hide_index=True,
-                use_container_width=True,
+                width="stretch",
             )
         st.caption(
             "Diagnostic only. Updating the committed snapshot or mapping catalog "
             "is a separate, explicit review step."
         )
-
-
-def _annotation_key(sdr_id: str, suffix: str) -> str:
-    safe = re.sub(r"[^A-Za-z0-9_]+", "_", sdr_id).strip("_") or "sdr"
-    return f"sdr_review_annotation_{safe}_{suffix}"
 
 
 def _render_sdr_review_annotation(backlog: list[dict]) -> None:
@@ -148,43 +142,50 @@ def _render_sdr_review_annotation(backlog: list[dict]) -> None:
             "record of a proposal, not an applied decision -- it does not "
             "change any SDR's status or write to the governed backlog file.",
         )
-        annotations: list[dict] = []
-        for item in backlog:
-            sdr_id = str(item.get("sdr_id") or item.get("id") or "")
-            if not sdr_id:
-                continue
-            with st.container(border=True):
-                st.caption(f"**{sdr_id}** — {item.get('title', '')}")
-                reviewer_col, date_col, status_col, notes_col = st.columns(
-                    [1.2, 1, 1, 1.6]
-                )
-                reviewer = reviewer_col.text_input(
-                    "Reviewer",
-                    key=_annotation_key(sdr_id, "reviewer"),
-                )
-                decision_date = date_col.date_input(
-                    "Decision date",
-                    key=_annotation_key(sdr_id, "date"),
-                )
-                proposed_status = status_col.selectbox(
+        # Grid-style editing (v0.33.0): one row per open SDR instead of six
+        # stacked four-column forms. Same fields, same fixed status
+        # vocabulary, same downstream build_sdr_review_annotation call.
+        editor_rows = [
+            {
+                "SDR": str(item.get("id") or ""),
+                "Title": str(item.get("title") or ""),
+                "Reviewer": "",
+                "Decision date": "",
+                "Proposed status": _NOT_REVIEWED,
+                "Notes": "",
+            }
+            for item in backlog
+            if item.get("id")
+        ]
+        edited = st.data_editor(
+            pd.DataFrame(editor_rows),
+            key="sdr_review_annotation_editor",
+            hide_index=True,
+            width="stretch",
+            disabled=["SDR", "Title"],
+            column_config={
+                "Proposed status": st.column_config.SelectboxColumn(
                     "Proposed status",
-                    _PROPOSED_STATUS_OPTIONS,
-                    key=_annotation_key(sdr_id, "status"),
-                )
-                notes = notes_col.text_input(
-                    "Notes",
-                    key=_annotation_key(sdr_id, "notes"),
-                )
-            if proposed_status != _NOT_REVIEWED:
-                annotations.append(
-                    {
-                        "sdr_id": sdr_id,
-                        "reviewer": reviewer,
-                        "decision_date": str(decision_date),
-                        "proposed_status": proposed_status,
-                        "notes": notes,
-                    }
-                )
+                    options=list(_PROPOSED_STATUS_OPTIONS),
+                    required=True,
+                ),
+                "Decision date": st.column_config.TextColumn(
+                    "Decision date",
+                    help="e.g. 2026-07-07",
+                ),
+            },
+        )
+        annotations = [
+            {
+                "sdr_id": str(row["SDR"]),
+                "reviewer": str(row["Reviewer"] or ""),
+                "decision_date": str(row["Decision date"] or ""),
+                "proposed_status": str(row["Proposed status"]),
+                "notes": str(row["Notes"] or ""),
+            }
+            for row in edited.to_dict("records")
+            if str(row["Proposed status"]) != _NOT_REVIEWED
+        ]
 
         if not annotations:
             st.caption(
@@ -201,5 +202,5 @@ def _render_sdr_review_annotation(backlog: list[dict]) -> None:
             ).encode("utf-8"),
             file_name="sdr_review_annotations.json",
             mime="application/json",
-            use_container_width=True,
+            width="stretch",
         )
