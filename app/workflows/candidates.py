@@ -23,6 +23,11 @@ from gdsn_to_gs1_jsonld.mapping_promotion import (
     build_hard_mapping_signoff,
     build_promotion_artifact,
 )
+from gdsn_to_gs1_jsonld.workspace import (
+    list_artifacts,
+    load_artifact,
+    save_artifact,
+)
 
 _SIGNOFF_DECISIONS = ("Not reviewed", "Approved", "Rejected")
 
@@ -163,13 +168,40 @@ def _render_hard_mapping_signoff_authoring(
         approved_count = len(signoff["reviewed_candidate_ids"])
         rejected_count = len(reviews) - approved_count
         st.caption(f"{approved_count} approved, {rejected_count} rejected.")
-        st.download_button(
-            "Download hard-mapping review sign-off JSON",
-            data=json.dumps(signoff, indent=2, ensure_ascii=False).encode("utf-8"),
-            file_name="hard_mapping_review_signoff.json",
-            mime="application/json",
-            width="stretch",
-        )
+        download_col, save_col = st.columns(2)
+        with download_col:
+            st.download_button(
+                "Download hard-mapping review sign-off JSON",
+                data=json.dumps(signoff, indent=2, ensure_ascii=False).encode("utf-8"),
+                file_name="hard_mapping_review_signoff.json",
+                mime="application/json",
+                width="stretch",
+            )
+        with save_col:
+            # Workspace persistence (v0.35.0): reviewer-authored working
+            # artifact only — never a governed file.
+            if st.button("Save sign-off to workspace", width="stretch"):
+                saved_path = save_artifact("hard_mapping_signoff", signoff)
+                st.success(f"Saved to `{saved_path.as_posix()}`.")
+
+
+def _resolve_reviewed_ids(uploaded_file, use_workspace_signoff: bool) -> set[str]:
+    """Reviewed hard-mapping candidate_ids from upload or workspace.
+
+    An uploaded sign-off file always wins; the workspace artifact
+    (v0.35.0) is only consulted when explicitly opted in and nothing was
+    uploaded. Both paths yield the same reviewed-ids set shape.
+    """
+    if uploaded_file is not None:
+        return _parse_reviewed_hard_mapping_ids(uploaded_file)
+    if use_workspace_signoff:
+        artifact = load_artifact("hard_mapping_signoff")
+        if isinstance(artifact, dict):
+            raw = artifact.get("reviewed_candidate_ids", [])
+            if isinstance(raw, list):
+                return {str(item).strip() for item in raw if str(item).strip()}
+        st.warning("Workspace sign-off could not be read; ignoring it.")
+    return set()
 
 
 def _store_candidate_results(
@@ -297,6 +329,18 @@ def render_mapping_candidates_workflow() -> None:
                 "candidate shows as eligible for promotion."
             ),
         )
+        # Workspace persistence (v0.35.0): offer the saved sign-off as an
+        # alternative to uploading. An uploaded file always wins.
+        use_workspace_signoff = False
+        if list_artifacts()["hard_mapping_signoff"]["exists"]:
+            use_workspace_signoff = st.checkbox(
+                "Use hard-mapping sign-off saved in workspace/",
+                value=False,
+                help=(
+                    "Loads workspace/hard_mapping_signoff.json. Ignored "
+                    "when a sign-off file is uploaded above."
+                ),
+            )
         # Progressive disclosure (v0.33.0): the five filter controls sit in
         # a collapsed expander so the page leads with the two decisions
         # that matter (property, lane) and its one primary action. All
@@ -365,20 +409,43 @@ def render_mapping_candidates_workflow() -> None:
             disabled=uploaded_report_file is None,
             width="stretch",
         )
-
-    if load_report_button and uploaded_report_file is not None:
-        try:
-            loaded_candidates = parse_uploaded_candidate_report(
-                uploaded_report_file.getvalue()
+        # Workspace persistence (v0.35.0): a report saved earlier can be
+        # reloaded without the file round-trip.
+        load_workspace_report_button = False
+        if list_artifacts()["candidate_report"]["exists"]:
+            load_workspace_report_button = st.button(
+                "Load report from workspace",
+                width="stretch",
+                help="Loads workspace/candidate_report.json.",
             )
+
+    loaded_report_bytes: bytes | None = None
+    loaded_report_source = ""
+    if load_report_button and uploaded_report_file is not None:
+        loaded_report_bytes = uploaded_report_file.getvalue()
+        loaded_report_source = "the uploaded report"
+    elif load_workspace_report_button:
+        workspace_report = load_artifact("candidate_report")
+        if workspace_report is None:
+            st.error("Workspace report could not be read.")
+        else:
+            loaded_report_bytes = json.dumps(workspace_report).encode("utf-8")
+            loaded_report_source = "workspace/candidate_report.json"
+
+    if loaded_report_bytes is not None:
+        try:
+            loaded_candidates = parse_uploaded_candidate_report(loaded_report_bytes)
         except ValueError as exc:
             st.error(str(exc))
         else:
-            reviewed_hard_mapping_ids = _parse_reviewed_hard_mapping_ids(
-                reviewed_hard_mappings_file
+            reviewed_hard_mapping_ids = _resolve_reviewed_ids(
+                reviewed_hard_mappings_file, use_workspace_signoff
             )
             _store_candidate_results(loaded_candidates, reviewed_hard_mapping_ids)
-            st.success(f"Loaded {len(loaded_candidates)} candidate(s) from the report.")
+            st.success(
+                f"Loaded {len(loaded_candidates)} candidate(s) from "
+                f"{loaded_report_source}."
+            )
 
     if generate_button:
         with st.spinner("Generating mapping candidates..."):
@@ -420,8 +487,8 @@ def render_mapping_candidates_workflow() -> None:
                     c for c in candidates if c.get("review_lane") == selected_lane
                 ]
 
-            reviewed_hard_mapping_ids = _parse_reviewed_hard_mapping_ids(
-                reviewed_hard_mappings_file
+            reviewed_hard_mapping_ids = _resolve_reviewed_ids(
+                reviewed_hard_mappings_file, use_workspace_signoff
             )
             _store_candidate_results(candidates, reviewed_hard_mapping_ids)
 
@@ -670,3 +737,9 @@ def render_mapping_candidates_workflow() -> None:
                         )
                     else:
                         st.info("XLSX generation requires openpyxl.")
+
+            # Workspace persistence (v0.35.0): keep the current report
+            # across sessions without the download/upload round-trip.
+            if st.button("Save report to workspace", width="stretch"):
+                saved_path = save_artifact("candidate_report", candidates_result)
+                st.success(f"Saved to `{saved_path.as_posix()}`.")

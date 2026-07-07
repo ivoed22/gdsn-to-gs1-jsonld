@@ -76,3 +76,9 @@ form for the GTIN plus a locally rendered QR code, both constructed
 offline, with an explicit caveat that nothing is checked or claimed
 about the link being registered, resolvable, or live. The HTML product
 report embeds the same section. See `docs/releases/v0.34.0.md`.
+
+**v0.35.0**: Reviewer artifacts (hard-mapping sign-offs, SDR review
+annotations, candidate reports) can be saved to and loaded from a
+git-ignored local `workspace/` directory, so they survive across
+sessions. Working artifacts only — governed files are structurally
+unreachable from the workspace module. See `docs/releases/v0.35.0.md`.

@@ -27,15 +27,10 @@ semantic authority: generated/recommended output must not contain dppk terms
 prioritises the mapping foundation and UX/test hardening before the
 Crosswalk.
 
-### v0.35.0 — End-product build path (approved 2026-07-07)
-
-One product, one story: "from GDSN message to Digital Product Passport —
-traceable at every step", layered for stakeholders (showcase), standards
-experts (workbench), and data teams (operational). Sequenced so the
-Crosswalk slots in when sources arrive, without rework:
-
-- **v0.35.0 — Workspace persistence (light).** Save/load reviewer
-  artifacts to a git-ignored local `workspace/` directory.
+The end-product build path approved 2026-07-07 ("from GDSN message to
+Digital Product Passport — traceable at every step", layered for
+stakeholders, standards experts, and data teams) was delivered in full
+as v0.30.0–v0.35.0 — see Released below. Next up is the Crosswalk.
 
 ### v0.36.0+ — GS1-first DPP Crosswalk (deferred behind foundation)
 
@@ -76,6 +71,14 @@ guess source URLs.
 
 ## Released
 
+- **v0.35.0 — Workspace persistence (light).** Final version of the
+  end-product build path. New `workspace.py` saves/loads reviewer
+  artifacts (hard-mapping sign-offs, SDR annotations, candidate
+  reports) as plain JSON in a git-ignored `workspace/` directory — one
+  current file per fixed artifact kind, corrupt files load as None.
+  Save/load wired into Mapping Governance and Standards Review; an
+  uploaded file always wins over the workspace copy. Governed files are
+  structurally unreachable from the module.
 - **v0.34.0 — GS1 Digital Link preview + QR.** New `digital_link.py`
   constructs the Digital Link URI form (`https://id.gs1.org/01/{gtin}`,
   the converter's existing `@id` form) and renders a QR code SVG

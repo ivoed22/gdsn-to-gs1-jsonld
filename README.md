@@ -3,6 +3,13 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.35.0 completes the end-product build path (v0.30.0–v0.35.0):
+reviewer artifacts — hard-mapping sign-offs, SDR annotations, candidate
+reports — can now be saved to and loaded from a git-ignored local
+`workspace/` directory, surviving across sessions. Working artifacts
+only; governed files are structurally unreachable. See
+`docs/releases/v0.35.0.md`.
+
 Version 0.34.0 adds a "GS1 Digital Link" panel to Convert and the HTML
 product report: the Digital Link URI form for the GTIN plus a locally
 rendered QR code, constructed fully offline — explicitly without

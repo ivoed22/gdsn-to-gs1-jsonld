@@ -9,6 +9,37 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.35.0 — Workspace Persistence (Light)
+
+Sixth and final version of the approved end-product build path
+(v0.30.0–v0.35.0, now complete): reviewer work no longer evaporates
+with the Streamlit session.
+
+- New pure module `src/gdsn_to_gs1_jsonld/workspace.py`: save/load/list
+  plain-JSON artifacts under a git-ignored `workspace/` directory at the
+  repo root. Fixed artifact-kind vocabulary (`hard_mapping_signoff`,
+  `sdr_review_annotations`, `candidate_report`), one current file per
+  kind (overwrite on save), corrupt files load as None (a broken
+  convenience file never takes a workflow down). No database, no
+  timestamps written into payloads.
+- **Governance constraint, structural:** the fixed kinds plus fixed
+  per-kind filenames make writing outside the workspace directory
+  impossible — governed files (`mapping/`, `mapping_catalog/`,
+  `docs/standards-decisions/`) are untouchable from this module.
+- **UI wiring:** Mapping Governance's sign-off authoring gains "Save
+  sign-off to workspace" and the sign-off uploader offers "Use
+  hard-mapping sign-off saved in workspace/" (an uploaded file always
+  wins); the results section gains "Save report to workspace" and the
+  load-report area "Load report from workspace"; Standards Review's
+  annotation section gains "Save annotations to workspace" plus a
+  read-only view of previously saved annotations (the grid always
+  starts fresh — proposals are re-authored deliberately, never silently
+  replayed). Every save shows the written path.
+- `workspace/` added to `.gitignore`.
+- Tests never touch the real `workspace/`: unit tests run against
+  tmp_path, and the AppTest monkeypatches the call-time-resolved
+  default directory.
+
 ## v0.34.0 — GS1 Digital Link Preview + QR
 
 Fifth version of the end-product build path: the story now ends with

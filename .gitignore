@@ -11,3 +11,4 @@ __pycache__/
 /mapping_catalog_revalidation/
 /webvoc_update_report/
 /tests/visual/baselines/
+workspace/

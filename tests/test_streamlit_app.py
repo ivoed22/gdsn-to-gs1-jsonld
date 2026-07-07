@@ -35,7 +35,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.34.0"
+    assert ui.APP_VERSION == "v0.35.0"
     assert callable(ui.render_page_header)
     assert callable(ui.render_workflow_mode_card)
 
@@ -294,7 +294,7 @@ def test_streamlit_mapping_registry_is_default_profile():
     )
 
     assert any(
-        "App version: v0.34.0" in markdown.value
+        "App version: v0.35.0" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -825,6 +825,59 @@ def test_hard_mapping_signoff_authoring_produces_downloadable_json():
     assert len(signoff_downloads) == 1
 
 
+def test_hard_mapping_signoff_saves_to_and_offers_workspace(
+    monkeypatch, tmp_path
+):
+    """v0.35.0: 'Save sign-off to workspace' writes the artifact and the
+    controls then offer 'Use hard-mapping sign-off saved in workspace/'.
+    AppTest runs in-process, so DEFAULT_WORKSPACE_DIR is monkeypatched to
+    tmp_path (resolved at call time) — the real workspace/ is never
+    touched by tests. Round-trip/corruption behavior is covered by the
+    unit tests in tests/test_workspace.py."""
+    import json
+
+    import gdsn_to_gs1_jsonld.workspace as workspace_module
+
+    monkeypatch.setattr(workspace_module, "DEFAULT_WORKSPACE_DIR", tmp_path)
+
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    _open_workflow(app, "governance")
+
+    # No saved artifact yet -> the workspace checkbox is not offered.
+    assert not [
+        c for c in app.checkbox if "workspace" in c.label.lower()
+    ]
+
+    property_selector = next(
+        s for s in app.selectbox if s.label == "WebVoc property"
+    )
+    property_selector.select("gs1:gtin").run(timeout=20)
+    next(b for b in app.button if b.label == "Generate Candidates").click().run(
+        timeout=30
+    )
+    decision_selectors = [s for s in app.selectbox if s.label == "Decision"]
+    decision_selectors[0].select("Approved").run(timeout=20)
+
+    next(
+        b for b in app.button if b.label == "Save sign-off to workspace"
+    ).click().run(timeout=20)
+
+    assert not app.exception
+    saved_path = tmp_path / "hard_mapping_signoff.json"
+    assert saved_path.is_file()
+    saved = json.loads(saved_path.read_text(encoding="utf-8"))
+    assert len(saved["reviewed_candidate_ids"]) == 1
+    assert any("Saved to" in s.value for s in app.success)
+    # The controls section renders before the save executes within the
+    # same script pass, so the workspace option appears on the next rerun.
+    app.run(timeout=20)
+    assert [
+        c
+        for c in app.checkbox
+        if "sign-off saved in workspace" in c.label.lower()
+    ]
+
+
 def test_view_in_explorer_deep_link_from_candidate_detail():
     """v0.26.0: clicking 'View in Explorer' on a candidate's WebVoc property
     switches to the Explore workflow with that property pre-selected,
@@ -1012,6 +1065,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.34.0" in rendered
+    assert "app version: v0.35.0" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered

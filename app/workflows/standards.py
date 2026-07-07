@@ -13,6 +13,7 @@ from gdsn_to_gs1_jsonld.standards_backlog import (
     VALID_DECISION_STATUSES,
     build_sdr_review_annotation,
 )
+from gdsn_to_gs1_jsonld.workspace import list_artifacts, load_artifact, save_artifact
 from gdsn_to_gs1_jsonld.webvoc_monitor import compare_webvoc_snapshot_bytes
 
 _NOT_REVIEWED = "Not reviewed"
@@ -142,6 +143,21 @@ def _render_sdr_review_annotation(backlog: list[dict]) -> None:
             "record of a proposal, not an applied decision -- it does not "
             "change any SDR's status or write to the governed backlog file.",
         )
+        # Workspace persistence (v0.35.0): show previously saved
+        # annotations for reference. The grid below always starts fresh --
+        # a proposal is re-authored deliberately, never silently replayed.
+        if list_artifacts()["sdr_review_annotations"]["exists"]:
+            saved = load_artifact("sdr_review_annotations")
+            if isinstance(saved, dict) and saved.get("annotations"):
+                with st.expander(
+                    "Previously saved annotations (workspace/)", expanded=False
+                ):
+                    st.dataframe(
+                        pd.DataFrame(saved["annotations"]),
+                        hide_index=True,
+                        width="stretch",
+                    )
+
         # Grid-style editing (v0.33.0): one row per open SDR instead of six
         # stacked four-column forms. Same fields, same fixed status
         # vocabulary, same downstream build_sdr_review_annotation call.
@@ -195,12 +211,22 @@ def _render_sdr_review_annotation(backlog: list[dict]) -> None:
 
         annotation_artifact = build_sdr_review_annotation(annotations)
         st.caption(f"{len(annotation_artifact['annotations'])} annotation(s) recorded.")
-        st.download_button(
-            "Download review annotations JSON",
-            data=json.dumps(
-                annotation_artifact, indent=2, ensure_ascii=False
-            ).encode("utf-8"),
-            file_name="sdr_review_annotations.json",
-            mime="application/json",
-            width="stretch",
-        )
+        download_col, save_col = st.columns(2)
+        with download_col:
+            st.download_button(
+                "Download review annotations JSON",
+                data=json.dumps(
+                    annotation_artifact, indent=2, ensure_ascii=False
+                ).encode("utf-8"),
+                file_name="sdr_review_annotations.json",
+                mime="application/json",
+                width="stretch",
+            )
+        with save_col:
+            # Workspace persistence (v0.35.0): reviewer-authored working
+            # artifact only — the governed backlog JSON is never touched.
+            if st.button("Save annotations to workspace", width="stretch"):
+                saved_path = save_artifact(
+                    "sdr_review_annotations", annotation_artifact
+                )
+                st.success(f"Saved to `{saved_path.as_posix()}`.")

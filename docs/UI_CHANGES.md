@@ -1,5 +1,20 @@
 # UI Changes
 
+## v0.35.0 Workspace persistence checklist
+
+- [x] Mapping Governance: "Save sign-off to workspace" next to the
+      sign-off download; "Use hard-mapping sign-off saved in
+      workspace/" option at the uploader (uploaded file always wins).
+- [x] Mapping Governance: "Save report to workspace" under the
+      downloads; "Load report from workspace" in the load-report area
+      (same parse/annotate path as an upload).
+- [x] Standards Review: "Save annotations to workspace" next to the
+      download; previously saved annotations shown read-only (the grid
+      always starts fresh).
+- [x] Every save shows the written path; every load states its
+      workspace origin.
+- [x] workspace/ git-ignored; tests never write the real directory.
+
 ## v0.34.0 GS1 Digital Link preview + QR checklist
 
 - [x] Convert step 3: "GS1 Digital Link" panel after the readiness
