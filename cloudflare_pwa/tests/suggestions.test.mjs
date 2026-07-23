@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { addMappingSuggestions, addReviewCandidatesToJsonld } from '../js/core/suggestions.js';
+import {
+  addMappingSuggestions,
+  addReviewCandidatesToJsonld,
+  buildFullyEmbeddedReviewJsonld,
+} from '../js/core/suggestions.js';
 
 
 const baseReport = {
@@ -103,4 +107,31 @@ test('adds removable review evidence without asserting the proposed GS1 property
   assert.equal(jsonld['gs1:contactType'], undefined);
   assert.equal(jsonld['schema:additionalProperty'][0]['schema:value'], 'Example Person');
   assert.equal(jsonld['schema:additionalProperty'][0]['schema:propertyID'], 'gs1:contactType');
+});
+
+
+test('builds a separate fully embedded reviewer variant', () => {
+  const safe = {
+    '@type': 'gs1:Product',
+    'schema:additionalProperty': [
+      {
+        '@type': 'schema:PropertyValue',
+        'schema:name': 'contactName',
+        'schema:value': 'Example Person',
+        'schema:propertyID': 'gs1:contactType',
+      },
+      {
+        '@type': 'schema:PropertyValue',
+        'schema:name': 'contactTypeCode',
+        'schema:value': 'CXC',
+        'schema:propertyID': 'gs1:contactType',
+      },
+    ],
+  };
+
+  const embedded = buildFullyEmbeddedReviewJsonld(safe);
+
+  assert.equal(safe['gs1:contactType'], undefined);
+  assert.deepEqual(embedded['gs1:contactType'], ['Example Person', 'CXC']);
+  assert.equal(embedded['schema:additionalProperty'].length, 2);
 });

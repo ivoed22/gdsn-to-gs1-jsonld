@@ -3,7 +3,11 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
-Version 0.37.0 adds the structured review profile v0.5 for supplier/contact,
+Version 0.38.0 presents two explicit JSON-LD variants after conversion: the
+review-safe evidence model and a fully embedded experimental reviewer model
+that directly asserts every displayed 60%+ candidate for removal or promotion.
+
+Version 0.37.0 added the structured review profile v0.5 for supplier/contact,
 target-market, origin, packaging, weight, product naming and image metadata.
 Remaining AI candidates are included in online JSON-LD as removable
 `schema:PropertyValue` review evidence, never as asserted GS1 predicates.
@@ -18,7 +22,7 @@ and included in the lossless unmapped JSON report, with 60–<90% explicitly
 labelled for review. They are never silently emitted into JSON-LD. Candidate
 knowledge is deliberately separate from an executable mapping profile: a new
 profile is only needed after mappings have been semantically reviewed and
-accepted. See `docs/releases/v0.37.0.md`.
+accepted. See `docs/releases/v0.38.0.md`.
 
 Version 0.35.0 completes the end-product build path (v0.30.0–v0.35.0):
 reviewer artifacts — hard-mapping sign-offs, SDR annotations, candidate

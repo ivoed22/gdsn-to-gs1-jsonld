@@ -9,6 +9,17 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.38.0 — Dual review-safe and fully embedded JSON-LD
+
+- Shows two explicit post-conversion JSON-LD variants.
+- The review-safe variant retains candidates as non-assertive
+  `schema:PropertyValue` evidence.
+- The fully embedded reviewer variant additionally asserts each displayed 60%+
+  proposed property and carries an explicit semantic-risk warning.
+- Adds separate downloads and exposes the complete four-reviewer coverage and
+  catalog percentages in the suggestion panel.
+
+
 ## v0.37.0 — Structured supplier output and removable review evidence
 
 - Adds versioned mapping profile v0.5 for functional and regulated names,

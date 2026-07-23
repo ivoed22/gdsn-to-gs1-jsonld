@@ -142,3 +142,25 @@ export function addReviewCandidatesToJsonld(jsonldData, unmappedReport) {
     ],
   };
 }
+
+export function buildFullyEmbeddedReviewJsonld(reviewSafeJsonld) {
+  const output = JSON.parse(JSON.stringify(reviewSafeJsonld || {}));
+  const rawNodes = output['schema:additionalProperty'];
+  const nodes = rawNodes == null ? [] : Array.isArray(rawNodes) ? rawNodes : [rawNodes];
+  for (const node of nodes) {
+    const property = String(node?.['schema:propertyID'] || '').trim();
+    if (!property || (!property.startsWith('gs1:') && !property.startsWith('schema:'))) continue;
+    const value = node?.['schema:value'];
+    if (value == null || value === '') continue;
+    if (!(property in output)) {
+      output[property] = value;
+      continue;
+    }
+    const existing = Array.isArray(output[property]) ? output[property] : [output[property]];
+    if (!existing.some((item) => JSON.stringify(item) === JSON.stringify(value))) {
+      existing.push(value);
+    }
+    output[property] = existing;
+  }
+  return output;
+}

@@ -12,6 +12,9 @@ test('conversion results use the requested visual order and hide passport contin
   assert.match(component, /24 acceptance consensus · 8\.3%/);
   assert.match(component, /113 human review · 39\.2%/);
   assert.match(component, /46 conflicted · 16\.0%/);
+  assert.match(component, /Review-safe/);
+  assert.match(component, /Fully embedded review/);
+  assert.match(component, /All 288 published candidates scoring 60%\+/);
   assert.match(css, /\.result-section--downloads\s*\{\s*order:\s*2/);
   assert.match(css, /\.result-section--output\s*\{\s*order:\s*3/);
   assert.match(css, /\.result-section--checks\s*\{\s*order:\s*4/);
