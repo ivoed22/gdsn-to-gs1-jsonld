@@ -133,5 +133,5 @@ test('builds a separate fully embedded reviewer variant', () => {
 
   assert.equal(safe['gs1:contactType'], undefined);
   assert.deepEqual(embedded['gs1:contactType'], ['Example Person', 'CXC']);
-  assert.equal(embedded['schema:additionalProperty'].length, 2);
+  assert.equal(embedded['schema:additionalProperty'], undefined);
 });

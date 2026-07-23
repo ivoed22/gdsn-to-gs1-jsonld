@@ -9,6 +9,12 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.38.1 — Clean fully embedded review output
+
+- Removes converted review-candidate `schema:additionalProperty` evidence nodes
+  from the fully embedded variant so it does not contradict its direct assertions.
+- Keeps those evidence nodes unchanged in the default review-safe variant.
+
 ## v0.38.0 — Dual review-safe and fully embedded JSON-LD
 
 - Shows two explicit post-conversion JSON-LD variants.

@@ -456,7 +456,8 @@ export const ConvertWorkflow = {
           </template>
           <template v-else>
             Experimental reviewer version: {{ embeddedAssertionCount }} candidate value(s) are asserted directly.
-            Domain, range, structure and meaning may be wrong. A human reviewer must remove or correct rejected candidates.
+            Their review-only <code>schema:additionalProperty</code> nodes are omitted. Domain, range, structure and meaning
+            may be wrong; a human reviewer must remove or correct rejected candidates.
           </template>
         </p>
         <json-tree :value="displayedJsonld" />

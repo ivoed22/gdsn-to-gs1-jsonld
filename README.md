@@ -3,6 +3,10 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.38.1 keeps the fully embedded reviewer output clean: converted
+candidate evidence nodes are omitted there, while the review-safe output keeps
+the complete `schema:additionalProperty` evidence.
+
 Version 0.38.0 presents two explicit JSON-LD variants after conversion: the
 review-safe evidence model and a fully embedded experimental reviewer model
 that directly asserts every displayed 60%+ candidate for removal or promotion.

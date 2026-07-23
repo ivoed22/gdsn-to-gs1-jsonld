@@ -147,11 +147,14 @@ export function buildFullyEmbeddedReviewJsonld(reviewSafeJsonld) {
   const output = JSON.parse(JSON.stringify(reviewSafeJsonld || {}));
   const rawNodes = output['schema:additionalProperty'];
   const nodes = rawNodes == null ? [] : Array.isArray(rawNodes) ? rawNodes : [rawNodes];
+  const retainedNodes = [];
   for (const node of nodes) {
     const property = String(node?.['schema:propertyID'] || '').trim();
-    if (!property || (!property.startsWith('gs1:') && !property.startsWith('schema:'))) continue;
     const value = node?.['schema:value'];
-    if (value == null || value === '') continue;
+    if (!property || (!property.startsWith('gs1:') && !property.startsWith('schema:')) || value == null || value === '') {
+      retainedNodes.push(node);
+      continue;
+    }
     if (!(property in output)) {
       output[property] = value;
       continue;
@@ -161,6 +164,11 @@ export function buildFullyEmbeddedReviewJsonld(reviewSafeJsonld) {
       existing.push(value);
     }
     output[property] = existing;
+  }
+  if (retainedNodes.length) {
+    output['schema:additionalProperty'] = retainedNodes;
+  } else {
+    delete output['schema:additionalProperty'];
   }
   return output;
 }
