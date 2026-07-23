@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GDSN → GS1 JSON-LD Converter</title>
+  <meta name="description" content="Offline PWA that converts GDSN product XML to GS1 Web Vocabulary JSON-LD." />
+  <meta name="theme-color" content="#1769aa" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icons/icon.svg" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Vendored, offline. Classic scripts expose window.Vue, window.qrcode, window.fflate. -->
+  <script src="vendor/vue.global.prod.js"></script>
+  <script src="vendor/qrcode.min.js"></script>
+  <script src="vendor/fflate.min.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+  <noscript>This application requires JavaScript.</noscript>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

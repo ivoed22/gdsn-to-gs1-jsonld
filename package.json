@@ -1,0 +1,16 @@
+{
+  "name": "gdsn-to-gs1-jsonld-cloudflare-pwa",
+  "version": "0.35.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "check:pwa": "node --test cloudflare_pwa/tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "4.113.0"
+  },
+  "overrides": {
+    "sharp": "0.35.0"
+  }
+}

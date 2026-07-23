@@ -1,0 +1,3052 @@
+{
+  "manifest_version": "0.10.0",
+  "title": "Manual JSON-LD Product Builder",
+  "description": "UI configuration for manually authoring prototype GS1 Web Vocabulary JSON-LD. This is not converter mapping logic and must not be used to generate or update mapping YAML.\n",
+  "root_classes": [
+    {
+      "key": "Product",
+      "label": "Product",
+      "webvoc_id": "gs1:Product",
+      "supported_in_v0_10": true
+    }
+  ],
+  "default_language_options": [
+    "en",
+    "nl",
+    "de",
+    "fr"
+  ],
+  "product_categories": [
+    {
+      "key": "general_product",
+      "label": "General Product",
+      "groups": [
+        "core_product_information",
+        "classification_links",
+        "physical_dimensions",
+        "additional_measurements",
+        "identifiers_variants",
+        "product_descriptions",
+        "consumer_information",
+        "dates_lifecycle",
+        "digital_links_services",
+        "consumer_dpp_links",
+        "other_webvoc_properties"
+      ]
+    },
+    {
+      "key": "food_beverage_tobacco",
+      "label": "Food / Beverage / Tobacco",
+      "groups": [
+        "core_product_information",
+        "classification_links",
+        "physical_dimensions",
+        "additional_measurements",
+        "identifiers_variants",
+        "product_descriptions",
+        "consumer_information",
+        "dates_lifecycle",
+        "nutritional_information",
+        "nutrition",
+        "food_serving_details",
+        "food_coding",
+        "allergens",
+        "digital_links_services",
+        "consumer_dpp_links"
+      ]
+    },
+    {
+      "key": "packaging",
+      "label": "Packaging",
+      "groups": [
+        "core_product_information",
+        "physical_dimensions",
+        "packaging_details",
+        "digital_links_services"
+      ]
+    },
+    {
+      "key": "certifications_documents",
+      "label": "Certifications & Documents",
+      "groups": [
+        "core_product_information",
+        "certifications",
+        "documents_dpp",
+        "digital_links_services"
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "key": "core_product_information",
+      "label": "Core Product Information",
+      "description": "Product identity and consumer-facing description fields that can be authored as simple values without nested object modelling.\n",
+      "properties": [
+        {
+          "property_id": "gs1:gtin",
+          "requirement": "required",
+          "input_type_override": "text",
+          "example_value": "09501234567890",
+          "help_text": "GTIN is used to create the product @id.",
+          "appears_because": "Core GS1 product identity and Digital Link-style identifier.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productID",
+          "requirement": "optional",
+          "example_value": "SKU-12345",
+          "help_text": "Additional product identifier when a local product ID is useful.",
+          "appears_because": "WebVoc provides a string identifier beside GTIN.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productName",
+          "requirement": "required",
+          "input_type_override": "language_text",
+          "example_value": "Example apple juice",
+          "help_text": "Consumer-friendly product name with a language tag.",
+          "appears_because": "Common visible product label text in Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:additionalProductDescription",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Apple juice from concentrate, 1 L carton",
+          "help_text": "Extra consumer/product description with a language tag.",
+          "appears_because": "Useful manual description field with a simple langString range.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:brand",
+          "requirement": "recommended",
+          "input_type_override": "object",
+          "object_type": "gs1:Brand",
+          "help_text": "Brand as a nested gs1:Brand object with a language-tagged brand name.",
+          "appears_because": "Brand is modelled as a nested gs1:Brand object in the Web Vocabulary.",
+          "supported_in_v0_10": true,
+          "object_fields": [
+            {
+              "property_id": "gs1:brandName",
+              "requirement": "recommended",
+              "input_type_override": "language_text",
+              "example_value": "Example Brand",
+              "help_text": "Brand name (language-tagged)."
+            },
+            {
+              "property_id": "gs1:subBrandName",
+              "requirement": "optional",
+              "input_type_override": "language_text",
+              "example_value": "Example Sub-brand",
+              "help_text": "Sub-brand name (language-tagged)."
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:colourDescription",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Red",
+          "help_text": "Optional colour description with a language tag.",
+          "appears_because": "Simple product-level langString field available in WebVoc.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:image",
+          "requirement": "recommended",
+          "input_type_override": "object",
+          "object_type": "gs1:ReferencedFileDetails",
+          "help_text": "Product image as a nested gs1:ReferencedFileDetails object (file URL plus optional pixel size).",
+          "appears_because": "Images are modelled as gs1:ReferencedFileDetails in the Web Vocabulary.",
+          "supported_in_v0_10": true,
+          "object_fields": [
+            {
+              "property_id": "gs1:referencedFileURL",
+              "requirement": "recommended",
+              "input_type_override": "url",
+              "example_value": "https://example.com/product-image.jpg",
+              "help_text": "Direct URL of the image file."
+            },
+            {
+              "property_id": "gs1:filePixelWidth",
+              "requirement": "optional",
+              "input_type_override": "integer",
+              "example_value": "800",
+              "help_text": "Image width in pixels."
+            },
+            {
+              "property_id": "gs1:filePixelHeight",
+              "requirement": "optional",
+              "input_type_override": "integer",
+              "example_value": "600",
+              "help_text": "Image height in pixels."
+            },
+            {
+              "property_id": "gs1:fileLanguageCode",
+              "requirement": "optional",
+              "input_type_override": "text",
+              "example_value": "en",
+              "help_text": "Language code of the file content."
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:relatedImage",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/product-image.jpg",
+          "help_text": "Direct URL link-type for a related product image.",
+          "appears_because": "Available link-type field for lightweight image URL prototypes.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:pip",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/products/09501234567890",
+          "help_text": "Product information page URL.",
+          "appears_because": "Available WebVoc link type for product pages.",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "classification_links",
+      "label": "Classification & Links",
+      "description": "Category codes and authoritative product links useful for discovery and review.\n",
+      "properties": [
+        {
+          "property_id": "gs1:gpcCategoryCode",
+          "requirement": "recommended",
+          "example_value": "10000237",
+          "help_text": "8-digit GPC brick code.",
+          "appears_because": "Common GS1 classification evidence.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:gpcCategoryDescription",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Fruit and vegetable juices",
+          "help_text": "Human-readable GPC category description.",
+          "appears_because": "Simple language-tagged category description.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:masterData",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/master-data/09501234567890",
+          "help_text": "Link to master data for the product.",
+          "appears_because": "Available link-type field for product master-data references.",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "physical_dimensions",
+      "label": "Physical Dimensions",
+      "description": "Simple quantitative values represented as value plus unitCode.\n",
+      "properties": [
+        {
+          "property_id": "gs1:netContent",
+          "requirement": "recommended",
+          "input_type_override": "quantity",
+          "example_value": "1 LTR",
+          "help_text": "Enter numeric value and UN/ECE-style unit code.",
+          "appears_because": "Common product quantity field with QuantitativeValue range.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:grossWeight",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1.08 KGM",
+          "help_text": "Gross weight including packaging.",
+          "appears_because": "QuantitativeValue range can be represented safely.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:inPackageHeight",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "24 CMT",
+          "help_text": "Height while product is in package.",
+          "appears_because": "WebVoc provides in-package dimensions with QuantitativeValue range.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:inPackageWidth",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "8 CMT",
+          "help_text": "Width while product is in package.",
+          "appears_because": "WebVoc provides in-package dimensions with QuantitativeValue range.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:inPackageDepth",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "8 CMT",
+          "help_text": "Depth while product is in package.",
+          "appears_because": "WebVoc provides in-package dimensions with QuantitativeValue range.",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "digital_links_services",
+      "label": "Digital Links & Services",
+      "description": "Link-type properties that can safely emit direct HTTP(S) URLs.",
+      "properties": [
+        {
+          "property_id": "gs1:defaultLink",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/01/09501234567890",
+          "help_text": "Default link for product resolver experiences.",
+          "appears_because": "Common Digital Link resolver target.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:smartLabel",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/smartlabel/09501234567890",
+          "help_text": "SmartLabel information URL.",
+          "appears_because": "Available consumer-information link type.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:traceability",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/trace/09501234567890",
+          "help_text": "Traceability information URL.",
+          "appears_because": "Useful lightweight provenance link.",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "packaging_details",
+      "label": "Packaging Details",
+      "description": "Packaging information where v0.10 can show safe URL or simple code fields; nested packaging structures remain planned.\n",
+      "properties": [
+        {
+          "property_id": "gs1:packagingMarkedLabelAccreditation",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "A marking that the product received recognition, endorsement, certification by following guidelines by the label issuing",
+          "appears_because": "Controlled gs1:PackagingMarkedLabelAccreditationCode value from the local snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-LABEL_OF_THE_ALLERGY_AND_ASTHMA_FEDERATION",
+              "label": "Allergy and Asthma Federation"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-TUNNUSTATUD_EESTI_MAITSE",
+              "label": "Approved Estonian Taste"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-AUS_KAUP_ESTONIA",
+              "label": "Aus Kaup Estonia"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-AMA_ORGANIC_SEAL",
+              "label": "Austria Ministry of Agriculture Organic Label"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-BDIH_LOGO",
+              "label": "BDIH Germany guidelines for Certified Natural Cosmetics"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-EESTI_PARIM_TOIDUAINE",
+              "label": "Best Food Association of Estonia Food Industry"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-BETER_LEVEN_1_STER",
+              "label": "Beter Leven One Star Mark"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-BETER_LEVEN_3_STER",
+              "label": "Beter Leven Three Star Mark"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-BETER_LEVEN_2_STER",
+              "label": "Beter Leven Two Star Mark"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-BIO_AUSTRIA_LABEL",
+              "label": "Bio Austria"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-BLUE_ANGEL",
+              "label": "Blue Angel"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-BORD_BIA_APPROVED_MEAT",
+              "label": "Bord Bia Approved - Meat Content Only"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-BORD_BIA_APPROVED",
+              "label": "Bord Bia Approved Logo"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-BRA_MILJOVAL_LABEL_SWEDISH",
+              "label": "Bra Miljoval"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-OEKO_TEX_LABEL",
+              "label": "Confidence in Textiles Oeko-Tex"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-CROSSED_GRAIN_SYMBOL",
+              "label": "Crossed grain logo"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-DEMETER_LABEL",
+              "label": "Demeter International Trademark"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-EC_NATIONAL_HEALTH_MARK",
+              "label": "EC National Health Mark"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-ECOCERT_CERTIFICATE",
+              "label": "ECOCERT Certification"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-EESTI_OKOMARK",
+              "label": "EESTI OKOMARK (Label of Organic Food)"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-EU_ORGANIC_FARMING",
+              "label": "EU Organic Farming Logo"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-ECO_LABEL_LADYBUG",
+              "label": "Eco Label Ladybug"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-EU_ECO_LABEL",
+              "label": "European Union Eco Label"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-FALKEN",
+              "label": "Falken"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-GOODS_FROM_FINLAND_BLUE_SWAN",
+              "label": "Finfood Suomen Ruokatieto Ry"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-FINNISH_HEART_SYMBOL",
+              "label": "Finnish Heart Symbol"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-FOREST_STEWARDSHIP_COUNCIL_LABEL",
+              "label": "Forest Stewardship Council Label"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-GMO_MARKED",
+              "label": "GMO Marked"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-BIO_LABEL_GERMAN",
+              "label": "German national organic certification label (Bio-Siegel)"
+            },
+            {
+              "value": "gs1:PackagingMarkedLabelAccreditationCode-GREEN_DOT",
+              "label": "Green Dot"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:packagingMarkedFreeFrom",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Indication of the food ingredients that the package is marked free from",
+          "appears_because": "Controlled gs1:PackagingMarkedFreeFromCode value from the local snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_ARTIFICIAL_COLOURING",
+              "label": "Free From Artificial Colouring"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_ARTIFICIAL_FLAVOURING",
+              "label": "Free From Artificial Flavouring"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_ARTIFICIAL_PRESERVATIVES",
+              "label": "Free From Artificial Preservatives"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_CHOLESTEROL",
+              "label": "Free From Cholesterol"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_CLONED_FOOD",
+              "label": "Free From Cloned Food"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_DAIRY",
+              "label": "Free From Dairy and Dairy Products"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_EGG",
+              "label": "Free From Egg"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_FISH",
+              "label": "Free From Fish"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_GLUTEN",
+              "label": "Free From Gluten"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_LATEX",
+              "label": "Free From Latex"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_LEGUME_PROTEIN",
+              "label": "Free From Legume Protein"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_MILK",
+              "label": "Free From Milk"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_MILK_PROTEIN",
+              "label": "Free From Milk Protein"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_PEANUTS",
+              "label": "Free From Peanuts"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_SOYA",
+              "label": "Free From Soya"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_SUGAR",
+              "label": "Free From Sugar"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_LACTOSE",
+              "label": "Free Of Lactose"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_PVC",
+              "label": "Free from PVC"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_PROTEIN",
+              "label": "Free from Protein"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_TRANSFAT",
+              "label": "Free from Trans Fatty Acids"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-REDUCED_PROTEIN",
+              "label": "Low Level of Protein"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-FREE_FROM_NATURAL_GLUTEN",
+              "label": "Naturally Free From Gluten"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-REDUCED_LACTOSE",
+              "label": "Reduced Amount of Lactose"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-REDUCED_TRANSFAT",
+              "label": "Reduced Amount of Transfats"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-VERY_LOW_GLUTEN",
+              "label": "Very Low Amount of Gluten"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-WITHOUT_ADDED_SALT",
+              "label": "Without Added Salt"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-WITHOUT_ADDED_SUGAR",
+              "label": "Without Added Sugar"
+            },
+            {
+              "value": "gs1:PackagingMarkedFreeFromCode-WITHOUT_ADDED_SWEETENER",
+              "label": "Without Added Sweetener"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:packagingMarkedDietAllergenType",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Indication of which dietary or allergen marks are on the package",
+          "appears_because": "Controlled gs1:PackagingMarkedDietAllergenCode value from the local snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-DIET_PRODUCT_450_800_KCAL_PER_DAY",
+              "label": "450-800 Kilocalorie Per Day Diet"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-DIET_PRODUCT_800_1200_KCAL_PER_DAY",
+              "label": "800-1200 Kilocalorie Per Day Diet"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-APPROVED_FOR_TUBE_FEEDING",
+              "label": "Approved for Tube Feeding"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-APPROVED_BY_ASTHMA_AND_ALLERGY_ASSOC",
+              "label": "Asthma and Allergist Association"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-BIOLOGICAL",
+              "label": "Biological"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-CALORIES_PER_PORTION",
+              "label": "Calories Per Portion"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-CONTAINS_LATEX",
+              "label": "Contains Latex"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-CONTAINS_PVC",
+              "label": "Contains PVC"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-CONTAINS_PVC_WITH_PHTHALATES",
+              "label": "Contains PVC With Phthalates"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-CONTAINS_PVC_WITHOUT_PHTHALATES",
+              "label": "Contains PVC Without Phthalates"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-GEZONDE_KEUZE_KLAVERTJE",
+              "label": "Gezonde Keuze Klavertje"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-HALAL",
+              "label": "Halal"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-IK_KIES_BEWUST",
+              "label": "Ik Kies Bewust"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-KOSHER",
+              "label": "Kosher"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-LACTASE_ENZYME",
+              "label": "Lactase Enzyme"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-LOW_ON_SUGAR",
+              "label": "Low Sugar"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-LOW_ON_PHENYLALANINE",
+              "label": "Low in Phenylalanine"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-MOTHERS_MILK_SUBSTITUTE",
+              "label": "Mother's Milk Substitute"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-NUTRITION_SUPPLEMENT",
+              "label": "Nutrition Supplement"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-NYCKELHAL_MARK",
+              "label": "Nyckelhal Mark"
+            },
+            {
+              "value": "gs1:PackagingMarkedDietAllergenCode-VEGETARIAN",
+              "label": "Vegetarian"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:packagingMaterial",
+          "requirement": "optional",
+          "input_type_override": "object",
+          "object_type": "gs1:PackagingMaterial",
+          "help_text": "Packaging material as a nested gs1:PackagingMaterial object (safe quantity sub-fields).",
+          "appears_because": "Packaging material is modelled as gs1:PackagingMaterial in the Web Vocabulary.",
+          "supported_in_v0_10": true,
+          "object_fields": [
+            {
+              "property_id": "gs1:packagingMaterialCompositionQuantity",
+              "requirement": "optional",
+              "input_type_override": "quantity",
+              "example_value": "20 GRM",
+              "help_text": "Quantity of this material (value + unitCode)."
+            },
+            {
+              "property_id": "gs1:packagingMaterialThickness",
+              "requirement": "optional",
+              "input_type_override": "quantity",
+              "example_value": "0.2 MMT",
+              "help_text": "Material thickness (value + unitCode)."
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:sustainabilityInfo",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/sustainability/09501234567890",
+          "help_text": "Sustainability and recycling information URL.",
+          "appears_because": "Available link type for packaging/sustainability references.",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "nutritional_information",
+      "label": "Nutritional Information",
+      "description": "v0.10 supports lightweight nutrition information links and plain ingredient text; structured nutrient details remain planned.\n",
+      "properties": [
+        {
+          "property_id": "gs1:ingredientStatement",
+          "requirement": "recommended",
+          "input_type_override": "language_text",
+          "example_value": "Apple juice from concentrate.",
+          "help_text": "Ingredient statement with a language tag.",
+          "appears_because": "Safe Food/Beverage langString field.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:nutritionalInfo",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/nutrition/09501234567890",
+          "help_text": "Nutrition information URL.",
+          "appears_because": "Available link type for nutrition information.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:nutrientDetail",
+          "requirement": "optional",
+          "example_value": "Energy 190 KJ",
+          "help_text": "Structured nutrient detail is not present as a simple WebVoc term.",
+          "appears_because": "Existing mapping review tracks nutrient modelling.",
+          "supported_in_v0_10": false,
+          "planned_reason": "Requires governed nested nutrient modelling."
+        }
+      ]
+    },
+    {
+      "key": "allergens",
+      "label": "Allergens",
+      "description": "Text and link fields for allergen review; structured details remain planned.",
+      "properties": [
+        {
+          "property_id": "gs1:allergenStatement",
+          "requirement": "recommended",
+          "input_type_override": "language_text",
+          "example_value": "Contains almonds.",
+          "help_text": "Textual allergen statement with a language tag.",
+          "appears_because": "Safe Food/Beverage langString field.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:allergenInfo",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/allergens/09501234567890",
+          "help_text": "Allergen information URL.",
+          "appears_because": "Available link type for allergen information.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:hasAllergen",
+          "requirement": "optional",
+          "input_type_override": "object",
+          "object_type": "gs1:AllergenDetails",
+          "help_text": "Allergen as a nested gs1:AllergenDetails object: pick an allergen type and a containment level from the GS1 code lists.",
+          "appears_because": "Allergens are modelled as gs1:AllergenDetails with controlled code values in the Web Vocabulary.",
+          "supported_in_v0_10": true,
+          "object_fields": [
+            {
+              "property_id": "gs1:allergenType",
+              "requirement": "recommended",
+              "input_type_override": "code",
+              "help_text": "Allergen type (GS1 AllergenTypeCode; EU-14 subset).",
+              "options": [
+                {
+                  "value": "gs1:AllergenTypeCode-CEREALS_CONTAINING_GLUTEN",
+                  "label": "Cereals containing gluten"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-AC",
+                  "label": "Crustaceans"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-AE",
+                  "label": "Eggs"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-AF",
+                  "label": "Fish"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-AP",
+                  "label": "Peanuts"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-AY",
+                  "label": "Soybeans"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-AM",
+                  "label": "Milk"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-AN",
+                  "label": "Tree nuts"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-BC",
+                  "label": "Celery"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-BM",
+                  "label": "Mustard"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-AS",
+                  "label": "Sesame seeds"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-SULPHUR_DIOXIDE",
+                  "label": "Sulphur dioxide and sulphites"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-NL",
+                  "label": "Lupin"
+                },
+                {
+                  "value": "gs1:AllergenTypeCode-UM",
+                  "label": "Molluscs"
+                }
+              ]
+            },
+            {
+              "property_id": "gs1:allergenLevelOfContainmentCode",
+              "requirement": "recommended",
+              "input_type_override": "code",
+              "help_text": "Containment level (GS1 LevelOfContainmentCode).",
+              "options": [
+                {
+                  "value": "gs1:LevelOfContainmentCode-CONTAINS",
+                  "label": "Contains"
+                },
+                {
+                  "value": "gs1:LevelOfContainmentCode-FREE_FROM",
+                  "label": "Free from"
+                },
+                {
+                  "value": "gs1:LevelOfContainmentCode-MAY_CONTAIN",
+                  "label": "May contain"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "certifications",
+      "label": "Certifications",
+      "description": "Link fields for certification evidence; detailed certification objects remain planned.",
+      "properties": [
+        {
+          "property_id": "gs1:certificationInfo",
+          "requirement": "recommended",
+          "input_type_override": "url",
+          "example_value": "https://example.com/certificates/09501234567890",
+          "help_text": "Certification information URL.",
+          "appears_because": "Available link type for certification evidence.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:certification",
+          "requirement": "optional",
+          "input_type_override": "object",
+          "object_type": "gs1:CertificationDetails",
+          "help_text": "Certification as a nested gs1:CertificationDetails object (safe text/URL/date sub-fields; agency/status code objects remain out of scope).",
+          "appears_because": "Certifications are modelled as gs1:CertificationDetails in the Web Vocabulary.",
+          "supported_in_v0_10": true,
+          "object_fields": [
+            {
+              "property_id": "gs1:certificationStandard",
+              "requirement": "recommended",
+              "input_type_override": "language_text",
+              "example_value": "EU Organic",
+              "help_text": "Certification standard name (language-tagged)."
+            },
+            {
+              "property_id": "gs1:certificationValue",
+              "requirement": "optional",
+              "input_type_override": "language_text",
+              "example_value": "Certified",
+              "help_text": "Certification value (language-tagged)."
+            },
+            {
+              "property_id": "gs1:certificationAgency",
+              "requirement": "optional",
+              "input_type_override": "language_text",
+              "example_value": "Example Certification Agency",
+              "help_text": "Certifying agency name (language-tagged)."
+            },
+            {
+              "property_id": "gs1:certificationIdentification",
+              "requirement": "optional",
+              "input_type_override": "text",
+              "example_value": "CERT-12345",
+              "help_text": "Certification identifier."
+            },
+            {
+              "property_id": "gs1:certificationURI",
+              "requirement": "optional",
+              "input_type_override": "url",
+              "example_value": "https://example.com/certificates/09501234567890",
+              "help_text": "URL to the certification record."
+            },
+            {
+              "property_id": "gs1:certificationStartDate",
+              "requirement": "optional",
+              "input_type_override": "date",
+              "example_value": "2026-01-01",
+              "help_text": "Certification start date."
+            },
+            {
+              "property_id": "gs1:certificationEndDate",
+              "requirement": "optional",
+              "input_type_override": "date",
+              "example_value": "2027-01-01",
+              "help_text": "Certification end date."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "documents_dpp",
+      "label": "Documents and DPP",
+      "description": "DPP and document links that can be emitted as direct URLs in v0.10.",
+      "properties": [
+        {
+          "property_id": "gs1:dpp",
+          "requirement": "recommended",
+          "input_type_override": "url",
+          "example_value": "https://example.com/dpp/09501234567890",
+          "help_text": "Digital Product Passport URL.",
+          "appears_because": "Available link type and central future DPP review field.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:instructions",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/instructions/09501234567890",
+          "help_text": "Instruction document URL.",
+          "appears_because": "Safe direct link-type field.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:referencedFile",
+          "requirement": "optional",
+          "input_type_override": "object",
+          "object_type": "gs1:ReferencedFileDetails",
+          "help_text": "Referenced document/DPP file as a nested gs1:ReferencedFileDetails object.",
+          "appears_because": "Documents are modelled as gs1:ReferencedFileDetails in the Web Vocabulary.",
+          "supported_in_v0_10": true,
+          "object_fields": [
+            {
+              "property_id": "gs1:referencedFileURL",
+              "requirement": "recommended",
+              "input_type_override": "url",
+              "example_value": "https://example.com/document.pdf",
+              "help_text": "Direct URL of the referenced file."
+            },
+            {
+              "property_id": "gs1:fileLanguageCode",
+              "requirement": "optional",
+              "input_type_override": "text",
+              "example_value": "en",
+              "help_text": "Language code of the file content."
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:instructionsForUse",
+          "requirement": "optional",
+          "input_type_override": "object",
+          "object_type": "gs1:ReferencedFileDetails",
+          "help_text": "Instructions for use as a nested gs1:ReferencedFileDetails object (file URL).",
+          "appears_because": "Modelled as gs1:ReferencedFileDetails in the Web Vocabulary.",
+          "supported_in_v0_10": true,
+          "object_fields": [
+            {
+              "property_id": "gs1:referencedFileURL",
+              "requirement": "recommended",
+              "input_type_override": "url",
+              "example_value": "https://example.com/file",
+              "help_text": "Direct URL of the file."
+            },
+            {
+              "property_id": "gs1:fileLanguageCode",
+              "requirement": "optional",
+              "input_type_override": "text",
+              "example_value": "en",
+              "help_text": "Language code of the file content."
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:consumerHandlingStorage",
+          "requirement": "optional",
+          "input_type_override": "object",
+          "object_type": "gs1:ReferencedFileDetails",
+          "help_text": "Consumer handling and storage as a nested gs1:ReferencedFileDetails object (file URL).",
+          "appears_because": "Modelled as gs1:ReferencedFileDetails in the Web Vocabulary.",
+          "supported_in_v0_10": true,
+          "object_fields": [
+            {
+              "property_id": "gs1:referencedFileURL",
+              "requirement": "recommended",
+              "input_type_override": "url",
+              "example_value": "https://example.com/file",
+              "help_text": "Direct URL of the file."
+            },
+            {
+              "property_id": "gs1:fileLanguageCode",
+              "requirement": "optional",
+              "input_type_override": "text",
+              "example_value": "en",
+              "help_text": "Language code of the file content."
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:audioFile",
+          "requirement": "optional",
+          "input_type_override": "object",
+          "object_type": "gs1:ReferencedFileDetails",
+          "help_text": "Audio file as a nested gs1:ReferencedFileDetails object (file URL).",
+          "appears_because": "Modelled as gs1:ReferencedFileDetails in the Web Vocabulary.",
+          "supported_in_v0_10": true,
+          "object_fields": [
+            {
+              "property_id": "gs1:referencedFileURL",
+              "requirement": "recommended",
+              "input_type_override": "url",
+              "example_value": "https://example.com/file",
+              "help_text": "Direct URL of the file."
+            },
+            {
+              "property_id": "gs1:fileLanguageCode",
+              "requirement": "optional",
+              "input_type_override": "text",
+              "example_value": "en",
+              "help_text": "Language code of the file content."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "other_webvoc_properties",
+      "label": "Other Web Vocabulary Properties",
+      "description": "Additional safe URL fields useful for prototypes.",
+      "properties": [
+        {
+          "property_id": "gs1:jws",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/signatures/09501234567890.jws",
+          "help_text": "JSON Web Signature link.",
+          "appears_because": "Useful future bridge to authenticity and VC/DPP review.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:verificationService",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/verify/09501234567890",
+          "help_text": "Verification service URL.",
+          "appears_because": "Lightweight link to external verification information.",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "product_descriptions",
+      "label": "Product Descriptions & Marketing",
+      "description": "Language-tagged descriptive and marketing fields on the Product that emit as simple langString values.\n",
+      "properties": [
+        {
+          "property_id": "gs1:productDescription",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "An understandable and useable description of a product using brand and other descriptors",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:functionalName",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "Describes use of the product or service by the consumer",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:regulatedProductName",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "The prescribed, regulated or generic product name or denomination that describes the true nature of the product",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:variantDescription",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "Free text field used to identify the variant of the product",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productMarketingMessage",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "Marketing message associated with the product",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productFeatureBenefit",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "Element for consumer facing marketing content to describe the key features or benefits of the style suitable for display purposes",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:provenanceStatement",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "Free text description of the region or place the product originates from",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:countryOfOriginStatement",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "A description of the geographic area the item may have originated from or has been processed",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:includedAccessories",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "Any included object or device not part of the core product itself but which adds to its functionality or use",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:descriptiveSize",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "An alphanumeric size factor the brand owner wishes to communicate to the consumer",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productRange",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "A name, used by a Brand Owner, that span multiple consumer categories or uses",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productFormDescription",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "The physical form or shape of the product",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "consumer_information",
+      "label": "Consumer Information",
+      "description": "Consumer-facing instructions, safety and recall fields with simple text, boolean or integer ranges.\n",
+      "properties": [
+        {
+          "property_id": "gs1:consumerUsageInstructions",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "Free text containing the usage instructions of a product, which are normally held on the label or accompanying the product",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:consumerStorageInstructions",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "Expresses in text the consumer storage instructions of a product which are normally held on the label or accompanying the product",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:consumerSafetyInformation",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "Information on consumer safety regarding the product",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:consumerRecyclingInstructions",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "Expresses in text the consumer recycling instructions which are normally held on the label or accompanying the product",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:consumerPackageDisclaimer",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "Additional information that should be used in advertising and in displaying",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:warningCopyDescription",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "Warning information is additional information that outlines special requirements, warning and caution information printed on the package",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:healthClaimDescription",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Example text",
+          "help_text": "A description of health claims according to regulations of the target market",
+          "appears_because": "Safe rdf:langString Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:isProductRecalled",
+          "requirement": "optional",
+          "input_type_override": "checkbox",
+          "example_value": "true",
+          "help_text": "An indicator for the product to determine if the Manufacturer or Supplier has recalled the product",
+          "appears_because": "Safe xsd:boolean Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:supplierSpecifiedMinimumConsumerStorageDays",
+          "requirement": "optional",
+          "input_type_override": "integer",
+          "example_value": "30",
+          "help_text": "Represents the number of days between a product's sell by date and its use by date",
+          "appears_because": "Safe xsd:integer Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "dates_lifecycle",
+      "label": "Dates & Lifecycle",
+      "description": "Product lifecycle dates emitted as xsd:date or xsd:dateTime values.\n",
+      "properties": [
+        {
+          "property_id": "gs1:bestBeforeDate",
+          "requirement": "optional",
+          "input_type_override": "date",
+          "example_value": "2026-12-31",
+          "help_text": "Best before date on the label or package signifies the end of the period under which the product will retain specific quality attributes or claims eve",
+          "appears_because": "Safe xsd:date Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:expirationDate",
+          "requirement": "optional",
+          "input_type_override": "date",
+          "example_value": "2026-12-31",
+          "help_text": "The expiration date is the date that determines the limit of consumption or use of a product/coupon",
+          "appears_because": "Safe xsd:date Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:expirationDateTime",
+          "requirement": "optional",
+          "input_type_override": "datetime",
+          "example_value": "2026-12-31T00:00:00Z",
+          "help_text": "The manufacturer determines the expiration date and time, which is relevant only for short duration and for items that will not be sent on long distan",
+          "appears_because": "Safe xsd:dateTime Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:sellByDate",
+          "requirement": "optional",
+          "input_type_override": "date",
+          "example_value": "2026-12-31",
+          "help_text": "The date specified by the manufacturer as the last date the retailer is to offer the product for sale to the consumer",
+          "appears_because": "Safe xsd:date Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productionDate",
+          "requirement": "optional",
+          "input_type_override": "date",
+          "example_value": "2026-12-31",
+          "help_text": "The production date is the production or assembly date determined by the manufacturer",
+          "appears_because": "Safe xsd:date Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productionDateTime",
+          "requirement": "optional",
+          "input_type_override": "datetime",
+          "example_value": "2026-12-31T00:00:00Z",
+          "help_text": "The date and time of production (or assembly)",
+          "appears_because": "Safe xsd:dateTime Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:packagingDate",
+          "requirement": "optional",
+          "input_type_override": "date",
+          "example_value": "2026-12-31",
+          "help_text": "The packaging date is the date when the goods were packed as determined by the packager",
+          "appears_because": "Safe xsd:date Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:harvestDate",
+          "requirement": "optional",
+          "input_type_override": "date",
+          "example_value": "2026-12-31",
+          "help_text": "The harvest date",
+          "appears_because": "Safe xsd:date Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:harvestDateStart",
+          "requirement": "optional",
+          "input_type_override": "date",
+          "example_value": "2026-12-31",
+          "help_text": "The harvest start date",
+          "appears_because": "Safe xsd:date Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:harvestDateEnd",
+          "requirement": "optional",
+          "input_type_override": "date",
+          "example_value": "2026-12-31",
+          "help_text": "The harvest end date",
+          "appears_because": "Safe xsd:date Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:firstFreezeDate",
+          "requirement": "optional",
+          "input_type_override": "date",
+          "example_value": "2026-12-31",
+          "help_text": "The first freeze date is applicable to products that are frozen directly after slaughtering, harvesting, catching or after initial processing of the p",
+          "appears_because": "Safe xsd:date Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:dueDate",
+          "requirement": "optional",
+          "input_type_override": "date",
+          "example_value": "2026-12-31",
+          "help_text": "The date by which an invoice should be paid",
+          "appears_because": "Safe xsd:date Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "consumer_dpp_links",
+      "label": "Consumer & DPP Links",
+      "description": "Product-relevant link-type properties that safely emit direct HTTP(S) URLs.\n",
+      "properties": [
+        {
+          "property_id": "gs1:eifu",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/eifu/09501234567890",
+          "help_text": "A link to electronic Instruction For Use instructions for Medical Devices",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:epil",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/epil/09501234567890",
+          "help_text": "A link to an electronic patient information leaflet",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:epcis",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/epcis/09501234567890",
+          "help_text": "A link to an EPCIS repository of visibility event data",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:ingredientsInfo",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/ingredients-xnfo/09501234567890",
+          "help_text": "A link to facts about ingredients",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:safetyInfo",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/safety-xnfo/09501234567890",
+          "help_text": "A link to safety information",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:recallStatus",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/recall-xtatus/09501234567890",
+          "help_text": "A link to information about whether the product has been recalled or not, typically an API",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:consumerHandlingStorageInfo",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/consumer-xandling-xtorage-xnfo/09501234567890",
+          "help_text": "A link to information about safe handling and storage for consumer use",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:quickStartGuide",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/quick-xtart-xuide/09501234567890",
+          "help_text": "A link to a description of the key features needed to be understood to begin using the item or interacting with something new",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:whatsInTheBox",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/whats-xn-xhe-xox/09501234567890",
+          "help_text": "A link to a description of all the individual items in a packaged item",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:userAgreement",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/user-xgreement/09501234567890",
+          "help_text": "A link to an agreement or waiver",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:registerProduct",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/register-xroduct/09501234567890",
+          "help_text": "A link to an entry point for registering ownership of a product including for warranty purposes",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:review",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/review/09501234567890",
+          "help_text": "A link to reviews",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:faqs",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/faqs/09501234567890",
+          "help_text": "A link to a set of frequently asked questions",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:tutorial",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/tutorial/09501234567890",
+          "help_text": "A link to a tutorial or set of tutorials, such as online classes, how-to videos etc",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:support",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/support/09501234567890",
+          "help_text": "A link to a source of support such as a helpdesk, chat support, email etc",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:recipeInfo",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/recipe-xnfo/09501234567890",
+          "help_text": "A link to a recipe website",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:appDownload",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/app-xownload/09501234567890",
+          "help_text": "A link to a related mobile app",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:smpc",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "example_value": "https://example.com/smpc/09501234567890",
+          "help_text": "A link to Summary Product Characteristics",
+          "appears_because": "Safe xsd:anyURI Product property available in the Web Vocabulary.",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "nutrition",
+      "label": "Nutrition (per nutrient basis)",
+      "description": "Per-nutrient measurement values for the declared nutrient basis. Each nutrient emits as a value + unitCode (e.g. 3.5 GRM). Set the nutrient basis quantity (for example, per 100 g) alongside.\n",
+      "properties": [
+        {
+          "property_id": "gs1:nutrientBasisQuantity",
+          "requirement": "recommended",
+          "input_type_override": "quantity",
+          "example_value": "100 GRM",
+          "help_text": "Nutrient basis quantity the values are declared per (e.g. 100 g or 100 ml).",
+          "appears_because": "Nutrient basis for the per-nutrient values (QuantitativeValue).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:nutritionalClaimStatement",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Low in saturated fat",
+          "help_text": "Free-text nutritional claim (language-tagged).",
+          "appears_because": "Safe langString nutritional-claim field.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:biotinPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Biotin Acid per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:calciumPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Calcium per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:carbohydratesPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Carbohydrates per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:chloridePerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Chloride per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:cholesterolPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Cholesterol per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:chromiumPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Chromium per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:copperPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Copper per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:energyFromFatPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Energy from Fat per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:energyPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Energy Per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:fatPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Fat per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:fibrePerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Fibre per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:fluoridePerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Fluoride per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:folicAcidPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Folic Acid per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:iodinePerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Iodine per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:ironPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Iron per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:magnesiumPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Magnesium per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:manganesePerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Manganese per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:molybdenumPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Molybdenum per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:monounsaturatedFatPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Monounsaturated fat per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:niacinPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Niacin per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:pantothenicAcidPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Pantothenic Acid per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:phosphorusPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Phosphorus per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:polyolsPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Polyols per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:polyunsaturatedFatPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Polyunsaturated fat per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:potassiumPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Potassium per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:proteinPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Protein per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:riboflavinPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Riboflavin per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:saltPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Salt per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:saturatedFatPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Saturated fat per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:seleniumPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Selenium per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:sodiumPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Sodium per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:starchPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Starch per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:sugarsPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Sugars per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:thiaminPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Thiamin per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:transFatPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Trans Fat per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:vitaminAPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Vitamin A per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:vitaminB12PerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Vitamin B12 per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:vitaminB6PerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Vitamin B6 per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:vitaminCPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Vitamin C per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:vitaminDPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Vitamin D per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:vitaminEPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Vitamin E per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:vitaminKPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Vitamin K per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:zincPerNutrientBasis",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "0 GRM",
+          "help_text": "Zinc per specified nutrient basis quantity (value + unitCode).",
+          "appears_because": "Per-nutrient measurement on the food product (NutritionMeasurementType).",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "food_coding",
+      "label": "Food Coding & Claims",
+      "description": "Controlled-code food attributes and claims, chosen from GS1 code lists and emitted as JSON-LD node references.\n",
+      "properties": [
+        {
+          "property_id": "gs1:nutritionalClaim",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Nutritional claim type.",
+          "appears_because": "Controlled gs1:NutritionalClaimTypeCode value from the local Web Vocabulary snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:NutritionalClaimTypeCode-ADDITIVE_FREE",
+              "label": "Additive Free"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-ARTIFICIALLY_SWEETENED",
+              "label": "Artificially Sweetened"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-CHOLESTEROL_FREE",
+              "label": "Cholesterol Free"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-COLOURING_AGENT_FREE",
+              "label": "Colouring Agent Free"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-CONTAINS_GLYZYRRHIZIN",
+              "label": "Contains Glyzyrrhizin"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-CONTAINS_LIQUORICE",
+              "label": "Contains Liquorice"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-CONTAINS_SOY",
+              "label": "Contains Soy"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-EGG_FREE",
+              "label": "Egg Free"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-ENERGY_FREE",
+              "label": "Energy Free"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-ENERGY_REDUCED",
+              "label": "Energy Reduced"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-ENRICHED_OR_FORTIFIED_IN_VITAMINS_AND_OR_MINERALS",
+              "label": "Enriched or Fortified in Vitamins Minerals"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-FAT_FREE",
+              "label": "Fat Free"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-FREE_FROM_GLUTEN",
+              "label": "Free From Gluten"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-GUARANTEED_LACTOSE_FREE",
+              "label": "Guarantee Lactose Free"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-HIGH_FIBRE",
+              "label": "High Fibre"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-HIGH_PROTEIN",
+              "label": "High Protein"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-HIGH_VITAMINS_AND_OR_MINERALS",
+              "label": "High in Vitamins Minerals"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-LACTOSE_FREE",
+              "label": "Lactose Free"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-LIGHT_LITE",
+              "label": "Light or Lite"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-LOW_ENERGY",
+              "label": "Low Energy"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-LOW_PROTEIN",
+              "label": "Low Protein"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-LOW_FAT",
+              "label": "Low in Fat"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-LOW_LACTOSE",
+              "label": "Low in Lactose"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-LOW_SATURATED_FAT",
+              "label": "Low in Saturated Fat"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-LOW_SODIUM_SALT",
+              "label": "Low in Sodium"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-LOW_SUGARS",
+              "label": "Low in sugars"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-MILK_FREE",
+              "label": "Milk Free"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-MILK_PROTEIN_FREE",
+              "label": "Milk Protein Free"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-NATURAL_SOURCE_OF_VITAMINS_AND_OR_MINERALS",
+              "label": "Natural Source of Vitamins Minerals"
+            },
+            {
+              "value": "gs1:NutritionalClaimTypeCode-WITH_NO_ADDED_SUGARS",
+              "label": "No Added Sugar"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:preservationTechnique",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Preservation technique applied.",
+          "appears_because": "Controlled gs1:PreservationTechniqueCode value from the local Web Vocabulary snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:PreservationTechniqueCode-ACIDIFICATION",
+              "label": "Acidification"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-ALCOHOL_CURING",
+              "label": "Alcohol Curing"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-ATTESTED_MILK",
+              "label": "Attested Milk"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-BRINING",
+              "label": "Brining"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-CANNING",
+              "label": "Canning"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-COLD_SMOKE_CURING",
+              "label": "Cold Smoke Curing"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-CONSERVE",
+              "label": "Conserve"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-BOILING",
+              "label": "Cooking"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-DEHYDRATION",
+              "label": "Dehydration"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-DRYING",
+              "label": "Drying"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-FERMENTATION",
+              "label": "Fermentation"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-FREEZE_DRYING",
+              "label": "Freeze Drying"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-FREEZING",
+              "label": "Freezing"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-HIGH_TEMPERATURE_TREATED_MILK",
+              "label": "High Temperature Treated Milk"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-HOT_SMOKE_CURING",
+              "label": "Hot Smoke Curing"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-IONISATION",
+              "label": "Ionisation"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-IRRADIATION",
+              "label": "Irradiation"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-PASTEURISATION",
+              "label": "Pasteurisation"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-QUICK_FREEZING",
+              "label": "Quick Freezing"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-SALT_CURING",
+              "label": "Salt Curing"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-SOUS_VIDE",
+              "label": "Sous Vide"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-STERILISATION",
+              "label": "Sterilisation"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-SUGAR_CURING",
+              "label": "Sugar Curing"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-ULTRA_HIGH_TEMPERATURE",
+              "label": "Ultra High Temperature"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-UNDER_MODIFIED_ATMOSPHERE",
+              "label": "Under Modified Atmosphere"
+            },
+            {
+              "value": "gs1:PreservationTechniqueCode-VACUUM_PACKED",
+              "label": "Vacuum Packed"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:growingMethod",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Growing method.",
+          "appears_because": "Controlled gs1:GrowingMethodCode value from the local Web Vocabulary snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:GrowingMethodCode-CAGE_FREE",
+              "label": "Cage Free"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-CLONED_FOODS",
+              "label": "Cloned Food"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-CONVENTIONAL",
+              "label": "Conventional"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-FARM_RAISED",
+              "label": "Farm Raised"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-FIELD_GROWN",
+              "label": "Field Grown"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-FLY_FREE",
+              "label": "Fly Free"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-FREE_RANGE",
+              "label": "Free Range"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-GRASS_FED",
+              "label": "Grass Fed"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-GREENHOUSE",
+              "label": "Greenhouse"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-HUMANELY_RAISED",
+              "label": "Humanely Raised"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-HYDROPONIC",
+              "label": "Hydroponic"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-INTEGRATED_PEST_MANAGEMENT",
+              "label": "Integrated Pest Management"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-ORGANIC",
+              "label": "Organic"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-SHADE_GROWN",
+              "label": "Shade Grown"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-SUSTAINABLE",
+              "label": "Sustainable"
+            },
+            {
+              "value": "gs1:GrowingMethodCode-WILD",
+              "label": "Wild"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:sourceAnimal",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Source animal.",
+          "appears_because": "Controlled gs1:SourceAnimalCode value from the local Web Vocabulary snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:SourceAnimalCode-ALLIGATOR",
+              "label": "Alligator"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-ASS",
+              "label": "Ass"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-BEAR",
+              "label": "Bear"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-BEEF_COW",
+              "label": "Beef Cow"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-BOAR",
+              "label": "Boar"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-BUFFALO",
+              "label": "Buffalo"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-CALF",
+              "label": "Calf"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-CAMEL",
+              "label": "Camel"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-CHICKEN",
+              "label": "Chicken"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-COCKEREL",
+              "label": "Cockerel"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-COW",
+              "label": "Cow"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-CROCODILE",
+              "label": "Crocodile"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-DEER",
+              "label": "Deer"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-DOG",
+              "label": "Dog"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-DUCK",
+              "label": "Duck"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-DUCKLING",
+              "label": "Duckling"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-FISH",
+              "label": "Fish"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-FOWL",
+              "label": "Fowl"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-FROG",
+              "label": "Frog"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-GOAT",
+              "label": "Goat"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-GOOSE",
+              "label": "Goose"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-GROUSE",
+              "label": "Grouse"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-GUINEAFOWL",
+              "label": "Guinea Fowl"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-HARE",
+              "label": "Hare"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-HORSE",
+              "label": "Horse"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-INVERTEBRATE",
+              "label": "Invertebrate"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-LAMB",
+              "label": "Lamb"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-LAND_SNAIL",
+              "label": "Land Snail"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-MILK_COW",
+              "label": "Milk Cow"
+            },
+            {
+              "value": "gs1:SourceAnimalCode-MOOSE",
+              "label": "Moose"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:foodBeverageTargetUse",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Target use.",
+          "appears_because": "Controlled gs1:FoodBeverageTargetUseCode value from the local Web Vocabulary snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:FoodBeverageTargetUseCode-ANY_MEAL",
+              "label": "Any Meal"
+            },
+            {
+              "value": "gs1:FoodBeverageTargetUseCode-BREAKFAST",
+              "label": "Breakfast"
+            },
+            {
+              "value": "gs1:FoodBeverageTargetUseCode-MAIN_MEAL",
+              "label": "Main Meal"
+            },
+            {
+              "value": "gs1:FoodBeverageTargetUseCode-PORTABLE_MEAL",
+              "label": "Portable Meal"
+            },
+            {
+              "value": "gs1:FoodBeverageTargetUseCode-SNACK",
+              "label": "Snack"
+            },
+            {
+              "value": "gs1:FoodBeverageTargetUseCode-UNCLASSIFIED",
+              "label": "Unclassified"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:consumerSalesCondition",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Consumer sales condition.",
+          "appears_because": "Controlled gs1:ConsumerSalesConditionsCode value from the local Web Vocabulary snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:ConsumerSalesConditionsCode-BTC",
+              "label": "Behind the Counter"
+            },
+            {
+              "value": "gs1:ConsumerSalesConditionsCode-OTC",
+              "label": "Over the Counter"
+            },
+            {
+              "value": "gs1:ConsumerSalesConditionsCode-PRESCRIPTION_REQUIRED",
+              "label": "Prescription Required"
+            },
+            {
+              "value": "gs1:ConsumerSalesConditionsCode-RESTRICTED_TO_SELL_16",
+              "label": "Restricted To Sell 16"
+            },
+            {
+              "value": "gs1:ConsumerSalesConditionsCode-RESTRICTED_TO_SELL_18",
+              "label": "Restricted To Sell 18"
+            },
+            {
+              "value": "gs1:ConsumerSalesConditionsCode-RESTRICTED_TO_SELL_21",
+              "label": "Restricted To Sell 21"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:foodBeverageRefrigerationClaim",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Refrigeration claim.",
+          "appears_because": "Controlled gs1:FoodBeverageRefrigerationClaimCode value from the local Web Vocabulary snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:FoodBeverageRefrigerationClaimCode-CAN_BE_REFRIGERATED",
+              "label": "Can Be Refrigerated."
+            },
+            {
+              "value": "gs1:FoodBeverageRefrigerationClaimCode-MUST_BE_REFRIGERATED",
+              "label": "Must Be Refrigerated."
+            },
+            {
+              "value": "gs1:FoodBeverageRefrigerationClaimCode-SHELF_STABLE",
+              "label": "Shelf Stable."
+            },
+            {
+              "value": "gs1:FoodBeverageRefrigerationClaimCode-UNIDENTIFIED",
+              "label": "Unidentified."
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:productYieldType",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Product yield type.",
+          "appears_because": "Controlled gs1:ProductYieldTypeCode value from the local Web Vocabulary snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:ProductYieldTypeCode-AFTER_COOKING",
+              "label": "After Cooking"
+            },
+            {
+              "value": "gs1:ProductYieldTypeCode-AFTER_DILUTION",
+              "label": "After Dilution"
+            },
+            {
+              "value": "gs1:ProductYieldTypeCode-DRAINED_WEIGHT",
+              "label": "Drained Weight"
+            },
+            {
+              "value": "gs1:ProductYieldTypeCode-UNSPECIFIED",
+              "label": "Unspecified"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:geneticallyModifiedDeclaration",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "GMO declaration (containment level).",
+          "appears_because": "Controlled gs1:LevelOfContainmentCode value from the local Web Vocabulary snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:LevelOfContainmentCode-CONTAINS",
+              "label": "Contains"
+            },
+            {
+              "value": "gs1:LevelOfContainmentCode-FREE_FROM",
+              "label": "Free From"
+            },
+            {
+              "value": "gs1:LevelOfContainmentCode-MAY_CONTAIN",
+              "label": "May Contain"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:isInstant",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Is the product instant.",
+          "appears_because": "Controlled gs1:NonbinaryLogicCode value from the local Web Vocabulary snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:NonbinaryLogicCode-FALSE",
+              "label": "False"
+            },
+            {
+              "value": "gs1:NonbinaryLogicCode-NOT_APPLICABLE",
+              "label": "Not Applicable"
+            },
+            {
+              "value": "gs1:NonbinaryLogicCode-TRUE",
+              "label": "True"
+            },
+            {
+              "value": "gs1:NonbinaryLogicCode-UNSPECIFIED",
+              "label": "Unspecified"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:isSliced",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Is the product sliced.",
+          "appears_because": "Controlled gs1:NonbinaryLogicCode value from the local Web Vocabulary snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:NonbinaryLogicCode-FALSE",
+              "label": "False"
+            },
+            {
+              "value": "gs1:NonbinaryLogicCode-NOT_APPLICABLE",
+              "label": "Not Applicable"
+            },
+            {
+              "value": "gs1:NonbinaryLogicCode-TRUE",
+              "label": "True"
+            },
+            {
+              "value": "gs1:NonbinaryLogicCode-UNSPECIFIED",
+              "label": "Unspecified"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:irradiatedCode",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Has the product been irradiated.",
+          "appears_because": "Controlled gs1:NonbinaryLogicCode value from the local Web Vocabulary snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:NonbinaryLogicCode-FALSE",
+              "label": "False"
+            },
+            {
+              "value": "gs1:NonbinaryLogicCode-NOT_APPLICABLE",
+              "label": "Not Applicable"
+            },
+            {
+              "value": "gs1:NonbinaryLogicCode-TRUE",
+              "label": "True"
+            },
+            {
+              "value": "gs1:NonbinaryLogicCode-UNSPECIFIED",
+              "label": "Unspecified"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "additional_measurements",
+      "label": "Additional Measurements",
+      "description": "Extra weight, volume, area and dimension quantities (value + unitCode).\n",
+      "properties": [
+        {
+          "property_id": "gs1:netWeight",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1 KGM",
+          "help_text": "Used to identify the net weight of the product",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:drainedWeight",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1 KGM",
+          "help_text": "The weight of the product when drained of its liquid",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:grossVolume",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1 KGM",
+          "help_text": "The overall volume of the item including packaging",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:grossArea",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1 KGM",
+          "help_text": "The overall area of the item including packaging",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:netArea",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1 KGM",
+          "help_text": "The net area of the item",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:massPerUnitArea",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1 KGM",
+          "help_text": "The mass per unit area of the item",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:inPackageDiameter",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1 KGM",
+          "help_text": "The measurement of the diameter of the product in its package at its largest point",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:outOfPackageHeight",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1 KGM",
+          "help_text": "The height of the product out of the package, as measured according to the GS1 Package Measurement Rules",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:outOfPackageWidth",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1 KGM",
+          "help_text": "The width of the product out of the package, as measured according to the GS1 Package Measurement Rules",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:outOfPackageDepth",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1 KGM",
+          "help_text": "The depth of the product out of its packaging, as measured according to the GS1 Package Measurement Rules",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:outOfPackageDiameter",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1 KGM",
+          "help_text": "The measurement of the diameter of the product out of its package at its largest point",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productYield",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "1 KGM",
+          "help_text": "Product quantity after preparation",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productYieldVariationPercentage",
+          "requirement": "optional",
+          "input_type_override": "number",
+          "example_value": "0",
+          "help_text": "Indication of range in percent of the given cooking / roasting loss",
+          "appears_because": "Safe xsd:float Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "identifiers_variants",
+      "label": "Identifiers & Variants",
+      "description": "Batch/lot and serial identifiers, production variant and sustainability info.\n",
+      "properties": [
+        {
+          "property_id": "gs1:consumerProductVariant",
+          "requirement": "optional",
+          "input_type_override": "text",
+          "example_value": "EXAMPLE-123",
+          "help_text": "The consumer product variant may be used to distinguish one variant of a retail consumer trade item from another if the ",
+          "appears_because": "Safe xsd:string Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:hasBatchLotNumber",
+          "requirement": "optional",
+          "input_type_override": "text",
+          "example_value": "EXAMPLE-123",
+          "help_text": "The batch or lot number associates an item with information the manufacturer considers relevant for traceability of the ",
+          "appears_because": "Safe xsd:string Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:hasSerialNumber",
+          "requirement": "optional",
+          "input_type_override": "text",
+          "example_value": "EXAMPLE-123",
+          "help_text": "A serial number is assigned to an entity for its lifetime",
+          "appears_because": "Safe xsd:string Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:hasThirdPartyControlledSerialNumber",
+          "requirement": "optional",
+          "input_type_override": "text",
+          "example_value": "EXAMPLE-123",
+          "help_text": "This identifier is assigned to an entity for its lifetime",
+          "appears_because": "Safe xsd:string Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productionVariantDescription",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Variant A",
+          "help_text": "Free text assigned by the manufacturer to describe the production variant",
+          "appears_because": "Safe rdf:langString Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productionVariantEffectiveDateTime",
+          "requirement": "optional",
+          "input_type_override": "datetime",
+          "example_value": "2026-01-01T00:00:00Z",
+          "help_text": "The start date of a production variant",
+          "appears_because": "Safe xsd:dateTime Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:productSustainabilityInfo",
+          "requirement": "optional",
+          "input_type_override": "url",
+          "help_text": "This term has been deprecated",
+          "appears_because": "Safe xsd:anyURI Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        }
+      ]
+    },
+    {
+      "key": "food_serving_details",
+      "label": "Food Serving & Details",
+      "description": "Serving sizes/suggestions, servings per package, diet and allergen specification, and related codes.\n",
+      "properties": [
+        {
+          "property_id": "gs1:servingSize",
+          "requirement": "optional",
+          "input_type_override": "quantity",
+          "example_value": "30 GRM",
+          "help_text": "Measurement value specifying the serving size in which the information per nutrient has been stated",
+          "appears_because": "Safe gs1:QuantitativeValue Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:servingSizeDescription",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Per 30 g",
+          "help_text": "A free text field specifying the serving size for which the nutrient information has been stated for example: per 1/3 cu",
+          "appears_because": "Safe rdf:langString Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:servingSuggestion",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Serve chilled",
+          "help_text": "Free text field for serving suggestion",
+          "appears_because": "Safe rdf:langString Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:numberOfServingsPerPackage",
+          "requirement": "optional",
+          "input_type_override": "number",
+          "example_value": "10",
+          "help_text": "The total number of servings contained in the package",
+          "appears_because": "Safe xsd:float Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:numberOfServingsRangeDescription",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "8 to 10 servings",
+          "help_text": "A free text field specifying a range for the number of servings contained in the package",
+          "appears_because": "Safe rdf:langString Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:juiceContentPercent",
+          "requirement": "optional",
+          "input_type_override": "number",
+          "example_value": "100",
+          "help_text": "The fruit juice content of the product expressed as a percentage",
+          "appears_because": "Safe xsd:float Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:ingredientOfConcern",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Contains caffeine",
+          "help_text": "Indicates a claim to an ingredient, considered to be a concern for regulatory or other reasons, and which is 'contained'",
+          "appears_because": "Safe rdf:langString Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:dietTypeDescription",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "Suitable for vegetarians",
+          "help_text": "Free text for indication of diet not stated in the list of diets",
+          "appears_because": "Safe rdf:langString Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:allergenSpecificationName",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "EU 1169/2011",
+          "help_text": "Free text field containing the name and version of the regulation or standard that defines the criteria of allergen cont",
+          "appears_because": "Safe rdf:langString Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:allergenSpecificationAgency",
+          "requirement": "optional",
+          "input_type_override": "language_text",
+          "example_value": "EU",
+          "help_text": "The agency or other organization that defines or manages the criteria for allergen containment",
+          "appears_because": "Safe rdf:langString Product property from the Web Vocabulary.",
+          "supported_in_v0_10": true
+        },
+        {
+          "property_id": "gs1:reheatingClaim",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Indicates, with reference to the product branding, labelling or packaging whether a food product which is ready to eat c",
+          "appears_because": "Controlled gs1:NonbinaryLogicCode value from the local snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:NonbinaryLogicCode-FALSE",
+              "label": "False"
+            },
+            {
+              "value": "gs1:NonbinaryLogicCode-NOT_APPLICABLE",
+              "label": "Not Applicable"
+            },
+            {
+              "value": "gs1:NonbinaryLogicCode-TRUE",
+              "label": "True"
+            },
+            {
+              "value": "gs1:NonbinaryLogicCode-UNSPECIFIED",
+              "label": "Unspecified"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:nutrientBasisQuantityType",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "The type of quantity specified in the nutrientBasisQuantity for example measurement, serving size, or container",
+          "appears_because": "Controlled gs1:NutrientBasisQuantityCode value from the local snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:NutrientBasisQuantityCode-BY_MEASURE",
+              "label": "By Measure"
+            },
+            {
+              "value": "gs1:NutrientBasisQuantityCode-BY_SERVING",
+              "label": "By Serving"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:nutrientMeasurementPrecision",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "The Code indicating whether the specified nutrient content is exact or approximate",
+          "appears_because": "Controlled gs1:MeasurementPrecisionCode value from the local snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:MeasurementPrecisionCode-APPROXIMATELY",
+              "label": "Approximately"
+            },
+            {
+              "value": "gs1:MeasurementPrecisionCode-EXACT",
+              "label": "Exact"
+            },
+            {
+              "value": "gs1:MeasurementPrecisionCode-LESS_THAN",
+              "label": "Less Than"
+            }
+          ]
+        },
+        {
+          "property_id": "gs1:numberOfServingsPerPackageMeasurementPrecision",
+          "requirement": "optional",
+          "input_type_override": "code",
+          "help_text": "Code indicating whether the number of servings per package is exact or approximate",
+          "appears_because": "Controlled gs1:MeasurementPrecisionCode value from the local snapshot.",
+          "supported_in_v0_10": true,
+          "options": [
+            {
+              "value": "gs1:MeasurementPrecisionCode-APPROXIMATELY",
+              "label": "Approximately"
+            },
+            {
+              "value": "gs1:MeasurementPrecisionCode-EXACT",
+              "label": "Exact"
+            },
+            {
+              "value": "gs1:MeasurementPrecisionCode-LESS_THAN",
+              "label": "Less Than"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

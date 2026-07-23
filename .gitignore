@@ -12,3 +12,4 @@ __pycache__/
 /webvoc_update_report/
 /tests/visual/baselines/
 workspace/
+node_modules/

@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "dpp_minimal.schema.json",
+  "title": "Minimal Digital Product Passport Structural Schema",
+  "description": "Prototype/reference only, not an official DPP production schema. Validates the basic structural requirements of a Digital Product Passport JSON-LD object. Used by the Product Passport Bridge v0.12.0 Schema Validator workflow for structural testing.",
+  "_prototype_note": "Prototype/reference only, not an official DPP production schema. Does not claim GS1 or EU DPP regulatory compliance.",
+  "type": "object",
+  "required": ["@context", "@type"],
+  "properties": {
+    "@context": {
+      "description": "JSON-LD context. Must be present.",
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array"},
+        {"type": "object"}
+      ]
+    },
+    "@type": {
+      "description": "JSON-LD type declaration. Must be present.",
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array", "items": {"type": "string"}}
+      ]
+    },
+    "@id": {
+      "type": "string",
+      "description": "Optional JSON-LD identifier (IRI)."
+    },
+    "gs1:gtin": {
+      "type": "string",
+      "description": "Optional GS1 GTIN."
+    },
+    "gs1:productName": {
+      "description": "Optional product name (string or language-tagged array).",
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array"}
+      ]
+    },
+    "gs1:description": {
+      "description": "Optional product description.",
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array"}
+      ]
+    },
+    "gs1:brand": {
+      "description": "Optional brand name.",
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array"}
+      ]
+    },
+    "_prototype_note": {
+      "type": "string",
+      "description": "Prototype disclaimer note (informational)."
+    }
+  },
+  "additionalProperties": true
+}

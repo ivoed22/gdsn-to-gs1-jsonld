@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="GDSN to GS1 JSON-LD">
+  <rect width="512" height="512" fill="#1769aa"/>
+  <text x="256" y="290" font-family="Segoe UI, system-ui, sans-serif" font-size="150" font-weight="700"
+        fill="#ffffff" text-anchor="middle">GS1</text>
+</svg>

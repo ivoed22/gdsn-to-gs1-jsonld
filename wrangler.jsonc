@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gdsn-to-gs1-jsonld",
+  "compatibility_date": "2026-07-23",
+  "assets": {
+    "directory": "./cloudflare_pwa",
+    "not_found_handling": "single-page-application"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "GDSN → GS1 JSON-LD Converter",
+  "short_name": "GDSN→JSON-LD",
+  "description": "Offline converter from GDSN product XML to GS1 Web Vocabulary JSON-LD, with bulk conversion, a manual builder, a Product Passport prototype, and a Web Vocabulary explorer.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f1622",
+  "theme_color": "#1769aa",
+  "categories": ["productivity", "utilities", "developer"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Convert", "url": "./index.html#/convert" },
+    { "name": "Bulk conversion", "url": "./index.html#/bulk" },
+    { "name": "Builder", "url": "./index.html#/builder" },
+    { "name": "Explore vocabulary", "url": "./index.html#/explore" }
+  ]
+}
