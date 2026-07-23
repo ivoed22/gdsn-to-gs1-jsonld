@@ -2,7 +2,7 @@
 // so the converter works fully offline and is installable. Cache-first, with a
 // network fallback that also fills the cache for anything not precached.
 
-const CACHE = 'gdsn-jsonld-v11';
+const CACHE = 'gdsn-jsonld-v12';
 
 const PRECACHE = [
   './',
@@ -56,6 +56,7 @@ const PRECACHE = [
   './data/mappings/mapping_v0_3.json',
   './data/mappings/mapping_v0_4.json',
   './data/mappings/mapping_v0_5.json',
+  './data/mappings/mapping_v0_6.json',
   './data/builder_manifest.json',
   './data/webvoc_properties.json',
   './data/webvoc_classes.json',

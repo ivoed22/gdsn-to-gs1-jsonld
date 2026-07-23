@@ -4,7 +4,9 @@ import test from 'node:test';
 import {
   addMappingSuggestions,
   addReviewCandidatesToJsonld,
+  buildCleanProductJsonld,
   buildFullyEmbeddedReviewJsonld,
+  buildMappingReviewReport,
 } from '../js/core/suggestions.js';
 
 
@@ -41,6 +43,21 @@ test('adds an exact upload-specific suggestion without changing evidence', () =>
   assert.equal(enriched.mapping_suggestions[0].accept_count, 4);
   assert.deepEqual(enriched.unmapped_values, baseReport.unmapped_values);
   assert.equal(enriched.summary.unmapped_value_occurrences, 1);
+});
+
+test('separates clean product data from mapping review metadata', () => {
+  const safe = addReviewCandidatesToJsonld({ '@id': 'https://id.gs1.org/01/1', '@type': 'gs1:Product' }, {
+    unmapped_values: [{ element: 'contactName', value: 'Example Person' }],
+    mapping_suggestions: [{ source_element: 'contactName', proposed_webvoc_property: 'schema:name', match_percentage: 80, review_consensus_status: 'human_review' }],
+  });
+  const clean = buildCleanProductJsonld(safe);
+  const review = buildMappingReviewReport(safe, {
+    unmapped_values: [{ element: 'contactName', value: 'Example Person' }],
+    mapping_suggestions: [{ source_element: 'contactName', proposed_webvoc_property: 'schema:name', match_percentage: 80 }],
+  });
+  assert.equal(clean['schema:additionalProperty'], undefined);
+  assert.equal(review.subject.id, 'https://id.gs1.org/01/1');
+  assert.deepEqual(review.candidate_mappings[0].source_values, ['Example Person']);
 });
 
 

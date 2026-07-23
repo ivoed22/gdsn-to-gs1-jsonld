@@ -33,6 +33,8 @@ class ObjectMappingField(BaseModel):
     required: bool = False
     multiple: bool = False
     fallback_language: str | None = None
+    code_prefix: str | None = None
+    nested_object_type: str | None = None
     transform: list[str] = Field(default_factory=list)
 
 

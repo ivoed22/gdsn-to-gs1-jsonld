@@ -172,3 +172,42 @@ export function buildFullyEmbeddedReviewJsonld(reviewSafeJsonld) {
   }
   return output;
 }
+
+function isReviewCandidateNode(node) {
+  return node?.['@type'] === 'schema:PropertyValue' &&
+    String(node?.['schema:description'] || '').startsWith('Review candidate only;');
+}
+
+export function buildCleanProductJsonld(reviewSafeJsonld) {
+  const output = JSON.parse(JSON.stringify(reviewSafeJsonld || {}));
+  const rawNodes = output['schema:additionalProperty'];
+  const nodes = rawNodes == null ? [] : Array.isArray(rawNodes) ? rawNodes : [rawNodes];
+  const retained = nodes.filter((node) => !isReviewCandidateNode(node));
+  if (retained.length) output['schema:additionalProperty'] = retained;
+  else delete output['schema:additionalProperty'];
+  return output;
+}
+
+export function buildMappingReviewReport(reviewSafeJsonld, unmappedReport) {
+  const valuesByElement = new Map();
+  for (const occurrence of unmappedReport?.unmapped_values || []) {
+    const element = String(occurrence.element || '').trim();
+    const value = String(occurrence.value || '').trim();
+    if (!element || !value) continue;
+    if (!valuesByElement.has(element)) valuesByElement.set(element, []);
+    if (!valuesByElement.get(element).includes(value)) valuesByElement.get(element).push(value);
+  }
+  return {
+    report_version: '1.0',
+    document_type: 'gdsn_to_gs1_mapping_review',
+    subject: {
+      id: reviewSafeJsonld?.['@id'] || null,
+      type: reviewSafeJsonld?.['@type'] || 'gs1:Product',
+    },
+    policy: 'Review workflow metadata only. Candidate mappings are not product facts and are not asserted in the clean product JSON-LD.',
+    candidate_mappings: (unmappedReport?.mapping_suggestions || []).map((item) => ({
+      ...item,
+      source_values: valuesByElement.get(String(item.source_element || '').trim()) || [],
+    })),
+  };
+}

@@ -9,6 +9,17 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.39.0 — Clean product and separate mapping review
+
+- Makes clean product JSON-LD the default display and download, without AI
+  confidence scores or candidate mappings in the product root.
+- Adds a separate deterministic mapping-review JSON download.
+- Adds mapping profile v0.6 with GS1 code IRIs for allergens and referenced
+  file type, typed nested `gs1:Country` and `gs1:ContactPoint` objects, contact
+  name via `schema:name`, and product-image file type.
+- Keeps `gs1:packagingType` and `gs1:countryCode` as strings according to their
+  official `xsd:string` ranges, and does not invent missing language tags.
+
 ## v0.38.1 — Clean fully embedded review output
 
 - Removes converted review-candidate `schema:additionalProperty` evidence nodes

@@ -55,6 +55,18 @@ def _set_nested_value(target: dict[str, Any], path: str, value: Any) -> None:
     current[parts[-1]] = value
 
 
+def _set_typed_nested_value(
+    target: dict[str, Any], path: str, value: Any, nested_object_type: str | None
+) -> None:
+    parts = path.split(".")
+    current = target
+    for index, part in enumerate(parts[:-1]):
+        current = current.setdefault(part, {})
+        if index == 0 and nested_object_type:
+            current.setdefault("@type", nested_object_type)
+    current[parts[-1]] = value
+
+
 def _object_values(values: list[Any], object_mapping: Any) -> list[dict[str, Any]]:
     output: list[dict[str, Any]] = []
     seen: set[str] = set()
@@ -75,7 +87,14 @@ def _object_values(values: list[Any], object_mapping: Any) -> list[dict[str, Any
                     "@value": field_value.value,
                     "@language": field_value.language,
                 }
-            _set_nested_value(item, field.jsonld_property, field_value)
+            if field.code_prefix:
+                field_value = {"@id": f"{field.code_prefix}{field_value}"}
+            _set_typed_nested_value(
+                item,
+                field.jsonld_property,
+                field_value,
+                field.nested_object_type,
+            )
         if len(item) == (1 if object_mapping.object_type else 0):
             continue
         marker = repr(item)

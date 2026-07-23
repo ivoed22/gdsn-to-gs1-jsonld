@@ -1,6 +1,6 @@
 {
   "name": "gdsn-to-gs1-jsonld-cloudflare-pwa",
-  "version": "0.38.1",
+  "version": "0.39.0",
   "private": true,
   "type": "module",
   "scripts": {

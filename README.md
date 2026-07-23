@@ -3,6 +3,10 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.39.0 separates publishable product JSON-LD from AI mapping-review
+metadata. The current v0.6 profile also emits explicit GS1 code IRIs and typed
+nested country/contact objects where the official vocabulary requires them.
+
 Version 0.38.1 keeps the fully embedded reviewer output clean: converted
 candidate evidence nodes are omitted there, while the review-safe output keeps
 the complete `schema:additionalProperty` evidence.

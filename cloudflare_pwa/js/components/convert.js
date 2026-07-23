@@ -1,7 +1,11 @@
 // Convert GDSN XML → GS1 JSON-LD workflow (Options API).
 
 import { store, loadSampleText, governedTerms } from '../store.js';
-import { buildFullyEmbeddedReviewJsonld } from '../core/suggestions.js';
+import {
+  buildCleanProductJsonld,
+  buildFullyEmbeddedReviewJsonld,
+  buildMappingReviewReport,
+} from '../core/suggestions.js';
 import { createBrowserXPath, XMLParseError } from '../core/xml.js';
 import { convertXmlToJsonld } from '../core/mapping.js';
 import { jsonldString } from '../core/jsonld.js';
@@ -68,7 +72,7 @@ export const ConvertWorkflow = {
       xmlText: '',
       fileName: '',
       selectedSample: '',
-      selectedProfileId: 'v0_5',
+      selectedProfileId: 'v0_6',
       result: null,
       convertedProfileLabel: '',
       errorMessage: '',
@@ -77,7 +81,7 @@ export const ConvertWorkflow = {
       digitalLinkCaveat: DIGITAL_LINK_CAVEAT,
       dimensionLabels: DIMENSION_LABELS,
       highlightRowId: '',
-      outputVariant: 'review_safe',
+      outputVariant: 'clean',
     };
   },
   computed: {
@@ -138,10 +142,16 @@ export const ConvertWorkflow = {
     fullyEmbeddedJsonld() {
       return this.result ? buildFullyEmbeddedReviewJsonld(this.result.jsonld_data) : null;
     },
+    cleanProductJsonld() {
+      return this.result ? buildCleanProductJsonld(this.result.jsonld_data) : null;
+    },
+    mappingReviewReport() {
+      return this.result ? buildMappingReviewReport(this.result.jsonld_data, this.result.unmapped_fields) : null;
+    },
     displayedJsonld() {
       return this.outputVariant === 'fully_embedded'
         ? this.fullyEmbeddedJsonld
-        : this.result?.jsonld_data;
+        : this.cleanProductJsonld;
     },
     embeddedAssertionCount() {
       if (!this.result) return 0;
@@ -225,7 +235,7 @@ export const ConvertWorkflow = {
       this.qrSvg = '';
       this.digitalLinkUri = '';
       this.highlightRowId = '';
-      this.outputVariant = 'review_safe';
+      this.outputVariant = 'clean';
       if (!this.xmlText.trim()) {
         this.errorMessage = 'Provide GDSN XML (paste, upload, or load a sample) first.';
         return;
@@ -288,7 +298,14 @@ export const ConvertWorkflow = {
       return extractGtin(this.result.jsonld_data) || 'unknown';
     },
     downloadJsonld() {
-      downloadText(`product_${this.gtinForFile()}.jsonld`, jsonldString(this.result.jsonld_data), 'application/ld+json');
+      downloadText(`product_${this.gtinForFile()}.jsonld`, jsonldString(this.cleanProductJsonld), 'application/ld+json');
+    },
+    downloadMappingReview() {
+      downloadText(
+        `mapping_review_${this.gtinForFile()}.json`,
+        jsonString(this.mappingReviewReport),
+        'application/json'
+      );
     },
     downloadFullyEmbeddedJsonld() {
       downloadText(
@@ -444,15 +461,15 @@ export const ConvertWorkflow = {
           <status-badge v-if="termCheck" :label="termCheck.ok ? 'Terms resolve' : termCheck.issues.length + ' unknown term(s)'" :tone="termCheck.ok ? 'success' : 'warning'" />
         </div>
         <div class="tabs output-variant-tabs" role="tablist" aria-label="JSON-LD output version">
-          <button class="tab" :class="{ 'tab--active': outputVariant === 'review_safe' }" type="button"
-            @click="outputVariant = 'review_safe'">Review-safe</button>
+          <button class="tab" :class="{ 'tab--active': outputVariant === 'clean' }" type="button"
+            @click="outputVariant = 'clean'">Clean product</button>
           <button class="tab" :class="{ 'tab--active': outputVariant === 'fully_embedded' }" type="button"
             @click="outputVariant = 'fully_embedded'">Fully embedded review</button>
         </div>
         <p class="alert alert--warning" v-if="reviewCandidateNodeCount">
-          <template v-if="outputVariant === 'review_safe'">
-            This JSON-LD contains {{ reviewCandidateNodeCount }} removable review-candidate node(s) under
-            <code>schema:additionalProperty</code>. Their proposed GS1 properties are recorded as text and are not asserted mappings.
+          <template v-if="outputVariant === 'clean'">
+            Clean product view: {{ reviewCandidateNodeCount }} AI mapping candidate(s) were removed from this JSON-LD
+            and are available in the separate mapping-review download. Publication still requires the checks below.
           </template>
           <template v-else>
             Experimental reviewer version: {{ embeddedAssertionCount }} candidate value(s) are asserted directly.
@@ -540,8 +557,8 @@ export const ConvertWorkflow = {
           <status-badge label="Review required" tone="warning" />
         </div>
         <p class="alert alert--warning">
-          Similarity-based suggestions are included only as removable <code>schema:PropertyValue</code> review evidence.
-          The proposed GS1 property is not asserted. Verify semantics, domain, range, structure and codelists before promotion.
+          Similarity-based suggestions are kept in the separate mapping-review JSON and are not included in the clean product JSON-LD.
+          The proposed GS1 property is not asserted there. Verify semantics, domain, range, structure and codelists before promotion.
         </p>
         <div class="metrics metrics--two">
           <div class="metric"><span>Strong candidates (90%+)</span><strong>{{ strongSuggestionCount }}</strong></div>
@@ -582,7 +599,8 @@ export const ConvertWorkflow = {
       <div id="sec-downloads" class="card result-section--downloads">
         <h3 class="card__title">Downloads</h3>
         <div class="btn-row">
-          <button class="btn" type="button" @click="downloadJsonld"><app-icon name="download" :size="16" /> Review-safe JSON-LD</button>
+          <button class="btn" type="button" @click="downloadJsonld"><app-icon name="download" :size="16" /> Clean product JSON-LD</button>
+          <button class="btn" type="button" @click="downloadMappingReview"><app-icon name="download" :size="16" /> Mapping review (JSON)</button>
           <button class="btn" type="button" @click="downloadFullyEmbeddedJsonld"><app-icon name="download" :size="16" /> Fully embedded review JSON-LD</button>
           <button class="btn" type="button" @click="downloadMappingCsv"><app-icon name="download" :size="16" /> Mapping report (CSV)</button>
           <button class="btn" type="button" @click="downloadMappingXlsx"><app-icon name="download" :size="16" /> Mapping report (xlsx)</button>
