@@ -8,6 +8,10 @@ test('conversion results use the requested visual order and hide passport contin
   const css = await readFile(new URL('../css/styles.css', import.meta.url), 'utf8');
 
   assert.equal(component.includes('Continue to Product Passport'), false);
+  assert.match(component, /61 strong consensus · 21\.2%/);
+  assert.match(component, /24 acceptance consensus · 8\.3%/);
+  assert.match(component, /113 human review · 39\.2%/);
+  assert.match(component, /46 conflicted · 16\.0%/);
   assert.match(css, /\.result-section--downloads\s*\{\s*order:\s*2/);
   assert.match(css, /\.result-section--output\s*\{\s*order:\s*3/);
   assert.match(css, /\.result-section--checks\s*\{\s*order:\s*4/);

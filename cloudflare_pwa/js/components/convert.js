@@ -506,6 +506,16 @@ export const ConvertWorkflow = {
           <div class="metric"><span>Strong candidates (90%+)</span><strong>{{ strongSuggestionCount }}</strong></div>
           <div class="metric"><span>Review candidates (60–&lt;90%)</span><strong>{{ reviewSuggestionCount }}</strong></div>
         </div>
+        <div class="field">
+          <span class="field__label">Complete AI-review catalog (288 candidates)</span>
+          <div class="chips">
+            <span class="chip">44 unanimous · 15.3%</span>
+            <span class="chip">61 strong consensus · 21.2%</span>
+            <span class="chip">24 acceptance consensus · 8.3%</span>
+            <span class="chip">113 human review · 39.2%</span>
+            <span class="chip">46 conflicted · 16.0%</span>
+          </div>
+        </div>
         <div class="table-scroll">
           <table class="table">
             <thead><tr><th>Source field</th><th>Possible WebVoc property</th><th>Match</th><th>AI review consensus</th><th>Status</th></tr></thead>
