@@ -9,6 +9,18 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.37.0 — Structured supplier output and removable review evidence
+
+- Adds versioned mapping profile v0.5 for functional and regulated names,
+  gross weight, packaging, origin, target market, customer-support organization
+  and product-image metadata.
+- Keeps unsafe similarities such as `contactName → gs1:contactType` out of GS1
+  assertions while retaining the source value and proposed property as a
+  removable `schema:PropertyValue` review node in online JSON-LD.
+- Shows each consensus category's share of the complete 288-row catalog:
+  15.3%, 21.2%, 8.3%, 39.2% or 16.0%.
+
+
 ## v0.36.0 — Consolidated mapping review and result layout
 
 - Consolidates Antigravity, Gemini, ChatGPT Deep Research and ChatGPT reviewer

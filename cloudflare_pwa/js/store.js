@@ -38,11 +38,12 @@ export const store = reactive({
 
 export async function loadStore() {
   try {
-    const [mvp, v2, v3, v4, manifest, properties, classes, catalog, suggestions] = await Promise.all([
+    const [mvp, v2, v3, v4, v5, manifest, properties, classes, catalog, suggestions] = await Promise.all([
       fetchJson('data/mappings/mapping_mvp.json'),
       fetchJson('data/mappings/mapping_v0_2.json'),
       fetchJson('data/mappings/mapping_v0_3.json'),
       fetchJson('data/mappings/mapping_v0_4.json'),
+      fetchJson('data/mappings/mapping_v0_5.json'),
       fetchJson('data/builder_manifest.json'),
       fetchJson('data/webvoc_properties.json'),
       fetchJson('data/webvoc_classes.json'),
@@ -50,7 +51,8 @@ export async function loadStore() {
       fetchJson('data/mapping_suggestions_v0_1.json'),
     ]);
     store.mappingProfiles = [
-      { id: 'v0_4', label: 'Review-safe WebVoc (v0.4, current)', config: v4 },
+      { id: 'v0_5', label: 'Structured review output (v0.5, current)', config: v5 },
+      { id: 'v0_4', label: 'Review-safe WebVoc (v0.4, archived)', config: v4 },
       { id: 'v0_3', label: 'Certifications & Documents (v0.3, archived)', config: v3 },
       { id: 'v0_2', label: 'Food (v0.2, archived)', config: v2 },
       { id: 'mvp', label: 'MVP identity (v0.1, archived)', config: mvp },

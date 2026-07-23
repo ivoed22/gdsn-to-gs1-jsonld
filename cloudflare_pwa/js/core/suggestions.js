@@ -101,3 +101,44 @@ export function addMappingSuggestions(unmappedReport, catalog) {
     },
   };
 }
+
+export function addReviewCandidatesToJsonld(jsonldData, unmappedReport) {
+  const valuesByElement = new Map();
+  for (const occurrence of unmappedReport.unmapped_values || []) {
+    const element = String(occurrence.element || '').trim();
+    const value = String(occurrence.value || '').trim();
+    if (!element || !value) continue;
+    if (!valuesByElement.has(element)) valuesByElement.set(element, []);
+    if (!valuesByElement.get(element).includes(value)) valuesByElement.get(element).push(value);
+  }
+
+  const nodes = [];
+  const seen = new Set();
+  for (const suggestion of unmappedReport.mapping_suggestions || []) {
+    const element = String(suggestion.source_element || '').trim();
+    const target = String(suggestion.proposed_webvoc_property || '').trim();
+    for (const value of valuesByElement.get(element) || []) {
+      const marker = `${element}\u0000${target}\u0000${value}`;
+      if (seen.has(marker)) continue;
+      seen.add(marker);
+      nodes.push({
+        '@type': 'schema:PropertyValue',
+        'schema:name': element,
+        'schema:value': value,
+        'schema:propertyID': target,
+        'schema:description':
+          `Review candidate only; not an asserted GS1 mapping. Heuristic match ${Number(suggestion.match_percentage).toFixed(1)}%; ` +
+          `AI consensus ${suggestion.review_consensus_status || 'human_review'}.`,
+      });
+    }
+  }
+  if (!nodes.length) return jsonldData;
+  const existing = jsonldData['schema:additionalProperty'];
+  return {
+    ...jsonldData,
+    'schema:additionalProperty': [
+      ...(existing == null ? [] : Array.isArray(existing) ? existing : [existing]),
+      ...nodes,
+    ],
+  };
+}

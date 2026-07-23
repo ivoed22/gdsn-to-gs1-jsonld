@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { addMappingSuggestions } from '../js/core/suggestions.js';
+import { addMappingSuggestions, addReviewCandidatesToJsonld } from '../js/core/suggestions.js';
 
 
 const baseReport = {
@@ -86,4 +86,21 @@ test('refuses auto-emit rows and ambiguous compound source paths', () => {
   ]);
 
   assert.deepEqual(enriched.mapping_suggestions, []);
+});
+
+
+test('adds removable review evidence without asserting the proposed GS1 property', () => {
+  const jsonld = addReviewCandidatesToJsonld({ '@type': 'gs1:Product' }, {
+    unmapped_values: [{ element: 'contactName', value: 'Example Person' }],
+    mapping_suggestions: [{
+      source_element: 'contactName',
+      proposed_webvoc_property: 'gs1:contactType',
+      match_percentage: 60.1,
+      review_consensus_status: 'human_review',
+    }],
+  });
+
+  assert.equal(jsonld['gs1:contactType'], undefined);
+  assert.equal(jsonld['schema:additionalProperty'][0]['schema:value'], 'Example Person');
+  assert.equal(jsonld['schema:additionalProperty'][0]['schema:propertyID'], 'gs1:contactType');
 });

@@ -14,7 +14,7 @@ import {
   subtreeText,
   serializeXmlTree,
 } from './xml.js';
-import { addMappingSuggestions } from './suggestions.js';
+import { addMappingSuggestions, addReviewCandidatesToJsonld } from './suggestions.js';
 import { buildJsonld } from './jsonld.js';
 import { validateProduct } from './validator.js';
 
@@ -48,6 +48,9 @@ function emptyCanonicalProduct() {
     product_description: [],
     brand_name: null,
     gpc_category_code: null,
+    gpc_category_description: [],
+    functional_name: [],
+    regulated_product_name: [],
     net_content_value: null,
     net_content_unit: null,
     product_image_url: [],
@@ -57,6 +60,12 @@ function emptyCanonicalProduct() {
     nutrients: [],
     certifications: [],
     referenced_documents: [],
+    gross_weights: [],
+    packaging_details: [],
+    countries_of_origin: [],
+    target_markets: [],
+    customer_support_centres: [],
+    product_images: [],
   };
 }
 
@@ -444,10 +453,13 @@ export function convertXmlToJsonld(adapter, xmlText, mapping, suggestionCatalog 
   for (const [key, value] of Object.entries(productValues)) product[key] = value;
 
   const validationReport = validateProduct(product, mapping, mappingRows);
-  const jsonldData = buildJsonld(product, mapping);
   const unmappedFields = addMappingSuggestions(
     findUnmapped(root, selectedNodes, adapter),
     suggestionCatalog
+  );
+  const jsonldData = addReviewCandidatesToJsonld(
+    buildJsonld(product, mapping),
+    unmappedFields
   );
 
   // Additive traceability data — does not affect jsonld_data (golden-stable).

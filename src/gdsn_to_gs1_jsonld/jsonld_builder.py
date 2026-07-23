@@ -70,6 +70,11 @@ def _object_values(values: list[Any], object_mapping: Any) -> list[dict[str, Any
                 continue
             if isinstance(field_value, Decimal):
                 field_value = serializable_value(field_value)
+            elif isinstance(field_value, LanguageValue):
+                field_value = {
+                    "@value": field_value.value,
+                    "@language": field_value.language,
+                }
             _set_nested_value(item, field.jsonld_property, field_value)
         if len(item) == (1 if object_mapping.object_type else 0):
             continue
@@ -101,6 +106,9 @@ def build_jsonld(
         "product_description": _language_values(product.product_description),
         "brand_name": product.brand_name,
         "gpc_category_code": product.gpc_category_code,
+        "gpc_category_description": _language_values(product.gpc_category_description),
+        "functional_name": _language_values(product.functional_name),
+        "regulated_product_name": _language_values(product.regulated_product_name),
         "product_image_url": list(dict.fromkeys(product.product_image_url)),
         "product_page_url": product.product_page_url,
         "ingredient_statement": _language_values(product.ingredient_statement),

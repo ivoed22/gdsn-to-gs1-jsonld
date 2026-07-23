@@ -6,6 +6,7 @@ from gdsn_to_gs1_jsonld.converter import convert_xml_to_jsonld
 from gdsn_to_gs1_jsonld.unmapped_suggestions import (
     MappingSuggestionCatalogError,
     add_mapping_suggestions,
+    add_review_candidates_to_jsonld,
     load_mapping_suggestion_catalog,
 )
 
@@ -128,3 +129,28 @@ def test_converter_suggests_but_does_not_emit_candidate_property():
         "conflicted",
         "human_review",
     }
+
+
+def test_review_candidates_are_jsonld_evidence_not_asserted_gs1_properties():
+    report = {
+        "unmapped_values": [
+            {"element": "contactName", "value": "Example Person"}
+        ],
+        "mapping_suggestions": [
+            {
+                "source_element": "contactName",
+                "proposed_webvoc_property": "gs1:contactType",
+                "match_percentage": 60.1,
+                "review_consensus_status": "human_review",
+            }
+        ],
+    }
+
+    enriched = add_review_candidates_to_jsonld({"@type": "gs1:Product"}, report)
+
+    assert "gs1:contactType" not in enriched
+    node = enriched["schema:additionalProperty"][0]
+    assert node["schema:name"] == "contactName"
+    assert node["schema:value"] == "Example Person"
+    assert node["schema:propertyID"] == "gs1:contactType"
+    assert "not an asserted GS1 mapping" in node["schema:description"]

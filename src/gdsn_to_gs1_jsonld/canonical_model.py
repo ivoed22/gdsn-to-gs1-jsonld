@@ -1,6 +1,7 @@
 """Canonical product models used between XML extraction and JSON-LD output."""
 
 from decimal import Decimal
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -50,6 +51,9 @@ class CanonicalProduct(BaseModel):
     product_description: list[LanguageValue] = Field(default_factory=list)
     brand_name: str | None = None
     gpc_category_code: str | None = None
+    gpc_category_description: list[LanguageValue] = Field(default_factory=list)
+    functional_name: list[LanguageValue] = Field(default_factory=list)
+    regulated_product_name: list[LanguageValue] = Field(default_factory=list)
     net_content_value: Decimal | None = None
     net_content_unit: str | None = None
     product_image_url: list[str] = Field(default_factory=list)
@@ -59,3 +63,9 @@ class CanonicalProduct(BaseModel):
     nutrients: list[NutrientDetail] = Field(default_factory=list)
     certifications: list[CertificationDetail] = Field(default_factory=list)
     referenced_documents: list[ReferencedDocument] = Field(default_factory=list)
+    gross_weights: list[dict[str, Any]] = Field(default_factory=list)
+    packaging_details: list[dict[str, Any]] = Field(default_factory=list)
+    countries_of_origin: list[dict[str, Any]] = Field(default_factory=list)
+    target_markets: list[dict[str, Any]] = Field(default_factory=list)
+    customer_support_centres: list[dict[str, Any]] = Field(default_factory=list)
+    product_images: list[dict[str, Any]] = Field(default_factory=list)

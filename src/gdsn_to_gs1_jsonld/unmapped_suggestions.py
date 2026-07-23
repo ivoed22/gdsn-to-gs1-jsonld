@@ -204,3 +204,53 @@ def add_mapping_suggestions(
         ),
     }
     return enriched
+
+
+def add_review_candidates_to_jsonld(
+    jsonld_data: dict[str, Any],
+    unmapped_report: dict[str, Any],
+) -> dict[str, Any]:
+    """Add removable, non-assertive review evidence as schema PropertyValues.
+
+    The proposed GS1 property is stored as a literal ``schema:propertyID``;
+    it is deliberately not asserted as a predicate. This lets a reviewer see
+    and remove candidates in JSON-LD without turning a heuristic into a claim.
+    """
+    values_by_element: dict[str, list[str]] = {}
+    for occurrence in unmapped_report.get("unmapped_values", []):
+        element = str(occurrence.get("element") or "").strip()
+        value = str(occurrence.get("value") or "").strip()
+        if element and value and value not in values_by_element.setdefault(element, []):
+            values_by_element[element].append(value)
+
+    nodes: list[dict[str, Any]] = []
+    seen: set[tuple[str, str, str]] = set()
+    for suggestion in unmapped_report.get("mapping_suggestions", []):
+        element = str(suggestion.get("source_element") or "").strip()
+        target = str(suggestion.get("proposed_webvoc_property") or "").strip()
+        for value in values_by_element.get(element, []):
+            marker = (element, target, value)
+            if marker in seen:
+                continue
+            seen.add(marker)
+            nodes.append(
+                {
+                    "@type": "schema:PropertyValue",
+                    "schema:name": element,
+                    "schema:value": value,
+                    "schema:propertyID": target,
+                    "schema:description": (
+                        "Review candidate only; not an asserted GS1 mapping. "
+                        f"Heuristic match {float(suggestion['match_percentage']):.1f}%; "
+                        f"AI consensus {suggestion.get('review_consensus_status', 'human_review')}."
+                    ),
+                }
+            )
+
+    enriched = dict(jsonld_data)
+    if nodes:
+        existing = enriched.get("schema:additionalProperty", [])
+        if not isinstance(existing, list):
+            existing = [existing]
+        enriched["schema:additionalProperty"] = [*existing, *nodes]
+    return enriched

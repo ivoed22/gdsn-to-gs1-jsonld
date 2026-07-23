@@ -50,6 +50,13 @@ const CONSENSUS_LABELS = {
   no_equivalent_consensus: 'No-equivalent consensus',
   insufficient_review: 'Insufficient review',
 };
+const CONSENSUS_SHARES = {
+  unanimous_accept: '15.3% of catalog',
+  strong_accept_consensus: '21.2% of catalog',
+  accept_consensus: '8.3% of catalog',
+  human_review: '39.2% of catalog',
+  conflicted: '16.0% of catalog',
+};
 
 export const ConvertWorkflow = {
   name: 'ConvertWorkflow',
@@ -60,7 +67,7 @@ export const ConvertWorkflow = {
       xmlText: '',
       fileName: '',
       selectedSample: '',
-      selectedProfileId: 'v0_4',
+      selectedProfileId: 'v0_5',
       result: null,
       convertedProfileLabel: '',
       errorMessage: '',
@@ -120,6 +127,12 @@ export const ConvertWorkflow = {
     reviewSuggestionCount() {
       return this.mappingSuggestions.length - this.strongSuggestionCount;
     },
+    reviewCandidateNodeCount() {
+      if (!this.result) return 0;
+      const value = this.result.jsonld_data['schema:additionalProperty'];
+      if (value == null) return 0;
+      return Array.isArray(value) ? value.length : 1;
+    },
     termCheck() {
       if (!this.result) return null;
       const sets = buildTermSets(store.webvocProperties, store.webvocClasses, governedTerms());
@@ -149,6 +162,9 @@ export const ConvertWorkflow = {
     },
     consensusLabel(status) {
       return CONSENSUS_LABELS[status] || 'Human review required';
+    },
+    consensusShare(status) {
+      return CONSENSUS_SHARES[status] || '';
     },
     isVocabTerm(prop) {
       return typeof prop === 'string' && (prop.startsWith('gs1:') || prop.startsWith('schema:'));
@@ -399,6 +415,10 @@ export const ConvertWorkflow = {
           <h3 class="card__title">Generated GS1 Web Vocabulary JSON-LD</h3>
           <status-badge v-if="termCheck" :label="termCheck.ok ? 'Terms resolve' : termCheck.issues.length + ' unknown term(s)'" :tone="termCheck.ok ? 'success' : 'warning'" />
         </div>
+        <p class="alert alert--warning" v-if="reviewCandidateNodeCount">
+          This JSON-LD contains {{ reviewCandidateNodeCount }} removable review-candidate node(s) under
+          <code>schema:additionalProperty</code>. Their proposed GS1 properties are recorded as text and are not asserted mappings.
+        </p>
         <json-tree :value="result.jsonld_data" />
         <details class="details" v-if="termCheck">
           <summary>Structural term check</summary>
@@ -479,8 +499,8 @@ export const ConvertWorkflow = {
           <status-badge label="Review required" tone="warning" />
         </div>
         <p class="alert alert--warning">
-          Similarity-based suggestions only. They are not applied mappings and are not included in the generated JSON-LD.
-          Verify semantics, domain, range, structure and codelists before promotion.
+          Similarity-based suggestions are included only as removable <code>schema:PropertyValue</code> review evidence.
+          The proposed GS1 property is not asserted. Verify semantics, domain, range, structure and codelists before promotion.
         </p>
         <div class="metrics metrics--two">
           <div class="metric"><span>Strong candidates (90%+)</span><strong>{{ strongSuggestionCount }}</strong></div>
@@ -494,7 +514,7 @@ export const ConvertWorkflow = {
                 <td><code>{{ item.source_element }}</code><br /><span class="muted">{{ item.gdsn_attribute_name }}</span></td>
                 <td><code>{{ item.proposed_webvoc_property }}</code><br /><span class="muted">{{ item.proposed_webvoc_label }}</span></td>
                 <td><strong>{{ Number(item.match_percentage).toFixed(1) }}%</strong></td>
-                <td>{{ consensusLabel(item.review_consensus_status) }}<br /><span class="muted">{{ item.accept_count || 0 }} accept vote(s)</span></td>
+                <td>{{ consensusLabel(item.review_consensus_status) }}<br /><span class="muted">{{ consensusShare(item.review_consensus_status) }} · {{ item.accept_count || 0 }} accept vote(s)</span></td>
                 <td>{{ Number(item.match_percentage) >= 90 ? 'Strong candidate — review required' : 'Possible match — review required' }}</td>
               </tr>
             </tbody>

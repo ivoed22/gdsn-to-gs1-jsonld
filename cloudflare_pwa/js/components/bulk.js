@@ -31,7 +31,7 @@ export const BulkWorkflow = {
   data() {
     return {
       store,
-      selectedProfileId: 'v0_3',
+      selectedProfileId: 'v0_5',
       results: [],
       errorMessage: '',
       busy: false,
