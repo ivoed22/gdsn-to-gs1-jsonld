@@ -54,8 +54,8 @@ from gdsn_to_gs1_jsonld.xml_parser import XMLParseError
 # and selectable for reference/comparison only, behind an expander with an
 # explicit warning. Moved from the global sidebar into this workflow in
 # v0.30.0: Convert is the only workflow that uses a mapping profile.
-_CURRENT_PROFILE_LABEL = "Consolidated mapping registry (current)"
-_CURRENT_MAPPING_PATH = REPOSITORY_ROOT / "mapping" / "mapping_registry.yaml"
+_CURRENT_PROFILE_LABEL = "Review-safe WebVoc profile v0.4.0 (current)"
+_CURRENT_MAPPING_PATH = REPOSITORY_ROOT / "mapping" / "mapping_v0_4.yaml"
 _ARCHIVED_PROFILES = {
     "Certifications & Documents v0.3.0 (archived)": (
         REPOSITORY_ROOT / "mapping" / "mapping_v0_3.yaml"
@@ -67,7 +67,7 @@ _ARCHIVED_PROFILES = {
         REPOSITORY_ROOT / "mapping" / "mapping_mvp.yaml"
     ),
 }
-_NO_ARCHIVED_OPTION = "None — use current registry"
+_NO_ARCHIVED_OPTION = "None — use current review-safe profile"
 
 
 def render_mapping_profile_selector() -> Path:
@@ -111,7 +111,7 @@ def render_mapping_profile_selector() -> Path:
     if archived_active:
         st.warning(
             "Archived profile — for reference/comparison only. The "
-            "consolidated registry is the current mapping artifact."
+            "review-safe v0.4 profile is the current conversion artifact."
         )
     return mapping_path
 
@@ -527,14 +527,15 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
             with download_bottom_right:
                 with st.container(border=True):
                     render_download_intro(
-                        "Unmapped fields JSON",
-                        "JSON inventory of populated XML outside the profile.",
+                        "Unmapped source values JSON",
+                        "Lossless source evidence for every populated XML value "
+                        "not emitted by the active profile. No properties are inferred.",
                         "JSON",
                     )
                     st.download_button(
-                        "Download unmapped fields report JSON",
+                        "Download unmapped source values JSON",
                         data=st.session_state["unmapped_fields_bytes"],
-                        file_name=f"unmapped_fields_{output_name_base}.json",
+                        file_name=f"unmapped_values_{output_name_base}.json",
                         mime="application/json",
                         width="stretch",
                     )

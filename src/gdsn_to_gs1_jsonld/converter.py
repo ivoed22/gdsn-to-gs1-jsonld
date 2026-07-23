@@ -20,7 +20,7 @@ from .mapping_loader import (
 )
 from .reporter import write_reports
 from .utils import apply_transform, serializable_value
-from .validator import validate_product
+from .validator import validate_output_evidence, validate_product
 from .xml_parser import XMLInput, parse_xml
 
 UNMAPPED_IGNORE = {
@@ -200,6 +200,7 @@ def _extract_field(
         for element in selected_elements
     }
     extracted: list[Any] = []
+    source_values: list[str] = []
     errors: list[str] = []
 
     for element in elements:
@@ -209,6 +210,7 @@ def _extract_field(
         raw_value = _xpath_scalar(element, field.value_xpath)
         if raw_value is None or not raw_value.strip():
             continue
+        source_values.append(raw_value)
         try:
             transformed = _transform_value(raw_value, field)
         except ValueError as exc:
@@ -268,6 +270,11 @@ def _extract_field(
         "required": field.required,
         "found": found,
         "value": display_values if field.multiple else (display_values[0] if display_values else None),
+        "source_value": (
+            source_values
+            if field.multiple
+            else (source_values[0] if source_values else None)
+        ),
         "status": status,
         "message": message,
     }
@@ -281,6 +288,7 @@ def _find_unmapped(
     counts: Counter[
         tuple[str, str | None, str, tuple[tuple[str, str], ...]]
     ] = Counter()
+    occurrences: list[dict[str, Any]] = []
     tree = root.getroottree()
     for element in root.iter():
         if not isinstance(element.tag, str):
@@ -348,20 +356,46 @@ def _find_unmapped(
                         context[discriminator_name] = discriminator_value
             context_items = tuple(sorted(context.items()))
             counts[(local_name, parent_name, path, context_items)] += 1
-    return {
-        "unmapped_elements": [
-            {
-                "element": element,
-                "parent": parent,
-                "path": path,
-                "count": count,
-                **({"context": dict(context_items)} if context_items else {}),
+            attributes = {
+                etree.QName(name).localname: value
+                for name, value in sorted(element.attrib.items())
             }
-            for (element, parent, path, context_items), count in sorted(
-                counts.items(),
-                key=lambda item: (item[0][0], item[0][2], item[0][3]),
+            occurrences.append(
+                {
+                    "element": local_name,
+                    "parent": parent_name,
+                    "path": tree.getpath(element),
+                    "semantic_path": path,
+                    "value": "".join(element.itertext()).strip(),
+                    **({"attributes": attributes} if attributes else {}),
+                    **({"context": context} if context else {}),
+                }
             )
-        ]
+    summaries = [
+        {
+            "element": element,
+            "parent": parent,
+            "path": path,
+            "count": count,
+            **({"context": dict(context_items)} if context_items else {}),
+        }
+        for (element, parent, path, context_items), count in sorted(
+            counts.items(),
+            key=lambda item: (item[0][0], item[0][2], item[0][3]),
+        )
+    ]
+    return {
+        "report_version": "2.0",
+        "policy": (
+            "Populated source values not emitted by the active mapping profile. "
+            "Values are preserved as source evidence; no GS1 terms are inferred."
+        ),
+        "summary": {
+            "unmapped_value_occurrences": len(occurrences),
+            "unmapped_element_groups": len(summaries),
+        },
+        "unmapped_values": occurrences,
+        "unmapped_elements": summaries,
     }
 
 
@@ -470,6 +504,9 @@ def convert_xml_to_jsonld(
     unmapped_fields = _find_unmapped(
         root,
         selected_paths,
+    )
+    validation_report["checks"].extend(
+        validate_output_evidence(jsonld_data, unmapped_fields)
     )
     codelist_validation: list[dict[str, Any]] = []
     if codelist_registry is not None:

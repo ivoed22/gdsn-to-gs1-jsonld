@@ -109,10 +109,9 @@ def test_codelist_validation_panel_appears_after_conversion(example_xml_path):
     metrics_by_label = {metric.label: metric.value for metric in app.metric}
     for expected_label in ("Valid", "Unknown", "Deprecated", "Missing", "Source Unavailable"):
         assert expected_label in metrics_by_label
-    # The example fixture has 5 valid codelist values and 2 unknown
-    # (DPP_DOCUMENT/CERTIFICATION_DOCUMENT — documented experimental
-    # sentinel values, not real GS1 ReferencedFileTypeCode values).
-    assert metrics_by_label["Valid"] == "5"
+    # v0.4 excludes the two non-WebVoc generic nutrient mappings. The two
+    # documented referenced-file sentinel values remain unknown.
+    assert metrics_by_label["Valid"] == "3"
     assert metrics_by_label["Unknown"] == "2"
 
     rendered = "\n".join(markdown.value for markdown in app.markdown)
@@ -267,26 +266,26 @@ def _archived_profile_selectbox(app: AppTest):
     raise AssertionError("archived_profile_choice selectbox not found")
 
 
-def test_streamlit_mapping_registry_is_default_profile():
-    """The consolidated registry is the current/default mapping artifact;
+def test_streamlit_review_safe_mapping_is_default_profile():
+    """The review-safe v0.4 profile is the current/default mapping artifact;
     old profiles are archived behind an expander (reference only)."""
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
 
     selector = _archived_profile_selectbox(app)
     assert selector.options == [
-        "None — use current registry",
+        "None — use current review-safe profile",
         "Certifications & Documents v0.3.0 (archived)",
         "Food v0.2.0 mapping (archived)",
         "MVP v0.1.0 mapping (archived)",
     ]
-    assert selector.value == "None — use current registry"
+    assert selector.value == "None — use current review-safe profile"
 
     rendered = "\n".join(markdown.value for markdown in app.markdown)
     assert "Active mapping profile" in rendered
-    assert "Consolidated mapping registry (current)" in rendered
+    assert "Review-safe WebVoc profile v0.4.0 (current)" in rendered
     assert "status-badge-current" in rendered
     assert any(
-        "mapping/mapping_registry.yaml" in code.value for code in app.code
+        "mapping/mapping_v0_4.yaml" in code.value for code in app.code
     )
     # No archived-profile warning while the registry is active.
     assert not any(
@@ -688,7 +687,7 @@ def test_bulk_zip_codelist_validation_panel_appears_after_conversion(example_xml
     assert len(app.get("download_button")) == 1
 
     metrics_by_label = {metric.label: metric.value for metric in app.metric}
-    assert metrics_by_label["Valid"] == "5"
+    assert metrics_by_label["Valid"] == "3"
     assert metrics_by_label["Unknown"] == "2"
 
 

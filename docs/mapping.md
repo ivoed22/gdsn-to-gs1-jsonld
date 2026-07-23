@@ -1,5 +1,19 @@
 # Mapping profiles
 
+## Review-safe conversion profile (v0.4.0)
+
+`mapping/mapping_v0_4.yaml` is the active conversion profile for downloads.
+It is derived from v0.3 but emits only GS1 properties verified in the committed
+Web Vocabulary snapshot. It corrects allergen containment to
+`gs1:allergenLevelOfContainmentCode`, uses the official `gs1:referencedFile`
+parent structure, and deliberately leaves unsupported generic nutrient terms
+out of JSON-LD. Populated source values that are not emitted are preserved in
+the separate, lossless unmapped-source-values JSON report.
+
+The expansion workbook and CSV in `mapping_catalog/` are review candidates,
+not executable mappings. Rows require confirmed BMS IDs, official XPaths,
+cardinality, domain/range and codelist semantics before promotion.
+
 ## Current artifact: the consolidated mapping registry (v0.15.0)
 
 `mapping/mapping_registry.yaml` is the **current, authoritative mapping
