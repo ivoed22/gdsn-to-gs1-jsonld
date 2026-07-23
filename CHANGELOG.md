@@ -9,6 +9,18 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.35.1 — Upload-specific mapping suggestions
+
+- Adds a versioned, review-only catalog with 288 GDSN-to-WebVoc candidates
+  scoring 60% or higher (109 at 90%+, 179 at 60–<90%).
+- Conversion reports only suggestions relevant to populated unmapped fields in
+  the uploaded XML, both on screen and in the lossless unmapped JSON.
+- Suggestions never alter generated JSON-LD; every candidate remains
+  review-required until semantic promotion into a future mapping.
+- Batch conversion applies the same diagnostic enrichment to each file.
+- Candidate knowledge stays separate from executable mapping profiles so the
+  current mapping remains stable and reproducible.
+
 ## v0.35.0 — Workspace Persistence (Light)
 
 Sixth and final version of the approved end-product build path

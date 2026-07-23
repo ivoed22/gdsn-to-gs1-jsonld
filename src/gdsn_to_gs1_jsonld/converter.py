@@ -19,6 +19,7 @@ from .mapping_loader import (
     load_mapping,
 )
 from .reporter import write_reports
+from .unmapped_suggestions import add_mapping_suggestions
 from .utils import apply_transform, serializable_value
 from .validator import validate_output_evidence, validate_product
 from .xml_parser import XMLInput, parse_xml
@@ -435,6 +436,7 @@ def convert_xml_to_jsonld(
     output_dir: str | Path | None = None,
     write_files: bool = False,
     codelist_registry: dict[str, Any] | None = None,
+    mapping_suggestion_catalog: list[dict[str, Any]] | None = None,
 ) -> ConversionResult:
     """Convert one GDSN XML product message to GS1 Web Vocabulary JSON-LD.
 
@@ -444,7 +446,9 @@ def convert_xml_to_jsonld(
     valid/unknown/deprecated/missing/source_unavailable results. Leave it
     ``None`` (the default) for byte-identical behavior to versions before
     v0.20.0 — codelist validation never runs, never blocks, and never
-    changes ``jsonld_data`` either way.
+    changes ``jsonld_data`` either way. ``mapping_suggestion_catalog`` is
+    diagnostic-only: matching candidates enrich the unmapped evidence report
+    but are never emitted into ``jsonld_data``.
     """
     mapping: MappingConfig = load_mapping(mapping_path)
     root = parse_xml(xml_input)
@@ -505,6 +509,11 @@ def convert_xml_to_jsonld(
         root,
         selected_paths,
     )
+    if mapping_suggestion_catalog is not None:
+        unmapped_fields = add_mapping_suggestions(
+            unmapped_fields,
+            mapping_suggestion_catalog,
+        )
     validation_report["checks"].extend(
         validate_output_evidence(jsonld_data, unmapped_fields)
     )

@@ -225,6 +225,7 @@ def _convert_xml_entry(
     mapping_path: str | Path,
     used_output_names: set[str],
     codelist_registry: dict[str, Any] | None,
+    mapping_suggestion_catalog: list[dict[str, Any]] | None,
 ) -> _BatchArtifact:
     try:
         result = convert_xml_to_jsonld(
@@ -232,6 +233,7 @@ def _convert_xml_entry(
             mapping_path,
             write_files=False,
             codelist_registry=codelist_registry,
+            mapping_suggestion_catalog=mapping_suggestion_catalog,
         )
     except Exception as exc:  # noqa: BLE001 - per-file failures must not stop a batch.
         return _file_error(
@@ -373,6 +375,7 @@ def convert_batch_zip(
     limits: BatchConversionLimits | None = None,
     output_dir: str | Path | None = None,
     codelist_registry: dict[str, Any] | None = None,
+    mapping_suggestion_catalog: list[dict[str, Any]] | None = None,
 ) -> BatchConversionReport:
     """Convert XML files from a ZIP and return summary plus export ZIP bytes.
 
@@ -381,7 +384,9 @@ def convert_batch_zip(
     ``None`` (the default) is byte-identical to every prior version. Passing
     a loaded registry only adds diagnostic ``codelist_status_counts`` per
     file and an aggregate ``codelist_validation_counts`` in the summary;
-    it never blocks a batch or changes which files succeed or fail.
+    it never blocks a batch or changes which files succeed or fail. The
+    optional suggestion catalog enriches only unmapped evidence reports and
+    never changes generated JSON-LD.
     """
     active_limits = limits or BatchConversionLimits()
     if active_limits.max_files < 1:
@@ -470,6 +475,7 @@ def convert_batch_zip(
                     mapping_path=mapping_path,
                     used_output_names=used_output_names,
                     codelist_registry=codelist_registry,
+                    mapping_suggestion_catalog=mapping_suggestion_catalog,
                 )
             )
 

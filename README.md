@@ -3,6 +3,15 @@
 Convert GDSN-like product XML into GS1 Web Vocabulary JSON-LD through a
 configurable YAML mapping and a typed canonical product model.
 
+Version 0.35.1 adds upload-specific mapping assistance for populated fields
+outside the active mapping. A committed catalog contains 288 heuristic
+GDSN-to-WebVoc candidates scoring 60% or higher. Matches are shown in the UI
+and included in the lossless unmapped JSON report, with 60–<90% explicitly
+labelled for review. They are never silently emitted into JSON-LD. Candidate
+knowledge is deliberately separate from an executable mapping profile: a new
+profile is only needed after mappings have been semantically reviewed and
+accepted. See `docs/releases/v0.35.1.md`.
+
 Version 0.35.0 completes the end-product build path (v0.30.0–v0.35.0):
 reviewer artifacts — hard-mapping sign-offs, SDR annotations, candidate
 reports — can now be saved to and loaded from a git-ignored local

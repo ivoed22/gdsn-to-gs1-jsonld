@@ -34,6 +34,16 @@ def test_app_version_matches_pyproject() -> None:
     )
 
 
+def test_package_version_matches_pyproject() -> None:
+    version = _pyproject_version()
+    package_text = (
+        ROOT / "src" / "gdsn_to_gs1_jsonld" / "__init__.py"
+    ).read_text(encoding="utf-8")
+    match = re.search(r'__version__\s*=\s*"([0-9]+\.[0-9]+\.[0-9]+)"', package_text)
+    assert match, "__version__ not found in package __init__.py"
+    assert match.group(1) == version
+
+
 def test_changelog_latest_heading_matches_pyproject() -> None:
     version = _pyproject_version()
     changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")

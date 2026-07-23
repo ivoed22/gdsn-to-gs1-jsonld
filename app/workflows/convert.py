@@ -47,6 +47,10 @@ from gdsn_to_gs1_jsonld.digital_link import (
 from gdsn_to_gs1_jsonld.readiness import assess_readiness
 from gdsn_to_gs1_jsonld.report import build_product_report_html, product_report_bytes
 from gdsn_to_gs1_jsonld.reporter import json_bytes, mapping_report_xlsx_bytes
+from gdsn_to_gs1_jsonld.unmapped_suggestions import (
+    MappingSuggestionCatalogError,
+    load_mapping_suggestion_catalog,
+)
 from gdsn_to_gs1_jsonld.xml_parser import XMLParseError
 
 # Mapping profile consolidation (v0.15.0): the consolidated registry is the
@@ -142,6 +146,62 @@ def _load_codelist_registry_cached() -> dict | None:
         )
     except CodelistRegistryError:
         return None
+
+
+@st.cache_data(show_spinner=False)
+def _load_mapping_suggestions_cached() -> list[dict]:
+    """Load the committed review-only 60%+ GDSN/WebVoc suggestions."""
+    try:
+        return load_mapping_suggestion_catalog(
+            REPOSITORY_ROOT
+            / "mapping_catalog"
+            / "unmapped_gdsn_webvoc_suggestions_v0_1.csv"
+        )
+    except MappingSuggestionCatalogError:
+        return []
+
+
+def _render_mapping_suggestions_panel(unmapped_fields: dict) -> None:
+    """Show upload-specific candidates without presenting them as mappings."""
+    suggestions = unmapped_fields.get("mapping_suggestions", [])
+    if not suggestions:
+        return
+
+    strong_count = sum(
+        1 for item in suggestions if float(item["match_percentage"]) >= 90
+    )
+    review_count = len(suggestions) - strong_count
+    with st.expander(
+        f"Possible mappings for unmapped source fields ({len(suggestions)})",
+        expanded=True,
+    ):
+        st.warning(
+            "These are similarity-based review suggestions, not applied "
+            "mappings. They are not included in the generated JSON-LD. "
+            "Verify semantics, domain, range, structure and codelists first."
+        )
+        first, second = st.columns(2)
+        first.metric("Strong candidates (90%+)", strong_count)
+        second.metric("Review candidates (60–<90%)", review_count)
+        rows = [
+            {
+                "Source XML field": item["source_element"],
+                "GDSN attribute": item["gdsn_attribute_name"],
+                "Possible WebVoc property": item["proposed_webvoc_property"],
+                "Match": f"{float(item['match_percentage']):.1f}%",
+                "Status": (
+                    "Strong candidate — review required"
+                    if float(item["match_percentage"]) >= 90
+                    else "Possible match — review required"
+                ),
+            }
+            for item in suggestions
+        ]
+        st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
+        st.caption(
+            "Full evidence, alternative candidates and score reasons are "
+            "included in the unmapped source values JSON download."
+        )
 
 
 def _render_codelist_validation_panel(codelist_validation: list[dict]) -> None:
@@ -337,6 +397,9 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                         mapping_path,
                         write_files=False,
                         codelist_registry=_load_codelist_registry_cached(),
+                        mapping_suggestion_catalog=(
+                            _load_mapping_suggestions_cached()
+                        ),
                     )
             except (XMLParseError, FileNotFoundError, ValueError) as exc:
                 st.error(f"Conversion failed: {exc}")
@@ -417,6 +480,7 @@ def render_single_xml_workflow(mapping_path: Path) -> None:
                 )
 
             _render_codelist_validation_panel(result.codelist_validation)
+            _render_mapping_suggestions_panel(result.unmapped_fields)
 
         # Step 3 — Generate & validate output
         with st.container(border=True):
@@ -667,6 +731,9 @@ def render_bulk_zip_workflow(mapping_path: Path) -> None:
                         mapping_path,
                         limits=BatchConversionLimits(),
                         codelist_registry=_load_codelist_registry_cached(),
+                        mapping_suggestion_catalog=(
+                            _load_mapping_suggestions_cached()
+                        ),
                     )
             except BatchConversionError as exc:
                 st.error(f"Batch conversion failed: {exc}")

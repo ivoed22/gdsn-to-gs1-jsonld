@@ -35,7 +35,7 @@ def test_ui_imports_as_package_from_non_repo_cwd(monkeypatch, tmp_path):
 
     ui = importlib.import_module("app.ui")
 
-    assert ui.APP_VERSION == "v0.35.0"
+    assert ui.APP_VERSION == "v0.35.1"
     assert callable(ui.render_page_header)
     assert callable(ui.render_workflow_mode_card)
 
@@ -116,6 +116,34 @@ def test_codelist_validation_panel_appears_after_conversion(example_xml_path):
 
     rendered = "\n".join(markdown.value for markdown in app.markdown)
     assert "status-badge-" in rendered
+
+
+def test_upload_shows_review_only_mapping_suggestions():
+    sample = ROOT / "examples" / "input" / "samples" / "partially_mapped_product.xml"
+    app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
+    app.get("file_uploader")[0].set_value(
+        (sample.name, sample.read_bytes(), "application/xml")
+    )
+    app.run(timeout=20)
+    app.button[_button_index(app, "Convert product to JSON-LD")].click().run(
+        timeout=20
+    )
+
+    assert not app.exception
+    assert any(
+        "Possible mappings for unmapped source fields" in expander.label
+        for expander in app.expander
+    )
+    metrics = {metric.label: metric.value for metric in app.metric}
+    assert int(metrics["Strong candidates (90%+)"]) >= 1
+    warnings = "\n".join(str(item.value) for item in app.warning)
+    assert "not applied mappings" in warnings
+    result = app.session_state["conversion_result"]
+    assert "gs1:consumerStorageInstructions" not in result.jsonld_data
+    assert any(
+        item["proposed_webvoc_property"] == "gs1:consumerStorageInstructions"
+        for item in result.unmapped_fields["mapping_suggestions"]
+    )
 
 
 def test_readiness_scorecard_appears_after_conversion(example_xml_path):
@@ -293,7 +321,7 @@ def test_streamlit_review_safe_mapping_is_default_profile():
     )
 
     assert any(
-        "App version: v0.35.0" in markdown.value
+        "App version: v0.35.1" in markdown.value
         for markdown in app.markdown
     )
     assert any(
@@ -1064,6 +1092,6 @@ def test_sidebar_workspace_status_version_and_no_positive_compliance():
     app = AppTest.from_file("app/streamlit_app.py").run(timeout=20)
     rendered = "\n".join(markdown.value for markdown in app.markdown).lower()
     assert "workspace status" in rendered
-    assert "app version: v0.35.0" in rendered
+    assert "app version: v0.35.1" in rendered
     assert "no official gs1 validation" in rendered
     assert "no production compliance" in rendered
