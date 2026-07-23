@@ -22,6 +22,7 @@ def test_committed_suggestion_catalog_is_review_only_and_60_percent_plus():
     assert len(catalog) == 288
     assert all(item["match_percentage"] >= 60 for item in catalog)
     assert all(item["auto_emit"] is False for item in catalog)
+    assert all(item.get("review_consensus_status") for item in catalog)
     assert any(
         item["gdsn_attribute_name"] == "consumerStorageInstructions"
         and item["proposed_webvoc_property"]
@@ -120,3 +121,10 @@ def test_converter_suggests_but_does_not_emit_candidate_property():
     )
     assert suggestion["match_percentage"] == 100
     assert suggestion["review_required"] is True
+    assert suggestion["review_consensus_status"] in {
+        "unanimous_accept",
+        "strong_accept_consensus",
+        "accept_consensus",
+        "conflicted",
+        "human_review",
+    }

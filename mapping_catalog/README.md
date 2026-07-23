@@ -18,6 +18,11 @@ Machine-readable governance inputs:
 spreadsheet reference. Version 0.3.0 is the first converter release to use the
 BMS/XPath and locally validated Web Vocabulary catalog as a design input.
 
+`unmapped_gdsn_webvoc_suggestions_v0_1.csv` is a review-only discovery catalog.
+Its 288 rows now include consolidated decisions from Antigravity, Gemini,
+ChatGPT Deep Research and ChatGPT. Consensus metadata prioritises standards
+review but never changes `auto_emit=false` and is not an executable profile.
+
 Certification mappings have direct GS1 Web Vocabulary support for the parent,
 object type, standard, value, and validity dates. Generic document-link
 mappings remain experimental where no direct GS1 property exists.

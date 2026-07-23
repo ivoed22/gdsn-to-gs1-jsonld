@@ -153,6 +153,27 @@ def add_mapping_suggestions(
                     "third_candidate": candidate.get("third_candidate", ""),
                     "third_percentage": candidate.get("third_percentage"),
                     "source_versions": candidate.get("source_versions", ""),
+                    "review_consensus_status": candidate.get(
+                        "review_consensus_status", "insufficient_review"
+                    ),
+                    "reviewer_count": candidate.get("reviewer_count", ""),
+                    "accept_count": candidate.get("accept_count", ""),
+                    "needs_human_review_count": candidate.get(
+                        "needs_human_review_count", ""
+                    ),
+                    "reject_count": candidate.get("reject_count", ""),
+                    "no_equivalent_count": candidate.get(
+                        "no_equivalent_count", ""
+                    ),
+                    "mean_reviewer_confidence": candidate.get(
+                        "mean_reviewer_confidence", ""
+                    ),
+                    "reviewer_decisions": candidate.get(
+                        "reviewer_decisions", ""
+                    ),
+                    "recommended_action": candidate.get(
+                        "recommended_action", ""
+                    ),
                     "auto_emitted": False,
                     "review_required": True,
                 }

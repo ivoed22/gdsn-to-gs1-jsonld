@@ -2,7 +2,7 @@
 // so the converter works fully offline and is installable. Cache-first, with a
 // network fallback that also fills the cache for anything not precached.
 
-const CACHE = 'gdsn-jsonld-v7';
+const CACHE = 'gdsn-jsonld-v8';
 
 const PRECACHE = [
   './',

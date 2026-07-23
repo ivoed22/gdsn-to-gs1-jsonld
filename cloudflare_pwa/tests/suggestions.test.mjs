@@ -24,6 +24,8 @@ test('adds an exact upload-specific suggestion without changing evidence', () =>
       proposed_webvoc_label: 'Consumer Storage Instructions',
       match_percentage: '100',
       suggestion_status: 'strong_candidate',
+      review_consensus_status: 'unanimous_accept',
+      accept_count: '4',
       auto_emit: 'false',
     },
   ]);
@@ -31,6 +33,8 @@ test('adds an exact upload-specific suggestion without changing evidence', () =>
   assert.equal(enriched.mapping_suggestions.length, 1);
   assert.equal(enriched.mapping_suggestions[0].match_percentage, 100);
   assert.equal(enriched.mapping_suggestions[0].auto_emitted, false);
+  assert.equal(enriched.mapping_suggestions[0].review_consensus_status, 'unanimous_accept');
+  assert.equal(enriched.mapping_suggestions[0].accept_count, 4);
   assert.deepEqual(enriched.unmapped_values, baseReport.unmapped_values);
   assert.equal(enriched.summary.unmapped_value_occurrences, 1);
 });

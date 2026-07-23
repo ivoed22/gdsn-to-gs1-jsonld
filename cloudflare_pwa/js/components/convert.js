@@ -41,6 +41,15 @@ const DIMENSION_LABELS = {
   codelist_conformance: 'Codelist conformance',
   dpp_relevance: 'DPP relevance',
 };
+const CONSENSUS_LABELS = {
+  unanimous_accept: 'Unanimous AI acceptance',
+  strong_accept_consensus: 'Strong AI consensus',
+  accept_consensus: 'AI acceptance consensus',
+  conflicted: 'Conflicting reviews',
+  human_review: 'Human review required',
+  no_equivalent_consensus: 'No-equivalent consensus',
+  insufficient_review: 'Insufficient review',
+};
 
 export const ConvertWorkflow = {
   name: 'ConvertWorkflow',
@@ -137,6 +146,9 @@ export const ConvertWorkflow = {
       if (value == null) return '—';
       if (typeof value === 'object') return JSON.stringify(value);
       return String(value);
+    },
+    consensusLabel(status) {
+      return CONSENSUS_LABELS[status] || 'Human review required';
     },
     isVocabTerm(prop) {
       return typeof prop === 'string' && (prop.startsWith('gs1:') || prop.startsWith('schema:'));
@@ -235,9 +247,6 @@ export const ConvertWorkflow = {
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
     },
-    continueToPassport() {
-      location.hash = '#/passport';
-    },
     gtinForFile() {
       return extractGtin(this.result.jsonld_data) || 'unknown';
     },
@@ -328,18 +337,17 @@ export const ConvertWorkflow = {
 
     <div id="convert-results"></div>
     <div v-if="result" class="reveal">
-      <div class="jumpbar">
+      <div class="jumpbar result-section--nav">
+        <button class="jumpbar__item" type="button" @click="jump('sec-downloads')">Downloads</button>
         <button class="jumpbar__item" type="button" @click="jump('sec-output')">Output</button>
         <button class="jumpbar__item" type="button" @click="jump('sec-checks')">Checks</button>
+        <button class="jumpbar__item" v-if="mappingSuggestions.length" type="button" @click="jump('sec-suggestions')">Suggestions</button>
         <button class="jumpbar__item" type="button" @click="jump('sec-trace')">Traceability</button>
         <button class="jumpbar__item" type="button" @click="jump('sec-report')">Report</button>
-        <button class="jumpbar__item" v-if="mappingSuggestions.length" type="button" @click="jump('sec-suggestions')">Suggestions</button>
-        <button class="jumpbar__item" type="button" @click="jump('sec-downloads')">Downloads</button>
       </div>
-      <div class="card" v-if="identity">
+      <div class="card result-section--identity" v-if="identity">
         <div class="card__row">
           <h3 class="card__title">Product identity</h3>
-          <button class="btn btn--sm" type="button" @click="continueToPassport"><app-icon name="passport" :size="15" /> Continue to Product Passport</button>
         </div>
         <div class="identity">
           <div><span class="muted">Name</span><strong>{{ identity.name }}</strong></div>
@@ -349,7 +357,7 @@ export const ConvertWorkflow = {
         </div>
       </div>
 
-      <div id="sec-checks" class="grid grid--two">
+      <div id="sec-checks" class="grid grid--two result-section--checks">
         <div class="card">
           <h3 class="card__title">Validation</h3>
           <p><status-badge :label="result.validation_report.valid ? 'Valid' : 'Errors present'" :tone="result.validation_report.valid ? 'success' : 'error'" /></p>
@@ -378,7 +386,7 @@ export const ConvertWorkflow = {
         </div>
       </div>
 
-      <div class="card" v-if="digitalLinkUri">
+      <div class="card result-section--digital-link" v-if="digitalLinkUri">
         <h3 class="card__title">GS1 Digital Link</h3>
         <div class="digitallink">
           <div class="digitallink__qr" v-html="qrSvg"></div>
@@ -386,7 +394,7 @@ export const ConvertWorkflow = {
         </div>
       </div>
 
-      <div id="sec-output" class="card">
+      <div id="sec-output" class="card result-section--output">
         <div class="card__row">
           <h3 class="card__title">Generated GS1 Web Vocabulary JSON-LD</h3>
           <status-badge v-if="termCheck" :label="termCheck.ok ? 'Terms resolve' : termCheck.issues.length + ' unknown term(s)'" :tone="termCheck.ok ? 'success' : 'warning'" />
@@ -400,7 +408,7 @@ export const ConvertWorkflow = {
         </details>
       </div>
 
-      <div id="sec-trace" class="card">
+      <div id="sec-trace" class="card result-section--trace">
         <h3 class="card__title">Traceability — mapping ↔ source XML</h3>
         <p class="muted note">Select a mapping row to highlight the source element(s) it came from.</p>
         <div class="grid grid--two trace">
@@ -428,7 +436,7 @@ export const ConvertWorkflow = {
         </div>
       </div>
 
-      <div id="sec-report" class="card">
+      <div id="sec-report" class="card result-section--report">
         <h3 class="card__title">Mapping report</h3>
         <div class="table-scroll">
           <table class="table">
@@ -445,11 +453,12 @@ export const ConvertWorkflow = {
         </div>
       </div>
 
-      <div class="card">
+      <div class="card result-section--unmapped">
         <h3 class="card__title">Unmapped source elements ({{ unmappedElements.length }})</h3>
         <p class="muted" v-if="!unmappedElements.length">Every populated source element was covered by the profile.</p>
         <div class="table-scroll" v-else>
-          <table class="table">
+          <table class="table table--unmapped">
+            <colgroup><col class="col--element" /><col class="col--parent" /><col class="col--path" /><col class="col--count" /><col class="col--context" /></colgroup>
             <thead><tr><th>Element</th><th>Parent</th><th>Path</th><th>Count</th><th>Context</th></tr></thead>
             <tbody>
               <tr v-for="(u, i) in unmappedElements" :key="i">
@@ -464,7 +473,7 @@ export const ConvertWorkflow = {
         </div>
       </div>
 
-      <div id="sec-suggestions" class="card" v-if="mappingSuggestions.length">
+      <div id="sec-suggestions" class="card result-section--suggestions" v-if="mappingSuggestions.length">
         <div class="card__row">
           <h3 class="card__title">Possible mappings for this upload ({{ mappingSuggestions.length }})</h3>
           <status-badge label="Review required" tone="warning" />
@@ -479,12 +488,13 @@ export const ConvertWorkflow = {
         </div>
         <div class="table-scroll">
           <table class="table">
-            <thead><tr><th>Source field</th><th>Possible WebVoc property</th><th>Match</th><th>Status</th></tr></thead>
+            <thead><tr><th>Source field</th><th>Possible WebVoc property</th><th>Match</th><th>AI review consensus</th><th>Status</th></tr></thead>
             <tbody>
               <tr v-for="(item, i) in mappingSuggestions" :key="i">
                 <td><code>{{ item.source_element }}</code><br /><span class="muted">{{ item.gdsn_attribute_name }}</span></td>
                 <td><code>{{ item.proposed_webvoc_property }}</code><br /><span class="muted">{{ item.proposed_webvoc_label }}</span></td>
                 <td><strong>{{ Number(item.match_percentage).toFixed(1) }}%</strong></td>
+                <td>{{ consensusLabel(item.review_consensus_status) }}<br /><span class="muted">{{ item.accept_count || 0 }} accept vote(s)</span></td>
                 <td>{{ Number(item.match_percentage) >= 90 ? 'Strong candidate — review required' : 'Possible match — review required' }}</td>
               </tr>
             </tbody>
@@ -493,7 +503,7 @@ export const ConvertWorkflow = {
         <p class="muted note">Score reasons and alternative candidates are included in the Unmapped fields JSON download.</p>
       </div>
 
-      <div id="sec-downloads" class="card">
+      <div id="sec-downloads" class="card result-section--downloads">
         <h3 class="card__title">Downloads</h3>
         <div class="btn-row">
           <button class="btn" type="button" @click="downloadJsonld"><app-icon name="download" :size="16" /> JSON-LD</button>

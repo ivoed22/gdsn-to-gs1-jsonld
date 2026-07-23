@@ -9,6 +9,17 @@ to its version heading when released. See `docs/roadmap.md` → "Release process
 
 _Nothing yet._
 
+## v0.36.0 — Consolidated mapping review and result layout
+
+- Consolidates Antigravity, Gemini, ChatGPT Deep Research and ChatGPT reviewer
+  decisions for all 288 published 60%+ suggestions.
+- Records unanimous agreement, strong consensus, ordinary consensus, human
+  review and conflicts while keeping every candidate `auto_emit=false`.
+- Moves downloads above output in the offline Cloudflare converter, orders
+  checks before mapping suggestions and removes the unfinished Product Passport
+  continuation from conversion results.
+- Gives the unmapped-elements path column substantially more usable width.
+
 ## v0.35.1 — Upload-specific mapping suggestions
 
 - Adds a versioned, review-only catalog with 288 GDSN-to-WebVoc candidates
