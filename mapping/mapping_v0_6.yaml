@@ -8,9 +8,14 @@ metadata:
 settings:
   namespace_strategy: local-name
   default_language: en
+  # gs1:ingredientStatement (and other food properties this profile emits) have
+  # gs1:FoodBeverageTobaccoProduct as their domain, so declare that subclass
+  # explicitly rather than relying on RDFS inference by the consumer.
+  root_type: gs1:FoodBeverageTobaccoProduct
   jsonld_context:
   - https://ref.gs1.org/voc/data/gs1Voc.jsonld
   - schema: https://schema.org/
+    xsd: http://www.w3.org/2001/XMLSchema#
 fields:
 - id: gtin
   description: Global Trade Item Number
@@ -52,17 +57,6 @@ fields:
   transform:
   - trim
   - normalize_whitespace
-- id: brand_name
-  description: Product brand name
-  xpath: .//*[local-name()='brandName']
-  value_xpath: text()
-  canonical_field: brand_name
-  jsonld_property: gs1:brandName
-  required: false
-  datatype: string
-  multiple: false
-  transform:
-  - trim
 - id: gpc_category_code
   description: GS1 Global Product Classification category code
   xpath: .//*[local-name()='gpcCategoryCode']
@@ -370,6 +364,7 @@ object_mappings:
     value_xpath: text()
     canonical_field: value
     jsonld_property: gs1:value
+    value_datatype: xsd:float
     datatype: decimal
     required: true
     multiple: false
@@ -406,6 +401,27 @@ object_mappings:
     transform:
     - trim
     - uppercase
+- id: brands
+  description: Brand as a gs1:Brand node (gs1:brandName's domain is gs1:Brand)
+  parent_xpath: .//*[local-name()='brandNameInformation'][./*[local-name()='brandName']]
+  canonical_field: brands
+  jsonld_property: gs1:brand
+  object_type: gs1:Brand
+  multiple: false
+  fields:
+  - id: brand_name_value
+    xpath: ./*[local-name()='brandName']
+    value_xpath: text()
+    canonical_field: brand_name
+    jsonld_property: gs1:brandName
+    datatype: language_string
+    # A brand name is generally not bound to one language; the source carries no
+    # languageCode here, so 'und' records that honestly rather than guessing.
+    fallback_language: und
+    required: true
+    multiple: false
+    transform:
+    - trim
 - id: countries_of_origin
   description: Country of origin
   parent_xpath: .//*[local-name()='countryOfOrigin'][./*[local-name()='countryCode']]
@@ -450,6 +466,7 @@ object_mappings:
     value_xpath: text()
     canonical_field: first_availability
     jsonld_property: gs1:consumerFirstAvailabilityDateTime
+    value_datatype: xsd:dateTime
     datatype: string
     required: false
     multiple: false
@@ -522,6 +539,7 @@ object_mappings:
     value_xpath: text()
     canonical_field: url
     jsonld_property: gs1:referencedFileURL
+    value_datatype: xsd:anyURI
     datatype: url
     required: true
     multiple: false

@@ -67,6 +67,18 @@ def _set_typed_nested_value(
     current[parts[-1]] = value
 
 
+def _typed_literal(value: Any, datatype: str | None) -> Any:
+    """Wrap *value* as a typed JSON-LD literal when *datatype* is declared.
+
+    Opt-in strictness: WebVoc declares non-string ranges (xsd:float,
+    xsd:dateTime, xsd:anyURI) for several properties, but a bare JSON value
+    carries no type. Profiles that omit ``value_datatype`` are unaffected.
+    """
+    if not datatype:
+        return value
+    return {"@value": str(value), "@type": datatype}
+
+
 def _object_values(values: list[Any], object_mapping: Any) -> list[dict[str, Any]]:
     output: list[dict[str, Any]] = []
     seen: set[str] = set()
@@ -89,6 +101,8 @@ def _object_values(values: list[Any], object_mapping: Any) -> list[dict[str, Any
                 }
             if field.code_prefix:
                 field_value = {"@id": f"{field.code_prefix}{field_value}"}
+            else:
+                field_value = _typed_literal(field_value, field.value_datatype)
             _set_typed_nested_value(
                 item,
                 field.jsonld_property,
@@ -113,7 +127,7 @@ def build_jsonld(
     }
     data: dict[str, Any] = {
         "@context": mapping.settings.jsonld_context,
-        "@type": "gs1:Product",
+        "@type": mapping.settings.root_type,
     }
 
     if product.gtin:
@@ -132,9 +146,16 @@ def build_jsonld(
         "product_page_url": product.product_page_url,
         "ingredient_statement": _language_values(product.ingredient_statement),
     }
+    datatypes = {
+        field.canonical_field: field.value_datatype
+        for field in mapping.fields
+        if field.value_datatype
+    }
     for canonical_field, value in simple_values.items():
         if canonical_field in properties and value not in (None, "", []):
-            data[properties[canonical_field]] = value
+            data[properties[canonical_field]] = _typed_literal(
+                value, datatypes.get(canonical_field)
+            )
 
     if (
         product.net_content_value is not None
