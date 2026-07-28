@@ -181,7 +181,7 @@ def _write_fake_webvoc(path: Path) -> None:
             {
                 "@id": "gs1:",
                 "@type": ["voaf:Vocabulary", "owl:Ontology"],
-                "owl:versionInfo": "1.17",
+                "owl:versionInfo": "1.18",
             },
             {
                 "@id": "gs1:Product",
@@ -234,11 +234,11 @@ def _write_manifest(path: Path, gdsn_xlsx: Path, webvoc: Path) -> None:
                 "usage_note": "Fixture workbook.",
             },
             {
-                "source_id": "gs1_web_vocabulary_jsonld_1_17",
+                "source_id": "gs1_web_vocabulary_jsonld_1_18",
                 "title": "GS1 Web Vocabulary JSON-LD",
                 "source_url": "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
                 "retrieved_at": "2026-06-14T13:32:35Z",
-                "version": "1.17",
+                "version": "1.18",
                 "last_modified": "2025-11-18",
                 "local_path": str(webvoc),
                 "sha256": sha256_file(webvoc),
@@ -270,12 +270,12 @@ def test_loads_utf8_sig_webvoc_and_extracts_classes_and_properties(tmp_path):
     data = load_webvoc_jsonld(webvoc)
     classes = extract_webvoc_classes(
         data,
-        version="1.17",
+        version="1.18",
         last_modified="2025-11-18",
     )
     properties = extract_webvoc_properties(
         data,
-        version="1.17",
+        version="1.18",
         last_modified="2025-11-18",
     )
 
@@ -284,7 +284,7 @@ def test_loads_utf8_sig_webvoc_and_extracts_classes_and_properties(tmp_path):
     gtin = next(row for row in properties if row["term_id"] == "gs1:gtin")
     assert gtin["domain"] == ["gs1:Product"]
     assert gtin["range"] == ["xsd:string"]
-    assert gtin["version"] == "1.17"
+    assert gtin["version"] == "1.18"
     link = next(row for row in properties if row["term_id"] == "gs1:linkExample")
     assert link["is_link_type"] is True
 
@@ -376,10 +376,10 @@ def test_import_reference_data_cli_creates_expected_files(tmp_path):
     assert "Reference data import:" in result.output
     assert (output_dir / "gdsn_attributes_bms_xpath_3_1_36.csv").is_file()
     assert (output_dir / "gdsn_attributes_bms_xpath_3_1_36.json").is_file()
-    assert (output_dir / "webvoc_properties_1_17.csv").is_file()
-    assert (output_dir / "webvoc_properties_1_17.json").is_file()
-    assert (output_dir / "webvoc_classes_1_17.csv").is_file()
-    assert (output_dir / "webvoc_classes_1_17.json").is_file()
+    assert (output_dir / "webvoc_properties_1_18.csv").is_file()
+    assert (output_dir / "webvoc_properties_1_18.json").is_file()
+    assert (output_dir / "webvoc_classes_1_18.csv").is_file()
+    assert (output_dir / "webvoc_classes_1_18.json").is_file()
     assert (output_dir / "source_data_summary.json").is_file()
 
 

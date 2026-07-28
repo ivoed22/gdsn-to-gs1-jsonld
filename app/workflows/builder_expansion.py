@@ -44,7 +44,7 @@ def _load_expansion_analysis() -> dict:
             REPOSITORY_ROOT
             / "reference_data"
             / "normalized"
-            / "webvoc_properties_1_17.csv"
+            / "webvoc_properties_1_18.csv"
         )
     )
     manifest = load_builder_manifest(

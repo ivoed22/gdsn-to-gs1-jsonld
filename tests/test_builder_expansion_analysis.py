@@ -22,7 +22,7 @@ from gdsn_to_gs1_jsonld.jsonld_builder import load_builder_manifest
 from gdsn_to_gs1_jsonld.mapping_candidate_generator import load_webvoc_properties
 
 ROOT = Path(__file__).resolve().parents[1]
-WEBVOC_CSV = ROOT / "reference_data" / "normalized" / "webvoc_properties_1_17.csv"
+WEBVOC_CSV = ROOT / "reference_data" / "normalized" / "webvoc_properties_1_18.csv"
 GDSN_CSV = ROOT / "reference_data" / "normalized" / "gdsn_attributes_bms_xpath_3_1_36.csv"
 BUILDER_MANIFEST = ROOT / "builder_manifest" / "product_builder_v0_10.yaml"
 MAPPING_REGISTRY = ROOT / "mapping" / "mapping_registry.yaml"

@@ -22,14 +22,14 @@
       "usage_note": "Offline source for BMS IDs, XPath evidence, row types, modules, data types, code-list indicators, definitions, and deleted-attribute flags."
     },
     {
-      "source_id": "gs1_web_vocabulary_jsonld_1_17",
+      "source_id": "gs1_web_vocabulary_jsonld_1_18",
       "title": "GS1 Web Vocabulary JSON-LD",
       "source_url": "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
-      "retrieved_at": "2026-06-14T13:32:35Z",
-      "version": "1.17",
+      "retrieved_at": "2026-07-28T21:45:25Z",
+      "version": "1.18",
       "last_modified": "2025-11-18",
       "local_path": "webvoc/current/gs1Voc.jsonld",
-      "sha256": "cf48c79d5891195a30f873b333983b21ffacb518adc80568cf1141961a3889b9",
+      "sha256": "e05fb00ce8897c3894cdf0f97d26dce84f36745857ea8156bb701b088c29c19f",
       "public_accessible": true,
       "authoritative_or_derived": "authoritative_local_snapshot",
       "used_by": [

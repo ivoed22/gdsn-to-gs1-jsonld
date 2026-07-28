@@ -73,7 +73,7 @@
         ],
         "status": "stable"
     },
-    "epcis": {
+    "epcisRepository": {
         "title": "EPC Information Services (EPCIS) repository",
         "description": "A link to an EPCIS repository of visibility event data.",
         "status": "stable"
@@ -225,7 +225,7 @@
         "status": "stable"
     },
     "relatedVideo": {
-        "title": "Related video",
+        "title": "Related  video",
         "description": "A link to any video, or document that has an embedded video, that describes or relates to the identified item, organisation, or location in some way.",
         "status": "stable"
     },
