@@ -19,6 +19,11 @@ class MappingField(BaseModel):
     datatype: str = "string"
     multiple: bool = False
     fallback_language: str | None = None
+    # Optional strict typing: emit {"@value": ..., "@type": <value_datatype>}
+    # instead of a bare literal, for properties whose WebVoc range is not a
+    # plain string (e.g. xsd:float, xsd:dateTime, xsd:anyURI). Opt-in: omitting
+    # it keeps the previous, untyped output byte-for-byte.
+    value_datatype: str | None = None
     transform: list[str] = Field(default_factory=list)
 
 
@@ -35,6 +40,7 @@ class ObjectMappingField(BaseModel):
     fallback_language: str | None = None
     code_prefix: str | None = None
     nested_object_type: str | None = None
+    value_datatype: str | None = None
     transform: list[str] = Field(default_factory=list)
 
 
@@ -53,6 +59,11 @@ class MappingSettings(BaseModel):
     namespace_strategy: str = "local-name"
     default_language: str = "en"
     jsonld_context: list[Any] = Field(default_factory=list)
+    # Root @type for the generated document. Defaults to gs1:Product; a profile
+    # that emits subclass-specific properties (e.g. gs1:ingredientStatement,
+    # whose domain is gs1:FoodBeverageTobaccoProduct) can declare the more
+    # specific class so consumers without RDFS inference still see it.
+    root_type: str = "gs1:Product"
 
 
 class MappingConfig(BaseModel):

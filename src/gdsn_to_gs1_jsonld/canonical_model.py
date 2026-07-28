@@ -16,6 +16,17 @@ class MeasurementValue(BaseModel):
     unit_code: str | None = None
 
 
+class BrandDetail(BaseModel):
+    """Brand as its own node.
+
+    gs1:brandName has domain gs1:Brand, so the name must hang off a Brand node
+    reached via gs1:brand — asserting it directly on the product would imply
+    the product is itself a Brand.
+    """
+
+    brand_name: LanguageValue | None = None
+
+
 class AllergenDetail(BaseModel):
     allergen_type: str | None = None
     level_of_containment: str | None = None
@@ -50,6 +61,7 @@ class CanonicalProduct(BaseModel):
     product_name: list[LanguageValue] = Field(default_factory=list)
     product_description: list[LanguageValue] = Field(default_factory=list)
     brand_name: str | None = None
+    brands: list[BrandDetail] = Field(default_factory=list)
     gpc_category_code: str | None = None
     gpc_category_description: list[LanguageValue] = Field(default_factory=list)
     functional_name: list[LanguageValue] = Field(default_factory=list)
