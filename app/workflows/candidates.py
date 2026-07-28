@@ -47,7 +47,7 @@ def load_candidate_inputs() -> object:
     """Load and index all candidate generation inputs (cached)."""
     return build_candidate_inputs(
         webvoc_path=str(
-            REPOSITORY_ROOT / "reference_data" / "normalized" / "webvoc_properties_1_17.csv"
+            REPOSITORY_ROOT / "reference_data" / "normalized" / "webvoc_properties_1_18.csv"
         ),
         gdsn_path=str(
             REPOSITORY_ROOT

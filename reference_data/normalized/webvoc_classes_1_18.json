@@ -12,8 +12,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:AdditiveDetails",
@@ -28,8 +28,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:AllergenDetails",
@@ -44,8 +44,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:AuthenticityDetails",
@@ -60,8 +60,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:AwardPrizeDetails",
@@ -76,8 +76,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Beverage",
@@ -92,8 +92,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Brand",
@@ -108,8 +108,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:CertificationDetails",
@@ -124,8 +124,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Clothing",
@@ -140,8 +140,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ColourCodeDetails",
@@ -156,8 +156,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:CompulsoryAdditionalInformation",
@@ -172,8 +172,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ContactPoint",
@@ -188,8 +188,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Country",
@@ -204,8 +204,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:DietTypeCodeDetails",
@@ -220,8 +220,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Discount",
@@ -234,8 +234,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:FoodAndBeveragePreparationInformation",
@@ -250,8 +250,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:FoodBeverageTobaccoIngredientDetails",
@@ -266,8 +266,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:FoodBeverageTobaccoProduct",
@@ -282,8 +282,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Footwear",
@@ -298,8 +298,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:FruitsVegetables",
@@ -314,8 +314,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:GeoCoordinates",
@@ -330,8 +330,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:GeoShape",
@@ -346,8 +346,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:LocationID_Details",
@@ -362,8 +362,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:LocationStatusHistory",
@@ -378,8 +378,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:MeatPoultry",
@@ -394,8 +394,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Message",
@@ -408,8 +408,8 @@
       "owl:Class"
     ],
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:MilkButterCreamYogurtCheeseEggsSubstitutes",
@@ -424,8 +424,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:NutritionMeasurementType",
@@ -440,8 +440,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Offer",
@@ -456,8 +456,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:OrganicClaimDetails",
@@ -472,8 +472,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Organization",
@@ -488,8 +488,24 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
+  },
+  {
+    "term_id": "gs1:OrganizationClassificationDetails",
+    "compact_name": "OrganizationClassificationDetails",
+    "label": "Organization Classification Details",
+    "comment": "Government bodies, trade organisations, and other parties have developed taxonomies that classify business sectors, activities, and other organisational classifications.  This class provides a A repeatable grouping of classification details for an organisation.",
+    "sub_class_of": [
+      "owl:Thing"
+    ],
+    "type": [
+      "owl:Class",
+      "rdfs:Class"
+    ],
+    "term_status": "stable",
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:OrganizationID_Details",
@@ -504,8 +520,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:OrganizationStatusHistory",
@@ -520,8 +536,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:PackagingDetails",
@@ -536,8 +552,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:PackagingMaterialDetails",
@@ -552,8 +568,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Place",
@@ -568,8 +584,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:PostalAddress",
@@ -584,8 +600,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:PriceSpecification",
@@ -600,8 +616,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Product",
@@ -616,8 +632,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ProductYieldDetails",
@@ -632,8 +648,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:QuantitativeValue",
@@ -648,8 +664,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ReferencedFileDetails",
@@ -665,8 +681,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:RegulatoryIdentifier",
@@ -679,8 +695,8 @@
       "owl:Class"
     ],
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:RegulatoryInformation",
@@ -693,8 +709,8 @@
       "owl:Class"
     ],
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:RegulatoryNotification",
@@ -709,8 +725,8 @@
       "owl:Class"
     ],
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ReturnablePackageDepositDetails",
@@ -725,8 +741,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Seafood",
@@ -741,8 +757,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:SizeCodeDetails",
@@ -757,8 +773,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:SizeDetails",
@@ -773,8 +789,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:TargetMarketDetails",
@@ -789,8 +805,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:TextileMaterialDetails",
@@ -805,8 +821,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:Transaction",
@@ -819,8 +835,8 @@
       "owl:Class"
     ],
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:TypeCode",
@@ -835,8 +851,8 @@
       "rdfs:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:WarrantyPromise",
@@ -851,8 +867,8 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:WearableProduct",
@@ -867,7 +883,7 @@
       "owl:Class"
     ],
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   }
 ]

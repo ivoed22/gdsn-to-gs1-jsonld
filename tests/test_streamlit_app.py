@@ -386,7 +386,7 @@ def test_explore_and_standards_open_directly():
     _open_workflow(app, "explore")
     assert app.session_state["workflow_mode"] == "Explore GS1 Web Vocabulary"
     assert any(
-        metric.label == "WebVoc version" and metric.value == "1.17"
+        metric.label == "WebVoc version" and metric.value == "1.18"
         for metric in app.metric
     )
     assert any(metric.label == "Classes" for metric in app.metric)
@@ -504,8 +504,8 @@ def test_builder_expansion_analysis_opens_in_builder_and_is_read_only():
 
     metrics_by_label = {metric.label: metric.value for metric in app.metric}
     assert metrics_by_label.get("Authored in manifest") == "183"
-    assert metrics_by_label.get("Total WebVoc properties") == "553"
-    assert metrics_by_label.get("Not yet authorable") == "371"
+    assert metrics_by_label.get("Total WebVoc properties") == "557"
+    assert metrics_by_label.get("Not yet authorable") == "375"
     assert "Ready now" in metrics_by_label
 
 

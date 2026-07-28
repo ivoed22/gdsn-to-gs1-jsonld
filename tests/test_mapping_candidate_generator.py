@@ -45,7 +45,7 @@ from gdsn_to_gs1_jsonld.mapping_candidate_generator import (
 
 ROOT = Path(__file__).resolve().parents[1]
 GDSN_CSV = ROOT / "reference_data" / "normalized" / "gdsn_attributes_bms_xpath_3_1_36.csv"
-WEBVOC_CSV = ROOT / "reference_data" / "normalized" / "webvoc_properties_1_17.csv"
+WEBVOC_CSV = ROOT / "reference_data" / "normalized" / "webvoc_properties_1_18.csv"
 CATALOG_CSV = (
     ROOT
     / "mapping_catalog"

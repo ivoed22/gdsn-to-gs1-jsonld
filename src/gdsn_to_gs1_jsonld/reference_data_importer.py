@@ -24,11 +24,11 @@ DEFAULT_SOURCE_MANIFEST = Path("reference_data/source_manifest.json")
 DEFAULT_OUTPUT_DIR = Path("reference_data/normalized")
 
 GDSN_SOURCE_VERSION = "3.1.36"
-WEBVOC_SOURCE_VERSION = "1.17"
+WEBVOC_SOURCE_VERSION = "1.18"
 
 GDSN_OUTPUT_BASE = "gdsn_attributes_bms_xpath_3_1_36"
-WEBVOC_PROPERTIES_OUTPUT_BASE = "webvoc_properties_1_17"
-WEBVOC_CLASSES_OUTPUT_BASE = "webvoc_classes_1_17"
+WEBVOC_PROPERTIES_OUTPUT_BASE = "webvoc_properties_1_18"
+WEBVOC_CLASSES_OUTPUT_BASE = "webvoc_classes_1_18"
 
 GDSN_FIELDS = (
     "bms_id",

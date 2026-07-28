@@ -17,8 +17,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:activityIdeas",
@@ -40,8 +40,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:additionalLocationID",
@@ -61,8 +61,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:additionalOrganizationID",
@@ -82,8 +82,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:additionalOrganizationIdentificationTypeValue",
@@ -103,8 +103,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:additionalProductClassification",
@@ -124,8 +124,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:additionalProductClassificationCode",
@@ -146,8 +146,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:additionalProductClassificationCodeDescription",
@@ -168,8 +168,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:additionalProductClassificationValue",
@@ -190,8 +190,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:additionalProductDescription",
@@ -212,8 +212,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:additive",
@@ -233,8 +233,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:additiveLevelOfContainment",
@@ -255,8 +255,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:additiveName",
@@ -277,8 +277,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:address",
@@ -298,8 +298,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:addressCountry",
@@ -319,8 +319,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:addressLocality",
@@ -340,8 +340,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:addressRegion",
@@ -361,8 +361,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:addressSuburb",
@@ -382,8 +382,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:affiliatedTo",
@@ -403,8 +403,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:afterHoursContact",
@@ -427,8 +427,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:alcoholicBeverageSubregion",
@@ -448,8 +448,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:allergenInfo",
@@ -471,8 +471,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:allergenLevelOfContainmentCode",
@@ -492,8 +492,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:allergenSpecificationAgency",
@@ -513,8 +513,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:allergenSpecificationName",
@@ -534,8 +534,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:allergenStatement",
@@ -555,8 +555,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:allergenType",
@@ -576,8 +576,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:anatomicalForm",
@@ -597,8 +597,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:appDownload",
@@ -620,8 +620,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:applicableProducts",
@@ -641,8 +641,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:applicableTo",
@@ -662,8 +662,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:applicableTransactions",
@@ -683,8 +683,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:audioFile",
@@ -704,8 +704,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:authenticity",
@@ -725,8 +725,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:authenticitySecurityFeatureInstructions",
@@ -746,8 +746,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:authenticitySecurityFeatureInstructionsURL",
@@ -767,8 +767,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:authenticitySecurityFeatureRegularExpression",
@@ -788,8 +788,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:authenticitySecurityFeatureType",
@@ -809,8 +809,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:authenticitySecurityFeatureValue",
@@ -830,8 +830,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:availabilityEnds",
@@ -851,8 +851,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:availabilityStarts",
@@ -872,8 +872,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:availableAtOrFrom",
@@ -893,8 +893,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:availableLanguage",
@@ -916,8 +916,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:awardPrize",
@@ -937,8 +937,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:awardPrizeCode",
@@ -958,8 +958,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:awardPrizeCountryCode",
@@ -979,8 +979,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:awardPrizeDescription",
@@ -1000,8 +1000,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:awardPrizeJury",
@@ -1021,8 +1021,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:awardPrizeName",
@@ -1042,8 +1042,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:awardPrizeYear",
@@ -1063,8 +1063,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:backgroundInfo",
@@ -1086,8 +1086,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:baseLocation",
@@ -1107,8 +1107,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:bestBeforeDate",
@@ -1129,8 +1129,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:beverageVintage",
@@ -1150,8 +1150,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:biotinPerNutrientBasis",
@@ -1171,8 +1171,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:bonelessClaim",
@@ -1192,8 +1192,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:brand",
@@ -1215,8 +1215,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:brandHomepageClinical",
@@ -1238,8 +1238,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:brandHomepagePatient",
@@ -1261,8 +1261,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:brandName",
@@ -1284,8 +1284,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:brandOwner",
@@ -1307,8 +1307,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:businessEntity",
@@ -1328,8 +1328,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:calciumPerNutrientBasis",
@@ -1349,8 +1349,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:carbohydratesPerNutrientBasis",
@@ -1370,8 +1370,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:careersInfo",
@@ -1393,8 +1393,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:catchZone",
@@ -1414,8 +1414,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certification",
@@ -1435,8 +1435,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationAgency",
@@ -1456,8 +1456,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationAgencyURL",
@@ -1477,8 +1477,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationAuditDate",
@@ -1498,8 +1498,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationEndDate",
@@ -1519,8 +1519,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationIdentification",
@@ -1540,8 +1540,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationInfo",
@@ -1563,8 +1563,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationStandard",
@@ -1584,8 +1584,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationStartDate",
@@ -1605,8 +1605,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationStatement",
@@ -1626,8 +1626,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationStatus",
@@ -1647,8 +1647,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationSubject",
@@ -1668,8 +1668,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationType",
@@ -1689,8 +1689,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationURI",
@@ -1710,8 +1710,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:certificationValue",
@@ -1731,8 +1731,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:cheeseFirmness",
@@ -1752,8 +1752,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:cheeseMaturationPeriodDescription",
@@ -1773,8 +1773,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:chloridePerNutrientBasis",
@@ -1794,8 +1794,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:cholesterolPerNutrientBasis",
@@ -1815,8 +1815,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:chromiumPerNutrientBasis",
@@ -1836,8 +1836,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:circle",
@@ -1857,8 +1857,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:clothingCut",
@@ -1878,8 +1878,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:collarType",
@@ -1899,8 +1899,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:colourCode",
@@ -1920,8 +1920,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:colourCodeList",
@@ -1942,8 +1942,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:colourCodeValue",
@@ -1964,8 +1964,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:colourDescription",
@@ -1986,8 +1986,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:companyFilingURL",
@@ -2007,8 +2007,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:compulsoryAdditionalInformation",
@@ -2028,8 +2028,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:compulsoryAdditionalLabelInformation",
@@ -2049,8 +2049,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:compulsoryAdditionalLabelInformationType",
@@ -2070,8 +2070,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:consumerFirstAvailabilityDateTime",
@@ -2092,8 +2092,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:consumerHandlingStorage",
@@ -2113,8 +2113,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:consumerHandlingStorageInfo",
@@ -2136,8 +2136,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:consumerLifestage",
@@ -2157,8 +2157,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:consumerPackageDisclaimer",
@@ -2179,8 +2179,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:consumerProductVariant",
@@ -2201,8 +2201,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:consumerRecyclingInstructions",
@@ -2223,8 +2223,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:consumerSafetyInformation",
@@ -2245,8 +2245,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:consumerSalesCondition",
@@ -2266,8 +2266,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:consumerStorageInstructions",
@@ -2288,8 +2288,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:consumerUsageInstructions",
@@ -2310,8 +2310,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:contactPoint",
@@ -2333,8 +2333,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:contactRoleCode",
@@ -2354,8 +2354,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:contactTitle",
@@ -2375,8 +2375,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:contactType",
@@ -2396,8 +2396,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:containedInPlace",
@@ -2417,8 +2417,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:containsPlace",
@@ -2438,8 +2438,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:convenienceLevelPercent",
@@ -2459,8 +2459,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:coordinateReferenceSystem",
@@ -2480,8 +2480,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:copperPerNutrientBasis",
@@ -2501,8 +2501,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:countryCode",
@@ -2522,8 +2522,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:countryOfAssembly",
@@ -2543,8 +2543,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:countryOfLastProcessing",
@@ -2564,8 +2564,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:countryOfOrigin",
@@ -2585,8 +2585,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:countryOfOriginStatement",
@@ -2607,8 +2607,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:countrySubdivisionCode",
@@ -2628,8 +2628,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:countyCode",
@@ -2649,8 +2649,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:crossStreet",
@@ -2670,8 +2670,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:csrAffiliation",
@@ -2691,8 +2691,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:customerSupportCentre",
@@ -2712,8 +2712,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:dailyValueIntakePercent",
@@ -2733,8 +2733,8 @@
     ],
     "is_link_type": false,
     "term_status": "",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:defaultLink",
@@ -2756,8 +2756,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:defaultLinkMulti",
@@ -2779,8 +2779,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:department",
@@ -2800,8 +2800,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:dependentProprietaryProduct",
@@ -2821,8 +2821,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:descriptiveSize",
@@ -2843,8 +2843,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:dietCode",
@@ -2864,8 +2864,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:dietType",
@@ -2885,8 +2885,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:dietTypeDescription",
@@ -2906,8 +2906,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:dietTypeSubcode",
@@ -2927,8 +2927,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:digitalAddress",
@@ -2948,8 +2948,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:digitalLocationName",
@@ -2969,8 +2969,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:discountRepeatsPerMultipleMinimum",
@@ -2990,8 +2990,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:discountType",
@@ -3011,8 +3011,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:dpp",
@@ -3034,8 +3034,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:drainedWeight",
@@ -3058,8 +3058,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:dueDate",
@@ -3080,8 +3080,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:durationOfWarranty",
@@ -3101,8 +3101,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:dutyFeeTaxAmount",
@@ -3122,8 +3122,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:dutyFeeTaxDescription",
@@ -3143,8 +3143,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:dutyFeeTaxRate",
@@ -3164,8 +3164,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:eifu",
@@ -3187,8 +3187,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:elevation",
@@ -3208,8 +3208,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:eligibleQuantity",
@@ -3231,8 +3231,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:eligibleQuantityMaximum",
@@ -3254,8 +3254,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:eligibleQuantityMinimum",
@@ -3277,8 +3277,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:eligibleTradeChannel",
@@ -3298,8 +3298,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:email",
@@ -3319,8 +3319,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:energyFromFatPerNutrientBasis",
@@ -3340,8 +3340,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:energyPerNutrientBasis",
@@ -3361,8 +3361,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:epcis",
@@ -3383,9 +3383,32 @@
       "owl:ObjectProperty"
     ],
     "is_link_type": true,
+    "term_status": "archaic",
+    "version": "1.18",
+    "last_modified": ""
+  },
+  {
+    "term_id": "gs1:epcisRepository",
+    "compact_name": "epcisRepository",
+    "label": "EPC Information Services (EPCIS) repository",
+    "comment": "A link to an EPCIS repository of visibility event data.",
+    "domain": [
+      "owl:Thing"
+    ],
+    "range": [
+      "xsd:anyURI"
+    ],
+    "sub_property_of": [
+      "gs1:linkType"
+    ],
+    "type": [
+      "rdf:Property",
+      "owl:ObjectProperty"
+    ],
+    "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:epil",
@@ -3407,8 +3430,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:equivalentProduct",
@@ -3430,8 +3453,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:eventsInfo",
@@ -3453,8 +3476,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:exactDiscountAmount",
@@ -3474,8 +3497,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:exactDiscountPercentage",
@@ -3495,8 +3518,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:exclusionDescription",
@@ -3516,8 +3539,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:expirationDate",
@@ -3538,8 +3561,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:expirationDateTime",
@@ -3560,8 +3583,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:faqs",
@@ -3583,8 +3606,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:fatInMilkContent",
@@ -3604,8 +3627,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:fatpercentageInDryMatter",
@@ -3625,8 +3648,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:fatPerNutrientBasis",
@@ -3646,8 +3669,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:faxNumber",
@@ -3667,8 +3690,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:fibrePerNutrientBasis",
@@ -3688,8 +3711,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:fileLanguageCode",
@@ -3711,8 +3734,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:filePixelHeight",
@@ -3734,8 +3757,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:filePixelWidth",
@@ -3757,8 +3780,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:firstFreezeDate",
@@ -3779,8 +3802,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:fishType",
@@ -3800,8 +3823,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:fluoridePerNutrientBasis",
@@ -3821,8 +3844,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:folicAcidPerNutrientBasis",
@@ -3842,8 +3865,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:foodBeverageRefrigerationClaim",
@@ -3863,8 +3886,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:foodBeverageTargetUse",
@@ -3884,8 +3907,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:footwearFasteningType",
@@ -3905,8 +3928,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:footwearUpperType",
@@ -3926,8 +3949,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:franchiseeOf",
@@ -3947,8 +3970,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:franchisorOf",
@@ -3968,8 +3991,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:freshOrSeawaterFarmed",
@@ -3989,8 +4012,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:functionalName",
@@ -4011,8 +4034,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:geneticallyModifiedDeclaration",
@@ -4032,8 +4055,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:geo",
@@ -4053,8 +4076,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:glnType",
@@ -4074,8 +4097,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:globalLocationNumber",
@@ -4095,8 +4118,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:gpcCategoryCode",
@@ -4117,8 +4140,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:gpcCategoryDescription",
@@ -4139,8 +4162,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:grossArea",
@@ -4161,8 +4184,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:grossVolume",
@@ -4183,8 +4206,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:grossWeight",
@@ -4207,8 +4230,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:growingMethod",
@@ -4228,8 +4251,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:gtin",
@@ -4251,8 +4274,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:handledBy",
@@ -4274,8 +4297,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:harvestDate",
@@ -4296,8 +4319,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:harvestDateEnd",
@@ -4318,8 +4341,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:harvestDateStart",
@@ -4340,8 +4363,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:hasAllergen",
@@ -4361,8 +4384,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:hasBatchLotNumber",
@@ -4383,8 +4406,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:hasPrimaryLocation",
@@ -4404,8 +4427,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:hasRetailers",
@@ -4427,8 +4450,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:hasReturnablePackageDeposit",
@@ -4448,8 +4471,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:hasSerialNumber",
@@ -4470,8 +4493,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:hasThirdPartyControlledSerialNumber",
@@ -4492,8 +4515,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:healthClaimDescription",
@@ -4514,8 +4537,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:homepage",
@@ -4537,8 +4560,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:image",
@@ -4558,8 +4581,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:includedAccessories",
@@ -4580,8 +4603,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ingredient",
@@ -4601,8 +4624,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ingredientContentPercentage",
@@ -4622,8 +4645,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ingredientName",
@@ -4643,8 +4666,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ingredientOfConcern",
@@ -4664,8 +4687,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ingredientSequence",
@@ -4685,8 +4708,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ingredientsInfo",
@@ -4708,8 +4731,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ingredientStatement",
@@ -4729,8 +4752,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:initialCertificationDate",
@@ -4750,8 +4773,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:inPackageDepth",
@@ -4771,8 +4794,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:inPackageDiameter",
@@ -4792,8 +4815,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:inPackageHeight",
@@ -4813,8 +4836,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:inPackageWidth",
@@ -4834,8 +4857,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:instructions",
@@ -4857,8 +4880,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:instructionsForUse",
@@ -4878,8 +4901,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:iodinePerNutrientBasis",
@@ -4899,8 +4922,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ironPerNutrientBasis",
@@ -4920,8 +4943,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:irradiatedCode",
@@ -4941,8 +4964,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isCarbonated",
@@ -4962,8 +4985,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isDecaffeinated",
@@ -4983,8 +5006,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isFromConcentrate",
@@ -5004,8 +5027,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isHomogenised",
@@ -5025,8 +5048,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isInstant",
@@ -5046,8 +5069,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isMaternity",
@@ -5067,8 +5090,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isOnlyAvailableThroughRetailer",
@@ -5088,8 +5111,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isOnlyWithMailingListSignup",
@@ -5109,8 +5132,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isOnlyWithPaymentCard",
@@ -5130,8 +5153,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isOnlyWithRetailerLoyaltyCard",
@@ -5151,8 +5174,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isOnlyWithRetailerPaymentCard",
@@ -5172,8 +5195,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isPatterned",
@@ -5193,8 +5216,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isPittedStoned",
@@ -5214,8 +5237,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isProductRecalled",
@@ -5236,8 +5259,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isPromoterExclusiveOffer",
@@ -5257,8 +5280,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isRindEdible",
@@ -5278,8 +5301,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isSeedless",
@@ -5299,8 +5322,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isShelledPeeled",
@@ -5320,8 +5343,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isSliced",
@@ -5341,8 +5364,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isThermal",
@@ -5362,8 +5385,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isVintage",
@@ -5383,8 +5406,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isWashedReadyToEat",
@@ -5404,8 +5427,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isWaterproof",
@@ -5425,8 +5448,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:isWearableItemDisposable",
@@ -5446,8 +5469,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:itemOffered",
@@ -5467,8 +5490,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:juiceContentPercent",
@@ -5488,8 +5511,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:jws",
@@ -5512,8 +5535,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:latitude",
@@ -5533,8 +5556,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:leasedFrom",
@@ -5554,8 +5577,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:leasedTo",
@@ -5575,8 +5598,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:leaveReview",
@@ -5598,8 +5621,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:lesseeOf",
@@ -5619,8 +5642,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:lessorFor",
@@ -5640,8 +5663,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:line",
@@ -5661,8 +5684,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:linkType",
@@ -5682,8 +5705,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:location",
@@ -5703,8 +5726,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:locationDescription",
@@ -5724,8 +5747,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:locationFinalClosureDate",
@@ -5745,8 +5768,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:locationGLN",
@@ -5766,8 +5789,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:locationHistory",
@@ -5787,8 +5810,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:locationID",
@@ -5808,8 +5831,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:locationID_Qualifier",
@@ -5829,8 +5852,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:locationID_Type",
@@ -5850,8 +5873,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:locationID_URI",
@@ -5871,8 +5894,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:locationInfo",
@@ -5894,8 +5917,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:locationOpeningDate",
@@ -5915,8 +5938,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:locationRole",
@@ -5936,8 +5959,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:locationStatus",
@@ -5957,8 +5980,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:logisticsInfo",
@@ -5980,8 +6003,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:longitude",
@@ -6001,8 +6024,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:loyaltyProgram",
@@ -6024,8 +6047,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:magnesiumPerNutrientBasis",
@@ -6045,8 +6068,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:makesOffer",
@@ -6066,8 +6089,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:managedBy",
@@ -6087,8 +6110,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:managedFor",
@@ -6108,8 +6131,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:manages",
@@ -6129,8 +6152,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:manganesePerNutrientBasis",
@@ -6150,8 +6173,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:manufacturer",
@@ -6171,8 +6194,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:manufacturerPreparationCode",
@@ -6192,8 +6215,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:manufacturersWarranty",
@@ -6213,8 +6236,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:manufacturingPlant",
@@ -6234,8 +6257,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:massPerUnitArea",
@@ -6256,8 +6279,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:masterData",
@@ -6279,8 +6302,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:masterDataAvailableFor",
@@ -6300,8 +6323,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:maturationMethod",
@@ -6321,8 +6344,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:maximumDiscountAmount",
@@ -6342,8 +6365,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:maximumDiscountPercentage",
@@ -6363,8 +6386,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:maximumOptimumConsumptionTemperature",
@@ -6384,8 +6407,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:maximumQualifyingItems",
@@ -6405,8 +6428,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:maximumQualifyingSpend",
@@ -6426,8 +6449,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:maxPrice",
@@ -6447,8 +6470,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:meatPoultryType",
@@ -6468,8 +6491,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:menuInfo",
@@ -6491,8 +6514,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:messageRecipient",
@@ -6512,8 +6535,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:messageSender",
@@ -6533,8 +6556,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:minimumDiscountAmount",
@@ -6554,8 +6577,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:minimumDiscountPercentage",
@@ -6575,8 +6598,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:minimumFishContent",
@@ -6596,8 +6619,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:minimumMeatPoultryContent",
@@ -6617,8 +6640,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:minimumOptimumConsumptionTemperature",
@@ -6638,8 +6661,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:minimumQualifyingItems",
@@ -6659,8 +6682,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:minimumQualifyingSpend",
@@ -6680,8 +6703,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:minPrice",
@@ -6701,8 +6724,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:molybdenumPerNutrientBasis",
@@ -6722,8 +6745,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:monounsaturatedFatPerNutrientBasis",
@@ -6743,8 +6766,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:netArea",
@@ -6765,8 +6788,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:netContent",
@@ -6787,8 +6810,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:netWeight",
@@ -6811,8 +6834,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:niacinPerNutrientBasis",
@@ -6832,8 +6855,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:numberOfServingsPerPackage",
@@ -6853,8 +6876,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:numberOfServingsPerPackageMeasurementPrecision",
@@ -6874,8 +6897,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:numberOfServingsRangeDescription",
@@ -6895,8 +6918,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:nutrientBasisQuantity",
@@ -6916,8 +6939,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:nutrientBasisQuantityType",
@@ -6937,8 +6960,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:nutrientMeasurementPrecision",
@@ -6958,8 +6981,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:nutritionalClaim",
@@ -6979,8 +7002,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:nutritionalClaimStatement",
@@ -7000,8 +7023,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:nutritionalInfo",
@@ -7023,8 +7046,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:occupiedBy",
@@ -7044,8 +7067,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:occupies",
@@ -7065,8 +7088,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:offerDescription",
@@ -7088,8 +7111,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:offerDiscount",
@@ -7109,8 +7132,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:offerRedemptionType",
@@ -7130,8 +7153,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:offerRedemptionURL",
@@ -7151,8 +7174,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:offerRestrictionDescription",
@@ -7174,8 +7197,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:openingHoursInfo",
@@ -7197,8 +7220,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organicClaim",
@@ -7218,8 +7241,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organicClaimAgency",
@@ -7240,8 +7263,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organicPercentClaim",
@@ -7261,8 +7284,73 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
+  },
+  {
+    "term_id": "gs1:organizationClassification",
+    "compact_name": "organizationClassification",
+    "label": "Has Organization Classification",
+    "comment": "Links to one or more instances of gs1:OrganizationClassificationDetails for expresing the classification of the economic activities of an organisation.",
+    "domain": [
+      "gs1:Organization"
+    ],
+    "range": [
+      "gs1:OrganizationClassificationDetails"
+    ],
+    "sub_property_of": [],
+    "type": [
+      "rdf:Property",
+      "owl:ObjectProperty"
+    ],
+    "is_link_type": false,
+    "term_status": "stable",
+    "version": "1.18",
+    "last_modified": ""
+  },
+  {
+    "term_id": "gs1:organizationClassificationID",
+    "compact_name": "organizationClassificationID",
+    "label": "Organization Classification ID",
+    "comment": "Classification value that is administered by an organisation. This value SHALL follow rules set forth by the system indicated by the code value of gs1:organizationClassificationType.",
+    "domain": [
+      "gs1:OrganizationClassificationDetails"
+    ],
+    "range": [
+      "xsd:string"
+    ],
+    "sub_property_of": [],
+    "type": [
+      "owl:FunctionalProperty",
+      "owl:DatatypeProperty",
+      "rdf:Property"
+    ],
+    "is_link_type": false,
+    "term_status": "stable",
+    "version": "1.18",
+    "last_modified": ""
+  },
+  {
+    "term_id": "gs1:organizationClassificationType",
+    "compact_name": "organizationClassificationType",
+    "label": "Organization Classification Type",
+    "comment": "Classification system name associated with gs1:organizationClassificationID.",
+    "domain": [
+      "gs1:OrganizationClassificationDetails"
+    ],
+    "range": [
+      "gs1:OrganizationClassificationType"
+    ],
+    "sub_property_of": [],
+    "type": [
+      "rdf:Property",
+      "owl:FunctionalProperty",
+      "owl:DatatypeProperty"
+    ],
+    "is_link_type": false,
+    "term_status": "stable",
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organizationFormationDate",
@@ -7282,8 +7370,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organizationHistory",
@@ -7303,8 +7391,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organizationID",
@@ -7324,8 +7412,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organizationID_Qualifier",
@@ -7345,8 +7433,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organizationID_Type",
@@ -7366,8 +7454,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organizationID_URI",
@@ -7387,8 +7475,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organizationLegalName",
@@ -7408,8 +7496,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organizationName",
@@ -7431,8 +7519,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organizationRole",
@@ -7452,8 +7540,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organizationStatus",
@@ -7473,8 +7561,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organizationTerminationDate",
@@ -7494,8 +7582,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:organizationTradingName",
@@ -7515,8 +7603,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:originalCodeValue",
@@ -7536,8 +7624,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:outOfPackageDepth",
@@ -7557,8 +7645,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:outOfPackageDiameter",
@@ -7578,8 +7666,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:outOfPackageHeight",
@@ -7599,8 +7687,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:outOfPackageWidth",
@@ -7620,8 +7708,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:ownedBy",
@@ -7641,8 +7729,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:owns",
@@ -7662,8 +7750,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packaging",
@@ -7683,8 +7771,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingDate",
@@ -7705,8 +7793,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingFeature",
@@ -7726,8 +7814,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingFunction",
@@ -7747,8 +7835,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingMarkedDietAllergenType",
@@ -7768,8 +7856,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingMarkedFreeFrom",
@@ -7789,8 +7877,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingMarkedLabelAccreditation",
@@ -7810,8 +7898,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingMaterial",
@@ -7831,8 +7919,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingMaterialCompositionQuantity",
@@ -7852,8 +7940,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingMaterialThickness",
@@ -7873,8 +7961,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingMaterialType",
@@ -7894,8 +7982,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingRecyclingProcessType",
@@ -7915,8 +8003,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingRecyclingScheme",
@@ -7936,8 +8024,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingShape",
@@ -7957,8 +8045,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:packagingType",
@@ -7978,8 +8066,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:pantothenicAcidPerNutrientBasis",
@@ -7999,8 +8087,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:parentOrganization",
@@ -8020,8 +8108,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:partyGLN",
@@ -8041,8 +8129,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:paymentLink",
@@ -8064,8 +8152,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:paymentTerms",
@@ -8085,8 +8173,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:percentageOfAlcoholByVolume",
@@ -8106,8 +8194,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:phosphorusPerNutrientBasis",
@@ -8127,8 +8215,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:physicalLocationName",
@@ -8148,8 +8236,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:pip",
@@ -8171,8 +8259,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:polygon",
@@ -8192,8 +8280,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:polyolsPerNutrientBasis",
@@ -8213,8 +8301,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:polyunsaturatedFatPerNutrientBasis",
@@ -8234,8 +8322,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:postalCode",
@@ -8255,8 +8343,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:postalName",
@@ -8276,8 +8364,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:postOfficeBoxNumber",
@@ -8297,8 +8385,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:potassiumPerNutrientBasis",
@@ -8318,8 +8406,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:preparationCode",
@@ -8339,8 +8427,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:preparationConsumptionPrecautions",
@@ -8360,8 +8448,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:preparationInformation",
@@ -8381,8 +8469,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:preparationInstructions",
@@ -8402,8 +8490,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:preservationTechnique",
@@ -8423,8 +8511,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:price",
@@ -8444,8 +8532,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:priceCurrency",
@@ -8465,8 +8553,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:priceSpecification",
@@ -8486,8 +8574,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:primaryAlternateProduct",
@@ -8509,8 +8597,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:primaryLocationOf",
@@ -8530,8 +8618,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productDescription",
@@ -8553,8 +8641,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productFeatureBenefit",
@@ -8574,8 +8662,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productFormDescription",
@@ -8595,8 +8683,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productID",
@@ -8617,8 +8705,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productionDate",
@@ -8639,8 +8727,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productionDateTime",
@@ -8661,8 +8749,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productionVariantDescription",
@@ -8682,8 +8770,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productionVariantEffectiveDateTime",
@@ -8703,8 +8791,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productMarketingMessage",
@@ -8724,8 +8812,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productName",
@@ -8747,8 +8835,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productRange",
@@ -8768,8 +8856,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productSustainabilityInfo",
@@ -8792,8 +8880,8 @@
     ],
     "is_link_type": true,
     "term_status": "deprecated",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productYield",
@@ -8813,8 +8901,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productYieldType",
@@ -8834,8 +8922,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:productYieldVariationPercentage",
@@ -8855,8 +8943,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:promotion",
@@ -8878,8 +8966,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:proteinPerNutrientBasis",
@@ -8899,8 +8987,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:provenanceStatement",
@@ -8920,8 +9008,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:purchaseSuppliesOrAccessories",
@@ -8943,8 +9031,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:qualifyingBrandName",
@@ -8964,8 +9052,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:qualifyingGPCs",
@@ -8985,8 +9073,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:qualifyingProductCategoryDescription",
@@ -9006,8 +9094,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:qualifyingProductClassificationCode",
@@ -9028,8 +9116,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:qualifyingProductGTINs",
@@ -9049,8 +9137,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:qualifyingSubBrandName",
@@ -9070,8 +9158,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:quickStartGuide",
@@ -9093,8 +9181,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:recallStatus",
@@ -9116,8 +9204,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:recipeInfo",
@@ -9139,8 +9227,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:referencedFile",
@@ -9160,8 +9248,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:referencedFileEffectiveEndDateTime",
@@ -9183,8 +9271,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:referencedFileEffectiveStartDateTime",
@@ -9204,8 +9292,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:referencedFileSize",
@@ -9227,8 +9315,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:referencedFileType",
@@ -9248,8 +9336,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:referencedFileURL",
@@ -9271,8 +9359,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:registerProduct",
@@ -9294,8 +9382,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:registryEntry",
@@ -9317,8 +9405,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:regulatedProductName",
@@ -9338,8 +9426,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:regulationType",
@@ -9359,8 +9447,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:regulatoryAct",
@@ -9380,8 +9468,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:regulatoryIdentifier",
@@ -9401,8 +9489,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:regulatoryIdentifierType",
@@ -9422,8 +9510,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:regulatoryInformation",
@@ -9443,8 +9531,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:regulatoryInformationProvider",
@@ -9464,8 +9552,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:regulatoryReferenceApplicabilityEndDate",
@@ -9485,8 +9573,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:regulatoryReferenceApplicabilityStartDate",
@@ -9506,8 +9594,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:regulatoryReferenceNumber",
@@ -9527,8 +9615,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:regulatoryVerificationNumber",
@@ -9548,8 +9636,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:reheatingClaim",
@@ -9569,8 +9657,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:relatedImage",
@@ -9592,8 +9680,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:relatedOrganization",
@@ -9613,13 +9701,13 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:relatedVideo",
     "compact_name": "relatedVideo",
-    "label": "Related video",
+    "label": "Related  video",
     "comment": "A link to any video, or document that has an embedded video, that describes or relates to the identified item, organisation, or location in some way.",
     "domain": [
       "owl:Thing"
@@ -9636,8 +9724,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:replacedByOrganization",
@@ -9657,8 +9745,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:replacedByPlace",
@@ -9678,8 +9766,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:replacedByProduct",
@@ -9701,8 +9789,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:replacedOrganization",
@@ -9722,8 +9810,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:replacedPlace",
@@ -9743,8 +9831,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:replacedProduct",
@@ -9766,8 +9854,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:reportFound",
@@ -9789,8 +9877,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:responsibility",
@@ -9810,8 +9898,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:responsibleForLocation",
@@ -9831,8 +9919,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:responsibleOrganization",
@@ -9852,8 +9940,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:returnablePackageDepositAmount",
@@ -9873,8 +9961,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:returnablePackageDepositRegion",
@@ -9894,8 +9982,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:review",
@@ -9917,8 +10005,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:riboflavinPerNutrientBasis",
@@ -9938,8 +10026,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:safetyInfo",
@@ -9961,8 +10049,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:saltPerNutrientBasis",
@@ -9982,8 +10070,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:saturatedFatPerNutrientBasis",
@@ -10003,8 +10091,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:scheduleTime",
@@ -10026,8 +10114,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:seasonCalendarYear",
@@ -10047,8 +10135,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:seasonName",
@@ -10068,8 +10156,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:seasonParameter",
@@ -10089,8 +10177,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:seeker",
@@ -10110,8 +10198,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:selectedProductsOnly",
@@ -10131,8 +10219,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:seleniumPerNutrientBasis",
@@ -10152,8 +10240,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sellByDate",
@@ -10174,8 +10262,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:seller",
@@ -10195,8 +10283,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:serviceInfo",
@@ -10218,8 +10306,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:servingSize",
@@ -10239,8 +10327,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:servingSizeDescription",
@@ -10260,8 +10348,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:servingSuggestion",
@@ -10281,8 +10369,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sharpnessOfCheese",
@@ -10302,8 +10390,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:siteAccessRequirements",
@@ -10323,8 +10411,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:size",
@@ -10344,8 +10432,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sizeCode",
@@ -10365,8 +10453,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sizeCodeListCode",
@@ -10386,8 +10474,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sizeCodeValue",
@@ -10407,8 +10495,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sizeDimension",
@@ -10428,8 +10516,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sizeGroup",
@@ -10449,8 +10537,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sizeSystem",
@@ -10470,8 +10558,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sizeType",
@@ -10491,8 +10579,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:smartLabel",
@@ -10514,8 +10602,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:smpc",
@@ -10537,8 +10625,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:socialMedia",
@@ -10560,8 +10648,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sodiumPerNutrientBasis",
@@ -10581,8 +10669,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sourceAnimal",
@@ -10602,8 +10690,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sportingActivityType",
@@ -10623,8 +10711,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:starchPerNutrientBasis",
@@ -10644,8 +10732,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:statisticInfo",
@@ -10667,8 +10755,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:statusTimestamp",
@@ -10688,8 +10776,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:streetAddress",
@@ -10709,8 +10797,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:streetAddressLine2",
@@ -10730,8 +10818,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:streetAddressLine3",
@@ -10751,8 +10839,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:streetAddressLine4",
@@ -10772,8 +10860,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:styleDescription",
@@ -10793,8 +10881,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:subBrandName",
@@ -10816,8 +10904,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:subOrganization",
@@ -10837,8 +10925,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:subscribe",
@@ -10860,8 +10948,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sugarsPerNutrientBasis",
@@ -10881,8 +10969,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:supplierSpecifiedMinimumConsumerStorageDays",
@@ -10902,8 +10990,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:support",
@@ -10925,8 +11013,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sustainabilityInfo",
@@ -10948,8 +11036,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:sweetnessLevelOfAlcoholicBeverage",
@@ -10969,8 +11057,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:targetConsumerAge",
@@ -10990,8 +11078,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:targetConsumerGender",
@@ -11011,8 +11099,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:targetMarket",
@@ -11032,8 +11120,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:targetMarketCountries",
@@ -11053,8 +11141,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:telephone",
@@ -11074,8 +11162,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:textileMaterial",
@@ -11095,8 +11183,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:textileMaterialContent",
@@ -11116,8 +11204,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:textileMaterialDescription",
@@ -11138,8 +11226,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:textileMaterialPercentage",
@@ -11160,8 +11248,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:textileMaterialThreadCount",
@@ -11182,8 +11270,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:textileMaterialWeight",
@@ -11204,8 +11292,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:thiaminPerNutrientBasis",
@@ -11225,8 +11313,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:traceability",
@@ -11248,8 +11336,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:transactionDate",
@@ -11269,8 +11357,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:transactionID",
@@ -11290,8 +11378,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:transactionType",
@@ -11311,8 +11399,8 @@
     ],
     "is_link_type": false,
     "term_status": "provisional",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:transFatPerNutrientBasis",
@@ -11332,8 +11420,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:tutorial",
@@ -11355,8 +11443,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:unitCode",
@@ -11376,8 +11464,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:upperMaterialType",
@@ -11397,8 +11485,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:userAgreement",
@@ -11420,8 +11508,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:usesManagedLocation",
@@ -11441,8 +11529,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:validFrom",
@@ -11462,8 +11550,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:validThrough",
@@ -11483,8 +11571,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:value",
@@ -11504,8 +11592,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:variantDescription",
@@ -11525,8 +11613,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:verificationService",
@@ -11548,8 +11636,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:vintner",
@@ -11569,8 +11657,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:vitaminAPerNutrientBasis",
@@ -11590,8 +11678,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:vitaminB12PerNutrientBasis",
@@ -11611,8 +11699,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:vitaminB6PerNutrientBasis",
@@ -11632,8 +11720,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:vitaminCPerNutrientBasis",
@@ -11653,8 +11741,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:vitaminDPerNutrientBasis",
@@ -11674,8 +11762,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:vitaminEPerNutrientBasis",
@@ -11695,8 +11783,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:vitaminKPerNutrientBasis",
@@ -11716,8 +11804,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:warningCopyDescription",
@@ -11737,8 +11825,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:warranty",
@@ -11760,8 +11848,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:warrantyScopeDescription",
@@ -11783,8 +11871,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:whatsInTheBox",
@@ -11806,8 +11894,8 @@
     ],
     "is_link_type": true,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:yield",
@@ -11827,8 +11915,8 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   },
   {
     "term_id": "gs1:zincPerNutrientBasis",
@@ -11848,7 +11936,7 @@
     ],
     "is_link_type": false,
     "term_status": "stable",
-    "version": "1.17",
-    "last_modified": "2025-11-18"
+    "version": "1.18",
+    "last_modified": ""
   }
 ]

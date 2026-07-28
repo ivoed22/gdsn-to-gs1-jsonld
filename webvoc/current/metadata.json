@@ -2,10 +2,10 @@
   "source_url_jsonld": "https://ref.gs1.org/voc/data/gs1Voc.jsonld",
   "source_url_ttl": "https://ref.gs1.org/voc/data/gs1Voc.ttl",
   "source_url_linktypes": "https://ref.gs1.org/voc/data/linktypes",
-  "fetched_at_utc": "2026-06-14T13:32:35Z",
-  "jsonld_sha256": "cf48c79d5891195a30f873b333983b21ffacb518adc80568cf1141961a3889b9",
-  "ttl_sha256": "18244b56183587102561343e94d705eace181350c771876ed59183fa71776e98",
-  "linktypes_sha256": "7c25020aa499eb4e300c530481c377899941a5656c67b72ef705b54dacb522d6",
-  "detected_version": "1.17",
-  "detected_last_modified": "2025-11-18"
+  "fetched_at_utc": "2026-07-28T21:44:25Z",
+  "jsonld_sha256": "e05fb00ce8897c3894cdf0f97d26dce84f36745857ea8156bb701b088c29c19f",
+  "ttl_sha256": "b6039ed1b3229853a0aed1eb8568527f2d393925fd163d6fce5fddefe7ea1aa7",
+  "linktypes_sha256": "8a46b020d4a93b68b6852ccdd932c41b328bf9b2ca06b5905b4f29b49adfa3f4",
+  "detected_version": "1.18",
+  "detected_last_modified": ""
 }
