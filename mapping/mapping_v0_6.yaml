@@ -480,8 +480,14 @@ object_mappings:
   object_type: gs1:Organization
   multiple: true
   fields:
+  # Identity must come from the contact block itself. Borrowing the GLN/name of
+  # informationProviderOfTradeItem asserted "the support centre is the data
+  # provider" -- something GDSN never states, and plainly wrong whenever support
+  # is outsourced or handled by a group company (issue #13).
+  # tradeItemContactInformation carries its own gln. It has no party name, so no
+  # organizationName is emitted rather than a borrowed one.
   - id: support_party_gln
-    xpath: ancestor::*[local-name()='tradeItem'][1]/*[local-name()='informationProviderOfTradeItem']/*[local-name()='gln']
+    xpath: ./*[local-name()='gln']
     value_xpath: text()
     canonical_field: party_gln
     jsonld_property: gs1:partyGLN
@@ -490,19 +496,6 @@ object_mappings:
     multiple: false
     transform:
     - trim
-  - id: support_organization_name
-    xpath: ancestor::*[local-name()='tradeItem'][1]/*[local-name()='informationProviderOfTradeItem']/*[local-name()='partyName']
-    value_xpath: text()
-    canonical_field: organization_name
-    jsonld_property: gs1:organizationName
-    datatype: language_string
-    language_xpath: ./@languageCode
-    fallback_language: und
-    required: false
-    multiple: false
-    transform:
-    - trim
-    - normalize_whitespace
   - id: support_contact_name
     xpath: .//*[local-name()='contactName']
     value_xpath: text()

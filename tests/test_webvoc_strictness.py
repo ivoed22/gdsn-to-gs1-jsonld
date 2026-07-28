@@ -6,6 +6,7 @@ grounded in the committed WebVoc snapshot's declared domain/range.
 """
 
 import json
+import pathlib
 
 from gdsn_to_gs1_jsonld.converter import convert_xml_to_jsonld
 from gdsn_to_gs1_jsonld.jsonld_builder import build_jsonld
@@ -15,8 +16,15 @@ V0_6 = "mapping/mapping_v0_6.yaml"
 
 
 def _webvoc_terms():
-    path = "reference_data/normalized/webvoc_properties_1_17.json"
-    with open(path, encoding="utf-8") as handle:
+    """Load the normalized property snapshot, whatever version is pinned.
+
+    Resolved by glob rather than a hardcoded version so a vocabulary refresh
+    (e.g. 1.17 -> 1.18) does not silently break these assertions.
+    """
+    directory = pathlib.Path("reference_data/normalized")
+    matches = sorted(directory.glob("webvoc_properties_*.json"))
+    assert matches, "no normalized WebVoc property snapshot found"
+    with matches[-1].open(encoding="utf-8") as handle:
         return {item["term_id"]: item for item in json.load(handle)}
 
 
